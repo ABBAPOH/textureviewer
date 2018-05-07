@@ -7,6 +7,7 @@
 
 class TEXTURELIB_EXPORT TextureIOHandler
 {
+    Q_DISABLE_COPY(TextureIOHandler)
 public:
     TextureIOHandler();
     virtual ~TextureIOHandler();
