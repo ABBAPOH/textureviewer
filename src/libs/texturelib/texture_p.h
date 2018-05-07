@@ -1,0 +1,50 @@
+#ifndef TEXTURE_P_H
+#define TEXTURE_P_H
+
+#include "texture.h"
+
+class TextureData
+{
+public:
+    TextureData() = default;
+    TextureData(const TextureData &other) = delete;
+    TextureData(TextureData &&) = delete;
+    ~TextureData();
+    TextureData &operator=(const TextureData &) = delete;
+    TextureData &operator=(TextureData &&) = delete;
+
+    static TextureData *create(int width,
+            int height,
+            int depth, int layers,
+            int levels,
+            Texture::Type type,
+            Texture::Format format);
+
+    QAtomicInt ref {0};
+    Texture::Type type {Texture::Type::None};
+    Texture::Format format {Texture::Format::Invalid};
+    int width {0};
+    int height {0};
+    int depth {0};
+    int faces {0};
+    int levels {0};
+    int layers {0};
+    int bytesPerTexel {0};
+    qsizetype bytesPerLine {0};
+    qsizetype nbytes {0};
+    uchar *data {nullptr};
+};
+
+inline int bbpForFormat(Texture::Format format)
+{
+    switch(format) {
+    case Texture::Format::Invalid:
+    case Texture::Format::FormatsCount:
+        Q_UNREACHABLE();
+    case Texture::Format::ARGB32:
+        return 32;
+    }
+    return 0;
+}
+
+#endif // TEXTURE_P_H
