@@ -4,7 +4,7 @@ BaseProduct {
     Depends { name: "Qt.gui" }
 
     type: "dynamiclibrary"
-    destinationDirectory: project.install_plugin_path + "/imageformats2"
+    destinationDirectory: project.install_plugin_path + "/textureviwer"
     bundle.isBundle: false
 
     cpp.sonamePrefix: "@rpath/Frameworks"
@@ -15,6 +15,6 @@ BaseProduct {
     Group {
         fileTagsFilter: product.type
         qbs.install: true
-        qbs.installDir: project.install_plugin_path + "/imageformats2"
+        qbs.installDir: project.install_plugin_path + "/textureviwer"
     }
 }
