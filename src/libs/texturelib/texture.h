@@ -71,6 +71,7 @@ public:
     int levels() const; // for now, levels are not supported, requires a bit more math
     int layers() const;
 
+    qsizetype bytes() const;
     qsizetype bytesPerTexel() const;
     qsizetype bytesPerLine() const;
     qsizetype bytesPerImage() const;
@@ -99,6 +100,7 @@ private:
 bool operator==(const Texture &lhs, const Texture &rhs);
 bool operator!=(const Texture &lhs, const Texture &rhs);
 
+Q_DECLARE_METATYPE(Texture::Type)
 Q_DECLARE_METATYPE(Texture::Format)
 
 #endif // TEXTURE_H

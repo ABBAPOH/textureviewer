@@ -42,6 +42,7 @@ TextureData *TextureData::create(
 
     data.reset(new TextureData);
 
+    data->ref.ref();
     data->width = width;
     data->height = height;
     data->depth = depth;
@@ -183,6 +184,11 @@ int Texture::levels() const
 int Texture::layers() const
 {
     return d ? d->layers : 0;
+}
+
+qsizetype Texture::bytes() const
+{
+    return d ? d->nbytes : 0;
 }
 
 qsizetype Texture::bytesPerTexel() const

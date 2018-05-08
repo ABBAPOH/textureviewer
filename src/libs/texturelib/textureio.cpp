@@ -231,8 +231,11 @@ std::pair<TextureIOResult, Texture> TextureIO::read()
 {
     Q_D(TextureIO);
 
+    auto ok = d->ensureHandlerCreated(QIODevice::ReadOnly);
+    if (!ok)
+        return {ok, Texture()};
+
     Texture texture;
-    TextureIOResult ok;
     if (!d->handler->read(texture))
         ok = TextureIOResult::Status::HandlerError;
 

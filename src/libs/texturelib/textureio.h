@@ -3,12 +3,12 @@
 #include "texturelib_global.h"
 
 #include <TextureLib/Texture>
+#include <TextureLib/TextureIOResult>
 #include <QtCore/QString>
 #include <QtCore/QScopedPointer>
 #include <QtCore/QMimeType>
 
 class QIODevice;
-class TextureIOResult;
 
 class TextureIOPrivate;
 class TEXTURELIB_EXPORT TextureIO
