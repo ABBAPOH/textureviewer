@@ -293,3 +293,52 @@ bool operator!=(const Texture &lhs, const Texture &rhs)
 {
     return !(lhs == rhs);
 }
+
+QDataStream &operator <<(QDataStream &stream, const Texture &texture)
+{
+    stream << quint32(texture.type())
+           << quint32(texture.format())
+           << quint32(texture.width())
+           << quint32(texture.height())
+           << quint32(texture.depth())
+           << quint32(texture.layers())
+           << quint32(texture.levels())
+           << QByteArray::fromRawData(
+                  reinterpret_cast<const char *>(texture.data()), int(texture.bytes()));
+    return stream;
+}
+
+QDataStream &operator >>(QDataStream &stream, Texture &texture)
+{
+    texture = Texture();
+    quint32 type;
+    quint32 format;
+    quint32 width;
+    quint32 height;
+    quint32 depth;
+    quint32 layers;
+    quint32 levels;
+    QByteArray data;
+    stream >> type
+            >> format
+            >> width
+            >> height
+            >> depth
+            >> layers
+            >> levels;
+    if (stream.status() == QDataStream::Ok) {
+        auto result = Texture(TextureData::create(
+                              int(width),
+                              int(height),
+                              int(depth),
+                              int(layers),
+                              int(levels),
+                              Texture::Type(type),
+                              Texture::Format(format)));
+        if (result.bytes() == data.size()) {
+            memmove(result.data(), data.data(), size_t(data.size()));
+            texture = result;
+        }
+    }
+    return stream;
+}
