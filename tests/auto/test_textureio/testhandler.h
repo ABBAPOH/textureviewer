@@ -2,17 +2,12 @@
 
 #include <TextureLib/TextureIOHandler>
 
-#include "testhandler_p.h"
-
 class TestHandler : public TextureIOHandler
 {
 public:
     virtual bool canRead() const override;
     virtual bool read(Texture &texture) override;
     virtual bool write(const Texture &contents) override;
-
-private:
-    TestImageData _data;
 };
 
 class TestHandlerPlugin : public TextureIOHandlerPlugin

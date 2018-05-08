@@ -1,7 +1,6 @@
 #include <QtTest>
 
 #include "testhandler.h"
-#include "testhandler_p.h"
 #include <TextureLib/TextureIO>
 #include <TextureLib/private/TextureIOHandlerDatabase>
 
@@ -79,6 +78,27 @@ static QByteArray generateData(int width, int height, Texture::Format format)
     return QByteArray((char*)texture.data(), int(texture.bytes()));
 }
 
+static Texture createTexture(
+        Texture::Type type,
+        Texture::Format format,
+        int width,
+        int height,
+        int depth,
+        int layers,
+        int levels)
+{
+    Texture result;
+
+    switch (type) {
+    case Texture::Type::Texture2D:
+        result = Texture::create2DTexture(width, height, format);
+        break;
+    default:
+        return result;
+    }
+    return result;
+}
+
 void TestTextureIO::read()
 {
     QFETCH(Texture::Type, type);
@@ -89,20 +109,12 @@ void TestTextureIO::read()
     QFETCH(int, layers);
     QFETCH(int, levels);
 
-    TestImageData data;
-    data.type = type;
-    data.format = format;
-    data.width = width;
-    data.height = height;
-    data.depth = depth;
-    data.layers = layers;
-    data.levels = levels;
-    data.data = generateData(width, height, format);
+    auto expectedTexture = createTexture(type, format, width, height, depth, layers, levels);
 
     QBuffer buffer;
     QVERIFY(buffer.open(QIODevice::WriteOnly));
     QDataStream stream(&buffer);
-    stream << data;
+    stream << expectedTexture;
     buffer.close(); // close device to ensure TextureIO will open it with correct mode
 
     TextureIO io;
@@ -113,6 +125,7 @@ void TestTextureIO::read()
     QVERIFY2(ok, qPrintable(ok.toString()));
 
     const auto texture = result.second;
+    QVERIFY(!texture.isNull());
     QCOMPARE(texture.type(), type);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
@@ -121,7 +134,8 @@ void TestTextureIO::read()
     QCOMPARE(texture.layers(), layers);
     QCOMPARE(texture.levels(), levels);
 
-    QCOMPARE(QByteArray((char*)texture.data(), int(texture.bytes())), data.data);
+    QCOMPARE(QByteArray((char*)texture.data(), int(texture.bytes())),
+             QByteArray((char*)expectedTexture.data(), int(expectedTexture.bytes())));
 }
 
 void TestTextureIO::write_data()
@@ -153,33 +167,35 @@ void TestTextureIO::write()
     io.setDevice(&buffer);
     io.setMimeType("application/octet-stream");
 
-    Texture texture;
+    Texture expectedTexture;
 
     switch (type) {
     case Texture::Type::Texture2D:
-        texture = Texture::create2DTexture(width, height, format);
+        expectedTexture = Texture::create2DTexture(width, height, format);
     default:
         break;
     }
 
-    const auto ok = io.write(texture);
+    const auto ok = io.write(expectedTexture);
     QVERIFY2(ok, qPrintable(ok.toString()));
 
-    TestImageData data;
     buffer.close();
 
     QVERIFY(buffer.open(QIODevice::ReadOnly));
-    QDataStream stream(&buffer);
-    stream >> data;
 
-    QCOMPARE(data.type, type);
-    QCOMPARE(data.format, format);
-    QCOMPARE(data.width, width);
-    QCOMPARE(data.height, height);
-    QCOMPARE(data.depth, depth);
-    QCOMPARE(data.layers, layers);
-    QCOMPARE(data.levels, levels);
-    QCOMPARE(data.data, QByteArray((char*)texture.data(), int(texture.bytes())));
+    Texture texture;
+    QDataStream stream(&buffer);
+    stream >> texture;
+
+    QCOMPARE(texture.type(), type);
+    QCOMPARE(texture.format(), format);
+    QCOMPARE(texture.width(), width);
+    QCOMPARE(texture.height(), height);
+    QCOMPARE(texture.depth(), depth);
+    QCOMPARE(texture.layers(), layers);
+    QCOMPARE(texture.levels(), levels);
+    QCOMPARE(QByteArray((char*)texture.data(), int(texture.bytes())),
+             QByteArray((char*)expectedTexture.data(), int(expectedTexture.bytes())));
 }
 
 QTEST_APPLESS_MAIN(TestTextureIO)

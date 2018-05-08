@@ -325,7 +325,8 @@ QDataStream &operator >>(QDataStream &stream, Texture &texture)
             >> height
             >> depth
             >> layers
-            >> levels;
+            >> levels
+            >> data;
     if (stream.status() == QDataStream::Ok) {
         auto result = Texture(TextureData::create(
                               int(width),
