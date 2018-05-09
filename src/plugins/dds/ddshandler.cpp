@@ -474,7 +474,12 @@ bool DDSHandler::read(Texture &texture)
             qWarning() << "Only A8R8G8B8 is supported";
             return false;
         }
-        result = Texture::create2DTexture(int(m_header.width), int(m_header.depth), Texture::Format::ARGB32);
+        result = Texture::create2DTexture(int(m_header.width), int(m_header.height), Texture::Format::ARGB32);
+    }
+
+    if (result.isNull()) {
+        qWarning() << "Can't create texture";
+        return false;
     }
 
     qint64 pos = headerSize + mipmapOffset(m_header, m_format, 0);

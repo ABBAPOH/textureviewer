@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>data/A8R8G8B8.dds</file>
+        <file>data/A8R8G8B8.png</file>
+    </qresource>
+</RCC>

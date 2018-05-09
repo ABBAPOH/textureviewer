@@ -82,4 +82,4 @@ void TestTextureIOResult::assign()
 
 QTEST_APPLESS_MAIN(TestTextureIOResult)
 
-#include "test_TextureIOresult.moc"
+#include "test_textureioresult.moc"

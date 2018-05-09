@@ -1,4 +1,4 @@
-#include "TextureIOResult.h"
+#include "textureioresult.h"
 
 /*!
     \class TextureIOResult

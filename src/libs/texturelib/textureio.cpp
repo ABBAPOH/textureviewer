@@ -8,6 +8,7 @@
 
 #include <QtCore/QFile>
 #include <QtCore/QMimeDatabase>
+#include <QDebug>
 
 class TextureIOPrivate
 {
