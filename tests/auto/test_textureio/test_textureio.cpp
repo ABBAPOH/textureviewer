@@ -125,17 +125,7 @@ void TestTextureIO::read()
     QVERIFY2(ok, qPrintable(ok.toString()));
 
     const auto texture = result.second;
-    QVERIFY(!texture.isNull());
-    QCOMPARE(texture.type(), type);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), height);
-    QCOMPARE(texture.depth(), depth);
-    QCOMPARE(texture.layers(), layers);
-    QCOMPARE(texture.levels(), levels);
-
-    QCOMPARE(QByteArray((char*)texture.data(), int(texture.bytes())),
-             QByteArray((char*)expectedTexture.data(), int(expectedTexture.bytes())));
+    QCOMPARE(texture, expectedTexture);
 }
 
 void TestTextureIO::write_data()
@@ -187,15 +177,7 @@ void TestTextureIO::write()
     QDataStream stream(&buffer);
     stream >> texture;
 
-    QCOMPARE(texture.type(), type);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), height);
-    QCOMPARE(texture.depth(), depth);
-    QCOMPARE(texture.layers(), layers);
-    QCOMPARE(texture.levels(), levels);
-    QCOMPARE(QByteArray((char*)texture.data(), int(texture.bytes())),
-             QByteArray((char*)expectedTexture.data(), int(expectedTexture.bytes())));
+    QCOMPARE(texture, expectedTexture);
 }
 
 QTEST_APPLESS_MAIN(TestTextureIO)
