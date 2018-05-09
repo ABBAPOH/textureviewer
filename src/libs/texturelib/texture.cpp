@@ -284,9 +284,21 @@ bool operator==(const Texture &lhs, const Texture &rhs)
     if (!lhs.d || !rhs.d)
         return false;
 
-    // TODO: check contents
+    // obviously different stuff?
+    if (lhs.d->type != rhs.d->type
+            || lhs.d->format != rhs.d->format
+            || lhs.d->width  != rhs.d->width
+            || lhs.d->height != rhs.d->height
+            || lhs.d->depth  != rhs.d->depth
+            || lhs.d->layers != rhs.d->layers
+            || lhs.d->levels != rhs.d->levels)
+        return false;
 
-    return false;
+    // sanity check for data sizes
+    if (lhs.d->nbytes != rhs.d->nbytes)
+        return false;
+
+    return memcmp(lhs.d->data, rhs.d->data, size_t(rhs.d->nbytes)) == 0;
 }
 
 bool operator!=(const Texture &lhs, const Texture &rhs)
