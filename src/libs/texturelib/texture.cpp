@@ -306,7 +306,7 @@ bool operator!=(const Texture &lhs, const Texture &rhs)
     return !(lhs == rhs);
 }
 
-QDataStream &operator <<(QDataStream &stream, const Texture &texture)
+QDataStream &operator<<(QDataStream &stream, const Texture &texture)
 {
     stream << quint32(texture.type())
            << quint32(texture.format())
@@ -320,7 +320,7 @@ QDataStream &operator <<(QDataStream &stream, const Texture &texture)
     return stream;
 }
 
-QDataStream &operator >>(QDataStream &stream, Texture &texture)
+QDataStream &operator>>(QDataStream &stream, Texture &texture)
 {
     texture = Texture();
     quint32 type;

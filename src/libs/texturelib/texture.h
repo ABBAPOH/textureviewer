@@ -104,8 +104,8 @@ private:
 bool operator==(const Texture &lhs, const Texture &rhs);
 bool operator!=(const Texture &lhs, const Texture &rhs);
 
-QDataStream &operator <<(QDataStream &stream, const Texture &texture);
-QDataStream &operator >>(QDataStream &stream, Texture &texture);
+QDataStream &operator<<(QDataStream &stream, const Texture &texture);
+QDataStream &operator>>(QDataStream &stream, Texture &texture);
 
 Q_DECLARE_METATYPE(Texture::Type)
 Q_DECLARE_METATYPE(Texture::Format)
