@@ -2,7 +2,6 @@ import qbs.base 1.0
 
 Project {
     references: [
-        "libs/libs.qbs",
-        "plugins/plugins.qbs",
+        "dds/dds.qbs",
     ]
 }
