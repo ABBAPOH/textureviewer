@@ -115,7 +115,8 @@ void TestTexture::construct()
         break;
     }
 
-    QCOMPARE(texture.isNull(), false);
+    QVERIFY(!texture.isNull());
+    QCOMPARE(texture.type(), type);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
     QCOMPARE(texture.height(), height);
