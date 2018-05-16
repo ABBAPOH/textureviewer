@@ -266,7 +266,7 @@ TextureIOResult TextureIO::write(const Texture &contents)
 QString TextureIO::pluginsDirPath()
 {
 #if defined(Q_OS_LINUX)
-    return QStringLiteral("/../lib/textureviwer/plugins/");
+    return QStringLiteral("/../lib/textureviewer/plugins/");
 #elif defined(Q_OS_MAC)
     return QStringLiteral("/../PlugIns/");
 #elif defined(Q_OS_WIN)
