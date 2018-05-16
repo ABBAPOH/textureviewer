@@ -6,16 +6,9 @@ class TestTexture : public QObject
     Q_OBJECT
 private slots:
     void defaultConstructed();
-    void construct1D_data();
-    void construct1D();
-    void construct1DArray_data();
-    void construct1DArray();
-    void construct2D_data();
-    void construct2D();
-    void construct2DArray_data();
-    void construct2DArray();
-    void construct3D_data();
-    void construct3D();
+
+    void construct_data();
+    void construct();
 };
 
 void TestTexture::defaultConstructed()
@@ -42,164 +35,92 @@ void TestTexture::defaultConstructed()
     QCOMPARE(tex.constScanLine(0), nullptr);
 }
 
-void TestTexture::construct1D_data()
+void TestTexture::construct_data()
 {
-    QTest::addColumn<Texture::Format>("format");
-    QTest::addColumn<int>("width");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<qsizetype>("bytes");
-
-    QTest::newRow("ARGB32, 1x1x1, 1") << Texture::Format::ARGB32 << 1 << 1 << qsizetype(4);
-    QTest::newRow("ARGB32, 64x1x1, 1") << Texture::Format::ARGB32 << 64 << 1 << qsizetype(256);
-    QTest::newRow("ARGB32, 100x1x1, 1") << Texture::Format::ARGB32 << 100 << 1 << qsizetype(400);
-}
-
-void TestTexture::construct1D()
-{
-    QFETCH(Texture::Format, format);
-    QFETCH(int, width);
-    QFETCH(int, levels);
-    QFETCH(qsizetype, bytes);
-
-    auto texture = Texture::create1DTexture(format, width);
-    QCOMPARE(texture.isNull(), false);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), 1);
-    QCOMPARE(texture.depth(), 1);
-    QCOMPARE(texture.layers(), 1);
-    QCOMPARE(texture.levels(), levels);
-    QCOMPARE(texture.bytes(), bytes);
-}
-
-void TestTexture::construct1DArray_data()
-{
-    QTest::addColumn<Texture::Format>("format");
-    QTest::addColumn<int>("width");
-    QTest::addColumn<int>("layers");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<qsizetype>("bytes");
-
-    QTest::newRow("ARGB32, 1x1x1, 1, 1") << Texture::Format::ARGB32 << 1 << 1 << 1 << qsizetype(4);
-    QTest::newRow("ARGB32, 100x1x1, 1, 1") << Texture::Format::ARGB32 << 100 << 1 << 1 << qsizetype(400);
-    QTest::newRow("ARGB32, 100x1x1, 8, 1") << Texture::Format::ARGB32 << 100 << 8 << 1 << qsizetype(3200);
-}
-
-void TestTexture::construct1DArray()
-{
-    QFETCH(Texture::Format, format);
-    QFETCH(int, width);
-    QFETCH(int, layers);
-    QFETCH(int, levels);
-    QFETCH(qsizetype, bytes);
-
-    auto texture = Texture::create1DTextureArray(format, width, layers);
-    QCOMPARE(texture.isNull(), false);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), 1);
-    QCOMPARE(texture.depth(), 1);
-    QCOMPARE(texture.layers(), layers);
-    QCOMPARE(texture.levels(), levels);
-    QCOMPARE(texture.bytes(), bytes);
-}
-
-void TestTexture::construct2D_data()
-{
-    QTest::addColumn<Texture::Format>("format");
-    QTest::addColumn<int>("width");
-    QTest::addColumn<int>("height");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<qsizetype>("bytes");
-
-    QTest::newRow("ARGB32, 1x1x1, 1") << Texture::Format::ARGB32 << 1 << 1 << 1 << qsizetype(4);
-    QTest::newRow("ARGB32, 64x64x1, 1") << Texture::Format::ARGB32 << 64 << 64 << 1 << qsizetype(16384);
-    QTest::newRow("ARGB32, 100x100x1, 1") << Texture::Format::ARGB32 << 100 << 100 << 1 << qsizetype(40000);
-}
-
-void TestTexture::construct2D()
-{
-    QFETCH(Texture::Format, format);
-    QFETCH(int, width);
-    QFETCH(int, height);
-    QFETCH(int, levels);
-    QFETCH(qsizetype, bytes);
-
-    auto texture = Texture::create2DTexture(format, width, height);
-    QCOMPARE(texture.isNull(), false);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), height);
-    QCOMPARE(texture.depth(), 1);
-    QCOMPARE(texture.layers(), 1);
-    QCOMPARE(texture.levels(), levels);
-    QCOMPARE(texture.bytes(), bytes);
-}
-
-void TestTexture::construct2DArray_data()
-{
-    QTest::addColumn<Texture::Format>("format");
-    QTest::addColumn<int>("width");
-    QTest::addColumn<int>("height");
-    QTest::addColumn<int>("layers");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<qsizetype>("bytes");
-
-    QTest::newRow("ARGB32, 1x1x1, 1, 1") << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << qsizetype(4);
-    QTest::newRow("ARGB32, 100x100x1, 1, 1") << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << qsizetype(40000);
-    QTest::newRow("ARGB32, 100x100x1, 8, 1") << Texture::Format::ARGB32 << 100 << 100 << 8 << 1 << qsizetype(320000);
-}
-
-void TestTexture::construct2DArray()
-{
-    QFETCH(Texture::Format, format);
-    QFETCH(int, width);
-    QFETCH(int, height);
-    QFETCH(int, layers);
-    QFETCH(int, levels);
-    QFETCH(qsizetype, bytes);
-
-    auto texture = Texture::create2DTextureArray(format, width, height, layers);
-    QCOMPARE(texture.isNull(), false);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), height);
-    QCOMPARE(texture.depth(), 1);
-    QCOMPARE(texture.layers(), layers);
-    QCOMPARE(texture.levels(), levels);
-    QCOMPARE(texture.bytes(), bytes);
-}
-
-void TestTexture::construct3D_data()
-{
+    QTest::addColumn<Texture::Type>("type");
     QTest::addColumn<Texture::Format>("format");
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
     QTest::addColumn<int>("depth");
     QTest::addColumn<int>("levels");
+    QTest::addColumn<int>("layers");
     QTest::addColumn<qsizetype>("bytes");
 
-    QTest::newRow("ARGB32, 1x1x1, 1") << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << qsizetype(4);
-    QTest::newRow("ARGB32, 64x64x64, 1") << Texture::Format::ARGB32 << 64 << 64 << 64 << 1 << qsizetype(1048576);
-    QTest::newRow("ARGB32, 100x100x100, 1") << Texture::Format::ARGB32 << 100 << 100 << 100 << 1 << qsizetype(4000000);
+    // 1D texture
+    QTest::newRow("ARGB32, 1x1x1, levels=1, layers=1")
+            << Texture::Type::Texture1D << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << 1 << qsizetype(4);
+    QTest::newRow("ARGB32, 64x1x1, levels=1, layers=1")
+            << Texture::Type::Texture1D << Texture::Format::ARGB32 << 64 << 1 << 1 << 1 << 1 << qsizetype(256);
+    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=1")
+            << Texture::Type::Texture1D << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 1 << qsizetype(400);
+    // 1D texture array
+    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=1")
+            << Texture::Type::Texture1DArray << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 1 << qsizetype(400);
+    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=8")
+            << Texture::Type::Texture1DArray << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 8 << qsizetype(3200);
+    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=10")
+            << Texture::Type::Texture1DArray << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 10 << qsizetype(4000);
+    // 2D texture
+    QTest::newRow("ARGB32, 1x1x1, levels=1, layers=1")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << 1 << qsizetype(4);
+    QTest::newRow("ARGB32, 64x64x1, levels=1, layers=1")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32 << 64 << 64 << 1 << 1 << 1 << qsizetype(16384);
+    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=1")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 1 << qsizetype(40000);
+    // 2D array
+    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=1")
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 1 << qsizetype(40000);
+    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=8")
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 8 << qsizetype(320000);
+    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=10")
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 10 << qsizetype(400000);
+    // 3D texture
+    QTest::newRow("ARGB32, 64x64x64, levels=1, layers=1")
+            << Texture::Type::Texture3D << Texture::Format::ARGB32 << 64 << 64 << 64 << 1 << 1 << qsizetype(1048576);
+    QTest::newRow("ARGB32, 100x100x100, levels=1, layers=1")
+            << Texture::Type::Texture3D << Texture::Format::ARGB32 << 100 << 100 << 100 << 1 << 1 << qsizetype(4000000);
 }
 
-void TestTexture::construct3D()
+void TestTexture::construct()
 {
+    QFETCH(Texture::Type, type);
     QFETCH(Texture::Format, format);
     QFETCH(int, width);
     QFETCH(int, height);
     QFETCH(int, depth);
+    QFETCH(int, layers);
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    auto texture = Texture::create3DTexture(format, width, height, depth);
+    Texture texture;
+
+    switch (type) {
+    case Texture::Type::Texture1D:
+        texture = Texture::create1DTexture(format, width);
+        break;
+    case Texture::Type::Texture1DArray:
+        texture = Texture::create1DTextureArray(format, width, layers);
+        break;
+    case Texture::Type::Texture2D:
+        texture = Texture::create2DTexture(format, width, height);
+        break;
+    case Texture::Type::Texture2DArray:
+        texture = Texture::create2DTextureArray(format, width, height, layers);
+        break;
+    case Texture::Type::Texture3D:
+        texture = Texture::create3DTexture(format, width, height, depth);
+        break;
+    default:
+        QVERIFY(false);
+        break;
+    }
+
     QCOMPARE(texture.isNull(), false);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
     QCOMPARE(texture.height(), height);
     QCOMPARE(texture.depth(), depth);
-    QCOMPARE(texture.layers(), 1);
+    QCOMPARE(texture.layers(), layers);
     QCOMPARE(texture.levels(), levels);
     QCOMPARE(texture.bytes(), bytes);
 }
