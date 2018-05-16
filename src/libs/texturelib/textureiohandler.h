@@ -5,6 +5,8 @@
 #include <TextureLib/Texture>
 #include <QtCore/QMimeType>
 
+#include <memory>
+
 class TEXTURELIB_EXPORT TextureIOHandler
 {
     Q_DISABLE_COPY(TextureIOHandler)

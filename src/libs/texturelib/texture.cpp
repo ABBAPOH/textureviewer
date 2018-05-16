@@ -1,5 +1,7 @@
 #include "texture_p.h"
 
+#include <memory>
+
 static inline bool isCubeMap(Texture::Type type)
 {
     return type == Texture::Type::TextureCubeMap || type == Texture::Type::TextureCubeMapArray;
