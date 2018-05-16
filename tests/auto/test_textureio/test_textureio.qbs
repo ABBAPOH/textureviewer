@@ -6,5 +6,5 @@ AutoTest {
 
     cpp.defines: base.concat(["QT_STATICPLUGIN=1"])
 
-    files: [ "*.cpp", "*.h" ]
+    files: [ "*.cpp", "*.h", "*.json" ]
 }
