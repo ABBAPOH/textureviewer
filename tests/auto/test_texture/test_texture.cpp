@@ -61,7 +61,7 @@ void TestTexture::construct1D()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    auto texture = Texture::create1DTexture(width, format);
+    auto texture = Texture::create1DTexture(format, width);
     QCOMPARE(texture.isNull(), false);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
@@ -93,7 +93,7 @@ void TestTexture::construct1DArray()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    auto texture = Texture::create1DTextureArray(width, layers, format);
+    auto texture = Texture::create1DTextureArray(format, width, layers);
     QCOMPARE(texture.isNull(), false);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
@@ -125,7 +125,7 @@ void TestTexture::construct2D()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    auto texture = Texture::create2DTexture(width, height, format);
+    auto texture = Texture::create2DTexture(format, width, height);
     QCOMPARE(texture.isNull(), false);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
@@ -159,7 +159,7 @@ void TestTexture::construct2DArray()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    auto texture = Texture::create2DTextureArray(width, height, layers, format);
+    auto texture = Texture::create2DTextureArray(format, width, height, layers);
     QCOMPARE(texture.isNull(), false);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);
@@ -193,7 +193,7 @@ void TestTexture::construct3D()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    auto texture = Texture::create3DTexture(width, height, depth, format);
+    auto texture = Texture::create3DTexture(format, width, height, depth);
     QCOMPARE(texture.isNull(), false);
     QCOMPARE(texture.format(), format);
     QCOMPARE(texture.width(), width);

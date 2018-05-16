@@ -52,13 +52,13 @@ public:
     };
 
     // TODO: add overloads with levels before format? Upd: no levels yet:)
-    static Texture create1DTexture(int width, Format format);
-    static Texture create1DTextureArray(int width, int layers, Format format);
-    static Texture create2DTexture(int width, int height, Format format);
-    static Texture create2DTextureArray(int width, int height, int layers, Format format);
-    static Texture create3DTexture(int width, int height, int depth, Format format);
-    static Texture createCubeMapTexture(int size, Format format);
-    static Texture createCubeMapTextureArray(int size, int layers, Format format);
+    static Texture create1DTexture(Format format, int width);
+    static Texture create1DTextureArray(Format format, int width, int layers);
+    static Texture create2DTexture(Format format, int width, int height);
+    static Texture create2DTextureArray(Format format, int width, int height, int layers);
+    static Texture create3DTexture(Format format, int width, int height, int depth);
+    static Texture createCubeMapTexture(Format format, int size);
+    static Texture createCubeMapTextureArray(Format format, int size, int layers);
 
     bool isNull() const;
     Type type() const;

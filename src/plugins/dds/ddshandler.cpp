@@ -474,7 +474,7 @@ bool DDSHandler::read(Texture &texture)
             qWarning() << "Only A8R8G8B8 is supported";
             return false;
         }
-        result = Texture::create2DTexture(int(m_header.width), int(m_header.height), Texture::Format::ARGB32);
+        result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height));
     }
 
     if (result.isNull()) {

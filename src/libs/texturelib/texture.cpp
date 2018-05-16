@@ -110,38 +110,38 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create1DTexture(int width, Format format)
+Texture Texture::create1DTexture(Format format, int width)
 {
     return Texture(TextureData::create(width, 1, 1, 1, 1, Type::Texture1D, format));
 }
 
-Texture Texture::create1DTextureArray(int width, int layers, Format format)
+Texture Texture::create1DTextureArray(Format format, int width, int layers)
 {
     return Texture(TextureData::create(width, 1, 1, layers, 1, Type::Texture1DArray, format));
 }
 
-Texture Texture::create2DTexture(int width, int height, Format format)
+Texture Texture::create2DTexture(Format format, int width, int height)
 {
     return Texture(TextureData::create(width, height, 1, 1, 1, Type::Texture2D, format));
 }
 
 Texture Texture::create2DTextureArray(
-        int width, int height, int layers, Format format)
+        Format format, int width, int height, int layers)
 {
     return Texture(TextureData::create(width, height, 1, layers, 1, Type::Texture2DArray, format));
 }
 
-Texture Texture::create3DTexture(int width, int height, int depth, Format format)
+Texture Texture::create3DTexture(Format format, int width, int height, int depth)
 {
     return Texture(TextureData::create(width, height, depth, 1, 1, Type::Texture3D, format));
 }
 
-Texture Texture::createCubeMapTexture(int size, Texture::Format format)
+Texture Texture::createCubeMapTexture(Texture::Format format, int size)
 {
     return Texture(TextureData::create(size, size, 1, 1, 1, Type::TextureCubeMap, format));
 }
 
-Texture Texture::createCubeMapTextureArray(int size, int layers, Texture::Format format)
+Texture Texture::createCubeMapTextureArray(Texture::Format format, int size, int layers)
 {
     return Texture(TextureData::create(size, size, 1, 1, layers, Type::TextureCubeMapArray, format));
 }

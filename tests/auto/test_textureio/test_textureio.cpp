@@ -70,7 +70,7 @@ void TestTextureIO::read_data()
 
 static QByteArray generateData(int width, int height, Texture::Format format)
 {
-    Texture texture = Texture::create2DTexture(width, height, format);
+    Texture texture = Texture::create2DTexture(format, width, height);
 
     if (texture.isNull())
         return QByteArray();
@@ -91,7 +91,7 @@ static Texture createTexture(
 
     switch (type) {
     case Texture::Type::Texture2D:
-        result = Texture::create2DTexture(width, height, format);
+        result = Texture::create2DTexture(format, width, height);
         break;
     default:
         return result;
@@ -161,7 +161,7 @@ void TestTextureIO::write()
 
     switch (type) {
     case Texture::Type::Texture2D:
-        expectedTexture = Texture::create2DTexture(width, height, format);
+        expectedTexture = Texture::create2DTexture(format, width, height);
     default:
         break;
     }
