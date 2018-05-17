@@ -67,8 +67,11 @@ public:
     // ok, opengl does not support really huge textures, so int will be enough
     // (although they use uint32 for sizes)
     int width() const;
+    int width(int level) const;
     int height() const;
+    int height(int level) const;
     int depth() const;
+    int depth(int level) const;
     int levels() const; // for now, levels are not supported, requires a bit more math
     int layers() const;
 

@@ -168,14 +168,38 @@ int Texture::width() const
     return d ? d->width : 0;
 }
 
+int Texture::width(int level) const
+{
+    if (!d)
+        return 0;
+    Q_ASSERT(level >= 0 && level < d->levels);
+    return std::max(d->width >> level, 1);
+}
+
 int Texture::height() const
 {
     return d ? d->height : 0;
 }
 
+int Texture::height(int level) const
+{
+    if (!d)
+        return 0;
+    Q_ASSERT(level >= 0 && level < d->levels);
+    return std::max(d->height >> level, 1);
+}
+
 int Texture::depth() const
 {
     return d ? d->depth : 0;
+}
+
+int Texture::depth(int level) const
+{
+    if (!d)
+        return 0;
+    Q_ASSERT(level >= 0 && level < d->levels);
+    return std::max(d->depth >> level, 1);
 }
 
 int Texture::levels() const
