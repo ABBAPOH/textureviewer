@@ -143,7 +143,7 @@ Texture Texture::createCubeMapTexture(Texture::Format format, int size)
 
 Texture Texture::createCubeMapTextureArray(Texture::Format format, int size, int layers)
 {
-    return Texture(TextureData::create(size, size, 1, 1, layers, Type::TextureCubeMapArray, format));
+    return Texture(TextureData::create(size, size, 1, layers, 1, Type::TextureCubeMapArray, format));
 }
 
 bool Texture::isNull() const
