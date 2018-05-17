@@ -226,6 +226,31 @@ const uchar *Texture::data(int layer) const
     return d ? d->data + bytesPerImage() * layer : nullptr;
 }
 
+uchar *Texture::data(Texture::Side side, int layer)
+{
+    if (!d)
+        return nullptr;
+    if (d->type != Type::TextureCubeMap || d->type != Type::TextureCubeMapArray)
+        return nullptr;
+    detach();
+
+    // In case detach ran out of memory...
+    if (!d)
+        return nullptr;
+
+    return d->data + bytesPerImage() * layer * int(side);
+}
+
+const uchar *Texture::data(Texture::Side side, int layer) const
+{
+    if (!d)
+        return nullptr;
+    if (d->type != Type::TextureCubeMap || d->type != Type::TextureCubeMapArray)
+        return nullptr;
+
+    return d->data + bytesPerImage() * layer * int(side);
+}
+
 uchar *Texture::scanLine(int y, int z)
 {
     if (!d)

@@ -82,6 +82,11 @@ public:
     inline const uchar *constData(int layer = 0) const
     { return data(layer); }
 
+    uchar *data(Side side, int layer = 0);
+    const uchar *data(Side side, int layer = 0) const;
+    inline const uchar *constData(Side side, int layer = 0) const
+    { return data(side, layer); }
+
     uchar *scanLine(int y, int z = 0);
     const uchar *scanLine(int y, int z = 0) const;
     inline const uchar *constScanLine(int y, int z = 0) const
