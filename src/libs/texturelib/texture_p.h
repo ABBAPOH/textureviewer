@@ -13,12 +13,11 @@ public:
     TextureData &operator=(const TextureData &) = delete;
     TextureData &operator=(TextureData &&) = delete;
 
-    static TextureData *create(int width,
+    static TextureData *create(Texture::Type type,
+            Texture::Format format, int width,
             int height,
             int depth, int layers,
-            int levels,
-            Texture::Type type,
-            Texture::Format format);
+            int levels);
 
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};

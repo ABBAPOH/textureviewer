@@ -13,13 +13,13 @@ TextureData::~TextureData()
 }
 
 TextureData *TextureData::create(
+        Texture::Type type,
+        Texture::Format format,
         int width,
         int height,
         int depth,
         int layers,
-        int levels,
-        Texture::Type type,
-        Texture::Format format)
+        int levels)
 {
     std::unique_ptr<TextureData> data;
 
@@ -112,38 +112,38 @@ bool Texture::isDetached() const
 
 Texture Texture::create1DTexture(Format format, int width)
 {
-    return Texture(TextureData::create(width, 1, 1, 1, 1, Type::Texture1D, format));
+    return Texture(TextureData::create(Type::Texture1D, format, width, 1, 1, 1, 1));
 }
 
 Texture Texture::create1DTextureArray(Format format, int width, int layers)
 {
-    return Texture(TextureData::create(width, 1, 1, layers, 1, Type::Texture1DArray, format));
+    return Texture(TextureData::create(Type::Texture1DArray, format, width, 1, 1, layers, 1));
 }
 
 Texture Texture::create2DTexture(Format format, int width, int height)
 {
-    return Texture(TextureData::create(width, height, 1, 1, 1, Type::Texture2D, format));
+    return Texture(TextureData::create(Type::Texture2D, format, width, height, 1, 1, 1));
 }
 
 Texture Texture::create2DTextureArray(
         Format format, int width, int height, int layers)
 {
-    return Texture(TextureData::create(width, height, 1, layers, 1, Type::Texture2DArray, format));
+    return Texture(TextureData::create(Type::Texture2DArray, format, width, height, 1, layers, 1));
 }
 
 Texture Texture::create3DTexture(Format format, int width, int height, int depth)
 {
-    return Texture(TextureData::create(width, height, depth, 1, 1, Type::Texture3D, format));
+    return Texture(TextureData::create(Type::Texture3D, format, width, height, depth, 1, 1));
 }
 
 Texture Texture::createCubeMapTexture(Texture::Format format, int size)
 {
-    return Texture(TextureData::create(size, size, 1, 1, 1, Type::TextureCubeMap, format));
+    return Texture(TextureData::create(Type::TextureCubeMap, format, size, size, 1, 1, 1));
 }
 
 Texture Texture::createCubeMapTextureArray(Texture::Format format, int size, int layers)
 {
-    return Texture(TextureData::create(size, size, 1, layers, 1, Type::TextureCubeMapArray, format));
+    return Texture(TextureData::create(Type::TextureCubeMapArray, format, size, size, 1, layers, 1));
 }
 
 bool Texture::isNull() const
@@ -258,7 +258,7 @@ const uchar *Texture::scanLine(int y, int z) const
 Texture Texture::copy() const
 {
     Texture result(TextureData::create(
-                       d->width, d->height, d->depth, d->layers, d->levels, d->type, d->format));
+                       d->type, d->format, d->width, d->height, d->depth, d->layers, d->levels));
     if (result.isNull())
         return result;
 
@@ -343,13 +343,13 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
             >> data;
     if (stream.status() == QDataStream::Ok) {
         auto result = Texture(TextureData::create(
-                              int(width),
-                              int(height),
-                              int(depth),
-                              int(layers),
-                              int(levels),
-                              Texture::Type(type),
-                              Texture::Format(format)));
+                                  Texture::Type(type),
+                                  Texture::Format(format),
+                                  int(width),
+                                  int(height),
+                                  int(depth),
+                                  int(layers),
+                                  int(levels)));
         if (result.bytes() == data.size()) {
             memmove(result.data(), data.data(), size_t(data.size()));
             texture = result;
