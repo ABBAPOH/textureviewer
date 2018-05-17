@@ -9,6 +9,8 @@ private slots:
 
     void construct_data();
     void construct();
+    void constructCubemap_data();
+    void constructCubemap();
 };
 
 void TestTexture::defaultConstructed()
@@ -121,6 +123,51 @@ void TestTexture::construct()
     QCOMPARE(texture.width(), width);
     QCOMPARE(texture.height(), height);
     QCOMPARE(texture.depth(), depth);
+    QCOMPARE(texture.layers(), layers);
+    QCOMPARE(texture.levels(), levels);
+    QCOMPARE(texture.bytes(), bytes);
+}
+
+void TestTexture::constructCubemap_data()
+{
+    QTest::addColumn<Texture::Type>("type");
+    QTest::addColumn<Texture::Format>("format");
+    QTest::addColumn<int>("size");
+    QTest::addColumn<int>("levels");
+    QTest::addColumn<int>("layers");
+    QTest::addColumn<qsizetype>("bytes");
+
+    // CubeMap
+    QTest::newRow("ARGB32, size=1, levels=1, layers=1")
+            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 1 << 1 << 1 << qsizetype(24);
+    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
+            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 64 << 1 << 1 << qsizetype(98304);
+    // CubeMap Array
+    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
+            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 1 << 1 << qsizetype(98304);
+    QTest::newRow("ARGB32, size=64, levels=1, layers=8")
+            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 1 << 8 << qsizetype(786432);
+}
+
+void TestTexture::constructCubemap()
+{
+    QFETCH(Texture::Type, type);
+    QFETCH(Texture::Format, format);
+    QFETCH(int, size);
+    QFETCH(int, layers);
+    QFETCH(int, levels);
+    QFETCH(qsizetype, bytes);
+
+    const auto texture = (type == Texture::Type::TextureCubeMap)
+            ? Texture::createCubeMapTexture(format, size)
+            : Texture::createCubeMapTextureArray(format, size, layers);
+
+    QVERIFY(!texture.isNull());
+    QCOMPARE(texture.type(), type);
+    QCOMPARE(texture.format(), format);
+    QCOMPARE(texture.width(), size);
+    QCOMPARE(texture.height(), size);
+    QCOMPARE(texture.depth(), 1);
     QCOMPARE(texture.layers(), layers);
     QCOMPARE(texture.levels(), levels);
     QCOMPARE(texture.bytes(), bytes);
