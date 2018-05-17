@@ -278,7 +278,7 @@ const uchar *Texture::scanLine(int y, int z) const
 }
 
 /*!
-    Performs a deep-copying of this image
+    Performs a deep-copying of this texture
 */
 Texture Texture::copy() const
 {
