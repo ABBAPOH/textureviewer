@@ -19,6 +19,10 @@ public:
             int depth, int layers,
             int levels);
 
+    int getWidth(int level) const;
+    int getHeight(int level) const;
+    int getDepth(int level) const;
+
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};
     Texture::Format format {Texture::Format::Invalid};

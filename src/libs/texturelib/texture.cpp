@@ -1,5 +1,6 @@
 #include "texture_p.h"
 
+#include <QtCore/QDebug>
 #include <memory>
 
 static inline bool isCubeMap(Texture::Type type)
@@ -64,6 +65,33 @@ TextureData *TextureData::create(
         return nullptr;
 
     return data.release();
+}
+
+int TextureData::getWidth(int level) const
+{
+    if (level < 0 || level >= levels) {
+        qWarning() << Q_FUNC_INFO << "was called with invalid level" << level;
+        return 0;
+    }
+    return std::max(width >> level, 1);
+}
+
+int TextureData::getHeight(int level) const
+{
+    if (level < 0 || level >= levels) {
+        qWarning() << Q_FUNC_INFO << "was called with invalid level" << level;
+        return 0;
+    }
+    return std::max(height >> level, 1);
+}
+
+int TextureData::getDepth(int level) const
+{
+    if (level < 0 || level >= levels) {
+        qWarning() << Q_FUNC_INFO << "was called with invalid level" << level;
+        return 0;
+    }
+    return std::max(depth >> level, 1);
 }
 
 Texture::Texture()
@@ -170,10 +198,7 @@ int Texture::width() const
 
 int Texture::width(int level) const
 {
-    if (!d)
-        return 0;
-    Q_ASSERT(level >= 0 && level < d->levels);
-    return std::max(d->width >> level, 1);
+    return d ? d->getWidth(level) : 0;
 }
 
 int Texture::height() const
@@ -183,10 +208,7 @@ int Texture::height() const
 
 int Texture::height(int level) const
 {
-    if (!d)
-        return 0;
-    Q_ASSERT(level >= 0 && level < d->levels);
-    return std::max(d->height >> level, 1);
+    return d ? d->getHeight(level) : 0;
 }
 
 int Texture::depth() const
@@ -196,10 +218,7 @@ int Texture::depth() const
 
 int Texture::depth(int level) const
 {
-    if (!d)
-        return 0;
-    Q_ASSERT(level >= 0 && level < d->levels);
-    return std::max(d->depth >> level, 1);
+    return d ? d->getDepth(level) : 0;
 }
 
 int Texture::levels() const
