@@ -101,13 +101,13 @@ void TestTexture::construct()
         texture = Texture::create1DTexture(format, width);
         break;
     case Texture::Type::Texture1DArray:
-        texture = Texture::create1DTextureArray(format, width, layers);
+        texture = Texture::create1DTexture(format, width, layers);
         break;
     case Texture::Type::Texture2D:
         texture = Texture::create2DTexture(format, width, height);
         break;
     case Texture::Type::Texture2DArray:
-        texture = Texture::create2DTextureArray(format, width, height, layers);
+        texture = Texture::create2DTexture(format, width, height, layers);
         break;
     case Texture::Type::Texture3D:
         texture = Texture::create3DTexture(format, width, height, depth);
@@ -160,7 +160,7 @@ void TestTexture::constructCubemap()
 
     const auto texture = (type == Texture::Type::TextureCubeMap)
             ? Texture::createCubeMapTexture(format, size)
-            : Texture::createCubeMapTextureArray(format, size, layers);
+            : Texture::createCubeMapTexture(format, size, layers);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.type(), type);
