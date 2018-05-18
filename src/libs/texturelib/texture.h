@@ -51,14 +51,23 @@ public:
         NegativeZ = 5,
     };
 
-    // TODO: add overloads with levels before format? Upd: no levels yet:)
     static Texture create1DTexture(Format format, int width);
+    static Texture create1DTexture(int levels, Format format, int width);
     static Texture create1DTextureArray(Format format, int width, int layers);
+    static Texture create1DTextureArray(int levels, Format format, int width, int layers);
+
     static Texture create2DTexture(Format format, int width, int height);
+    static Texture create2DTexture(int levels, Format format, int width, int height);
     static Texture create2DTextureArray(Format format, int width, int height, int layers);
+    static Texture create2DTextureArray(int levels, Format format, int width, int height, int layers);
+
     static Texture create3DTexture(Format format, int width, int height, int depth);
+    static Texture create3DTexture(int levels, Format format, int width, int height, int depth);
+
     static Texture createCubeMapTexture(Format format, int size);
+    static Texture createCubeMapTexture(int levels, Format format, int size);
     static Texture createCubeMapTextureArray(Format format, int size, int layers);
+    static Texture createCubeMapTextureArray(int levels, Format format, int size, int layers);
 
     bool isNull() const;
     Type type() const;

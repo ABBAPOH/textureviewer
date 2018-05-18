@@ -143,14 +143,29 @@ Texture Texture::create1DTexture(Format format, int width)
     return Texture(TextureData::create(Type::Texture1D, format, width, 1, 1, 1, 1));
 }
 
+Texture Texture::create1DTexture(int levels, Texture::Format format, int width)
+{
+    return Texture(TextureData::create(Type::Texture1D, format, width, 1, 1, 1, levels));
+}
+
 Texture Texture::create1DTextureArray(Format format, int width, int layers)
 {
     return Texture(TextureData::create(Type::Texture1DArray, format, width, 1, 1, layers, 1));
 }
 
+Texture Texture::create1DTextureArray(int levels, Texture::Format format, int width, int layers)
+{
+    return Texture(TextureData::create(Type::Texture1DArray, format, width, 1, 1, layers, levels));
+}
+
 Texture Texture::create2DTexture(Format format, int width, int height)
 {
     return Texture(TextureData::create(Type::Texture2D, format, width, height, 1, 1, 1));
+}
+
+Texture Texture::create2DTexture(int levels, Format format, int width, int height)
+{
+    return Texture(TextureData::create(Type::Texture2D, format, width, height, 1, 1, levels));
 }
 
 Texture Texture::create2DTextureArray(
@@ -159,9 +174,22 @@ Texture Texture::create2DTextureArray(
     return Texture(TextureData::create(Type::Texture2DArray, format, width, height, 1, layers, 1));
 }
 
+Texture Texture::create2DTextureArray(
+        int levels, Texture::Format format, int width, int height, int layers)
+{
+    return Texture(TextureData::create(
+                       Type::Texture2DArray, format, width, height, 1, layers, levels));
+}
+
 Texture Texture::create3DTexture(Format format, int width, int height, int depth)
 {
     return Texture(TextureData::create(Type::Texture3D, format, width, height, depth, 1, 1));
+}
+
+Texture Texture::create3DTexture(
+        int levels, Texture::Format format, int width, int height, int depth)
+{
+    return Texture(TextureData::create(Type::Texture3D, format, width, height, depth, 1, levels));
 }
 
 Texture Texture::createCubeMapTexture(Texture::Format format, int size)
@@ -169,9 +197,21 @@ Texture Texture::createCubeMapTexture(Texture::Format format, int size)
     return Texture(TextureData::create(Type::TextureCubeMap, format, size, size, 1, 1, 1));
 }
 
+Texture Texture::createCubeMapTexture(int levels, Texture::Format format, int size)
+{
+    return Texture(TextureData::create(Type::TextureCubeMap, format, size, size, 1, 1, levels));
+}
+
 Texture Texture::createCubeMapTextureArray(Texture::Format format, int size, int layers)
 {
-    return Texture(TextureData::create(Type::TextureCubeMapArray, format, size, size, 1, layers, 1));
+    return Texture(TextureData::create(
+                       Type::TextureCubeMapArray, format, size, size, 1, layers, 1));
+}
+
+Texture Texture::createCubeMapTextureArray(int levels, Texture::Format format, int size, int layers)
+{
+    return Texture(TextureData::create(
+                       Type::TextureCubeMapArray, format, size, size, 1, layers, levels));
 }
 
 bool Texture::isNull() const
