@@ -83,25 +83,14 @@ public:
     qsizetype bytesPerLine() const;
     qsizetype bytesPerImage() const;
 
-    inline uchar *data(int level = 0) { return dataImpl(0, 0, level); }
-    inline uchar *data(Side side, int level = 0) { return dataImpl(int(side), 0, level); }
-    inline uchar *layerData(int layer, int level = 0) { return dataImpl(0, layer, level); }
-    inline uchar *layerData(int layer, Side side, int level = 0)
-    { return dataImpl(int(side), layer, level); }
+    inline uchar *data(int level = 0, int layer = 0) { return dataImpl(0, level, layer); }
+    inline uchar *data(Side side, int level = 0, int layer = 0) { return dataImpl(int(side), level, layer); }
 
-    inline uchar *data(int level = 0) const { return dataImpl(0, 0, level); }
-    inline uchar *data(Side side, int level = 0) const { return dataImpl(int(side), 0, level); }
-    inline uchar *layerData(int layer, int level = 0) const { return dataImpl(0, layer, level); }
-    inline uchar *layerData(int layer, Side side, int level = 0) const
-    { return dataImpl(int(side), layer, level); }
+    inline uchar *data(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
+    inline uchar *data(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
 
-    inline uchar *constData(int level = 0) const { return dataImpl(0, 0, level); }
-    inline uchar *constData(Side side, int level = 0) const
-    { return dataImpl(int(side), 0, level); }
-    inline uchar *constLayerData(int layer, int level = 0) const
-    { return dataImpl(0, layer, level); }
-    inline uchar *constLayerData(int layer, Side side, int level = 0) const
-    { return dataImpl(int(side), layer, level); }
+    inline uchar *constData(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
+    inline uchar *constData(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
 
     uchar *scanLine(int y, int z = 0);
     const uchar *scanLine(int y, int z = 0) const;
@@ -114,7 +103,7 @@ private:
     explicit Texture(TextureData *dd);
 
     uchar *dataImpl(int side, int layer, int level);
-    uchar *dataImpl(int side, int layer, int level) const;
+    uchar *dataImpl(int side, int level, int layer) const;
 
     TextureData *d {nullptr};
 

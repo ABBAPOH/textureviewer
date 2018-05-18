@@ -334,7 +334,7 @@ uchar *Texture::dataImpl(int side, int layer, int level)
     return d->data + bytesPerImage() * layer * side;
 }
 
-uchar *Texture::dataImpl(int side, int layer, int level) const
+uchar *Texture::dataImpl(int side, int level, int layer) const
 {
     Q_UNUSED(level);
     Q_ASSERT(!level);
