@@ -55,17 +55,10 @@ public:
 
     using Point3D = std::tuple<int, int, int>;
 
-    static Texture create1DTexture(Format format, int width, int layers = -1);
-    static Texture create1DTexture(int levels, Format format, int width, int layers = -1);
-
-    static Texture create2DTexture(Format format, int width, int height, int layers = -1);
-    static Texture create2DTexture(int levels, Format format, int width, int height, int layers = -1);
-
-    static Texture create3DTexture(Format format, int width, int height, int depth);
-    static Texture create3DTexture(int levels, Format format, int width, int height, int depth);
-
-    static Texture createCubeMapTexture(Format format, int size, int layers = -1);
-    static Texture createCubeMapTexture(int levels, Format format, int size, int layers = -1);
+    static Texture create1DTexture(Format format, int width, int levels = 1, int layers = -1);
+    static Texture create2DTexture(Format format, int width, int height, int levels = 1, int layers = -1);
+    static Texture create3DTexture(Format format, int width, int height, int depth, int levels = 1);
+    static Texture createCubeMapTexture(Format format, int size, int levels = 1, int layers = -1);
 
     bool isNull() const;
     Type type() const;
