@@ -123,11 +123,6 @@ public:
     inline uchar *constTexelData(Side side, QPoint p, int level = 0, int layer = 0) const
     { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
 
-    uchar *scanLine(int y, int z = 0);
-    const uchar *scanLine(int y, int z = 0) const;
-    inline const uchar *constScanLine(int y, int z = 0) const
-    { return scanLine(y, z); }
-
     Texture copy() const;
 
 private:

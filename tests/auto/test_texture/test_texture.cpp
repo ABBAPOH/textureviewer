@@ -32,9 +32,6 @@ void TestTexture::defaultConstructed()
 
     QCOMPARE(tex.data(), nullptr);
     QCOMPARE(tex.constData(), nullptr);
-
-    QCOMPARE(tex.scanLine(0), nullptr);
-    QCOMPARE(tex.constScanLine(0), nullptr);
 }
 
 void TestTexture::construct_data()

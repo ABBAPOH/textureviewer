@@ -268,32 +268,6 @@ qsizetype Texture::bytesPerImage() const
     return d ? d->bytesPerLine * d->height * d->depth * d->faces : 0;
 }
 
-uchar *Texture::scanLine(int y, int z)
-{
-    if (!d)
-        return nullptr;
-
-    detach();
-
-    // In case detach() ran out of memory
-    if (!d)
-        return nullptr;
-
-    Q_ASSERT(y >= 0 && y < height());
-    Q_ASSERT(z >= 0 && (z < depth() || z < layers()));
-    return d->data + y * d->bytesPerLine;
-}
-
-const uchar *Texture::scanLine(int y, int z) const
-{
-    if (!d)
-        return nullptr;
-
-    Q_ASSERT(y >= 0 && y < height());
-    Q_ASSERT(z >= 0 && (z < depth() || z < layers()));
-    return d->data + z * y * d->bytesPerLine;
-}
-
 /*!
     Performs a deep-copying of this texture
 */
@@ -304,12 +278,8 @@ Texture Texture::copy() const
     if (result.isNull())
         return result;
 
-    if (result.d->nbytes != d->nbytes) {
-        const auto bpl = qMin(bytesPerLine(), result.bytesPerLine());
-        for (int i = 0; i < height(); i++)
-            memcpy(result.scanLine(i), scanLine(i), size_t(bpl));
-    } else
-        memcpy(result.data(), data(), size_t(d->nbytes));
+    Q_ASSERT(result.d->nbytes == d->nbytes);
+    memcpy(result.data(), data(), size_t(d->nbytes));
 
     return result;
 }
