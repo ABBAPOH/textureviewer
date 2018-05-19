@@ -341,6 +341,18 @@ uchar *Texture::dataImpl(int side, int level, int layer) const
     return d ? d->data + bytesPerImage() * layer * side : nullptr;
 }
 
+uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer)
+{
+    Q_UNREACHABLE();
+    return nullptr;
+}
+
+uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
+{
+    Q_UNREACHABLE();
+    return nullptr;
+}
+
 bool operator==(const Texture &lhs, const Texture &rhs)
 {
     // same object, or shared?

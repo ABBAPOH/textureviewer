@@ -6,6 +6,8 @@
 #include <QtCore/QDataStream>
 #include <QtGui/QImage>
 
+#include <tuple>
+
 class TextureData;
 
 class TEXTURELIB_EXPORT Texture
@@ -51,6 +53,8 @@ public:
         NegativeZ = 5,
     };
 
+    using Point3D = std::tuple<int, int, int>;
+
     static Texture create1DTexture(Format format, int width, int layers = -1);
     static Texture create1DTexture(int levels, Format format, int width, int layers = -1);
 
@@ -92,6 +96,33 @@ public:
     inline uchar *constData(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
     inline uchar *constData(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
 
+    inline uchar *texelData(int x, int level = 0, int layer = 0)
+    { return texelDataImpl(0, x, 0, 0, level, layer); }
+    inline uchar *texelData(QPoint p, int level = 0, int layer = 0)
+    { return texelDataImpl(0, p.x(), p.y(), 0, level, layer); }
+    inline uchar *texelData(Point3D p, int level = 0, int layer = 0)
+    { return texelDataImpl(0, std::get<0>(p), std::get<1>(p), std::get<2>(p), level, layer); }
+    inline uchar *texelData(Side side, QPoint p, int level = 0, int layer = 0)
+    { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
+
+    inline uchar *texelData(int x, int level = 0, int layer = 0) const
+    { return texelDataImpl(0, x, 0, 0, level, layer); }
+    inline uchar *texelData(QPoint p, int level = 0, int layer = 0) const
+    { return texelDataImpl(0, p.x(), p.y(), 0, level, layer); }
+    inline uchar *texelData(Point3D p, int level = 0, int layer = 0) const
+    { return texelDataImpl(0, std::get<0>(p), std::get<1>(p), std::get<2>(p), level, layer); }
+    inline uchar *texelData(Side side, QPoint p, int level = 0, int layer = 0) const
+    { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
+
+    inline uchar *constTexelData(int x, int level = 0, int layer = 0) const
+    { return texelDataImpl(0, x, 0, 0, level, layer); }
+    inline uchar *constTexelData(QPoint p, int level = 0, int layer = 0) const
+    { return texelDataImpl(0, p.x(), p.y(), 0, level, layer); }
+    inline uchar *constTexelData(Point3D p, int level = 0, int layer = 0) const
+    { return texelDataImpl(0, std::get<0>(p), std::get<1>(p), std::get<2>(p), level, layer); }
+    inline uchar *constTexelData(Side side, QPoint p, int level = 0, int layer = 0) const
+    { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
+
     uchar *scanLine(int y, int z = 0);
     const uchar *scanLine(int y, int z = 0) const;
     inline const uchar *constScanLine(int y, int z = 0) const
@@ -104,6 +135,9 @@ private:
 
     uchar *dataImpl(int side, int layer, int level);
     uchar *dataImpl(int side, int level, int layer) const;
+
+    uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer);
+    uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer) const;
 
     TextureData *d {nullptr};
 
