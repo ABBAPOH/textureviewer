@@ -22,6 +22,8 @@ public:
     int getWidth(int level) const;
     int getHeight(int level) const;
     int getDepth(int level) const;
+    qsizetype bytesPerLine(int level) const;
+    qsizetype bytesPerLevel(int level) const;
 
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};
@@ -33,10 +35,17 @@ public:
     int levels {0};
     int layers {0};
     int bytesPerTexel {0};
-    qsizetype bytesPerLine {0};
+
+    struct LevelInfo
+    {
+        qsizetype offset {0};
+        qsizetype bytesPerLine {0};
+        qsizetype bytes {0};
+    };
+
+    std::vector<LevelInfo> levelInfos;
+
     qsizetype nbytes {0};
-    std::vector<qsizetype> levelOffsets;
-    std::vector<qsizetype> levelBytes;
     uchar *data {nullptr};
 };
 

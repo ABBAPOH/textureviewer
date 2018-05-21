@@ -44,8 +44,7 @@ TextureData *TextureData::create(
         return nullptr;
 
     qsizetype totalBytes = 0;
-    std::vector<qsizetype> levelOffsets;
-    std::vector<qsizetype> levelBytes;
+    std::vector<LevelInfo> levelInfos;
 
     for (int level = 0; level < levels; levels++) {
         auto w = std::max<uint>(uwidth >> level, 1);
@@ -56,10 +55,9 @@ TextureData *TextureData::create(
 
         // TODO: check overflows!!!
         const auto bytesPerLevel = bytesPerLine * h * d * ufaces * ulayers;
-        levelOffsets.push_back(totalBytes);
-        levelBytes.push_back(bytesPerLevel);
+        levelInfos.push_back({totalBytes, bytesPerLine, bytesPerLevel});
 
-        totalBytes += bytesPerImage;
+        totalBytes += bytesPerLevel;
 
         if (w == 1 && h == 1 && d == 1) {
             levels = level + 1;
@@ -80,9 +78,7 @@ TextureData *TextureData::create(
     data->format = format;
     data->type = type;
 
-    data->bytesPerLine = qsizetype(bytesPerLine);
-    data->levelOffsets = std::move(levelOffsets);
-    data->levelBytes = std::move(levelBytes);
+    data->levelInfos = std::move(levelInfos);
 
     data->nbytes = totalBytes;
     data->data = static_cast<uchar *>(malloc(size_t(data->nbytes)));
@@ -118,6 +114,24 @@ int TextureData::getDepth(int level) const
         return 0;
     }
     return std::max(depth >> level, 1);
+}
+
+qsizetype TextureData::bytesPerLine(int level) const
+{
+    if (level < 0 || level >= levels) {
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
+        return 0;
+    }
+    return levelInfos[level].bytesPerLine;
+}
+
+qsizetype TextureData::bytesPerLevel(int level) const
+{
+    if (level < 0 || level >= levels) {
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
+        return 0;
+    }
+    return levelInfos[level].bytes;
 }
 
 Texture::Texture()
@@ -258,14 +272,14 @@ qsizetype Texture::bytesPerTexel() const
     return d ? d->bytesPerTexel : 0;
 }
 
-qsizetype Texture::bytesPerLine() const
+qsizetype Texture::bytesPerLine(int level) const
 {
-    return d ? d->bytesPerLine : 0;
+    return d ? d->bytesPerLine(level) : 0;
 }
 
-qsizetype Texture::bytesPerImage() const
+qsizetype Texture::bytesPerLevel(int level) const
 {
-    return d ? d->bytesPerLine * d->height * d->depth * d->faces : 0;
+    return d ? d->bytesPerLevel(level) : 0;
 }
 
 /*!
@@ -301,14 +315,14 @@ uchar *Texture::dataImpl(int side, int layer, int level)
     if (!d)
         return nullptr;
 
-    return d->data + bytesPerImage() * layer * side;
+    return d->data + bytesPerLevel() * layer * side;
 }
 
 uchar *Texture::dataImpl(int side, int level, int layer) const
 {
     Q_UNUSED(level);
     Q_ASSERT(!level);
-    return d ? d->data + bytesPerImage() * layer * side : nullptr;
+    return d ? d->data + bytesPerLevel() * layer * side : nullptr;
 }
 
 uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer)
