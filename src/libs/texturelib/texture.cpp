@@ -360,7 +360,7 @@ uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int laye
 
     CHECK_POINT(x, y, z, level, nullptr);
 
-    return data + d->bytesPerLine(level) * z * y + x;
+    return data + d->bytesPerLine(level) * z * y + d->bytesPerTexel * x;
 }
 
 const uchar* Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
@@ -374,7 +374,7 @@ const uchar* Texture::texelDataImpl(int side, int x, int y, int z, int level, in
 
     CHECK_POINT(x, y, z, level, nullptr);
 
-    return data + d->bytesPerLine(level) * z * y + x;
+    return data + d->bytesPerLine(level) * z * y + d->bytesPerTexel * x;
 }
 
 bool operator==(const Texture &lhs, const Texture &rhs)
