@@ -43,6 +43,30 @@ TextureData *TextureData::create(
         || std::numeric_limits<qsizetype>::max() / sizeof(uchar *) / uwidth / uheight / udepth / ufaces / ulayers < 1)
         return nullptr;
 
+    qsizetype totalBytes = 0;
+    std::vector<qsizetype> levelOffsets;
+    std::vector<qsizetype> levelBytes;
+
+    for (int level = 0; level < levels; levels++) {
+        auto w = std::max<uint>(uwidth >> level, 1);
+        auto h = std::max<uint>(uheight >> level, 1);
+        auto d = std::max<uint>(udepth >> level, 1);
+
+        const auto bytesPerLine = ((uwidth * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
+
+        // TODO: check overflows!!!
+        const auto bytesPerLevel = bytesPerLine * h * d * ufaces * ulayers;
+        levelOffsets.push_back(totalBytes);
+        levelBytes.push_back(bytesPerLevel);
+
+        totalBytes += bytesPerImage;
+
+        if (w == 1 && h == 1 && d == 1) {
+            levels = level + 1;
+            break;
+        }
+    }
+
     data.reset(new TextureData);
 
     data->ref.ref();
@@ -57,8 +81,10 @@ TextureData *TextureData::create(
     data->type = type;
 
     data->bytesPerLine = qsizetype(bytesPerLine);
+    data->levelOffsets = std::move(levelOffsets);
+    data->levelBytes = std::move(levelBytes);
 
-    data->nbytes = qsizetype(bytesPerLine * uheight * udepth * ufaces * ulayers);
+    data->nbytes = totalBytes;
     data->data = static_cast<uchar *>(malloc(size_t(data->nbytes)));
 
     if (!data->data)

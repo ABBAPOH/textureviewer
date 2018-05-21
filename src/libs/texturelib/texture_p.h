@@ -35,6 +35,8 @@ public:
     int bytesPerTexel {0};
     qsizetype bytesPerLine {0};
     qsizetype nbytes {0};
+    std::vector<qsizetype> levelOffsets;
+    std::vector<qsizetype> levelBytes;
     uchar *data {nullptr};
 };
 
