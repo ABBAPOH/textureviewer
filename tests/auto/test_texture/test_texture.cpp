@@ -191,6 +191,9 @@ void TestTexture::bytesPerLine_data()
     QTest::newRow("ARGB32, 4x4x4, level 0/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 0 << qsizetype(32) << qsizetype(16) << qsizetype(256);
     QTest::newRow("ARGB32, 4x4x4, level 1/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 1 << qsizetype(32) << qsizetype(8) << qsizetype(32);
     QTest::newRow("ARGB32, 4x4x4, level 2/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 2 << qsizetype(32) << qsizetype(4) << qsizetype(4);
+    QTest::newRow("ARGB32, 5x4x4, level 0/3") << Texture::Format::ARGB32 << 5 << 4 << 4 << 3 << 0 << qsizetype(32) << qsizetype(20) << qsizetype(320);
+    QTest::newRow("ARGB32, 5x4x4, level 1/3") << Texture::Format::ARGB32 << 5 << 4 << 4 << 3 << 1 << qsizetype(32) << qsizetype(8) << qsizetype(32);
+    QTest::newRow("ARGB32, 5x4x4, level 2/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 2 << qsizetype(32) << qsizetype(4) << qsizetype(4);
 }
 
 void TestTexture::bytesPerLine()
