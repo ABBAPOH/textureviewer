@@ -23,9 +23,13 @@ public:
     inline int levelHeight(int level) const { return std::max(height >> level, 1); }
     inline int levelDepth(int level) const { return std::max(depth >> level, 1); }
 
-    qsizetype bytesPerLine(int level) const;
-    qsizetype bytesPerImage(int level) const;
-    qsizetype levelOffset(int level) const;
+    inline qsizetype bytesPerLine(int level) const { return levelInfos[level].bytesPerLine; }
+    inline qsizetype bytesPerImage(int level) const
+    {
+        return levelInfos[level].bytesPerLine
+                * levelWidth(level) * levelHeight(level) * levelDepth(level);
+    }
+    inline qsizetype levelOffset(int level) const { return levelInfos[level].offset; }
 
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};

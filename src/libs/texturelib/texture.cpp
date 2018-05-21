@@ -96,33 +96,6 @@ TextureData *TextureData::create(
     return data.release();
 }
 
-qsizetype TextureData::bytesPerLine(int level) const
-{
-    if (level < 0 || level >= levels) {
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
-        return 0;
-    }
-    return levelInfos[level].bytesPerLine;
-}
-
-qsizetype TextureData::bytesPerImage(int level) const
-{
-    if (level < 0 || level >= levels) {
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
-        return 0;
-    }
-    return levelInfos[level].bytesPerLine * levelWidth(level) * levelHeight(level) * levelDepth(level);
-}
-
-qsizetype TextureData::levelOffset(int level) const
-{
-    if (level < 0 || level >= levels) {
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
-        return 0;
-    }
-    return levelInfos[level].offset;
-}
-
 Texture::Texture()
     : d(nullptr)
 {
@@ -278,17 +251,32 @@ qsizetype Texture::bytesPerTexel() const
 
 qsizetype Texture::bytesPerLine(int level) const
 {
-    return d ? d->bytesPerLine(level) : 0;
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->bytesPerLine(level);
 }
 
 qsizetype Texture::bytesPerImage(int level) const
 {
-    return d ? d->bytesPerImage(level) : 0;
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->bytesPerImage(level);
 }
 
 qsizetype Texture::levelOffset(int level) const
 {
-    return d ? d->levelOffset(level) : 0;
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->levelOffset(level);
 }
 
 /*!
@@ -316,6 +304,8 @@ uchar *Texture::dataImpl(int side, int layer, int level)
 {
     if (!d)
         return nullptr;
+
+    CHECK_LEVEL(level, nullptr);
     detach();
 
     // In case detach ran out of memory...
@@ -327,7 +317,12 @@ uchar *Texture::dataImpl(int side, int layer, int level)
 
 uchar *Texture::dataImpl(int side, int level, int layer) const
 {
-    return d ? d->data + d->levelOffset(level) + d->bytesPerImage(level) * layer * side : nullptr;
+    if (!d)
+        return nullptr;
+
+    CHECK_LEVEL(level, nullptr);
+
+    return d->data + d->levelOffset(level) + d->bytesPerImage(level) * layer * side;
 }
 
 uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer)
