@@ -14,7 +14,7 @@ class TextureData;
 class TEXTURELIB_EXPORT Texture
 {
 public:
-    Texture();
+    Texture() noexcept;
     Texture(const Texture &other);
     inline Texture(Texture &&other) noexcept
     { qSwap(d, other.d); }

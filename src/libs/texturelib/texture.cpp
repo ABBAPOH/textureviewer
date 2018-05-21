@@ -115,7 +115,7 @@ TextureData *TextureData::create(
     return data.release();
 }
 
-Texture::Texture()
+Texture::Texture() noexcept
     : d(nullptr)
 {
 
