@@ -118,7 +118,6 @@ TextureData *TextureData::create(
 Texture::Texture() noexcept
     : d(nullptr)
 {
-
 }
 
 Texture::Texture(const Texture &other)
