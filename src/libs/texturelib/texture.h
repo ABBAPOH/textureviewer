@@ -73,7 +73,7 @@ public:
     int height(int level) const;
     int depth() const;
     int depth(int level) const;
-    int levels() const; // for now, levels are not supported, requires a bit more math
+    int levels() const;
     int layers() const;
 
     qsizetype bytes() const;
