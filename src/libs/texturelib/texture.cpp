@@ -337,7 +337,7 @@ uchar *Texture::dataImpl(int side, int level, int layer)
     return d->data + d->levelOffset(level) + d->bytesPerImage(level) * layer * side;
 }
 
-uchar *Texture::dataImpl(int side, int level, int layer) const
+const uchar* Texture::dataImpl(int side, int level, int layer) const
 {
     if (!d)
         return nullptr;
@@ -363,7 +363,7 @@ uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int laye
     return data + d->bytesPerLine(level) * z * y + x;
 }
 
-uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
+const uchar* Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
 {
     if (!d)
         return nullptr;

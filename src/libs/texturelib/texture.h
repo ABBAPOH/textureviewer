@@ -85,11 +85,11 @@ public:
     inline uchar *data(int level = 0, int layer = 0) { return dataImpl(0, level, layer); }
     inline uchar *data(Side side, int level = 0, int layer = 0) { return dataImpl(int(side), level, layer); }
 
-    inline uchar *data(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
-    inline uchar *data(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
+    inline const uchar *data(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
+    inline const uchar *data(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
 
-    inline uchar *constData(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
-    inline uchar *constData(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
+    inline const uchar *constData(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
+    inline const uchar *constData(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
 
     inline uchar *texelData(int x, int level = 0, int layer = 0)
     { return texelDataImpl(0, x, 0, 0, level, layer); }
@@ -100,22 +100,22 @@ public:
     inline uchar *texelData(Side side, QPoint p, int level = 0, int layer = 0)
     { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
 
-    inline uchar *texelData(int x, int level = 0, int layer = 0) const
+    inline const uchar *texelData(int x, int level = 0, int layer = 0) const
     { return texelDataImpl(0, x, 0, 0, level, layer); }
-    inline uchar *texelData(QPoint p, int level = 0, int layer = 0) const
+    inline const uchar *texelData(QPoint p, int level = 0, int layer = 0) const
     { return texelDataImpl(0, p.x(), p.y(), 0, level, layer); }
-    inline uchar *texelData(Point3D p, int level = 0, int layer = 0) const
+    inline const uchar *texelData(Point3D p, int level = 0, int layer = 0) const
     { return texelDataImpl(0, std::get<0>(p), std::get<1>(p), std::get<2>(p), level, layer); }
-    inline uchar *texelData(Side side, QPoint p, int level = 0, int layer = 0) const
+    inline const uchar *texelData(Side side, QPoint p, int level = 0, int layer = 0) const
     { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
 
-    inline uchar *constTexelData(int x, int level = 0, int layer = 0) const
+    inline const uchar *constTexelData(int x, int level = 0, int layer = 0) const
     { return texelDataImpl(0, x, 0, 0, level, layer); }
-    inline uchar *constTexelData(QPoint p, int level = 0, int layer = 0) const
+    inline const uchar *constTexelData(QPoint p, int level = 0, int layer = 0) const
     { return texelDataImpl(0, p.x(), p.y(), 0, level, layer); }
-    inline uchar *constTexelData(Point3D p, int level = 0, int layer = 0) const
+    inline const uchar *constTexelData(Point3D p, int level = 0, int layer = 0) const
     { return texelDataImpl(0, std::get<0>(p), std::get<1>(p), std::get<2>(p), level, layer); }
-    inline uchar *constTexelData(Side side, QPoint p, int level = 0, int layer = 0) const
+    inline const uchar *constTexelData(Side side, QPoint p, int level = 0, int layer = 0) const
     { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
 
     Texture copy() const;
@@ -124,10 +124,10 @@ private:
     explicit Texture(TextureData *dd);
 
     uchar *dataImpl(int side, int level, int layer);
-    uchar *dataImpl(int side, int level, int layer) const;
+    const uchar *dataImpl(int side, int level, int layer) const;
 
     uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer);
-    uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer) const;
+    const uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer) const;
 
     TextureData *d {nullptr};
 
