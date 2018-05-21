@@ -9,6 +9,17 @@
         return 0; \
     } \
 
+#define CHECK_LAYER(layer, rv) \
+    if (layer < 0 || layer >= d->layers) { \
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid layer" << layer; \
+        return 0; \
+    } \
+
+#define CHECK_SIDE(side, rv) \
+    if (side < 0 || side >= d->faces) { \
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid side" << side; \
+        return 0; \
+    } \
 
 static inline bool isCubeMap(Texture::Type type)
 {
@@ -305,7 +316,9 @@ uchar *Texture::dataImpl(int side, int layer, int level)
     if (!d)
         return nullptr;
 
+    CHECK_SIDE(side, nullptr);
     CHECK_LEVEL(level, nullptr);
+    CHECK_LAYER(layer, nullptr);
     detach();
 
     // In case detach ran out of memory...
@@ -320,7 +333,9 @@ uchar *Texture::dataImpl(int side, int level, int layer) const
     if (!d)
         return nullptr;
 
+    CHECK_SIDE(side, nullptr);
     CHECK_LEVEL(level, nullptr);
+    CHECK_LAYER(layer, nullptr);
 
     return d->data + d->levelOffset(level) + d->bytesPerImage(level) * layer * side;
 }
