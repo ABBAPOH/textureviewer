@@ -311,14 +311,14 @@ Texture::Texture(TextureData *dd):
 {
 }
 
-uchar *Texture::dataImpl(int side, int layer, int level)
+uchar *Texture::dataImpl(int side, int level, int layer)
 {
     if (!d)
         return nullptr;
 
     CHECK_SIDE(side, nullptr);
     CHECK_LEVEL(level, nullptr);
-    CHECK_LAYER(layer, nullptr);.
+    CHECK_LAYER(layer, nullptr);
 
     detach();
 

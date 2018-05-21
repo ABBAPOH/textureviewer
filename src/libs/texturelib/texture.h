@@ -123,7 +123,7 @@ public:
 private:
     explicit Texture(TextureData *dd);
 
-    uchar *dataImpl(int side, int layer, int level);
+    uchar *dataImpl(int side, int level, int layer);
     uchar *dataImpl(int side, int level, int layer) const;
 
     uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer);
