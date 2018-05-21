@@ -53,7 +53,7 @@ TextureData *TextureData::create(
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
 
-    for (int level = 0; level < levels; levels++) {
+    for (int level = 0; level < levels; ++level) {
         auto w = std::max<uint>(uwidth >> level, 1);
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
