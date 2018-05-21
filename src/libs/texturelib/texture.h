@@ -77,7 +77,7 @@ public:
     int layers() const;
 
     qsizetype bytes() const;
-    qsizetype bytesPerTexel() const;
+    qsizetype bitsPerTexel() const;
     qsizetype bytesPerLine(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
     qsizetype levelOffset(int level = 0) const;

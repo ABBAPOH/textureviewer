@@ -26,8 +26,7 @@ public:
     inline qsizetype bytesPerLine(int level) const { return levelInfos[level].bytesPerLine; }
     inline qsizetype bytesPerImage(int level) const
     {
-        return levelInfos[level].bytesPerLine
-                * levelWidth(level) * levelHeight(level) * levelDepth(level);
+        return levelInfos[level].bytesPerLine * levelHeight(level) * levelDepth(level);
     }
     inline qsizetype levelOffset(int level) const { return levelInfos[level].offset; }
 
@@ -40,7 +39,7 @@ public:
     int faces {0};
     int levels {0};
     int layers {0};
-    int bytesPerTexel {0};
+    int bitsPerTexel {0};
 
     struct LevelInfo
     {

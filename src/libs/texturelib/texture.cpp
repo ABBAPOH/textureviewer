@@ -77,7 +77,7 @@ TextureData *TextureData::create(
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
 
-        const auto bytesPerLine = ((uwidth * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
+        const auto bytesPerLine = ((w * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
 
         // TODO: check overflows!!!
         const auto bytesPerLevel = bytesPerLine * h * d * ufaces * ulayers;
@@ -100,7 +100,7 @@ TextureData *TextureData::create(
     data->faces = int(ufaces);
     data->levels = levels;
     data->layers = layers;
-    data->bytesPerTexel = int(ubbp);
+    data->bitsPerTexel = int(ubbp);
     data->format = format;
     data->type = type;
 
@@ -263,9 +263,9 @@ qsizetype Texture::bytes() const
     return d ? d->nbytes : 0;
 }
 
-qsizetype Texture::bytesPerTexel() const
+qsizetype Texture::bitsPerTexel() const
 {
-    return d ? d->bytesPerTexel : 0;
+    return d ? d->bitsPerTexel : 0;
 }
 
 qsizetype Texture::bytesPerLine(int level) const
@@ -360,7 +360,7 @@ uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int laye
 
     CHECK_POINT(x, y, z, level, nullptr);
 
-    return data + d->bytesPerLine(level) * z * y + d->bytesPerTexel * x;
+    return data + d->bytesPerLine(level) * z * y + d->bitsPerTexel * x;
 }
 
 const uchar* Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
@@ -374,7 +374,7 @@ const uchar* Texture::texelDataImpl(int side, int x, int y, int z, int level, in
 
     CHECK_POINT(x, y, z, level, nullptr);
 
-    return data + d->bytesPerLine(level) * z * y + d->bytesPerTexel * x;
+    return data + d->bytesPerLine(level) * z * y + d->bitsPerTexel * x;
 }
 
 bool operator==(const Texture &lhs, const Texture &rhs)
