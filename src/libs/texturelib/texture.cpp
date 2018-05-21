@@ -3,6 +3,13 @@
 #include <QtCore/QDebug>
 #include <memory>
 
+#define CHECK_LEVEL(level, rv) \
+    if (level < 0 || level >= d->levels) { \
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level; \
+        return 0; \
+    } \
+
+
 static inline bool isCubeMap(Texture::Type type)
 {
     return type == Texture::Type::TextureCubeMap || type == Texture::Type::TextureCubeMapArray;
@@ -89,33 +96,6 @@ TextureData *TextureData::create(
     return data.release();
 }
 
-int TextureData::getWidth(int level) const
-{
-    if (level < 0 || level >= levels) {
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
-        return 0;
-    }
-    return std::max(width >> level, 1);
-}
-
-int TextureData::getHeight(int level) const
-{
-    if (level < 0 || level >= levels) {
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
-        return 0;
-    }
-    return std::max(height >> level, 1);
-}
-
-int TextureData::getDepth(int level) const
-{
-    if (level < 0 || level >= levels) {
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
-        return 0;
-    }
-    return std::max(depth >> level, 1);
-}
-
 qsizetype TextureData::bytesPerLine(int level) const
 {
     if (level < 0 || level >= levels) {
@@ -131,7 +111,7 @@ qsizetype TextureData::bytesPerImage(int level) const
         qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
         return 0;
     }
-    return levelInfos[level].bytesPerLine * getWidth(level) * getHeight(level) * getDepth(level);
+    return levelInfos[level].bytesPerLine * levelWidth(level) * levelHeight(level) * levelDepth(level);
 }
 
 qsizetype TextureData::levelOffset(int level) const
@@ -238,7 +218,12 @@ int Texture::width() const
 
 int Texture::width(int level) const
 {
-    return d ? d->getWidth(level) : 0;
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->levelWidth(level);
 }
 
 int Texture::height() const
@@ -248,7 +233,12 @@ int Texture::height() const
 
 int Texture::height(int level) const
 {
-    return d ? d->getHeight(level) : 0;
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->levelHeight(level);
 }
 
 int Texture::depth() const
@@ -258,7 +248,12 @@ int Texture::depth() const
 
 int Texture::depth(int level) const
 {
-    return d ? d->getDepth(level) : 0;
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->levelDepth(level);
 }
 
 int Texture::levels() const

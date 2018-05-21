@@ -19,9 +19,10 @@ public:
             int depth, int layers,
             int levels);
 
-    int getWidth(int level) const;
-    int getHeight(int level) const;
-    int getDepth(int level) const;
+    inline int levelWidth(int level) const { return std::max(width >> level, 1); }
+    inline int levelHeight(int level) const { return std::max(height >> level, 1); }
+    inline int levelDepth(int level) const { return std::max(depth >> level, 1); }
+
     qsizetype bytesPerLine(int level) const;
     qsizetype bytesPerImage(int level) const;
     qsizetype levelOffset(int level) const;
