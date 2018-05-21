@@ -70,7 +70,7 @@ TextureData *TextureData::create(
 int TextureData::getWidth(int level) const
 {
     if (level < 0 || level >= levels) {
-        qWarning() << Q_FUNC_INFO << "was called with invalid level" << level;
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
         return 0;
     }
     return std::max(width >> level, 1);
@@ -79,7 +79,7 @@ int TextureData::getWidth(int level) const
 int TextureData::getHeight(int level) const
 {
     if (level < 0 || level >= levels) {
-        qWarning() << Q_FUNC_INFO << "was called with invalid level" << level;
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
         return 0;
     }
     return std::max(height >> level, 1);
@@ -88,7 +88,7 @@ int TextureData::getHeight(int level) const
 int TextureData::getDepth(int level) const
 {
     if (level < 0 || level >= levels) {
-        qWarning() << Q_FUNC_INFO << "was called with invalid level" << level;
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
         return 0;
     }
     return std::max(depth >> level, 1);
@@ -377,3 +377,5 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
     }
     return stream;
 }
+
+Q_LOGGING_CATEGORY(texture, "texturelib.texture")

@@ -3,6 +3,7 @@
 
 #include "texturelib_global.h"
 
+#include <QtCore/QLoggingCategory>
 #include <QtCore/QDataStream>
 #include <QtGui/QImage>
 
@@ -144,5 +145,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture);
 
 Q_DECLARE_METATYPE(Texture::Type)
 Q_DECLARE_METATYPE(Texture::Format)
+
+Q_DECLARE_LOGGING_CATEGORY(texture)
 
 #endif // TEXTURE_H
