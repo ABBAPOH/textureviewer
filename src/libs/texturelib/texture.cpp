@@ -258,7 +258,7 @@ int Texture::depth(int level) const
 
 int Texture::levels() const
 {
-    return d ? 1 : 0;
+    return d ? d->levels : 0;
 }
 
 int Texture::layers() const
