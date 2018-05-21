@@ -125,13 +125,13 @@ qsizetype TextureData::bytesPerLine(int level) const
     return levelInfos[level].bytesPerLine;
 }
 
-qsizetype TextureData::bytesPerLevel(int level) const
+qsizetype TextureData::bytesPerImage(int level) const
 {
     if (level < 0 || level >= levels) {
         qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
         return 0;
     }
-    return levelInfos[level].bytes;
+    return levelInfos[level].bytesPerLine * getWidth(level) * getHeight(level) * getDepth(level);
 }
 
 qsizetype TextureData::levelOffset(int level) const
@@ -286,9 +286,9 @@ qsizetype Texture::bytesPerLine(int level) const
     return d ? d->bytesPerLine(level) : 0;
 }
 
-qsizetype Texture::bytesPerLevel(int level) const
+qsizetype Texture::bytesPerImage(int level) const
 {
-    return d ? d->bytesPerLevel(level) : 0;
+    return d ? d->bytesPerImage(level) : 0;
 }
 
 qsizetype Texture::levelOffset(int level) const
@@ -319,8 +319,6 @@ Texture::Texture(TextureData *dd):
 
 uchar *Texture::dataImpl(int side, int layer, int level)
 {
-    Q_UNUSED(level);
-    Q_ASSERT(!level);
     if (!d)
         return nullptr;
     detach();
@@ -329,14 +327,12 @@ uchar *Texture::dataImpl(int side, int layer, int level)
     if (!d)
         return nullptr;
 
-    return d->data + bytesPerLevel() * layer * side;
+    return d->data + d->levelOffset(level) + d->bytesPerImage(level) * layer * side;
 }
 
 uchar *Texture::dataImpl(int side, int level, int layer) const
 {
-    Q_UNUSED(level);
-    Q_ASSERT(!level);
-    return d ? d->data + bytesPerLevel() * layer * side : nullptr;
+    return d ? d->data + d->levelOffset(level) + d->bytesPerImage(level) * layer * side : nullptr;
 }
 
 uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer)

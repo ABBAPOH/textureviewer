@@ -23,7 +23,7 @@ public:
     int getHeight(int level) const;
     int getDepth(int level) const;
     qsizetype bytesPerLine(int level) const;
-    qsizetype bytesPerLevel(int level) const;
+    qsizetype bytesPerImage(int level) const;
     qsizetype levelOffset(int level) const;
 
     QAtomicInt ref {0};
