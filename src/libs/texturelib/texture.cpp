@@ -318,7 +318,8 @@ uchar *Texture::dataImpl(int side, int layer, int level)
 
     CHECK_SIDE(side, nullptr);
     CHECK_LEVEL(level, nullptr);
-    CHECK_LAYER(layer, nullptr);
+    CHECK_LAYER(layer, nullptr);.
+
     detach();
 
     // In case detach ran out of memory...
