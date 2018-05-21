@@ -134,6 +134,15 @@ qsizetype TextureData::bytesPerLevel(int level) const
     return levelInfos[level].bytes;
 }
 
+qsizetype TextureData::levelOffset(int level) const
+{
+    if (level < 0 || level >= levels) {
+        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level;
+        return 0;
+    }
+    return levelInfos[level].offset;
+}
+
 Texture::Texture()
     : d(nullptr)
 {
@@ -280,6 +289,11 @@ qsizetype Texture::bytesPerLine(int level) const
 qsizetype Texture::bytesPerLevel(int level) const
 {
     return d ? d->bytesPerLevel(level) : 0;
+}
+
+qsizetype Texture::levelOffset(int level) const
+{
+    return d ? d->levelOffset(level) : 0;
 }
 
 /*!

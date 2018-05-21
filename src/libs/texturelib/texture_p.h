@@ -24,6 +24,7 @@ public:
     int getDepth(int level) const;
     qsizetype bytesPerLine(int level) const;
     qsizetype bytesPerLevel(int level) const;
+    qsizetype levelOffset(int level) const;
 
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};
