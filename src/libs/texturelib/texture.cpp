@@ -21,6 +21,14 @@
         return 0; \
     } \
 
+#define CHECK_POINT(x, y, z, level, rv) \
+    if (x < 0 || x >= d->levelWidth(level) \
+        || y < 0 || y >= d->levelHeight(level) \
+        || z < 0 || z >= d->levelDepth(level)) { \
+        qCWarning(texture) << Q_FUNC_INFO << "point (" << x << y << z << ")" << "is out of bounds"; \
+        return 0; \
+    } \
+
 static inline bool isCubeMap(Texture::Type type)
 {
     return type == Texture::Type::TextureCubeMap || type == Texture::Type::TextureCubeMapArray;
@@ -343,14 +351,30 @@ uchar *Texture::dataImpl(int side, int level, int layer) const
 
 uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer)
 {
-    Q_UNREACHABLE();
-    return nullptr;
+    if (!d)
+        return nullptr;
+
+    auto data = dataImpl(side, level, layer); // detach here
+    if (!data)
+        return nullptr;
+
+    CHECK_POINT(x, y, z, level, nullptr);
+
+    return data + d->bytesPerLine(level) * z * y + x;
 }
 
 uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
 {
-    Q_UNREACHABLE();
-    return nullptr;
+    if (!d)
+        return nullptr;
+
+    auto data = dataImpl(side, level, layer);
+    if (!data)
+        return nullptr;
+
+    CHECK_POINT(x, y, z, level, nullptr);
+
+    return data + d->bytesPerLine(level) * z * y + x;
 }
 
 bool operator==(const Texture &lhs, const Texture &rhs)
