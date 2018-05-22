@@ -115,6 +115,11 @@ TextureData *TextureData::create(
     return data.release();
 }
 
+qsizetype TextureData::offset(int side, int level, int layer) const
+{
+    return levelInfos[level].offset + bytesPerImage(level) * (faces * layer + side);
+}
+
 Texture::Texture() noexcept
     : d(nullptr)
 {
@@ -295,6 +300,20 @@ qsizetype Texture::levelOffset(int level) const
     CHECK_LEVEL(level, 0);
 
     return d->levelOffset(level);
+}
+
+/*!
+    Returns the offset in bytes for the given \a level and \a layer.
+*/
+qsizetype Texture::offset(int level, int layer) const
+{
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+    CHECK_LAYER(layer, 0);
+
+    return d->offset(0, level, layer);
 }
 
 /*!

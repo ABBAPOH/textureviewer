@@ -29,6 +29,7 @@ public:
         return levelInfos[level].bytesPerLine * levelHeight(level) * levelDepth(level);
     }
     inline qsizetype levelOffset(int level) const { return levelInfos[level].offset; }
+    qsizetype offset(int side, int level, int layer) const;
 
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};
