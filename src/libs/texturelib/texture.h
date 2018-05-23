@@ -80,7 +80,7 @@ public:
     qsizetype bitsPerTexel() const;
     qsizetype bytesPerLine(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
-    qsizetype levelOffset(int level = 0) const;
+    qsizetype Q_DECL_DEPRECATED levelOffset(int level = 0) const;
     qsizetype offset(int level = 0, int layer = 0) const;
 
     inline uchar *data(int level = 0, int layer = 0) { return dataImpl(0, level, layer); }

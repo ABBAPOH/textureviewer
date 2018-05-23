@@ -13,6 +13,8 @@ private slots:
     void constructCubemap();
     void bytesPerLine_data();
     void bytesPerLine();
+    void offset_data();
+    void offset();
 };
 
 void TestTexture::defaultConstructed()
@@ -216,6 +218,66 @@ void TestTexture::bytesPerLine()
     QCOMPARE(texture.bytesPerImage(level), bpi);
 }
 
+void TestTexture::offset_data()
+{
+    QTest::addColumn<Texture::Type>("type");
+    QTest::addColumn<Texture::Format>("format");
+    QTest::addColumn<int>("width");
+    QTest::addColumn<int>("height");
+    QTest::addColumn<int>("depth");
+    QTest::addColumn<int>("levels");
+    QTest::addColumn<int>("layers");
+    QTest::addColumn<int>("level");
+    QTest::addColumn<int>("layer");
+    QTest::addColumn<qsizetype>("offset");
+
+    QTest::newRow("ARGB32, 1x1x1, level 0/1, layer 0/1")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 1 << 1 << 1
+            << 1 << 1
+            << 0 << 0
+            << qsizetype(0);
+
+    QTest::newRow("ARGB32, 64x64x1, level 0/1, layer 1/10")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 1 << 10
+            << 0 << 1
+            << qsizetype(1 * 64*64*4);
+
+    QTest::newRow("ARGB32, 64x64x1, level 1/2, layer 0/1")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 2 << 1
+            << 1 << 0
+            << qsizetype(64*64*4);
+
+    QTest::newRow("ARGB32, 64x64x1, level 2/3, layer 0/1")
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 3 << 1
+            << 2 << 0
+            << qsizetype(64*64*4 + 32*32*4);
+}
+
+void TestTexture::offset()
+{
+    QFETCH(Texture::Type, type);
+    QFETCH(Texture::Format, format);
+    QFETCH(int, width);
+    QFETCH(int, height);
+    QFETCH(int, depth);
+    QFETCH(int, levels);
+    QFETCH(int, layers);
+    QFETCH(int, level);
+    QFETCH(int, layer);
+    QFETCH(qsizetype, offset);
+
+    const auto texture = Texture::create2DTexture(format, width, height, levels, layers);
+
+    QVERIFY(!texture.isNull());
+    QCOMPARE(texture.offset(level, layer), offset);
+}
 
 QTEST_MAIN(TestTexture)
 
