@@ -172,6 +172,7 @@ void TestTexture::construct()
 
 void TestTexture::bytesPerLine_data()
 {
+    QTest::addColumn<Texture::Type>("type");
     QTest::addColumn<Texture::Format>("format");
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
@@ -183,52 +184,52 @@ void TestTexture::bytesPerLine_data()
     QTest::addColumn<qsizetype>("bpi");
 
     QTest::newRow("ARGB32, 1x1x1, level 0/1")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 1 << 1 << 1
             << 1 << 0
             << qsizetype(32) << qsizetype(4) << qsizetype(4);
     QTest::newRow("ARGB32, 64x1x1, level 0/1")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 64 << 1 << 1
             << 1 << 0
             << qsizetype(32) << qsizetype(256) << qsizetype(256);
     QTest::newRow("ARGB32, 64x64x64, level 0/1")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 64 << 64 << 64
             << 1 << 0
             << qsizetype(32) << qsizetype(256) << qsizetype(1048576);
     QTest::newRow("ARGB32, 4x4x4, level 0/1")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 4 << 4 << 4
             << 1 << 0
             << qsizetype(32) << qsizetype(16) << qsizetype(256);
     QTest::newRow("ARGB32, 4x4x4, level 0/3")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 4 << 4 << 4
             << 3 << 0
             << qsizetype(32) << qsizetype(16) << qsizetype(256);
     QTest::newRow("ARGB32, 4x4x4, level 1/3")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 4 << 4 << 4
             << 3 << 1
             << qsizetype(32) << qsizetype(8) << qsizetype(32);
     QTest::newRow("ARGB32, 4x4x4, level 2/3")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 4 << 4 << 4
             << 3 << 2
             << qsizetype(32) << qsizetype(4) << qsizetype(4);
     QTest::newRow("ARGB32, 5x4x4, level 0/3")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 5 << 4 << 4
             << 3 << 0
             << qsizetype(32) << qsizetype(20) << qsizetype(320);
     QTest::newRow("ARGB32, 5x4x4, level 1/3")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 5 << 4 << 4
             << 3 << 1
             << qsizetype(32) << qsizetype(8) << qsizetype(32);
     QTest::newRow("ARGB32, 5x4x4, level 2/3")
-            << Texture::Format::ARGB32
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
             << 4 << 4 << 4
             << 3 << 2
             << qsizetype(32) << qsizetype(4) << qsizetype(4);
@@ -236,6 +237,7 @@ void TestTexture::bytesPerLine_data()
 
 void TestTexture::bytesPerLine()
 {
+    QFETCH(Texture::Type, type);
     QFETCH(Texture::Format, format);
     QFETCH(int, width);
     QFETCH(int, height);
@@ -246,7 +248,7 @@ void TestTexture::bytesPerLine()
     QFETCH(qsizetype, bpl);
     QFETCH(qsizetype, bpi);
 
-    const auto texture = Texture::create3DTexture(format, width, height, depth, levels);
+    const auto texture = Texture::create(type, format, width, height, depth, levels);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.bitsPerTexel(), bpt);
