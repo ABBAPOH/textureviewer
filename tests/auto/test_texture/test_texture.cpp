@@ -239,7 +239,7 @@ void TestTexture::offset_data()
             << qsizetype(0);
 
     QTest::newRow("ARGB32, 64x64x1, level 0/1, layer 1/10")
-            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32
             << 64 << 64 << 1
             << 1 << 10
             << 0 << 1
@@ -273,7 +273,7 @@ void TestTexture::offset()
     QFETCH(int, layer);
     QFETCH(qsizetype, offset);
 
-    const auto texture = Texture::create2DTexture(format, width, height, levels, layers);
+    const auto texture = Texture::create(type, format, width, height, depth, levels, layers);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.offset(level, layer), offset);
