@@ -9,8 +9,6 @@ private slots:
 
     void construct_data();
     void construct();
-    void constructCubemap_data();
-    void constructCubemap();
     void bytesPerLine_data();
     void bytesPerLine();
     void offset_data();
@@ -82,6 +80,16 @@ void TestTexture::construct_data()
             << Texture::Type::Texture3D << Texture::Format::ARGB32 << 64 << 64 << 64 << 1 << 1 << qsizetype(1048576);
     QTest::newRow("ARGB32, 100x100x100, levels=1, layers=1")
             << Texture::Type::Texture3D << Texture::Format::ARGB32 << 100 << 100 << 100 << 1 << 1 << qsizetype(4000000);
+    // CubeMap
+    QTest::newRow("ARGB32, size=1, levels=1, layers=1")
+            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 1 << 1<< 1 << 1 << 1 << qsizetype(24);
+    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
+            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 64 << 64 << 1 << 1 << 1 << qsizetype(98304);
+    // CubeMap Array
+    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
+            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 64 << 1 << 1 << 1 << qsizetype(98304);
+    QTest::newRow("ARGB32, size=64, levels=1, layers=8")
+            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 64 << 1 <<  1 << 8 << qsizetype(786432);
 }
 
 void TestTexture::construct()
@@ -95,28 +103,7 @@ void TestTexture::construct()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    Texture texture;
-
-    switch (type) {
-    case Texture::Type::Texture1D:
-        texture = Texture::create1DTexture(format, width, levels);
-        break;
-    case Texture::Type::Texture1DArray:
-        texture = Texture::create1DTexture(format, width, levels, layers);
-        break;
-    case Texture::Type::Texture2D:
-        texture = Texture::create2DTexture(format, width, height, levels);
-        break;
-    case Texture::Type::Texture2DArray:
-        texture = Texture::create2DTexture(format, width, height, levels, layers);
-        break;
-    case Texture::Type::Texture3D:
-        texture = Texture::create3DTexture(format, width, height, depth, levels);
-        break;
-    default:
-        QVERIFY(false);
-        break;
-    }
+    const auto texture = Texture::create(type, format, width, height, depth, levels, layers);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.type(), type);
@@ -124,51 +111,6 @@ void TestTexture::construct()
     QCOMPARE(texture.width(), width);
     QCOMPARE(texture.height(), height);
     QCOMPARE(texture.depth(), depth);
-    QCOMPARE(texture.layers(), layers);
-    QCOMPARE(texture.levels(), levels);
-    QCOMPARE(texture.bytes(), bytes);
-}
-
-void TestTexture::constructCubemap_data()
-{
-    QTest::addColumn<Texture::Type>("type");
-    QTest::addColumn<Texture::Format>("format");
-    QTest::addColumn<int>("size");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<int>("layers");
-    QTest::addColumn<qsizetype>("bytes");
-
-    // CubeMap
-    QTest::newRow("ARGB32, size=1, levels=1, layers=1")
-            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 1 << 1 << 1 << qsizetype(24);
-    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
-            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 64 << 1 << 1 << qsizetype(98304);
-    // CubeMap Array
-    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
-            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 1 << 1 << qsizetype(98304);
-    QTest::newRow("ARGB32, size=64, levels=1, layers=8")
-            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 1 << 8 << qsizetype(786432);
-}
-
-void TestTexture::constructCubemap()
-{
-    QFETCH(Texture::Type, type);
-    QFETCH(Texture::Format, format);
-    QFETCH(int, size);
-    QFETCH(int, layers);
-    QFETCH(int, levels);
-    QFETCH(qsizetype, bytes);
-
-    const auto texture = (type == Texture::Type::TextureCubeMap)
-            ? Texture::createCubeMapTexture(format, size, levels)
-            : Texture::createCubeMapTexture(format, size, levels, layers);
-
-    QVERIFY(!texture.isNull());
-    QCOMPARE(texture.type(), type);
-    QCOMPARE(texture.format(), format);
-    QCOMPARE(texture.width(), size);
-    QCOMPARE(texture.height(), size);
-    QCOMPARE(texture.depth(), 1);
     QCOMPARE(texture.layers(), layers);
     QCOMPARE(texture.levels(), levels);
     QCOMPARE(texture.bytes(), bytes);
