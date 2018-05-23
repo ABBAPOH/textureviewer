@@ -199,24 +199,31 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
     case Texture::Type::Texture1D:
         if (height != 1 || depth != 1 || layers != 1)
             return result;
+        break;
     case Texture::Type::Texture1DArray:
         if (height != 1 || depth != 1)
             return result;
+        break;
     case Texture::Type::Texture2D:
         if (depth != 1 || layers != 1)
             return result;
+        break;
     case Texture::Type::Texture2DArray:
         if (depth != 1)
             return result;
+        break;
     case Texture::Type::Texture3D:
         if (layers != 1)
             return result;
+        break;
     case Texture::Type::TextureCubeMap:
         if (width != height || depth != 1 || layers != 1)
             return result;
+        break;
     case Texture::Type::TextureCubeMapArray:
         if (width != height || depth != 1)
             return result;
+        break;
     }
 
     result = Texture(TextureData::create(type, format, width, height, depth, layers, levels));
