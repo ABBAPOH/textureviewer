@@ -60,6 +60,7 @@ public:
     static Texture create2DTexture(Format format, int width, int height, int levels = 1, int layers = -1);
     static Texture create3DTexture(Format format, int width, int height, int depth, int levels = 1);
     static Texture createCubeMapTexture(Format format, int size, int levels = 1, int layers = -1);
+    static Texture create(Type type, Format format, int width, int height, int depth, int levels = 1, int layers = 1);
 
     bool isNull() const;
     Type type() const;

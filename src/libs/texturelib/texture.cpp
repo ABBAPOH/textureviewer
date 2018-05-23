@@ -190,6 +190,39 @@ Texture Texture::createCubeMapTexture(Texture::Format format, int size, int leve
     return Texture(TextureData::create(type, format, size, size, 1, layers, levels));
 }
 
+Texture Texture::create(Texture::Type type, Texture::Format format, int width, int height, int depth, int levels, int layers)
+{
+    Texture result;
+    switch (type) {
+    case Texture::Type::None:
+        return result;
+    case Texture::Type::Texture1D:
+        if (height != 1 || depth != 1 || layers != 1)
+            return result;
+    case Texture::Type::Texture1DArray:
+        if (height != 1 || depth != 1)
+            return result;
+    case Texture::Type::Texture2D:
+        if (depth != 1 || layers != 1)
+            return result;
+    case Texture::Type::Texture2DArray:
+        if (depth != 1)
+            return result;
+    case Texture::Type::Texture3D:
+        if (layers != 1)
+            return result;
+    case Texture::Type::TextureCubeMap:
+        if (width != height || depth != 1 || layers != 1)
+            return result;
+    case Texture::Type::TextureCubeMapArray:
+        if (width != height || depth != 1)
+            return result;
+    }
+
+    result = Texture(TextureData::create(type, format, width, height, depth, layers, levels));
+    return result;
+}
+
 bool Texture::isNull() const
 {
     return !d;
