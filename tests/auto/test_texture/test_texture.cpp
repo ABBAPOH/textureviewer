@@ -49,47 +49,101 @@ void TestTexture::construct_data()
 
     // 1D texture
     QTest::newRow("ARGB32, 1x1x1, levels=1, layers=1")
-            << Texture::Type::Texture1D << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << 1 << qsizetype(4);
+            << Texture::Type::Texture1D << Texture::Format::ARGB32 // type / format
+            << 1 << 1 << 1 // width / height / depth
+            << 1 << 1 // levels / layers
+            << qsizetype(4); // result
     QTest::newRow("ARGB32, 64x1x1, levels=1, layers=1")
-            << Texture::Type::Texture1D << Texture::Format::ARGB32 << 64 << 1 << 1 << 1 << 1 << qsizetype(256);
+            << Texture::Type::Texture1D << Texture::Format::ARGB32
+            << 64 << 1 << 1
+            << 1 << 1
+            << qsizetype(256);
     QTest::newRow("ARGB32, 100x1x1, levels=1, layers=1")
-            << Texture::Type::Texture1D << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 1 << qsizetype(400);
+            << Texture::Type::Texture1D << Texture::Format::ARGB32
+            << 100 << 1 << 1
+            << 1 << 1
+            << qsizetype(400);
     // 1D texture array
     QTest::newRow("ARGB32, 100x1x1, levels=1, layers=1")
-            << Texture::Type::Texture1DArray << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 1 << qsizetype(400);
+            << Texture::Type::Texture1DArray << Texture::Format::ARGB32
+            << 100 << 1 << 1
+            << 1 << 1
+            << qsizetype(400);
     QTest::newRow("ARGB32, 100x1x1, levels=1, layers=8")
-            << Texture::Type::Texture1DArray << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 8 << qsizetype(3200);
+            << Texture::Type::Texture1DArray << Texture::Format::ARGB32
+            << 100 << 1 << 1
+            << 1 << 8
+            << qsizetype(3200);
     QTest::newRow("ARGB32, 100x1x1, levels=1, layers=10")
-            << Texture::Type::Texture1DArray << Texture::Format::ARGB32 << 100 << 1 << 1 << 1 << 10 << qsizetype(4000);
+            << Texture::Type::Texture1DArray << Texture::Format::ARGB32
+            << 100 << 1 << 1
+            << 1 << 10
+            << qsizetype(4000);
     // 2D texture
     QTest::newRow("ARGB32, 1x1x1, levels=1, layers=1")
-            << Texture::Type::Texture2D << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << 1 << qsizetype(4);
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 1 << 1 << 1
+            << 1 << 1
+            << qsizetype(4);
     QTest::newRow("ARGB32, 64x64x1, levels=1, layers=1")
-            << Texture::Type::Texture2D << Texture::Format::ARGB32 << 64 << 64 << 1 << 1 << 1 << qsizetype(16384);
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 1 << 1
+            << qsizetype(16384);
     QTest::newRow("ARGB32, 100x100x1, levels=1, layers=1")
-            << Texture::Type::Texture2D << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 1 << qsizetype(40000);
+            << Texture::Type::Texture2D << Texture::Format::ARGB32
+            << 100 << 100 << 1
+            << 1 << 1
+            << qsizetype(40000);
     // 2D array
     QTest::newRow("ARGB32, 100x100x1, levels=1, layers=1")
-            << Texture::Type::Texture2DArray << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 1 << qsizetype(40000);
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32
+            << 100 << 100 << 1
+            << 1 << 1
+            << qsizetype(40000);
     QTest::newRow("ARGB32, 100x100x1, levels=1, layers=8")
-            << Texture::Type::Texture2DArray << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 8 << qsizetype(320000);
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32
+            << 100 << 100 << 1
+            << 1 << 8
+            << qsizetype(320000);
     QTest::newRow("ARGB32, 100x100x1, levels=1, layers=10")
-            << Texture::Type::Texture2DArray << Texture::Format::ARGB32 << 100 << 100 << 1 << 1 << 10 << qsizetype(400000);
+            << Texture::Type::Texture2DArray << Texture::Format::ARGB32
+            << 100 << 100 << 1
+            << 1 << 10
+            << qsizetype(400000);
     // 3D texture
     QTest::newRow("ARGB32, 64x64x64, levels=1, layers=1")
-            << Texture::Type::Texture3D << Texture::Format::ARGB32 << 64 << 64 << 64 << 1 << 1 << qsizetype(1048576);
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
+            << 64 << 64 << 64
+            << 1 << 1
+            << qsizetype(1048576);
     QTest::newRow("ARGB32, 100x100x100, levels=1, layers=1")
-            << Texture::Type::Texture3D << Texture::Format::ARGB32 << 100 << 100 << 100 << 1 << 1 << qsizetype(4000000);
+            << Texture::Type::Texture3D << Texture::Format::ARGB32
+            << 100 << 100 << 100
+            << 1 << 1
+            << qsizetype(4000000);
     // CubeMap
     QTest::newRow("ARGB32, size=1, levels=1, layers=1")
-            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 1 << 1<< 1 << 1 << 1 << qsizetype(24);
+            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32
+            << 1 << 1 << 1
+            << 1 << 1
+            << qsizetype(24);
     QTest::newRow("ARGB32, size=64, levels=1, layers=1")
-            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32 << 64 << 64 << 1 << 1 << 1 << qsizetype(98304);
+            << Texture::Type::TextureCubeMap << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 1 << 1
+            << qsizetype(98304);
     // CubeMap Array
     QTest::newRow("ARGB32, size=64, levels=1, layers=1")
-            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 64 << 1 << 1 << 1 << qsizetype(98304);
+            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 1 << 1
+            << qsizetype(98304);
     QTest::newRow("ARGB32, size=64, levels=1, layers=8")
-            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32 << 64 << 64 << 1 <<  1 << 8 << qsizetype(786432);
+            << Texture::Type::TextureCubeMapArray << Texture::Format::ARGB32
+            << 64 << 64 << 1
+            << 1 << 8
+            << qsizetype(786432);
 }
 
 void TestTexture::construct()
@@ -128,16 +182,56 @@ void TestTexture::bytesPerLine_data()
     QTest::addColumn<qsizetype>("bpl");
     QTest::addColumn<qsizetype>("bpi");
 
-    QTest::newRow("ARGB32, 1x1x1, level 0/1") << Texture::Format::ARGB32 << 1 << 1 << 1 << 1 << 0 << qsizetype(32) << qsizetype(4) << qsizetype(4);
-    QTest::newRow("ARGB32, 64x1x1, level 0/1") << Texture::Format::ARGB32 << 64 << 1 << 1 << 1 << 0 << qsizetype(32) << qsizetype(256) << qsizetype(256);
-    QTest::newRow("ARGB32, 64x64x64, level 0/1") << Texture::Format::ARGB32 << 64 << 64 << 64 << 1 << 0 << qsizetype(32) << qsizetype(256) << qsizetype(1048576);
-    QTest::newRow("ARGB32, 4x4x4, level 0/1") << Texture::Format::ARGB32 << 4 << 4 << 4 << 1 << 0 << qsizetype(32) << qsizetype(16) << qsizetype(256);
-    QTest::newRow("ARGB32, 4x4x4, level 0/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 0 << qsizetype(32) << qsizetype(16) << qsizetype(256);
-    QTest::newRow("ARGB32, 4x4x4, level 1/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 1 << qsizetype(32) << qsizetype(8) << qsizetype(32);
-    QTest::newRow("ARGB32, 4x4x4, level 2/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 2 << qsizetype(32) << qsizetype(4) << qsizetype(4);
-    QTest::newRow("ARGB32, 5x4x4, level 0/3") << Texture::Format::ARGB32 << 5 << 4 << 4 << 3 << 0 << qsizetype(32) << qsizetype(20) << qsizetype(320);
-    QTest::newRow("ARGB32, 5x4x4, level 1/3") << Texture::Format::ARGB32 << 5 << 4 << 4 << 3 << 1 << qsizetype(32) << qsizetype(8) << qsizetype(32);
-    QTest::newRow("ARGB32, 5x4x4, level 2/3") << Texture::Format::ARGB32 << 4 << 4 << 4 << 3 << 2 << qsizetype(32) << qsizetype(4) << qsizetype(4);
+    QTest::newRow("ARGB32, 1x1x1, level 0/1")
+            << Texture::Format::ARGB32
+            << 1 << 1 << 1
+            << 1 << 0
+            << qsizetype(32) << qsizetype(4) << qsizetype(4);
+    QTest::newRow("ARGB32, 64x1x1, level 0/1")
+            << Texture::Format::ARGB32
+            << 64 << 1 << 1
+            << 1 << 0
+            << qsizetype(32) << qsizetype(256) << qsizetype(256);
+    QTest::newRow("ARGB32, 64x64x64, level 0/1")
+            << Texture::Format::ARGB32
+            << 64 << 64 << 64
+            << 1 << 0
+            << qsizetype(32) << qsizetype(256) << qsizetype(1048576);
+    QTest::newRow("ARGB32, 4x4x4, level 0/1")
+            << Texture::Format::ARGB32
+            << 4 << 4 << 4
+            << 1 << 0
+            << qsizetype(32) << qsizetype(16) << qsizetype(256);
+    QTest::newRow("ARGB32, 4x4x4, level 0/3")
+            << Texture::Format::ARGB32
+            << 4 << 4 << 4
+            << 3 << 0
+            << qsizetype(32) << qsizetype(16) << qsizetype(256);
+    QTest::newRow("ARGB32, 4x4x4, level 1/3")
+            << Texture::Format::ARGB32
+            << 4 << 4 << 4
+            << 3 << 1
+            << qsizetype(32) << qsizetype(8) << qsizetype(32);
+    QTest::newRow("ARGB32, 4x4x4, level 2/3")
+            << Texture::Format::ARGB32
+            << 4 << 4 << 4
+            << 3 << 2
+            << qsizetype(32) << qsizetype(4) << qsizetype(4);
+    QTest::newRow("ARGB32, 5x4x4, level 0/3")
+            << Texture::Format::ARGB32
+            << 5 << 4 << 4
+            << 3 << 0
+            << qsizetype(32) << qsizetype(20) << qsizetype(320);
+    QTest::newRow("ARGB32, 5x4x4, level 1/3")
+            << Texture::Format::ARGB32
+            << 5 << 4 << 4
+            << 3 << 1
+            << qsizetype(32) << qsizetype(8) << qsizetype(32);
+    QTest::newRow("ARGB32, 5x4x4, level 2/3")
+            << Texture::Format::ARGB32
+            << 4 << 4 << 4
+            << 3 << 2
+            << qsizetype(32) << qsizetype(4) << qsizetype(4);
 }
 
 void TestTexture::bytesPerLine()
