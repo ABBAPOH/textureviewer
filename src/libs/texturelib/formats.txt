@@ -1,9 +1,15 @@
 KXT:
 
 alignment: 4 (for uncomressed)
+flags: -
+internal format: +
 
 DDS:
 alignment: 1 or 4 Depending on whatever
+flags: useless (yep, used for type + missing cube faces)
+internal format: -
 
 VTF:
 alignment: appears to be 1
+flags: +
+internal format: -
