@@ -1,11 +1,14 @@
 #include <QGuiApplication>
 #include <QTimer>
+#include <TextureLib/TextureIO>
 
 #include "window.h"
 
 int main(int argc, char *argv[])
 {
     QGuiApplication a(argc, argv);
+
+    a.addLibraryPath(a.applicationDirPath() + TextureIO::pluginsDirPath());
 
     QSurfaceFormat fmt;
     fmt.setVersion(3, 2);
