@@ -53,6 +53,7 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     default:
         break;
     }
+    return {0, 0};
 }
 
 } // namespace Utils
