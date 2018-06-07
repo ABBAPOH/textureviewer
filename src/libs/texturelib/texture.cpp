@@ -144,6 +144,31 @@ Texture::Texture(QStringView fileName)
     *this = result.second;
 }
 
+Texture::Texture(const QImage& image)
+    : d(nullptr)
+{
+    Texture::Format format = Texture::Format::Invalid;
+    switch (image.format()) {
+    case QImage::Format_ARGB32:
+        format = Texture::Format::ARGB32;
+        break;
+    case QImage::Format_RGB888:
+        format = Texture::Format::RGB_888;
+        break;
+    default:
+        qCWarning(texture) << Q_FUNC_INFO << "unsupported image format" << image.format();
+        return;
+    }
+
+    auto result = Texture::create(Texture::Type::Texture2D, format, image.width(), image.height(), 1);
+    if (result.bytes() != image.byteCount()) {
+        qCWarning(texture) << Q_FUNC_INFO << "texture size differs from image size";
+        return;
+    }
+    memmove(result.data(), image.bits(), image.byteCount());
+    *this = std::move(result);
+}
+
 Texture &Texture::operator=(const Texture &other)
 {
     if (this != &other) {

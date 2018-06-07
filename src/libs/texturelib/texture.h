@@ -17,6 +17,7 @@ public:
     Texture() noexcept;
     Texture(const Texture &other);
     explicit Texture(QStringView fileName);
+    explicit Texture(const QImage& image);
     inline Texture(Texture &&other) noexcept
     { qSwap(d, other.d); }
 
