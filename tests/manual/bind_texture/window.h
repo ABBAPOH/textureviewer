@@ -9,6 +9,8 @@
 
 #include <QOpenGLFunctions_3_3_Core>
 
+#include <memory>
+
 class Window : public QOpenGLWindow
 {
 public:
