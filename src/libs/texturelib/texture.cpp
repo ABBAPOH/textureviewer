@@ -409,6 +409,50 @@ Texture Texture::copy() const
     return result;
 }
 
+QImage Texture::toImage() const
+{
+    if (!d)
+        return QImage();
+
+    if (d->type == Texture::Type::TextureCubeMap
+            || d->type == Texture::Type::TextureCubeMapArray
+            || d->type == Texture::Type::Texture3D) {
+        qCWarning(texture) << Q_FUNC_INFO << "unsupported texture type" << int(d->type);
+        return QImage();
+    }
+
+    QImage::Format imageFormat = QImage::Format_Invalid;
+    switch (d->format) {
+    case Texture::Format::ARGB32:
+        imageFormat = QImage::Format_ARGB32;
+        break;
+    case Texture::Format::RGB_888:
+        imageFormat = QImage::Format_RGB888;
+        break;
+    default:
+        break;
+    }
+
+    if (imageFormat == QImage::Format_Invalid) {
+        qCWarning(texture) << Q_FUNC_INFO << "unsupported texture format" << int(d->format);
+        return QImage();
+    }
+
+    QImage result(d->width, d->height, imageFormat);
+    if (result.isNull()) {
+        qCWarning(texture) << Q_FUNC_INFO << "can't create image";
+        return QImage();
+    }
+
+    if (result.byteCount() != bytesPerImage()) {
+        qCWarning(texture) << Q_FUNC_INFO << "texture size differs from image size";
+        return QImage();
+    }
+
+    memcpy(result.bits(), data(), size_t(d->nbytes));
+    return result;
+}
+
 Texture::Texture(TextureData *dd):
     d(dd)
 {

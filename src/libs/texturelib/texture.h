@@ -125,6 +125,8 @@ public:
 
     Texture copy() const;
 
+    QImage toImage() const;
+
 private:
     explicit Texture(TextureData *dd);
 
