@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>R8G8B8.dds</file>
+    </qresource>
+</RCC>
