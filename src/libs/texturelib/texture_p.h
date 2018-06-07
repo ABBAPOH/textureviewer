@@ -63,6 +63,8 @@ inline int bbpForFormat(Texture::Format format)
         Q_UNREACHABLE();
     case Texture::Format::ARGB32:
         return 32;
+    case Texture::Format::RGB_888:
+        return 24;
     }
     return 0;
 }

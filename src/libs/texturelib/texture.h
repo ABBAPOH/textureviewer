@@ -16,6 +16,7 @@ class TEXTURELIB_EXPORT Texture
 public:
     Texture() noexcept;
     Texture(const Texture &other);
+    explicit Texture(QStringView fileName);
     inline Texture(Texture &&other) noexcept
     { qSwap(d, other.d); }
 
@@ -42,6 +43,7 @@ public:
     enum class Format {
         Invalid = 0,
         ARGB32,
+        RGB_888,
         FormatsCount // should be the last
     };
 

@@ -470,11 +470,14 @@ bool DDSHandler::read(Texture &texture)
         qWarning() << "Reading cubemaps is not supported (yet)";
         return false;
     } else {
-        if (m_format != FormatA8R8G8B8) {
-            qWarning() << "Only A8R8G8B8 is supported";
+        if (m_format == FormatA8R8G8B8) {
+            result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height));
+        } else if (m_format == FormatR8G8B8) {
+            result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height));
+        } else {
+            qWarning() << "Unsupported format" << m_format;
             return false;
         }
-        result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height));
     }
 
     if (result.isNull()) {

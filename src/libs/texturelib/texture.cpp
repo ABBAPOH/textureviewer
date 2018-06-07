@@ -1,4 +1,5 @@
 #include "texture_p.h"
+#include "textureio.h"
 
 #include <QtCore/QDebug>
 #include <memory>
@@ -60,14 +61,14 @@ TextureData *TextureData::create(
     auto ulayers = uint(layers);
     auto ubbp = uint(bbpForFormat(format));
 
-    const auto bytesPerLine = ((uwidth * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
+//    const auto bytesPerLine = ((uwidth * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
 
-    // sanity check for potential overflows
-    if (std::numeric_limits<int>::max() / ubbp / uwidth < 1
-        || bytesPerLine <= 0
-        || std::numeric_limits<qsizetype>::max() / uint(bytesPerLine) / uheight / udepth / ufaces / ulayers < 1
-        || std::numeric_limits<qsizetype>::max() / sizeof(uchar *) / uwidth / uheight / udepth / ufaces / ulayers < 1)
-        return nullptr;
+//    // sanity check for potential overflows
+//    if (std::numeric_limits<int>::max() / ubbp / uwidth < 1
+//        || bytesPerLine <= 0
+//        || std::numeric_limits<qsizetype>::max() / uint(bytesPerLine) / uheight / udepth / ufaces / ulayers < 1
+//        || std::numeric_limits<qsizetype>::max() / sizeof(uchar *) / uwidth / uheight / udepth / ufaces / ulayers < 1)
+//        return nullptr;
 
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
@@ -77,7 +78,8 @@ TextureData *TextureData::create(
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
 
-        const auto bytesPerLine = ((w * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
+//        const auto bytesPerLine = ((w * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
+        const auto bytesPerLine = (w * ubbp) / 8; // bytes per scanline
 
         // TODO: check overflows!!!
         const auto bytesPerLevel = bytesPerLine * h * d * ufaces * ulayers;
@@ -130,6 +132,16 @@ Texture::Texture(const Texture &other)
 {
     if (d)
         d->ref.ref();
+}
+
+Texture::Texture(QStringView fileName)
+    : d(nullptr)
+{
+    TextureIO io(fileName.toString());
+    auto result = io.read();
+    if (!result.first)
+        return;
+    *this = result.second;
 }
 
 Texture &Texture::operator=(const Texture &other)
