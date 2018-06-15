@@ -167,11 +167,19 @@ Texture::Texture(const QImage& image)
     }
 
     auto result = Texture::create(Texture::Type::Texture2D, format, image.width(), image.height(), 1);
-    if (result.bytes() != image.byteCount()) {
-        qCWarning(texture) << Q_FUNC_INFO << "texture size differs from image size";
+    if (result.bytesPerLine() < image.bytesPerLine()) {
+        qCWarning(texture) << Q_FUNC_INFO
+                           << "texture line size is less than an image line size"
+                           << result.bytesPerLine() << "<" << image.bytesPerLine();
         return;
     }
-    memmove(result.data(), image.bits(), image.byteCount());
+
+    // We use scanline here because QImage has different alignment
+    for (int y = 0; y < height(); ++y) {
+        const auto line = result.lineData(Position().y(y));
+        memcpy(line.data(), image.scanLine(y), size_t(image.bytesPerLine()));
+    }
+
     *this = std::move(result);
 }
 
