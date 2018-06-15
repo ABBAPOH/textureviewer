@@ -7,6 +7,8 @@
 #include <QtCore/QDataStream>
 #include <QtGui/QImage>
 
+#include <gsl/span>
+
 #include <tuple>
 #include <experimental/optional>
 
@@ -62,6 +64,9 @@ public:
 
     class Position;
 
+    using DataSpan = gsl::span<uchar>;
+    using ConstDataSpan = gsl::span<const uchar>;
+
     static Texture create1DTexture(Format format, int width, int levels = 1, int layers = -1);
     static Texture create2DTexture(Format format, int width, int height, int levels = 1, int layers = -1);
     static Texture create3DTexture(Format format, int width, int height, int depth, int levels = 1);
@@ -103,9 +108,9 @@ public:
     const uchar *texelData(const Position &p) const;
     const uchar *constTexelData(const Position &p) const;
 
-    uchar *lineData(const Position &position);
-    const uchar *lineData(const Position &position) const;
-    const uchar *constLineData(const Position &position) const;
+    DataSpan lineData(const Position &position);
+    ConstDataSpan lineData(const Position &position) const;
+    ConstDataSpan constLineData(const Position &position) const;
 
     Texture copy() const;
 

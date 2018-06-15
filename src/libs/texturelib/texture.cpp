@@ -408,39 +408,45 @@ const uchar* Texture::constTexelData(const Texture::Position& p) const
     return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
 }
 
-uchar* Texture::lineData(const Texture::Position& position)
+auto Texture::lineData(const Texture::Position& position) -> DataSpan
 {
     if (!d)
-        return nullptr;
+        return DataSpan();
 
     auto data = dataImpl(int(position.side()), position.level(), position.layer()); // detach here
     if (!data)
-        return nullptr;
+        return DataSpan();
 
-    CHECK_POINT(position.x(), position.y(), position.z(), position.level(), nullptr);
+    CHECK_POINT(position.x(), position.y(), position.z(), position.level(), DataSpan());
 
-    return data
+    const auto pointer = data
             + d->bytesPerLine(position.level()) * position.z() * position.y()
             + d->bitsPerTexel * position.x();
+    const auto size = d->bytesPerLine(position.level()) - d->bitsPerTexel * position.x();
+
+    return DataSpan(pointer, size);
 }
 
-const uchar* Texture::lineData(const Texture::Position& position) const
+auto Texture::lineData(const Texture::Position& position) const -> ConstDataSpan
 {
     if (!d)
-        return nullptr;
+        return ConstDataSpan();
 
     auto data = dataImpl(int(position.side()), position.level(), position.layer());
     if (!data)
-        return nullptr;
+        return ConstDataSpan();
 
-    CHECK_POINT(position.x(), position.y(), position.z(), position.level(), nullptr);
+    CHECK_POINT(position.x(), position.y(), position.z(), position.level(), ConstDataSpan());
 
-    return data
+    const auto pointer = data
             + d->bytesPerLine(position.level()) * position.z() * position.y()
             + d->bitsPerTexel * position.x();
+    const auto size = d->bytesPerLine(position.level()) - d->bitsPerTexel * position.x();
+
+    return ConstDataSpan(pointer, size);
 }
 
-const uchar* Texture::constLineData(const Texture::Position& position) const
+auto Texture::constLineData(const Texture::Position& position) const -> ConstDataSpan
 {
     return lineData(position);
 }
