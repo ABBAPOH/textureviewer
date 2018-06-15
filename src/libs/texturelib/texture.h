@@ -104,10 +104,19 @@ public:
     inline const uchar *constData(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
     inline const uchar *constData(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
 
-    uchar *texelData(const Position &p);
-    const uchar *texelData(const Position &p) const;
-    const uchar *constTexelData(const Position &p) const;
+    // TODO: do we need a texel API?
+    // we can't return a pointer to the texels as they may not be aligned even to char size
+    // (i.e. packed bitmap - an array of bits, 1 bit for each texel)
+    // So, we should return a Color object
+    // But QColor is too limited, we need a ColorVariant (AnyColor as proposed by Marc Mutz)
 
+    // T texelData(const Position &p);
+    // const T texelData(const Position &p) const;
+    // const T constTexelData(const Position &p) const;
+
+    // The only reason for the scanLine API (aka lineData) is that textures *possibly* can
+    // have different alignments (in OGL, it is 1, 4, 8).
+    // TODO: need testing
     DataSpan lineData(const Position &position);
     ConstDataSpan lineData(const Position &position) const;
     ConstDataSpan constLineData(const Position &position) const;
@@ -121,9 +130,6 @@ private:
 
     uchar *dataImpl(int side, int level, int layer);
     const uchar *dataImpl(int side, int level, int layer) const;
-
-    uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer);
-    const uchar *texelDataImpl(int side, int x, int y, int z, int level, int layer) const;
 
     TextureData *d {nullptr};
 

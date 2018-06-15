@@ -393,21 +393,6 @@ qsizetype Texture::offset(int level, int layer) const
     return d->offset(0, level, layer);
 }
 
-uchar* Texture::texelData(const Texture::Position& p)
-{
-    return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
-}
-
-const uchar* Texture::texelData(const Texture::Position& p) const
-{
-    return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
-}
-
-const uchar* Texture::constTexelData(const Texture::Position& p) const
-{
-    return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
-}
-
 auto Texture::lineData(const Texture::Position& position) -> DataSpan
 {
     if (!d)
@@ -544,34 +529,6 @@ const uchar* Texture::dataImpl(int side, int level, int layer) const
     CHECK_LAYER(layer, nullptr);
 
     return d->data + d->offset(side, level, layer);
-}
-
-uchar *Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer)
-{
-    if (!d)
-        return nullptr;
-
-    auto data = dataImpl(side, level, layer); // detach here
-    if (!data)
-        return nullptr;
-
-    CHECK_POINT(x, y, z, level, nullptr);
-
-    return data + d->bytesPerLine(level) * z * y + d->bitsPerTexel * x;
-}
-
-const uchar* Texture::texelDataImpl(int side, int x, int y, int z, int level, int layer) const
-{
-    if (!d)
-        return nullptr;
-
-    auto data = dataImpl(side, level, layer);
-    if (!data)
-        return nullptr;
-
-    CHECK_POINT(x, y, z, level, nullptr);
-
-    return data + d->bytesPerLine(level) * z * y + d->bitsPerTexel * x;
 }
 
 bool operator==(const Texture &lhs, const Texture &rhs)
