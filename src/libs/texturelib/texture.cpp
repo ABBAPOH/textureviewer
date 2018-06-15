@@ -420,7 +420,8 @@ auto Texture::lineData(const Texture::Position& p) -> DataSpan
     CHECK_POINT(p.x(), p.y(), p.z(), p.level(), DataSpan());
 
     const auto pointer = data
-            + d->bytesPerLine(p.level()) * p.z() * p.y();
+            + d->bytesPerLine(p.level()) * height(p.level()) * p.z()
+            + d->bytesPerLine(p.level()) * p.y();
     const auto size = d->bytesPerLine(p.level());
 
     return DataSpan(pointer, size);
@@ -439,7 +440,8 @@ auto Texture::lineData(const Texture::Position& p) const -> ConstDataSpan
     CHECK_POINT(p.x(), p.y(), p.z(), p.level(), ConstDataSpan());
 
     const auto pointer = data
-            + d->bytesPerLine(p.level()) * p.z() * p.y();
+            + d->bytesPerLine(p.level()) * height(p.level()) * p.z()
+            + d->bytesPerLine(p.level()) * p.y();
     const auto size = d->bytesPerLine(p.level());
 
     return ConstDataSpan(pointer, size);
