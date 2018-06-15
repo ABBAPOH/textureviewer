@@ -412,7 +412,7 @@ auto Texture::lineData(const Texture::Position &p) -> DataSpan
     if (!d)
         return DataSpan();
 
-    auto data = dataImpl(int(p.side()), p.level(), p.layer()); // detach here
+    auto data = dataImpl(p.face(), p.level(), p.layer()); // detach here
     if (!data)
         return DataSpan();
 
@@ -434,7 +434,7 @@ auto Texture::lineData(const Texture::Position &p) const -> ConstDataSpan
     if (!d)
         return ConstDataSpan();
 
-    auto data = dataImpl(int(p.side()), p.level(), p.layer());
+    auto data = dataImpl(p.face(), p.level(), p.layer());
     if (!data)
         return ConstDataSpan();
 
