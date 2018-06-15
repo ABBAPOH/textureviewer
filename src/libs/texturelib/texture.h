@@ -117,8 +117,8 @@ public:
     // The only reason for the scanLine API (aka lineData) is that textures *possibly* can
     // have different alignments (in OGL, it is 1, 4, 8).
     // TODO: need testing
-    DataSpan lineData(const Position &position);
-    ConstDataSpan lineData(const Position &position) const;
+    DataSpan lineData(const Position &p);
+    ConstDataSpan lineData(const Position &p) const;
     ConstDataSpan constLineData(const Position &position) const;
 
     Texture copy() const;
