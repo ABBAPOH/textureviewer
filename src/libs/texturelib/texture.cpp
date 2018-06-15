@@ -407,7 +407,7 @@ qsizetype Texture::offset(int level, int layer) const
     return d->offset(0, level, layer);
 }
 
-auto Texture::lineData(const Texture::Position& p) -> DataSpan
+auto Texture::lineData(const Texture::Position &p) -> DataSpan
 {
     if (!d)
         return DataSpan();
@@ -427,7 +427,7 @@ auto Texture::lineData(const Texture::Position& p) -> DataSpan
     return DataSpan(pointer, size);
 }
 
-auto Texture::lineData(const Texture::Position& p) const -> ConstDataSpan
+auto Texture::lineData(const Texture::Position &p) const -> ConstDataSpan
 {
     if (!d)
         return ConstDataSpan();
@@ -447,7 +447,7 @@ auto Texture::lineData(const Texture::Position& p) const -> ConstDataSpan
     return ConstDataSpan(pointer, size);
 }
 
-auto Texture::constLineData(const Texture::Position& p) const -> ConstDataSpan
+auto Texture::constLineData(const Texture::Position &p) const -> ConstDataSpan
 {
     return lineData(p);
 }
