@@ -30,6 +30,12 @@
         return rv; \
     } \
 
+#define CHECK_ZERO_X(x, rv) \
+    if (x != 0) { \
+        qCWarning(texture) << Q_FUNC_INFO << "x should be 0"; \
+        return rv; \
+    } \
+
 static inline bool isCubeMap(Texture::Type type)
 {
     return type == Texture::Type::TextureCubeMap || type == Texture::Type::TextureCubeMapArray;
@@ -402,12 +408,12 @@ auto Texture::lineData(const Texture::Position& position) -> DataSpan
     if (!data)
         return DataSpan();
 
+    CHECK_ZERO_X(position.x(), DataSpan());
     CHECK_POINT(position.x(), position.y(), position.z(), position.level(), DataSpan());
 
     const auto pointer = data
-            + d->bytesPerLine(position.level()) * position.z() * position.y()
-            + d->bitsPerTexel * position.x();
-    const auto size = d->bytesPerLine(position.level()) - d->bitsPerTexel * position.x();
+            + d->bytesPerLine(position.level()) * position.z() * position.y();
+    const auto size = d->bytesPerLine(position.level());
 
     return DataSpan(pointer, size);
 }
@@ -421,12 +427,12 @@ auto Texture::lineData(const Texture::Position& position) const -> ConstDataSpan
     if (!data)
         return ConstDataSpan();
 
+    CHECK_ZERO_X(position.x(), DataSpan());
     CHECK_POINT(position.x(), position.y(), position.z(), position.level(), ConstDataSpan());
 
     const auto pointer = data
-            + d->bytesPerLine(position.level()) * position.z() * position.y()
-            + d->bitsPerTexel * position.x();
-    const auto size = d->bytesPerLine(position.level()) - d->bitsPerTexel * position.x();
+            + d->bytesPerLine(position.level()) * position.z() * position.y();
+    const auto size = d->bytesPerLine(position.level());
 
     return ConstDataSpan(pointer, size);
 }
