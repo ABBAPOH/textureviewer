@@ -126,6 +126,10 @@ public:
     inline const uchar *constTexelData(Side side, QPoint p, int level = 0, int layer = 0) const
     { return texelDataImpl(int(side), p.x(), p.y(), 0, level, layer); }
 
+    uchar *lineData(const Position &position);
+    const uchar *lineData(const Position &position) const;
+    const uchar *constLineData(const Position &position) const;
+
     Texture copy() const;
 
     QImage toImage() const;

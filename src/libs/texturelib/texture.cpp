@@ -393,6 +393,43 @@ qsizetype Texture::offset(int level, int layer) const
     return d->offset(0, level, layer);
 }
 
+uchar* Texture::lineData(const Texture::Position& position)
+{
+    if (!d)
+        return nullptr;
+
+    auto data = dataImpl(int(position.side()), position.level(), position.layer()); // detach here
+    if (!data)
+        return nullptr;
+
+    CHECK_POINT(position.x(), position.y(), position.z(), position.level(), nullptr);
+
+    return data
+            + d->bytesPerLine(position.level()) * position.z() * position.y()
+            + d->bitsPerTexel * position.x();
+}
+
+const uchar* Texture::lineData(const Texture::Position& position) const
+{
+    if (!d)
+        return nullptr;
+
+    auto data = dataImpl(int(position.side()), position.level(), position.layer());
+    if (!data)
+        return nullptr;
+
+    CHECK_POINT(position.x(), position.y(), position.z(), position.level(), nullptr);
+
+    return data
+            + d->bytesPerLine(position.level()) * position.z() * position.y()
+            + d->bitsPerTexel * position.x();
+}
+
+const uchar* Texture::constLineData(const Texture::Position& position) const
+{
+    return lineData(position);
+}
+
 /*!
     Performs a deep-copying of this texture
 */
