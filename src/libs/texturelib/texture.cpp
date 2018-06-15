@@ -7,19 +7,19 @@
 #define CHECK_SIDE(side, rv) \
     if (side < 0 || side >= d->faces) { \
         qCWarning(texture) << Q_FUNC_INFO << "was called with invalid side" << side; \
-        return 0; \
+        return rv; \
     } \
 
 #define CHECK_LEVEL(level, rv) \
     if (level < 0 || level >= d->levels) { \
         qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level; \
-        return 0; \
+        return rv; \
     } \
 
 #define CHECK_LAYER(layer, rv) \
     if (layer < 0 || layer >= d->layers) { \
         qCWarning(texture) << Q_FUNC_INFO << "was called with invalid layer" << layer; \
-        return 0; \
+        return rv; \
     } \
 
 #define CHECK_POINT(x, y, z, level, rv) \
@@ -27,7 +27,7 @@
         || y < 0 || y >= d->levelHeight(level) \
         || z < 0 || z >= d->levelDepth(level)) { \
         qCWarning(texture) << Q_FUNC_INFO << "point (" << x << y << z << ")" << "is out of bounds"; \
-        return 0; \
+        return rv; \
     } \
 
 static inline bool isCubeMap(Texture::Type type)
