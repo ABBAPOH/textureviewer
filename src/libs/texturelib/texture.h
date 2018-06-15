@@ -178,6 +178,8 @@ public:
     inline constexpr Position &side(Side side) { m_side = side; return *this; }
     inline constexpr void setZ(Side side) { m_side = side; }
 
+    inline constexpr int face() const { return int(m_side); }
+
     inline constexpr int level() const { return m_level; }
     inline constexpr Position &level(int level) { m_level = level; return *this; }
     inline constexpr void setLevel(int level) { m_level = level; }

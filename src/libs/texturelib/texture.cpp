@@ -420,6 +420,8 @@ auto Texture::lineData(const Texture::Position &p) -> DataSpan
     CHECK_POINT(p.x(), p.y(), p.z(), p.level(), DataSpan());
 
     const auto pointer = data
+            // actually, depth should be always 1 for cubemaps, but do the correct math here
+            + d->bytesPerLine(p.level()) * height(p.level()) * depth(p.level()) * p.face()
             + d->bytesPerLine(p.level()) * height(p.level()) * p.z()
             + d->bytesPerLine(p.level()) * p.y();
     const auto size = d->bytesPerLine(p.level());
@@ -440,6 +442,8 @@ auto Texture::lineData(const Texture::Position &p) const -> ConstDataSpan
     CHECK_POINT(p.x(), p.y(), p.z(), p.level(), ConstDataSpan());
 
     const auto pointer = data
+            // actually, depth should be always 1 for cubemaps, but do the correct math here
+            + d->bytesPerLine(p.level()) * height(p.level()) * depth(p.level()) * p.face()
             + d->bytesPerLine(p.level()) * height(p.level()) * p.z()
             + d->bytesPerLine(p.level()) * p.y();
     const auto size = d->bytesPerLine(p.level());
