@@ -393,6 +393,21 @@ qsizetype Texture::offset(int level, int layer) const
     return d->offset(0, level, layer);
 }
 
+uchar* Texture::texelData(const Texture::Position& p)
+{
+    return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
+}
+
+const uchar* Texture::texelData(const Texture::Position& p) const
+{
+    return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
+}
+
+const uchar* Texture::constTexelData(const Texture::Position& p) const
+{
+    return texelDataImpl(int(p.side()), p.x(), p.y(), p.z(), p.level(), p.layer());
+}
+
 uchar* Texture::lineData(const Texture::Position& position)
 {
     if (!d)
