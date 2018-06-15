@@ -121,7 +121,7 @@ public:
     // so we forced to fill it line by line even if format is the same
     DataSpan lineData(const Position &p);
     ConstDataSpan lineData(const Position &p) const;
-    ConstDataSpan constLineData(const Position &position) const;
+    ConstDataSpan constLineData(const Position &p) const;
 
     Texture copy() const;
 
