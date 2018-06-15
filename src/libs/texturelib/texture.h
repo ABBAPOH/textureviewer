@@ -117,6 +117,8 @@ public:
     // The only reason for the scanLine API (aka lineData) is that textures *possibly* can
     // have different alignments (in OGL, it is 1, 4, 8).
     // TODO: need testing
+    // Ok, here's another usecase: converting to QImage, QImage has an alignment of 4,
+    // so we forced to fill it line by line even if format is the same
     DataSpan lineData(const Position &p);
     ConstDataSpan lineData(const Position &p) const;
     ConstDataSpan constLineData(const Position &position) const;
