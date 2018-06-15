@@ -313,6 +313,7 @@ static const FormatInfo &getFormatInfo(Format format)
     return formatInfos[0];
 }
 
+// TODO: mipmapSize may incorrectly use an alignment
 static qint64 mipmapSize(const DDSHeader &dds, const int format, const int level)
 {
     quint32 w = dds.width/(1 << level);
@@ -453,6 +454,18 @@ bool DDSHandler::canRead() const
     return canRead(device());
 }
 
+quint32 computePitch(const DDSHeader &header, int format, quint32 width)
+{
+    switch (format) {
+    case FormatA8R8G8B8:
+    case FormatR8G8B8:
+        return (width * header.pixelFormat.rgbBitCount + 7) >> 3;
+    default:
+        break;
+    }
+    return 0;
+}
+
 bool DDSHandler::read(Texture &texture)
 {
     if (!canRead(device()))
@@ -485,9 +498,10 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    if (m_header.pitchOrLinearSize >= result.bytesPerLine()) {
-        qWarning() << "Pitch is bigger than texture's bytesPerLine"
-                   << m_header.pitchOrLinearSize << ">=" << result.bytesPerLine();
+    const auto pitch = computePitch(m_header, m_format, m_header.width);
+    if (pitch > result.bytesPerLine()) {
+        qWarning() << "Pitch is bigger than texture's bytesPerLine:"
+                   << pitch << ">=" << result.bytesPerLine();
         return false;
     }
 
@@ -508,10 +522,13 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    auto read = device()->read(reinterpret_cast<char *>(result.data()), size);
-    if (read != size) {
-        qWarning() << "Can't read from file";
-        return false;
+    for (int y = 0; y < result.height(); ++y) {
+        const auto line = result.lineData(Texture::Position().y(y));
+        auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
+        if (read != pitch) {
+            qWarning() << "Can't read from file";
+            return false;
+        }
     }
 
     qSwap(texture, result);
