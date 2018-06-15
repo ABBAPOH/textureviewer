@@ -493,12 +493,20 @@ QImage Texture::toImage() const
         return QImage();
     }
 
-    if (result.byteCount() != bytesPerImage()) {
-        qCWarning(texture) << Q_FUNC_INFO << "texture size differs from image size";
+    const auto bytesPerLine = this->bytesPerLine();
+    if (result.bytesPerLine() < bytesPerLine) {
+        qCWarning(texture) << Q_FUNC_INFO
+                           << "image line size is less than texture line size"
+                           << result.bytesPerLine() << "<" << bytesPerLine;
         return QImage();
     }
 
-    memcpy(result.bits(), data(), size_t(d->nbytes));
+    // We use scanline here because QImage has different alignment
+    for (int y = 0; y < height(); ++y) {
+        const auto line = lineData(Position().y(y));
+        memcpy(result.scanLine(y), line.data(), size_t(line.size()));
+    }
+
     return result;
 }
 
