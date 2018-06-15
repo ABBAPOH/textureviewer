@@ -485,6 +485,12 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
+    if (m_header.pitchOrLinearSize >= result.bytesPerLine()) {
+        qWarning() << "Pitch is bigger than texture's bytesPerLine"
+                   << m_header.pitchOrLinearSize << ">=" << result.bytesPerLine();
+        return false;
+    }
+
     qint64 pos = headerSize + mipmapOffset(m_header, m_format, 0);
     qint64 size = mipmapSize(m_header, m_format, 0);
     if (headerSize + size > device()->size()) {
