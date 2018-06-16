@@ -12,8 +12,22 @@ BaseProduct {
                 : [ "$ORIGIN" ]
 
     Group {
-        fileTagsFilter: product.type
+        fileTagsFilter: {
+            if (bundle.isBundle) {
+                return ["bundle.content"];
+            } else {
+                var result = [
+                            "dynamiclibrary",
+                            "dynamiclibrary_symlink",
+                            "dynamiclibrary_import",
+                        ];
+                if (qbs.debugInformation)
+                    result.push("debuginfo_dll");
+                return result;
+            }
+        }
         qbs.install: true
         qbs.installDir: project.install_library_path
+        qbs.installSourceBase: project.buildDirectory + '/' + product.destinationDirectory
     }
 }
