@@ -103,7 +103,8 @@ TextureIO::TextureIO(const QString &fileName, const QMimeType &mimeType) :
     d_ptr(new TextureIOPrivate(this))
 {
     setFileName(fileName);
-    setMimeType(mimeType);
+    if (mimeType.isValid()) // invalid mimetype will overwrite detected type
+        setMimeType(mimeType);
 }
 
 /*!
@@ -123,7 +124,8 @@ TextureIO::TextureIO(const QString &fileName, const QString &mimeType) :
     d_ptr(new TextureIOPrivate(this))
 {
     setFileName(fileName);
-    setMimeType(mimeType);
+    if (!mimeType.isEmpty()) // invalid mimetype will overwrite detected type
+        setMimeType(mimeType);
 }
 
 /*!
