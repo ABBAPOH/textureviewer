@@ -3,6 +3,8 @@
 
 #include "texturelib_global.h"
 
+#include <TextureLib/TextureIOResult>
+
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QDataStream>
 #include <QtGui/QImage>
@@ -126,6 +128,9 @@ public:
     Texture copy() const;
 
     QImage toImage() const;
+
+    TextureIOResult load(QStringView file);
+    TextureIOResult save(QStringView file);
 
 private:
     explicit Texture(TextureData *dd);

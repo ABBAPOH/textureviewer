@@ -143,11 +143,9 @@ Texture::Texture(const Texture &other)
 Texture::Texture(QStringView fileName)
     : d(nullptr)
 {
-    TextureIO io(fileName.toString());
-    auto result = io.read();
-    if (!result.first)
-        return;
-    *this = result.second;
+    auto ok = load(fileName);
+    if (!ok)
+        qCWarning(texture) << Q_FUNC_INFO << "Can't load texture from file" << fileName << ok.toString();
 }
 
 Texture::Texture(const QImage& image)
@@ -522,6 +520,21 @@ QImage Texture::toImage() const
     }
 
     return result;
+}
+
+TextureIOResult Texture::load(QStringView file)
+{
+    TextureIO io(file.toString());
+    auto result = io.read();
+    if (result.first)
+        *this = result.second;
+    return result.first;
+}
+
+TextureIOResult Texture::save(QStringView file)
+{
+    TextureIO io(file.toString());
+    return io.write(*this);
 }
 
 Texture::Texture(TextureData *dd):
