@@ -21,7 +21,8 @@ class TEXTURELIB_EXPORT Texture
 public:
     Texture() noexcept;
     Texture(const Texture &other);
-    explicit Texture(QStringView fileName);
+    explicit Texture(const QString &file);
+    explicit Texture(QStringView file);
     explicit Texture(const QImage& image);
     inline Texture(Texture &&other) noexcept
     { qSwap(d, other.d); }
@@ -129,8 +130,10 @@ public:
 
     QImage toImage() const;
 
-    TextureIOResult load(QStringView file);
-    TextureIOResult save(QStringView file);
+    TextureIOResult save(const QString &file);
+    inline TextureIOResult save(QStringView file) { return save(file.toString()); }
+    TextureIOResult load(const QString &file);
+    inline TextureIOResult load(QStringView file) { return save(file.toString()); }
 
 private:
     explicit Texture(TextureData *dd);
