@@ -541,6 +541,75 @@ bool DDSHandler::read(Texture &texture)
     return true;
 }
 
+bool DDSHandler::write(const Texture &texture)
+{
+    auto format = FormatUnknown;
+    switch (texture.format()) {
+    case Texture::Format::RGB_888:
+        format = FormatR8G8B8;
+        break;
+    default:
+        break;
+    }
+
+    if (format == FormatUnknown) {
+        qCWarning(ddshandler) << "unsupported format" << int(texture.format());
+        return false;
+    }
+
+    QDataStream s(device());
+    s.setByteOrder(QDataStream::LittleEndian);
+
+    DDSHeader dds;
+    // Filling header
+    dds.magic = ddsMagic;
+    dds.size = 124;
+    dds.flags = DDSHeader::FlagCaps | DDSHeader::FlagHeight |
+                DDSHeader::FlagWidth | DDSHeader::FlagPixelFormat;
+    dds.height = quint32(texture.height());
+    dds.width = quint32(texture.width());
+    dds.depth = 0;
+    dds.mipMapCount = quint32(texture.levels() > 1 ? texture.levels() : 0);
+    for (int i = 0; i < DDSHeader::ReservedCount; i++)
+        dds.reserved1[i] = 0;
+    dds.caps = DDSHeader::CapsTexture;
+    dds.caps2 = 0;
+    dds.caps3 = 0;
+    dds.caps4 = 0;
+    dds.reserved2 = 0;
+
+    const auto &info = getFormatInfo(format);
+    if (info.format == FormatUnknown) {
+        qCWarning(ddshandler) << "Can't find info for format" << format;
+        return false;
+    }
+
+    // Filling pixelformat
+    dds.pixelFormat.size = pixelFormatSize;
+    dds.pixelFormat.flags = info.flags;
+    dds.pixelFormat.fourCC = 0;
+    dds.pixelFormat.rgbBitCount = info.bitCount;
+    dds.pixelFormat.aBitMask = info.aBitMask;
+    dds.pixelFormat.rBitMask = info.rBitMask;
+    dds.pixelFormat.gBitMask = info.gBitMask;
+    dds.pixelFormat.bBitMask = info.bBitMask;
+
+    dds.pitchOrLinearSize = computePitch(dds, format, dds.width);
+
+    s << dds;
+
+    for (int y = 0; y < texture.height(); ++y) {
+        const auto line = texture.constLineData(Texture::Position().y(y));
+        const auto written = s.device()->write(reinterpret_cast<const char *>(line.data()), line.size());
+        if (written != line.size()) {
+            qCWarning(ddshandler) << "Can't write to file:" << s.device()->errorString();
+            return false;
+        }
+    }
+
+    return true;
+}
+
 bool DDSHandler::canRead(QIODevice *device)
 {
     if (!device) {
