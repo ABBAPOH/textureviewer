@@ -505,6 +505,11 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
+    if (pitch != m_header.pitchOrLinearSize) {
+        qDebug() << "Computed pitch differs from the actual pitch"
+                 << pitch << "!=" << m_header.pitchOrLinearSize;
+    }
+
     qint64 pos = headerSize + mipmapOffset(m_header, m_format, 0);
     qint64 size = mipmapSize(m_header, m_format, 0);
     if (headerSize + size > device()->size()) {
