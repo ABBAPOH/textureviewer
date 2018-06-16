@@ -42,6 +42,7 @@
 
 #pragma once
 
+#include <QtCore/QLoggingCategory>
 #include <TextureLib/TextureIOHandler>
 #include "ddsheader.h"
 
@@ -79,3 +80,5 @@ public:
     std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType) override;
     Capabilities capabilities(QIODevice *device, const QMimeType &mimeType) const override;
 };
+
+Q_DECLARE_LOGGING_CATEGORY(ddshandler)

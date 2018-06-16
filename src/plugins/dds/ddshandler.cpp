@@ -289,11 +289,11 @@ static Format getFormat(const DDSHeader &dds)
         for (size_t i = 0; i < formatInfosSize; ++i) {
             const FormatInfo &info = formatInfos[i];
             if ((format.flags & info.flags) == info.flags &&
-                 format.rgbBitCount == info.bitCount &&
-                 format.rBitMask == info.rBitMask &&
-                 format.bBitMask == info.bBitMask &&
-                 format.bBitMask == info.bBitMask &&
-                 format.aBitMask == info.aBitMask) {
+                format.rgbBitCount == info.bitCount &&
+                format.rBitMask == info.rBitMask &&
+                format.bBitMask == info.bBitMask &&
+                format.bBitMask == info.bBitMask &&
+                format.aBitMask == info.aBitMask) {
                 return info.format;
             }
         }
@@ -477,10 +477,10 @@ bool DDSHandler::read(Texture &texture)
     Texture result;
 
     if (isCubeMap(m_header)) {
-        qWarning() << "Reading cubemaps is not supported (yet)";
+        qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
         return false;
     } else if (isVolumeMap(m_header)) {
-        qWarning() << "Reading cubemaps is not supported (yet)";
+        qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
         return false;
     } else {
         if (m_format == FormatA8R8G8B8) {
@@ -488,42 +488,42 @@ bool DDSHandler::read(Texture &texture)
         } else if (m_format == FormatR8G8B8) {
             result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height));
         } else {
-            qWarning() << "Unsupported format" << m_format;
+            qCWarning(ddshandler) << "Unsupported format" << m_format;
             return false;
         }
     }
 
     if (result.isNull()) {
-        qWarning() << "Can't create texture";
+        qCWarning(ddshandler) << "Can't create texture";
         return false;
     }
 
     const auto pitch = computePitch(m_header, m_format, m_header.width);
     if (pitch > result.bytesPerLine()) {
-        qWarning() << "Pitch is bigger than texture's bytesPerLine:"
-                   << pitch << ">=" << result.bytesPerLine();
+        qCWarning(ddshandler) << "Pitch is bigger than texture's bytesPerLine:"
+                              << pitch << ">=" << result.bytesPerLine();
         return false;
     }
 
     if (pitch != m_header.pitchOrLinearSize) {
-        qDebug() << "Computed pitch differs from the actual pitch"
-                 << pitch << "!=" << m_header.pitchOrLinearSize;
+        qCDebug(ddshandler) << "Computed pitch differs from the actual pitch"
+                            << pitch << "!=" << m_header.pitchOrLinearSize;
     }
 
     qint64 pos = headerSize + mipmapOffset(m_header, m_format, 0);
     qint64 size = mipmapSize(m_header, m_format, 0);
     if (headerSize + size > device()->size()) {
-        qWarning() << "Texture file is too small";
+        qCWarning(ddshandler) << "Texture file is too small";
         return false;
     }
 
     if (!device()->seek(pos)) {
-        qWarning() << "Can't seek to mipmap";
+        qCWarning(ddshandler) << "Can't seek to mipmap";
         return false;
     }
 
     if (result.bytes() != size) {
-        qWarning() << "Mipmap size differs from texture size";
+        qCWarning(ddshandler) << "Mipmap size differs from texture size";
         return false;
     }
 
@@ -531,7 +531,7 @@ bool DDSHandler::read(Texture &texture)
         const auto line = result.lineData(Texture::Position().y(y));
         auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
         if (read != pitch) {
-            qWarning() << "Can't read from file";
+            qCWarning(ddshandler) << "Can't read from file";
             return false;
         }
     }
@@ -544,12 +544,12 @@ bool DDSHandler::read(Texture &texture)
 bool DDSHandler::canRead(QIODevice *device)
 {
     if (!device) {
-        qWarning() << "DDSHandler: canRead() called with no device";
+        qCWarning(ddshandler) << "DDSHandler: canRead() called with no device";
         return false;
     }
 
     if (device->isSequential()) {
-        qWarning() << "DDSHandler: Sequential devices are not supported";
+        qCWarning(ddshandler) << "DDSHandler: Sequential devices are not supported";
         return false;
     }
 
@@ -589,25 +589,25 @@ bool DDSHandler::verifyHeader(const DDSHeader &dds) const
     quint32 requiredFlags = DDSHeader::FlagCaps | DDSHeader::FlagHeight
             | DDSHeader::FlagWidth | DDSHeader::FlagPixelFormat;
     if ((flags & requiredFlags) != requiredFlags) {
-        qWarning() << "Wrong dds.flags - not all required flags present. "
-                      "Actual flags :" << flags;
+        qCWarning(ddshandler) << "Wrong dds.flags - not all required flags present. "
+                                 "Actual flags :" << flags;
         return false;
     }
 
     if (dds.size != ddsSize) {
-        qWarning() << "Wrong dds.size: actual =" << dds.size
-                   << "expected =" << ddsSize;
+        qCWarning(ddshandler) << "Wrong dds.size: actual =" << dds.size
+                              << "expected =" << ddsSize;
         return false;
     }
 
     if (dds.pixelFormat.size != pixelFormatSize) {
-        qWarning() << "Wrong dds.pixelFormat.size: actual =" << dds.pixelFormat.size
-                   << "expected =" << pixelFormatSize;
+        qCWarning(ddshandler) << "Wrong dds.pixelFormat.size: actual =" << dds.pixelFormat.size
+                              << "expected =" << pixelFormatSize;
         return false;
     }
 
     if (dds.width > INT_MAX || dds.height > INT_MAX) {
-        qWarning() << "Can't read image with w/h bigger than INT_MAX";
+        qCWarning(ddshandler) << "Can't read image with w/h bigger than INT_MAX";
         return false;
     }
 
@@ -632,3 +632,5 @@ DdsHandlerPlugin::Capabilities DdsHandlerPlugin::capabilities(QIODevice *device,
     Q_UNUSED(mimeType);
     return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
 }
+
+Q_LOGGING_CATEGORY(ddshandler, "pluigns.textureformats.ddshandler")
