@@ -112,7 +112,8 @@ void Window::initializeGL()
     _program->link();
 
     {
-        Texture image(u":/R8G8B8.dds");
+        Texture image(u":/dds/ARGB8888.dds");
+
         if (image.isNull()) {
             qCritical() << "Can't load image";
             qApp->quit();

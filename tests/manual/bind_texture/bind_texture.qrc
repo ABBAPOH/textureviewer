@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>R8G8B8.dds</file>
+        <file>dds/ARGB8888.dds</file>
+        <file>dds/R8G8B8.dds</file>
     </qresource>
 </RCC>
