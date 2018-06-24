@@ -63,8 +63,6 @@ public:
         NegativeZ = 5,
     };
 
-    using Point3D = std::tuple<int, int, int>;
-
     class Position;
 
     using DataSpan = gsl::span<uchar>;
