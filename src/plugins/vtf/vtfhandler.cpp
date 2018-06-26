@@ -59,12 +59,12 @@ bool VTFHandler::read(Texture &texture)
 bool VTFHandler::canRead(QIODevice *device)
 {
     if (!device) {
-        qCWarning(vtfhandler) << "DDSHandler: canRead() called with no device";
+        qCWarning(vtfhandler) << "canRead() called with no device";
         return false;
     }
 
     if (device->isSequential()) {
-        qCWarning(vtfhandler) << "DDSHandler: Sequential devices are not supported";
+        qCWarning(vtfhandler) << "Sequential devices are not supported";
         return false;
     }
 
