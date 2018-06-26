@@ -3,9 +3,9 @@
 
 #include <qglobal.h>
 
-enum class VTFImageFormat : qint32
+enum class VTFImageFormat : quint32
 {
-    None = -1,
+    None = 0xffffffff,
     RGBA_8888 = 0,
     ABGR_8888,
     RGB_888,
@@ -32,7 +32,16 @@ enum class VTFImageFormat : qint32
     UVWQ_8888,
     RGBA_16161616F,
     RGBA_16161616,
-    UVLX_8888
+    UVLX_8888,
+    FormatCount
 };
+
+inline VTFImageFormat vtfFormat(quint32 value)
+{
+    if (value >= quint32(VTFImageFormat::FormatCount))
+        return VTFImageFormat::None;
+
+    return VTFImageFormat(value);
+}
 
 #endif // VTFENUMS_H

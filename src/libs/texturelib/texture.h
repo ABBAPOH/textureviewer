@@ -51,6 +51,7 @@ public:
         Invalid = 0,
         ARGB32,
         RGB_888,
+        BGRA_8888,
         FormatsCount // should be the last
     };
 
