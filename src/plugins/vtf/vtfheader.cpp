@@ -2,6 +2,7 @@
 
 QDataStream &operator>>(QDataStream &s, VTFHeader &header)
 {
+    s.setByteOrder(QDataStream::LittleEndian);
     s.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
     s >> header.signature;
@@ -83,24 +84,24 @@ QDataStream &operator<<(QDataStream &s, const VTFHeader &header)
 QDebug &operator<<(QDebug &d, const VTFHeader &header)
 {
     d << "VtfHeader {"
-      << "signature:" << header.signature
-      << "version:" << QString("%1.%2").arg(header.version[0]).arg(header.version[1])
-      << "headerSize:" << header.headerSize
-      << "width:" << header.width
-      << "height:" << header.height
-      << "flags:" << header.flags
-      << "frames:" << header.frames
-      << "firstFrame:" << header.firstFrame
+      << "signature:" << QString("0x%1").arg(header.signature, 0, 16) << ","
+      << "version:" << QString("%1.%2").arg(header.version[0]).arg(header.version[1]) << ","
+      << "headerSize:" << header.headerSize << ","
+      << "width:" << header.width << ","
+      << "height:" << header.height << ","
+      << "flags:" << header.flags << ","
+      << "frames:" << header.frames << ","
+      << "firstFrame:" << header.firstFrame << ","
       << "reflectivity: ["
-      << header.reflectivity[0]
-      << header.reflectivity[1]
-      << header.reflectivity[2]
+      << header.reflectivity[0] << ","
+      << header.reflectivity[1] << ","
+      << header.reflectivity[2] << ","
       << "]"
-      << "bumpmapScale:" << header.bumpmapScale
-      << "highResImageFormat:" << header.highResImageFormat
-      << "lowResImageWidth:" << header.lowResImageWidth
-      << "lowResImageHeight:" << header.lowResImageHeight
-      << "depth:" << header.depth
+      << "bumpmapScale:" << header.bumpmapScale << ","
+      << "highResImageFormat:" << header.highResImageFormat << ","
+      << "lowResImageWidth:" << header.lowResImageWidth << ","
+      << "lowResImageHeight:" << header.lowResImageHeight << ","
+      << "depth:" << header.depth << ","
       << "numResources:" << header.numResources
       << "}";
 

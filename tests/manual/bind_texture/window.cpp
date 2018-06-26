@@ -4,6 +4,7 @@
 #include <QCoreApplication>
 #include <QTime>
 #include <TextureLib/Texture>
+#include <TextureLib/TextureIO>
 #include <TextureLib/Utils>
 
 const char* const vertexShaderSource = "\n"
@@ -112,7 +113,10 @@ void Window::initializeGL()
     _program->link();
 
     {
-        Texture image(u":/dds/ARGB8888.dds");
+//        Texture image(u":/dds/ARGB8888.dds");
+
+        TextureIO io(":/vtf/BGRA8888.vtf", "image/x-rgb");
+        auto image = io.read().second;
 
         if (image.isNull()) {
             qCritical() << "Can't load image";

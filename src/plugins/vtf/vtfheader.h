@@ -25,12 +25,12 @@ struct VTFHeader
     uchar lowResImageHeight; // Low resolution image height.
 
     // 7.2+
-    quint16 depth;   // Depth of the largest mipmap in pixels.
+    quint16 depth {0};   // Depth of the largest mipmap in pixels.
                         // Must be a power of 2. Can be 0 or 1 for a 2D texture (v7.2 only).
 
     // 7.3+
     uchar padding2[3];  // depth padding (4 byte alignment).
-    quint32 numResources;  // Number of resources this vtf has
+    quint32 numResources {0};  // Number of resources this vtf has
 };
 
 QDataStream &operator>>(QDataStream &s, VTFHeader &header);
