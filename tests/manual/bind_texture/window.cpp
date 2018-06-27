@@ -114,9 +114,7 @@ void Window::initializeGL()
 
     {
 //        Texture image(u":/dds/ARGB8888.dds");
-
-        TextureIO io(":/vtf/BGRA8888.vtf", "image/x-rgb");
-        auto image = io.read().second;
+        Texture image(u":/vtf/BGRA8888.vtf");
 
         if (image.isNull()) {
             qCritical() << "Can't load image";
