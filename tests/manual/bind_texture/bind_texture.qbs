@@ -4,6 +4,7 @@ ConsoleApp {
     Depends { name: "Qt.core" }
     Depends { name: "Qt.gui" }
     Depends { name: "TextureLib" }
+    Depends { name: "ExtraMimeTypesLib" }
 
     cpp.defines: [
         // The following define makes your compiler emit warnings if you use

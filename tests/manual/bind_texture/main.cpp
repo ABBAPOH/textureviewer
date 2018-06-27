@@ -6,6 +6,8 @@
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(extramimetypes);
+
     QGuiApplication a(argc, argv);
 
     a.addLibraryPath(a.applicationDirPath() + TextureIO::pluginsDirPath());
