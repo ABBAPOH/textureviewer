@@ -9,6 +9,11 @@ inline bool isPower2(T value)
 
 static bool validateHeader(const VTFHeader &header)
 {
+    if (header.headerSize != 80) {
+        qCWarning(vtfhandler) << "Invalid header.headerSize:" << header.headerSize;
+        return false;
+    }
+
     if (!header.width || !isPower2(header.width)) {
         qCWarning(vtfhandler) << "Invalid header.width value: "
                               << header.width << "Should be greater then zero and be power of 2";
@@ -51,6 +56,29 @@ static bool validateHeader(const VTFHeader &header)
     return true;
 }
 
+static quint32 computePitch(VTFImageFormat format, quint32 width)
+{
+    switch (format) {
+    case VTFImageFormat::BGRA_8888:
+        return (width * 32 + 7) >> 3;
+    default:
+        break;
+    }
+    return 0;
+}
+
+static bool readPadding(QIODevice *device, qint64 size)
+{
+    const auto buffer = std::make_unique<char[]>(size_t(size));
+    const auto read = device->read(buffer.get(), size);
+    if (read != size) {
+        qCWarning(vtfhandler) << "Can't read padding of size" << size
+                              << ":" << device->errorString();
+        return false;
+    }
+    return true;
+}
+
 bool VTFHandler::canRead() const
 {
     return canRead(device());
@@ -66,6 +94,9 @@ bool VTFHandler::read(Texture &texture)
     QDataStream s(device());
     s >> header;
 
+    if (!readPadding(device(), header.headerSize - device()->pos()))
+        return false;
+
     if (s.status() != QDataStream::Ok)
         return false;
 
@@ -79,19 +110,50 @@ bool VTFHandler::read(Texture &texture)
     }
 
     if (header.version[0] == 7 && header.version[1] == 2) {
-        auto lowSize = header.lowResImageHeight * header.lowResImageHeight / 16;
-        std::unique_ptr<char[]> buffer(new char[size_t(lowSize)]);
-        auto read = device()->read(buffer.get(), lowSize);
-        if (read != lowSize) {
-            qCWarning(vtfhandler) << "Can't read low resolution image" << device()->errorString();
+        auto lowSize = header.lowResImageHeight * header.lowResImageHeight / 2;
+        if (!readPadding(device(), lowSize))
             return false;
-        }
     }
 
     texture = Texture::create(Texture::Type::Texture2D, Texture::Format::BGRA_8888, header.width, header.height, 1);
     if (texture.isNull()) {
         qCWarning(vtfhandler) << "Can't create resulting texture, file is too big or corrupted";
         return false;
+    }
+
+    for (int level = header.mipmapCount - 1; level >= 0; --level) {
+        auto width = std::max<quint16>(1, header.width >> level);
+        auto height = std::max<quint16>(1, header.height >> level);
+        auto depth = std::max<quint16>(1, header.depth >> level);
+        auto pitch = computePitch(highFormat, width);
+
+        if (pitch > texture.bytesPerLine(level)) {
+            qCWarning(vtfhandler) << "Pitch is bigger than texture's bytesPerLine:"
+                                  << pitch << ">=" << texture.bytesPerLine();
+            return false;
+        }
+
+        for (int layer = 0; layer < header.frames; ++layer) {
+            for (int face = 0; face < 1; ++face) { // TODO: where do we get faces??
+                for (int z = 0; z < depth; ++z) {
+                    for (int y = 0; y < height; ++y) {
+                        const auto line = texture.lineData(
+                                    Texture::Position()
+                                    .y(y)
+                                    .z(z)
+                                    .side(Texture::Side(face))
+                                    .layer(layer)
+                                    .level(level));
+                        auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
+                        if (read != pitch) {
+                            qCWarning(vtfhandler) << "Can't read from file:"
+                                                  << device()->errorString();
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     qCDebug(vtfhandler) << "header:" << header;
