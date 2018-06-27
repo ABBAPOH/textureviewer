@@ -42,17 +42,14 @@ QByteArray TestHandlerPlugin::name() const
     return "test";
 }
 
-std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(QIODevice *device, const QMimeType &mimeType)
+std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(const QMimeType &mimeType)
 {
-    Q_UNUSED(device);
     Q_UNUSED(mimeType);
     return std::make_unique<TestHandler>();
 }
 
-TestHandlerPlugin::Capabilities TestHandlerPlugin::capabilities(QIODevice *device,
-                                                                const QMimeType &mimeType) const
+TestHandlerPlugin::Capabilities TestHandlerPlugin::capabilities(const QMimeType &mimeType) const
 {
-    Q_UNUSED(device);
     Q_UNUSED(mimeType);
     return Capabilities(Capability::CanRead | Capability::CanWrite);
 }

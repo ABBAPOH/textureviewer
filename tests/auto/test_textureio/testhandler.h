@@ -19,6 +19,6 @@ class TestHandlerPlugin : public TextureIOHandlerPlugin
 public:
     TestHandlerPlugin();
     QByteArray name() const override;
-    std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType) override;
-    Capabilities capabilities(QIODevice *device, const QMimeType &mimeType) const override;
+    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
+    Capabilities capabilities(const QMimeType &mimeType) const override;
 };

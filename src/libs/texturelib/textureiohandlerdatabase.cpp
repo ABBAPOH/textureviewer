@@ -74,7 +74,7 @@ std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevice *de
     auto plugin = map.value(mimeType.name());
     if (!plugin)
         return result;
-    result = plugin->create(device, mimeType);
+    result = plugin->create(mimeType);
 
     if (!result)
         return result;
@@ -90,7 +90,7 @@ std::vector<QMimeType> TextureIOHandlerDatabase::availableMimeTypes(Capabilities
     std::vector<QMimeType> result;
     for (auto it = map.begin(), end = map.end(); it != end; it++) {
         auto mt = QMimeDatabase().mimeTypeForName(it.key());
-        if (it.value()->capabilities(nullptr, mt) & caps)
+        if (it.value()->capabilities(mt) & caps)
             result.push_back(mt);
     }
     return result;

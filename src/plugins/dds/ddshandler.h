@@ -78,8 +78,8 @@ class DdsHandlerPlugin : public TextureIOHandlerPlugin
 public:
     DdsHandlerPlugin() {}
     QByteArray name() const override;
-    std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType) override;
-    Capabilities capabilities(QIODevice *device, const QMimeType &mimeType) const override;
+    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
+    Capabilities capabilities(const QMimeType &mimeType) const override;
 };
 
 Q_DECLARE_LOGGING_CATEGORY(ddshandler)

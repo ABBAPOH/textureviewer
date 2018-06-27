@@ -688,30 +688,17 @@ QByteArray DdsHandlerPlugin::name() const
     return "dds";
 }
 
-std::unique_ptr<TextureIOHandler> DdsHandlerPlugin::create(QIODevice *device, const QMimeType &mimeType)
+std::unique_ptr<TextureIOHandler> DdsHandlerPlugin::create(const QMimeType &mimeType)
 {
-    Q_UNUSED(device);
     Q_UNUSED(mimeType);
     return std::make_unique<DDSHandler>();
 }
 
-DdsHandlerPlugin::Capabilities DdsHandlerPlugin::capabilities(QIODevice *device, const QMimeType &mimeType) const
+DdsHandlerPlugin::Capabilities DdsHandlerPlugin::capabilities(const QMimeType &mimeType) const
 {
-    DdsHandlerPlugin::Capabilities result;
-
     if (mimeType.name() != u"image/x-ddx")
-        return result;
-
-    if (device) {
-        if ((device->openMode() & QIODevice::ReadOnly) && DDSHandler::canRead(device))
-            result |= DdsHandlerPlugin::CanRead;
-        if (device->openMode() & QIODevice::WriteOnly)
-            result |= DdsHandlerPlugin::CanWrite;
-    } else {
-        result |= Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
-    }
-
-    return result;
+        return Capabilities();
+    return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
 }
 
 Q_LOGGING_CATEGORY(ddshandler, "pluigns.textureformats.ddshandler")

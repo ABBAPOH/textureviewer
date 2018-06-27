@@ -48,7 +48,7 @@ public:
     explicit TextureIOHandlerPlugin() {}
 
     virtual QByteArray name() const = 0;
-    virtual Capabilities capabilities(QIODevice *device, const QMimeType &mimeType) const = 0;
+    virtual Capabilities capabilities(const QMimeType &mimeType) const = 0;
 
-    virtual std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType) = 0;
+    virtual std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) = 0;
 };

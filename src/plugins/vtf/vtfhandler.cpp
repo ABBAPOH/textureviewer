@@ -8,6 +8,9 @@ bool VTFHandler::canRead() const
 
 bool VTFHandler::read(Texture &texture)
 {
+    if (!canRead(device()))
+        return false;
+
     VTFHeader header;
 
     QDataStream s(device());
@@ -56,7 +59,7 @@ bool VTFHandler::read(Texture &texture)
     return true;
 }
 
-bool VTFHandler::canRead(QIODevice *device)
+bool VTFHandler::canRead(QIODevice *device) const
 {
     if (!device) {
         qCWarning(vtfhandler) << "canRead() called with no device";
@@ -76,16 +79,14 @@ QByteArray VTFHandlerPlugin::name() const
     return QByteArrayLiteral("vtf");
 }
 
-std::unique_ptr<TextureIOHandler> VTFHandlerPlugin::create(QIODevice *device, const QMimeType &mimeType)
+std::unique_ptr<TextureIOHandler> VTFHandlerPlugin::create(const QMimeType &mimeType)
 {
-    Q_UNUSED(device);
     Q_UNUSED(mimeType);
     return std::make_unique<VTFHandler>();
 }
 
-TextureIOHandlerPlugin::Capabilities VTFHandlerPlugin::capabilities(QIODevice *device, const QMimeType &mimeType) const
+TextureIOHandlerPlugin::Capabilities VTFHandlerPlugin::capabilities(const QMimeType &mimeType) const
 {
-    Q_UNUSED(device);
     Q_UNUSED(mimeType);
     return Capabilities(VTFHandlerPlugin::CanRead);
 }
