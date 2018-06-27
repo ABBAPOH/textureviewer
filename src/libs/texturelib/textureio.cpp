@@ -10,6 +10,19 @@
 #include <QtCore/QMimeDatabase>
 #include <QDebug>
 
+using Capability = TextureIOHandlerPlugin::Capability;
+using Capabilities = TextureIOHandlerPlugin::Capabilities;
+
+static inline QIODevice::OpenMode caps2OpenMode(Capabilities caps)
+{
+    QIODevice::OpenMode result;
+    if (caps & Capability::CanRead)
+        result |= QIODevice::ReadOnly;
+    if (caps & Capability::CanWrite)
+        result |= QIODevice::WriteOnly;
+    return result;
+}
+
 class TextureIOPrivate
 {
     Q_DECLARE_PUBLIC(TextureIO)
@@ -18,8 +31,8 @@ class TextureIOPrivate
 public:
     explicit TextureIOPrivate(TextureIO *qq) : q_ptr(qq) {}
 
-    TextureIOResult ensureDeviceOpened(QIODevice::OpenMode mode);
-    TextureIOResult ensureHandlerCreated(QIODevice::OpenMode mode);
+    TextureIOResult ensureDeviceOpened(Capabilities caps);
+    TextureIOResult ensureHandlerCreated(Capabilities caps);
     void resetHandler();
 
     std::unique_ptr<TextureIOHandler> handler;
@@ -31,10 +44,12 @@ public:
     std::experimental::optional<QMimeType> mimeType;
 };
 
-TextureIOResult TextureIOPrivate::ensureDeviceOpened(QIODevice::OpenMode mode)
+TextureIOResult TextureIOPrivate::ensureDeviceOpened(Capabilities caps)
 {
     if (!device)
         return TextureIOResult::Status::DeviceError;
+
+    const auto mode = caps2OpenMode(caps);
 
     if ((mode & QIODevice::ReadOnly) && file && !file->exists())
         return TextureIOResult::Status::FileNotFound;
@@ -47,9 +62,9 @@ TextureIOResult TextureIOPrivate::ensureDeviceOpened(QIODevice::OpenMode mode)
     return TextureIOResult::Status::Ok;
 }
 
-TextureIOResult TextureIOPrivate::ensureHandlerCreated(QIODevice::OpenMode mode)
+TextureIOResult TextureIOPrivate::ensureHandlerCreated(Capabilities caps)
 {
-    const auto ok = ensureDeviceOpened(mode);
+    const auto ok = ensureDeviceOpened(caps);
     if (!ok)
         return ok;
 
@@ -234,7 +249,7 @@ std::pair<TextureIOResult, Texture> TextureIO::read()
 {
     Q_D(TextureIO);
 
-    auto ok = d->ensureHandlerCreated(QIODevice::ReadOnly);
+    auto ok = d->ensureHandlerCreated(Capability::CanRead);
     if (!ok)
         return {ok, Texture()};
 
@@ -253,7 +268,7 @@ std::pair<TextureIOResult, Texture> TextureIO::read()
 TextureIOResult TextureIO::write(const Texture &contents)
 {
     Q_D(TextureIO);
-    auto ok = d->ensureHandlerCreated(QIODevice::WriteOnly);
+    auto ok = d->ensureHandlerCreated(Capability::CanWrite);
     if (!ok)
         return ok;
 
