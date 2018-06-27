@@ -74,11 +74,6 @@ bool VTFHandler::canRead(QIODevice *device) const
     return device->peek(4) == QByteArrayLiteral("VTF\0");
 }
 
-QByteArray VTFHandlerPlugin::name() const
-{
-    return QByteArrayLiteral("vtf");
-}
-
 std::unique_ptr<TextureIOHandler> VTFHandlerPlugin::create(const QMimeType &mimeType)
 {
     if (mimeType.name() == u"image/x-vtf")

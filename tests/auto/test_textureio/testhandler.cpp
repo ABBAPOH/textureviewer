@@ -37,11 +37,6 @@ TestHandlerPlugin::TestHandlerPlugin()
 {
 }
 
-QByteArray TestHandlerPlugin::name() const
-{
-    return "test";
-}
-
 std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(const QMimeType &mimeType)
 {
     Q_UNUSED(mimeType);

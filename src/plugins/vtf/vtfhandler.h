@@ -27,7 +27,6 @@ class VTFHandlerPlugin : public TextureIOHandlerPlugin
 public:
     VTFHandlerPlugin() = default;
 
-    QByteArray name() const override;
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
     Capabilities capabilities(const QMimeType &mimeType) const override;
 };

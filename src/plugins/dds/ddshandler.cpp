@@ -683,11 +683,6 @@ bool DDSHandler::verifyHeader(const DDSHeader &dds) const
     return true;
 }
 
-QByteArray DdsHandlerPlugin::name() const
-{
-    return "dds";
-}
-
 std::unique_ptr<TextureIOHandler> DdsHandlerPlugin::create(const QMimeType &mimeType)
 {
     if (mimeType.name() == u"image/x-dds")

@@ -77,7 +77,6 @@ class DdsHandlerPlugin : public TextureIOHandlerPlugin
     Q_PLUGIN_METADATA(IID "org.arch.ImageDocument.DdsHandlerPlugin" FILE "dds.json")
 public:
     DdsHandlerPlugin() {}
-    QByteArray name() const override;
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
     Capabilities capabilities(const QMimeType &mimeType) const override;
 };

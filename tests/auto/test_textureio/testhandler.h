@@ -18,7 +18,6 @@ class TestHandlerPlugin : public TextureIOHandlerPlugin
 
 public:
     TestHandlerPlugin();
-    QByteArray name() const override;
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
     Capabilities capabilities(const QMimeType &mimeType) const override;
 };
