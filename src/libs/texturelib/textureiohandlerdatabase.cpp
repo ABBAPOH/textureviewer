@@ -63,7 +63,7 @@ TextureIOHandlerDatabase::~TextureIOHandlerDatabase()
         loader->unload();
 }
 
-std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevice *device, const QMimeType &mimeType)
+std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevice *device, const QMimeType &mimeType, Capabilities caps)
 {
     std::unique_ptr<TextureIOHandler> result;
     if (!device || !mimeType.isValid()) {
@@ -74,6 +74,10 @@ std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevice *de
     auto plugin = map.value(mimeType.name());
     if (!plugin)
         return result;
+
+    if (!(plugin->capabilities(mimeType) & caps))
+        return result;
+
     result = plugin->create(mimeType);
 
     if (!result)

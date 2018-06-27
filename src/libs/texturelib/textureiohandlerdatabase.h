@@ -15,7 +15,7 @@ public:
 
     using Capabilities = TextureIOHandlerPlugin::Capabilities;
 
-    std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType);
+    std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType, Capabilities caps);
     std::vector<QMimeType> availableMimeTypes(Capabilities caps) const;
     TextureIOHandlerPlugin *plugin(const QString &mimeType) const;
     void registerPlugin(const QString &mimeType, TextureIOHandlerPlugin *plugin);

@@ -84,7 +84,7 @@ TextureIOResult TextureIOPrivate::ensureHandlerCreated(Capabilities caps)
         return TextureIOResult::Status::InvalidMimeType;
 
     auto db = TextureIOHandlerDatabase::instance();
-    handler = db->create(device, mt);
+    handler = db->create(device, mt, caps);
     if (!handler)
         return TextureIOResult::Status::UnsupportedMimeType;
 
