@@ -94,12 +94,10 @@ void TestDds::testRead()
     TextureIO reader(path);
 //    QVERIFY(reader.canRead());
     const auto result = reader.read();
-    const auto &status = result.first;
-    const auto &texture = result.second;
-    QVERIFY2(status, qPrintable(toUserString(status)));
-    QCOMPARE(texture.width(), width);
-    QCOMPARE(texture.height(), height);
-    QVERIFY(verifyTexture(texture, QImage(sourcePath)));
+    QVERIFY2(result, qPrintable(toUserString(result.error())));
+    QCOMPARE(result->width(), width);
+    QCOMPARE(result->height(), height);
+    QVERIFY(verifyTexture(*result, QImage(sourcePath)));
 }
 
 QTEST_MAIN(TestDds)

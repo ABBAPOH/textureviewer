@@ -8,6 +8,8 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QMimeType>
 
+#include <tl/expected.h>
+
 class QIODevice;
 
 class TextureIOPrivate;
@@ -24,6 +26,9 @@ public:
     TextureIO(QIODevice *device, const QString &mimeType);
     ~TextureIO();
 
+    template<class Value, class Error>
+    using Expected = tl::expected<Value, Error>;
+
     QString fileName() const;
     void setFileName(const QString &fileName);
 
@@ -34,7 +39,7 @@ public:
     void setMimeType(const QMimeType &mimeType);
     void setMimeType(const QString &mimeType);
 
-    std::pair<TextureIOResult, Texture> read();
+    Expected<Texture, TextureIOError> read();
 
     TextureIOResult write(const Texture &contents);
 

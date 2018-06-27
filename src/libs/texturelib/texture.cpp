@@ -531,9 +531,11 @@ TextureIOResult Texture::load(const QString &file)
 {
     TextureIO io(file);
     auto result = io.read();
-    if (result.first)
-        *this = result.second;
-    return result.first;
+    if (result) {
+        *this = *result;
+        return TextureIOResult();
+    }
+    return result.error();
 }
 
 TextureIOResult Texture::save(const QString &file)

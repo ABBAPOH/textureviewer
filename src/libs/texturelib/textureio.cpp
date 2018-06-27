@@ -261,19 +261,22 @@ void TextureIO::setMimeType(const QString &mimeType)
 /*!
     Reads the contents of an texture file.
 */
-std::pair<TextureIOResult, Texture> TextureIO::read()
+TextureIO::Expected<Texture, TextureIOError> TextureIO::read()
 {
     Q_D(TextureIO);
 
     auto ok = d->ensureHandlerCreated(Capability::CanRead);
     if (!ok)
-        return {ok, Texture()};
+        return tl::make_unexpected(ok.error());
 
     Texture texture;
     if (!d->handler->read(texture))
         ok = TextureIOError::HandlerError;
 
-    return {ok, ok ? texture : Texture()};
+    if (!ok)
+        return tl::make_unexpected(ok.error());
+
+    return texture;
 }
 
 /*!

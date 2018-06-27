@@ -131,7 +131,7 @@ public:
     TextureIOResult save(const QString &file);
     inline TextureIOResult save(QStringView file) { return save(file.toString()); }
     TextureIOResult load(const QString &file);
-    inline TextureIOResult load(QStringView file) { return save(file.toString()); }
+    inline TextureIOResult load(QStringView file) { return load(file.toString()); }
 
 private:
     explicit Texture(TextureData *dd);
