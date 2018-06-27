@@ -690,16 +690,16 @@ QByteArray DdsHandlerPlugin::name() const
 
 std::unique_ptr<TextureIOHandler> DdsHandlerPlugin::create(const QMimeType &mimeType)
 {
-    if (mimeType.name() != u"image/x-dds")
-        return nullptr;
-    return std::make_unique<DDSHandler>();
+    if (mimeType.name() == u"image/x-dds")
+        return std::make_unique<DDSHandler>();
+    return nullptr;
 }
 
 DdsHandlerPlugin::Capabilities DdsHandlerPlugin::capabilities(const QMimeType &mimeType) const
 {
-    if (mimeType.name() != u"image/x-dds")
-        return Capabilities();
-    return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
+    if (mimeType.name() == u"image/x-dds")
+        return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
+    return Capabilities();
 }
 
 Q_LOGGING_CATEGORY(ddshandler, "pluigns.textureformats.ddshandler")
