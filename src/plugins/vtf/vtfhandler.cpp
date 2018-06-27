@@ -81,13 +81,15 @@ QByteArray VTFHandlerPlugin::name() const
 
 std::unique_ptr<TextureIOHandler> VTFHandlerPlugin::create(const QMimeType &mimeType)
 {
-    Q_UNUSED(mimeType);
+    if (mimeType.name() != u"image/x-vtf")
+        return nullptr;
     return std::make_unique<VTFHandler>();
 }
 
 TextureIOHandlerPlugin::Capabilities VTFHandlerPlugin::capabilities(const QMimeType &mimeType) const
 {
-    Q_UNUSED(mimeType);
+    if (mimeType.name() != u"image/x-vtf")
+        return Capabilities();
     return Capabilities(VTFHandlerPlugin::CanRead);
 }
 
