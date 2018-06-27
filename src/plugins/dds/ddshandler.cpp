@@ -697,9 +697,21 @@ std::unique_ptr<TextureIOHandler> DdsHandlerPlugin::create(QIODevice *device, co
 
 DdsHandlerPlugin::Capabilities DdsHandlerPlugin::capabilities(QIODevice *device, const QMimeType &mimeType) const
 {
-    Q_UNUSED(device);
-    Q_UNUSED(mimeType);
-    return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
+    DdsHandlerPlugin::Capabilities result;
+
+    if (mimeType.name() != u"image/x-ddx")
+        return result;
+
+    if (device) {
+        if ((device->openMode() & QIODevice::ReadOnly) && DDSHandler::canRead(device))
+            result |= DdsHandlerPlugin::CanRead;
+        if (device->openMode() & QIODevice::WriteOnly)
+            result |= DdsHandlerPlugin::CanWrite;
+    } else {
+        result |= Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
+    }
+
+    return result;
 }
 
 Q_LOGGING_CATEGORY(ddshandler, "pluigns.textureformats.ddshandler")
