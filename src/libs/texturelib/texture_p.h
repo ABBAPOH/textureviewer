@@ -62,6 +62,7 @@ inline int bbpForFormat(Texture::Format format)
     case Texture::Format::FormatsCount:
         Q_UNREACHABLE();
     case Texture::Format::ARGB32:
+    case Texture::Format::BGRA_8888:
         return 32;
     case Texture::Format::RGB_888:
         return 24;
