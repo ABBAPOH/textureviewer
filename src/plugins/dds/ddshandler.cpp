@@ -696,7 +696,7 @@ std::unique_ptr<TextureIOHandler> DdsHandlerPlugin::create(const QMimeType &mime
 
 DdsHandlerPlugin::Capabilities DdsHandlerPlugin::capabilities(const QMimeType &mimeType) const
 {
-    if (mimeType.name() != u"image/x-ddx")
+    if (mimeType.name() != u"image/x-dds")
         return Capabilities();
     return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
 }
