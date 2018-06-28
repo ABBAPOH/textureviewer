@@ -122,7 +122,7 @@ void TestTextureIO::read()
     io.setMimeType("application/octet-stream");
     const auto result = io.read();
     const auto ok = result.first;
-    QVERIFY2(ok, qPrintable(toHumanString(ok.status())));
+    QVERIFY2(ok, qPrintable(toUserString(ok.status())));
 
     const auto texture = result.second;
     QCOMPARE(texture, expectedTexture);
@@ -167,7 +167,7 @@ void TestTextureIO::write()
     }
 
     const auto ok = io.write(expectedTexture);
-    QVERIFY2(ok, qPrintable(toHumanString(ok.status())));
+    QVERIFY2(ok, qPrintable(toUserString(ok.status())));
 
     buffer.close();
 

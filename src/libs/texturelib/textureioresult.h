@@ -15,7 +15,7 @@ enum class TextureIOStatus
     HandlerError,
 };
 
-QString toHumanString(TextureIOStatus status);
+QString toUserString(TextureIOStatus status);
 
 class TEXTURELIB_EXPORT TextureIOResult
 {
@@ -30,10 +30,9 @@ public:
     TextureIOResult &operator=(const TextureIOResult &other) noexcept;
 
     inline TextureIOStatus status() const noexcept { return m_status; }
-    inline bool toBool() const noexcept { return m_status == TextureIOStatus::Ok; }
 
-    inline operator bool() const noexcept { return toBool(); }
-    inline bool operator !() const noexcept { return !toBool(); }
+    inline operator bool() const noexcept { return m_status == TextureIOStatus::Ok; }
+    inline bool operator !() const noexcept { return m_status != TextureIOStatus::Ok; }
 
 private:
     TextureIOStatus m_status;

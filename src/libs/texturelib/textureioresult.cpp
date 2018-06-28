@@ -3,7 +3,7 @@
 /*!
     Returns the human-readable message describing the status.
 */
-QString toHumanString(TextureIOStatus status)
+QString toUserString(TextureIOStatus status)
 {
     switch (status) {
     case TextureIOStatus::Ok:
@@ -81,13 +81,6 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 /*!
     \fn TextureIOStatus TextureIOStatus() const
     Returns status code.
-*/
-
-/*!
-    \fn bool TextureIOResult::toBool() const
-    Returns true if status() is equal to TextureIOStatus::Ok.
-
-    \sa TextureIOResult::operator bool()
 */
 
 /*!
