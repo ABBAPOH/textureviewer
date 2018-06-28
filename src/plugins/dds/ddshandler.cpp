@@ -524,7 +524,7 @@ bool DDSHandler::read(Texture &texture)
     for (quint32 layer = 0; layer < layers; ++layer) {
         for (int face = 0; face < faces; ++face) {
             if (isCubeMap(m_header)
-                    && !(m_header.caps2 & (DDSHeader::DDSCaps2Flags::Caps2CubeMapPositiveX << face))) {
+                    && !(m_header.caps2 & (faceFlags[face]))) {
                 continue;
             }
 
