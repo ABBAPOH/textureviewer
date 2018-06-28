@@ -218,11 +218,11 @@ QDataStream &operator<<(QDataStream &s, const DDSHeader &header);
 
 struct DDSHeaderDX10
 {
-    quint32 dxgiFormat;
-    quint32 resourceDimension;
-    quint32 miscFlag;
-    quint32 arraySize;
-    quint32 reserved;
+    quint32 dxgiFormat {0};
+    quint32 resourceDimension {0};
+    quint32 miscFlag {0};
+    quint32 arraySize {0};
+    quint32 reserved {0};
 };
 
 QDataStream &operator>>(QDataStream &s, DDSHeaderDX10 &header);
