@@ -476,6 +476,9 @@ bool DDSHandler::read(Texture &texture)
 
     Texture result;
 
+    const auto levels = std::max<int>(1, m_header.mipMapCount);
+    const auto faces = isCubeMap(m_header) ? 6 : 1;
+
     if (isCubeMap(m_header)) {
         qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
         return false;
@@ -484,9 +487,9 @@ bool DDSHandler::read(Texture &texture)
         return false;
     } else {
         if (m_format == FormatA8R8G8B8) {
-            result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height));
+            result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height), levels);
         } else if (m_format == FormatR8G8B8) {
-            result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height));
+            result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height), levels);
         } else {
             qCWarning(ddshandler) << "Unsupported format" << m_format;
             return false;
@@ -499,11 +502,6 @@ bool DDSHandler::read(Texture &texture)
     }
 
     const auto pitch = computePitch(m_header, m_format, m_header.width);
-    if (pitch > result.bytesPerLine()) {
-        qCWarning(ddshandler) << "Pitch is bigger than texture's bytesPerLine:"
-                              << pitch << ">=" << result.bytesPerLine();
-        return false;
-    }
 
     if (pitch != m_header.pitchOrLinearSize) {
         qCDebug(ddshandler) << "Computed pitch differs from the actual pitch"
@@ -522,17 +520,36 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    if (result.bytes() != size) {
-        qCWarning(ddshandler) << "Mipmap size differs from texture size";
-        return false;
-    }
+    for (int face = 0; face < faces; ++face) {
+        if (isCubeMap(m_header)
+                && !(m_header.caps2 & (DDSHeader::DDSCaps2Flags::Caps2CubeMapPositiveX << face))) {
+            continue;
+        }
 
-    for (int y = 0; y < result.height(); ++y) {
-        const auto line = result.lineData(Texture::Position().y(y));
-        auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
-        if (read != pitch) {
-            qCWarning(ddshandler) << "Can't read from file";
-            return false;
+        for (int level = 0; level < levels; ++level) {
+            auto width = std::max<quint32>(1, m_header.width >> level);
+            auto height = std::max<quint32>(1, m_header.height >> level);
+//            auto depth = std::max<quint32>(1, m_header.depth >> level);
+            const auto pitch = computePitch(m_header, m_format, width);
+
+            if (pitch > result.bytesPerLine(level)) {
+                qCWarning(ddshandler) << "Pitch is bigger than texture's bytesPerLine:"
+                                      << pitch << ">=" << result.bytesPerLine(level);
+                return false;
+            }
+
+            for (int y = 0; y < height; ++y) {
+                const auto line = result.lineData(
+                            Texture::Position()
+                            .y(y)
+                            .side(Texture::Side(face))
+                            .level(level));
+                auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
+                if (read != pitch) {
+                    qCWarning(ddshandler) << "Can't read from file";
+                    return false;
+                }
+            }
         }
     }
 
