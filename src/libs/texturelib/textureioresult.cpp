@@ -1,6 +1,28 @@
 #include "textureioresult.h"
 
 /*!
+    Returns the human-readable message describing the status.
+*/
+QString toHumanString(TextureIOStatus status)
+{
+    switch (status) {
+    case TextureIOStatus::Ok:
+        return TextureIOResult::tr("Ok");
+    case TextureIOStatus::InvalidMimeType:
+        return TextureIOResult::tr("Invalid mimetype");
+    case TextureIOStatus::FileNotFound:
+        return TextureIOResult::tr("File not found");
+    case TextureIOStatus::DeviceError:
+        return TextureIOResult::tr("Device error");
+    case TextureIOStatus::UnsupportedMimeType:
+        return TextureIOResult::tr("Unsupported format");
+    case TextureIOStatus::HandlerError:
+        return TextureIOResult::tr("Handler error");
+    }
+    return QString();
+}
+
+/*!
     \class TextureIOResult
     This is a helper class that wraps status enum.
 */
@@ -62,29 +84,6 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 */
 
 /*!
-    Returns the human-readable message describing the status.
-*/
-
-QString TextureIOResult::toString() const
-{
-    switch (m_status) {
-    case TextureIOStatus::Ok:
-        return TextureIOResult::tr("Ok");
-    case TextureIOStatus::InvalidMimeType:
-        return TextureIOResult::tr("Invalid mimetype");
-    case TextureIOStatus::FileNotFound:
-        return TextureIOResult::tr("File not found");
-    case TextureIOStatus::DeviceError:
-        return TextureIOResult::tr("Device error");
-    case TextureIOStatus::UnsupportedMimeType:
-        return TextureIOResult::tr("Unsupported format");
-    case TextureIOStatus::HandlerError:
-        return TextureIOResult::tr("Handler error");
-    }
-    return QString();
-}
-
-/*!
     \fn bool TextureIOResult::toBool() const
     Returns true if status() is equal to TextureIOStatus::Ok.
 
@@ -116,3 +115,4 @@ QString TextureIOResult::toString() const
     \related TextureIOResult
     Returns true if \a lhs status() is not equal to the \a rhs status().
 */
+

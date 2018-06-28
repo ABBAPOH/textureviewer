@@ -145,7 +145,7 @@ Texture::Texture(const QString &file)
 {
     auto ok = load(file);
     if (!ok)
-        qCWarning(texture) << Q_FUNC_INFO << "Can't load texture from file" << file << ok.toString();
+        qCWarning(texture) << Q_FUNC_INFO << "Can't load texture from file" << file << toHumanString(ok.status());
 }
 
 Texture::Texture(QStringView file) :

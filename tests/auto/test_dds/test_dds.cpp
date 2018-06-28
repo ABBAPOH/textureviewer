@@ -96,7 +96,7 @@ void TestDds::testRead()
     const auto result = reader.read();
     const auto &status = result.first;
     const auto &texture = result.second;
-    QVERIFY2(status, qPrintable(status.toString()));
+    QVERIFY2(status, qPrintable(toHumanString(status.status())));
     QCOMPARE(texture.width(), width);
     QCOMPARE(texture.height(), height);
     QVERIFY(verifyTexture(texture, QImage(sourcePath)));
