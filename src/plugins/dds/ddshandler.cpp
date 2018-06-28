@@ -476,8 +476,8 @@ bool DDSHandler::read(Texture &texture)
 
     Texture result;
 
-    const auto layers = std::max<int>(1, m_header10.arraySize);
-    const auto levels = std::max<int>(1, m_header.mipMapCount);
+    const auto layers = std::max<quint32>(1, m_header10.arraySize);
+    const auto levels = std::max<quint32>(1, m_header.mipMapCount);
     const auto faces = isCubeMap(m_header) ? 6 : 1;
 
     if (isCubeMap(m_header)) {
@@ -488,9 +488,9 @@ bool DDSHandler::read(Texture &texture)
         return false;
     } else {
         if (m_format == FormatA8R8G8B8) {
-            result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height), levels, layers);
+            result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
         } else if (m_format == FormatR8G8B8) {
-            result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height), levels, layers);
+            result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
         } else {
             qCWarning(ddshandler) << "Unsupported format" << m_format;
             return false;
@@ -521,14 +521,14 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    for (int layer = 0; layer < layers; ++layer) {
+    for (quint32 layer = 0; layer < layers; ++layer) {
         for (int face = 0; face < faces; ++face) {
             if (isCubeMap(m_header)
                     && !(m_header.caps2 & (DDSHeader::DDSCaps2Flags::Caps2CubeMapPositiveX << face))) {
                 continue;
             }
 
-            for (int level = 0; level < levels; ++level) {
+            for (quint32 level = 0; level < levels; ++level) {
                 auto width = std::max<quint32>(1, m_header.width >> level);
                 auto height = std::max<quint32>(1, m_header.height >> level);
 //                auto depth = std::max<quint32>(1, m_header.depth >> level);
@@ -540,7 +540,7 @@ bool DDSHandler::read(Texture &texture)
                     return false;
                 }
 
-                for (int y = 0; y < height; ++y) {
+                for (quint32 y = 0; y < height; ++y) {
                     const auto line = result.lineData(
                                 Texture::Position()
                                 .y(y)
@@ -549,7 +549,7 @@ bool DDSHandler::read(Texture &texture)
                                 .layer(layer));
                     auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
                     if (read != pitch) {
-                        qCWarning(ddshandler) << "Can't read from file";
+                        qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
                         return false;
                     }
                 }
