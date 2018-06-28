@@ -115,8 +115,8 @@ bool VTFHandler::read(Texture &texture)
             return false;
     }
 
-    texture = Texture::create(Texture::Type::Texture2D, Texture::Format::BGRA_8888, header.width, header.height, 1);
-    if (texture.isNull()) {
+    auto result = Texture::create(Texture::Type::Texture2D, Texture::Format::BGRA_8888, header.width, header.height, 1);
+    if (result.isNull()) {
         qCWarning(vtfhandler) << "Can't create resulting texture, file is too big or corrupted";
         return false;
     }
@@ -155,6 +155,8 @@ bool VTFHandler::read(Texture &texture)
             }
         }
     }
+
+    texture = std::move(result);
 
     qCDebug(vtfhandler) << "header:" << header;
 
