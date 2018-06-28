@@ -56,3 +56,5 @@ inline bool operator!=(const TextureIOResult &lhs, const TextureIOResult &rhs) n
 {
     return lhs.m_value != rhs.m_value;
 }
+
+QString toUserString(TextureIOResult result);

@@ -104,3 +104,10 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
     Returns true if \a lhs status() is not equal to the \a rhs status().
 */
 
+/*!
+    Returns the human-readable message describing the \a result.
+*/
+QString toUserString(TextureIOResult result)
+{
+    return result ? TextureIOResult::tr("No error") : toUserString(result.error());
+}
