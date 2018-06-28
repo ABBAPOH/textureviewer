@@ -3,20 +3,18 @@
 /*!
     Returns the human-readable message describing the status.
 */
-QString toUserString(TextureIOStatus status)
+QString toUserString(TextureIOError status)
 {
     switch (status) {
-    case TextureIOStatus::Ok:
-        return TextureIOResult::tr("Ok");
-    case TextureIOStatus::InvalidMimeType:
+    case TextureIOError::InvalidMimeType:
         return TextureIOResult::tr("Invalid mimetype");
-    case TextureIOStatus::FileNotFound:
+    case TextureIOError::FileNotFound:
         return TextureIOResult::tr("File not found");
-    case TextureIOStatus::DeviceError:
+    case TextureIOError::DeviceError:
         return TextureIOResult::tr("Device error");
-    case TextureIOStatus::UnsupportedMimeType:
+    case TextureIOError::UnsupportedMimeType:
         return TextureIOResult::tr("Unsupported format");
-    case TextureIOStatus::HandlerError:
+    case TextureIOError::HandlerError:
         return TextureIOResult::tr("Handler error");
     }
     return QString();
@@ -31,9 +29,6 @@ QString toUserString(TextureIOStatus status)
     \enum TextureIOStatus
     This enum describes the different types of errors that can occur when
     reading image files.
-
-    \var TextureIOResult::Ok
-    No error occured.
 
     \var TextureIOResult::InvalidMimeType
     ImageIO was used with an invalid mime type.
@@ -74,7 +69,7 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 {
     if (this == &other)
         return *this;
-    m_status = other.m_status;
+    m_value = other.m_value;
     return *this;
 }
 

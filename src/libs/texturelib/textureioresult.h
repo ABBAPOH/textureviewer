@@ -4,10 +4,11 @@
 
 #include <QtCore/QCoreApplication>
 
+#include <experimental/optional>
+
 // TODO: move to TextureIO
-enum class TextureIOStatus
+enum class TextureIOError
 {
-    Ok,
     InvalidMimeType,
     FileNotFound,
     DeviceError,
@@ -15,35 +16,43 @@ enum class TextureIOStatus
     HandlerError,
 };
 
-QString toUserString(TextureIOStatus status);
+QString toUserString(TextureIOError status);
+
+// we can't do the following
+// using TextureIOResult = std::experimental::expected<void, TextureIOError>;
+// so we emulate a subset of an expected API for now
 
 class TEXTURELIB_EXPORT TextureIOResult
 {
     Q_DECLARE_TR_FUNCTIONS(TextureIOResult)
 public:
-    inline TextureIOResult(TextureIOStatus status = TextureIOStatus::Ok) noexcept
-        : m_status(status) {}
+    inline TextureIOResult() noexcept : m_value(std::experimental::nullopt) {}
+    inline TextureIOResult(TextureIOError status) noexcept
+        : m_value(status) {}
     inline TextureIOResult(const TextureIOResult &lhs) noexcept
-        : m_status(lhs.m_status) {}
+        : m_value(lhs.m_value) {}
     ~TextureIOResult() noexcept = default;
 
     TextureIOResult &operator=(const TextureIOResult &other) noexcept;
 
-    inline TextureIOStatus status() const noexcept { return m_status; }
+    inline TextureIOError error() const { return *m_value; }
 
-    inline operator bool() const noexcept { return m_status == TextureIOStatus::Ok; }
-    inline bool operator !() const noexcept { return m_status != TextureIOStatus::Ok; }
+    inline operator bool() const noexcept { return !m_value; }
+    inline bool operator !() const noexcept { return !!m_value; }
+
+    friend bool operator==(const TextureIOResult &lhs, const TextureIOResult &rhs) noexcept;
+    friend bool operator!=(const TextureIOResult &lhs, const TextureIOResult &rhs) noexcept;
 
 private:
-    TextureIOStatus m_status;
+    std::experimental::optional<TextureIOError> m_value;
 };
 
 inline bool operator==(const TextureIOResult &lhs, const TextureIOResult &rhs) noexcept
 {
-    return lhs.status() == rhs.status();
+    return lhs.m_value == rhs.m_value;
 }
 
 inline bool operator!=(const TextureIOResult &lhs, const TextureIOResult &rhs) noexcept
 {
-    return lhs.status() != rhs.status();
+    return lhs.m_value != rhs.m_value;
 }
