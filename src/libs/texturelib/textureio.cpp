@@ -47,19 +47,19 @@ public:
 TextureIOResult TextureIOPrivate::ensureDeviceOpened(Capabilities caps)
 {
     if (!device)
-        return TextureIOResult::Status::DeviceError;
+        return TextureIOStatus::DeviceError;
 
     const auto mode = caps2OpenMode(caps);
 
     if ((mode & QIODevice::ReadOnly) && file && !file->exists())
-        return TextureIOResult::Status::FileNotFound;
+        return TextureIOStatus::FileNotFound;
 
     if (!(device->openMode() & mode)) {
         if (!device->open(mode | device->openMode()))
-            return TextureIOResult::Status::DeviceError;
+            return TextureIOStatus::DeviceError;
     }
 
-    return TextureIOResult::Status::Ok;
+    return TextureIOStatus::Ok;
 }
 
 TextureIOResult TextureIOPrivate::ensureHandlerCreated(Capabilities caps)
@@ -69,7 +69,7 @@ TextureIOResult TextureIOPrivate::ensureHandlerCreated(Capabilities caps)
         return ok;
 
     if (handler)
-        return TextureIOResult::Status::Ok;
+        return TextureIOStatus::Ok;
 
     auto mt = QMimeType();
     if (!mimeType) {
@@ -81,14 +81,14 @@ TextureIOResult TextureIOPrivate::ensureHandlerCreated(Capabilities caps)
     }
 
     if (!mt.isValid())
-        return TextureIOResult::Status::InvalidMimeType;
+        return TextureIOStatus::InvalidMimeType;
 
     auto db = TextureIOHandlerDatabase::instance();
     handler = db->create(device, mt, caps);
     if (!handler)
-        return TextureIOResult::Status::UnsupportedMimeType;
+        return TextureIOStatus::UnsupportedMimeType;
 
-    return TextureIOResult::Status::Ok;
+    return TextureIOStatus::Ok;
 }
 
 void TextureIOPrivate::resetHandler()
@@ -255,7 +255,7 @@ std::pair<TextureIOResult, Texture> TextureIO::read()
 
     Texture texture;
     if (!d->handler->read(texture))
-        ok = TextureIOResult::Status::HandlerError;
+        ok = TextureIOStatus::HandlerError;
 
     return {ok, ok ? texture : Texture()};
 }
@@ -273,11 +273,11 @@ TextureIOResult TextureIO::write(const Texture &contents)
         return ok;
 
     if (!d->handler->write(contents))
-        return TextureIOResult::Status::HandlerError;
+        return TextureIOStatus::HandlerError;
 
     if (d->file)
         d->file->flush();
-    return TextureIOResult::Status::Ok;
+    return TextureIOStatus::Ok;
 }
 
 QString TextureIO::pluginsDirPath()

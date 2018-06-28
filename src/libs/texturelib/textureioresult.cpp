@@ -6,7 +6,7 @@
 */
 
 /*!
-    \enum TextureIOResult::Status
+    \enum TextureIOStatus
     This enum describes the different types of errors that can occur when
     reading image files.
 
@@ -57,7 +57,7 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 }
 
 /*!
-    \fn TextureIOResult::Status TextureIOResult::status() const
+    \fn TextureIOStatus TextureIOStatus() const
     Returns status code.
 */
 
@@ -68,17 +68,17 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 QString TextureIOResult::toString() const
 {
     switch (_status) {
-    case TextureIOResult::Status::Ok:
+    case TextureIOStatus::Ok:
         return TextureIOResult::tr("Ok");
-    case TextureIOResult::Status::InvalidMimeType:
+    case TextureIOStatus::InvalidMimeType:
         return TextureIOResult::tr("Invalid mimetype");
-    case TextureIOResult::Status::FileNotFound:
+    case TextureIOStatus::FileNotFound:
         return TextureIOResult::tr("File not found");
-    case TextureIOResult::Status::DeviceError:
+    case TextureIOStatus::DeviceError:
         return TextureIOResult::tr("Device error");
-    case TextureIOResult::Status::UnsupportedMimeType:
+    case TextureIOStatus::UnsupportedMimeType:
         return TextureIOResult::tr("Unsupported format");
-    case TextureIOResult::Status::HandlerError:
+    case TextureIOStatus::HandlerError:
         return TextureIOResult::tr("Handler error");
     }
     return QString();
@@ -86,21 +86,21 @@ QString TextureIOResult::toString() const
 
 /*!
     \fn bool TextureIOResult::toBool() const
-    Returns true if status() is equal to TextureIOResult::Status::Ok.
+    Returns true if status() is equal to TextureIOStatus::Ok.
 
     \sa TextureIOResult::operator bool()
 */
 
 /*!
     \fn TextureIOResult::operator bool() const
-    Returns true if errorCode is equal to TextureIOResult::Status::Ok.
+    Returns true if errorCode is equal to TextureIOStatus::Ok.
 
     \sa toBool(), bool TextureIOResult::operator!()
 */
 
 /*!
     \fn bool TextureIOResult::operator!() const
-    Returns true if errorCode is not equal to TextureIOResult::Status::Ok.
+    Returns true if errorCode is not equal to TextureIOStatus::Ok.
 
     \sa toBool(), TextureIOResult::operator bool()
 */

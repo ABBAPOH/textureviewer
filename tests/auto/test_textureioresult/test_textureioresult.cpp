@@ -2,7 +2,7 @@
 
 #include <TextureLib/TextureIOResult>
 
-Q_DECLARE_METATYPE(TextureIOResult::Status)
+Q_DECLARE_METATYPE(TextureIOStatus)
 
 class TestTextureIOResult : public QObject
 {
@@ -18,7 +18,7 @@ private slots:
 void TestTextureIOResult::defaultConstruction()
 {
     TextureIOResult result;
-    QCOMPARE(result.status(), TextureIOResult::Status::Ok);
+    QCOMPARE(result.status(), TextureIOStatus::Ok);
     QVERIFY(result.toBool());
     QVERIFY(bool(result));
     QCOMPARE(!result, false);
@@ -26,20 +26,20 @@ void TestTextureIOResult::defaultConstruction()
 
 void TestTextureIOResult::construction_data()
 {
-    QTest::addColumn<TextureIOResult::Status>("status");
+    QTest::addColumn<TextureIOStatus>("status");
     QTest::addColumn<bool>("ok");
 
-    QTest::newRow("Ok") << TextureIOResult::Status::Ok << true;
-    QTest::newRow("InvalidMimeType") << TextureIOResult::Status::InvalidMimeType << false;
-    QTest::newRow("FileNotFound") << TextureIOResult::Status::FileNotFound << false;
-    QTest::newRow("DeviceError") << TextureIOResult::Status::DeviceError << false;
-    QTest::newRow("UnsupportedMimeType") << TextureIOResult::Status::UnsupportedMimeType << false;
-    QTest::newRow("IOError") << TextureIOResult::Status::HandlerError << false;
+    QTest::newRow("Ok") << TextureIOStatus::Ok << true;
+    QTest::newRow("InvalidMimeType") << TextureIOStatus::InvalidMimeType << false;
+    QTest::newRow("FileNotFound") << TextureIOStatus::FileNotFound << false;
+    QTest::newRow("DeviceError") << TextureIOStatus::DeviceError << false;
+    QTest::newRow("UnsupportedMimeType") << TextureIOStatus::UnsupportedMimeType << false;
+    QTest::newRow("IOError") << TextureIOStatus::HandlerError << false;
 }
 
 void TestTextureIOResult::construction()
 {
-    QFETCH(TextureIOResult::Status, status);
+    QFETCH(TextureIOStatus, status);
     QFETCH(bool, ok);
 
     TextureIOResult result(status);
@@ -51,7 +51,7 @@ void TestTextureIOResult::construction()
 
 void TestTextureIOResult::copy()
 {
-    TextureIOResult r1(TextureIOResult::Status::Ok);
+    TextureIOResult r1(TextureIOStatus::Ok);
     TextureIOResult r2(r1);
 
     QCOMPARE(r1.status(), r2.status());
@@ -64,8 +64,8 @@ void TestTextureIOResult::copy()
 
 void TestTextureIOResult::assign()
 {
-    TextureIOResult r1(TextureIOResult::Status::Ok);
-    TextureIOResult r2(TextureIOResult::Status::InvalidMimeType);
+    TextureIOResult r1(TextureIOStatus::Ok);
+    TextureIOResult r2(TextureIOStatus::InvalidMimeType);
 
     QVERIFY(!(r1 == r2));
     QVERIFY(r1 != r2);
