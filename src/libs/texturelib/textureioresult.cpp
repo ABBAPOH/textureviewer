@@ -52,7 +52,7 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 {
     if (this == &other)
         return *this;
-    _status = other._status;
+    m_status = other.m_status;
     return *this;
 }
 
@@ -67,7 +67,7 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 
 QString TextureIOResult::toString() const
 {
-    switch (_status) {
+    switch (m_status) {
     case TextureIOStatus::Ok:
         return TextureIOResult::tr("Ok");
     case TextureIOStatus::InvalidMimeType:
