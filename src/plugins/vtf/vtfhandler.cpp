@@ -94,13 +94,15 @@ bool VTFHandler::read(Texture &texture)
     QDataStream s(device());
     s >> header;
 
-    if (!readPadding(device(), header.headerSize - device()->pos()))
+    if (s.status() != QDataStream::Ok) {
+        qCWarning(vtfhandler) << "Invalid data stream status:" << s.status();
         return false;
-
-    if (s.status() != QDataStream::Ok)
-        return false;
+    }
 
     if (!validateHeader(header))
+        return false;
+
+    if (!readPadding(device(), header.headerSize - device()->pos()))
         return false;
 
     const auto highFormat = vtfFormat(header.highResImageFormat);
