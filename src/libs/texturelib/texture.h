@@ -12,7 +12,6 @@
 #include <gsl/span>
 
 #include <tuple>
-#include <experimental/optional>
 
 class TextureData;
 
