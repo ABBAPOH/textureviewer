@@ -29,6 +29,9 @@ public:
     template<class Value, class Error>
     using Expected = tl::expected<Value, Error>;
 
+    using ReadResult = Expected<Texture, TextureIOError>;
+    using WriteResult = TextureIOResult;
+
     QString fileName() const;
     void setFileName(const QString &fileName);
 
@@ -39,9 +42,9 @@ public:
     void setMimeType(const QMimeType &mimeType);
     void setMimeType(const QString &mimeType);
 
-    Expected<Texture, TextureIOError> read();
+    ReadResult read();
 
-    TextureIOResult write(const Texture &contents);
+    WriteResult write(const Texture &contents);
 
     static QString pluginsDirPath();
 

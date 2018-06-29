@@ -261,7 +261,7 @@ void TextureIO::setMimeType(const QString &mimeType)
 /*!
     Reads the contents of an texture file.
 */
-TextureIO::Expected<Texture, TextureIOError> TextureIO::read()
+TextureIO::ReadResult TextureIO::read()
 {
     Q_D(TextureIO);
 
@@ -284,7 +284,7 @@ TextureIO::Expected<Texture, TextureIOError> TextureIO::read()
 
     Returns the status of the operation.
 */
-TextureIOResult TextureIO::write(const Texture &contents)
+TextureIO::WriteResult TextureIO::write(const Texture &contents)
 {
     Q_D(TextureIO);
     auto ok = d->ensureHandlerCreated(Capability::CanWrite);
@@ -296,7 +296,7 @@ TextureIOResult TextureIO::write(const Texture &contents)
 
     if (d->file)
         d->file->flush();
-    return TextureIOResult();
+    return WriteResult();
 }
 
 QString TextureIO::pluginsDirPath()
