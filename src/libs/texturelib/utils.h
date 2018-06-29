@@ -3,12 +3,36 @@
 
 #include <TextureLib/Texture>
 #include <QOpenGLFunctions>
+#include <QDebug>
 
 namespace Utils {
 
 template<class OpenGLFunctions>
 std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &texture)
 {
+    if (texture.isNull()) {
+        qWarning() << "Can't bind invalid texture";
+        return {};
+    }
+
+    GLenum format = 0;
+    GLenum type = GL_UNSIGNED_BYTE;
+    switch (texture.format()) {
+    case Texture::Format::Invalid:
+    case Texture::Format::FormatsCount:
+        Q_UNREACHABLE();
+        break;
+    case Texture::Format::ARGB32:
+        Q_UNIMPLEMENTED();
+        break;
+    case Texture::Format::BGRA_8888:
+        format = GL_BGRA;
+        break;
+    case Texture::Format::RGB_888:
+        format = GL_BGR; // for DDS only
+        break;
+    }
+
     GLuint result = 0;
     funcs->glGenTextures(1, &result);
     //    funcs->glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
@@ -16,21 +40,21 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     case Texture::Type::Texture1D:
         funcs->glBindTexture(GL_TEXTURE_1D, result);
         for (int level = 0; level < texture.levels(); ++level) {
-            funcs->glTexImage1D(GL_TEXTURE_1D, level, GL_RGB, texture.width(level), 0, GL_BGRA, GL_UNSIGNED_BYTE, texture.data(level));
+            funcs->glTexImage1D(GL_TEXTURE_1D, level, GL_RGB, texture.width(level), 0, format, type, texture.data(level));
         }
         funcs->glBindTexture(GL_TEXTURE_1D, 0);
         return {GL_TEXTURE_1D, result};
     case Texture::Type::Texture1DArray:
         funcs->glBindTexture(GL_TEXTURE_1D_ARRAY, result);
         for (int level = 0; level < texture.levels(); ++level) {
-            funcs->glTexImage2D(GL_TEXTURE_1D_ARRAY, level, GL_RGB, texture.width(level), texture.layers(), 0, GL_BGRA, GL_UNSIGNED_BYTE, texture.data(level));
+            funcs->glTexImage2D(GL_TEXTURE_1D_ARRAY, level, GL_RGB, texture.width(level), texture.layers(), 0, format, type, texture.data(level));
         }
         funcs->glBindTexture(GL_TEXTURE_1D_ARRAY, 0);
         return {GL_TEXTURE_1D_ARRAY, result};
     case Texture::Type::Texture2D:
         funcs->glBindTexture(GL_TEXTURE_2D, result);
         for (int level = 0; level < texture.levels(); ++level) {
-            funcs->glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, texture.width(level), texture.height(level), 0, GL_BGRA, GL_UNSIGNED_BYTE, texture.data(level));
+            funcs->glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, texture.width(level), texture.height(level), 0, format, type, texture.data(level));
         }
         if (texture.levels() == 1)
             funcs->glGenerateMipmap(GL_TEXTURE_2D);
@@ -39,14 +63,14 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     case Texture::Type::Texture2DArray:
         funcs->glBindTexture(GL_TEXTURE_2D_ARRAY, result);
         for (int level = 0; level < texture.levels(); ++level) {
-            funcs->glTexImage3D(GL_TEXTURE_2D_ARRAY, level, GL_RGB, texture.width(level), texture.height(level), texture.layers(), 0, GL_BGRA, GL_UNSIGNED_BYTE, texture.data(level));
+            funcs->glTexImage3D(GL_TEXTURE_2D_ARRAY, level, GL_RGB, texture.width(level), texture.height(level), texture.layers(), 0, format, type, texture.data(level));
         }
         funcs->glBindTexture(GL_TEXTURE_2D_ARRAY, 0);
         return {GL_TEXTURE_2D_ARRAY, result};
     case Texture::Type::Texture3D:
         funcs->glBindTexture(GL_TEXTURE_3D, result);
         for (int level = 0; level < texture.levels(); ++level) {
-            funcs->glTexImage3D(GL_TEXTURE_3D, level, GL_RGB, texture.width(level), texture.height(level), texture.depth(level), 0, GL_BGRA, GL_UNSIGNED_BYTE, texture.data(level));
+            funcs->glTexImage3D(GL_TEXTURE_3D, level, GL_RGB, texture.width(level), texture.height(level), texture.depth(level), 0, format, type, texture.data(level));
         }
         funcs->glBindTexture(GL_TEXTURE_3D, 0);
         return {GL_TEXTURE_3D, result};
