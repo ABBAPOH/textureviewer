@@ -4,11 +4,15 @@
 #include "textureiohandlerdatabase.h"
 #include "textureioresult.h"
 
-#include <experimental/optional>
-
 #include <QtCore/QFile>
 #include <QtCore/QMimeDatabase>
 #include <QDebug>
+
+#if __cplusplus >= 201703L
+#include <optional>
+#else
+#include <experimental/optional>
+#endif
 
 using Capability = TextureIOHandlerPlugin::Capability;
 using Capabilities = TextureIOHandlerPlugin::Capabilities;
@@ -41,7 +45,11 @@ public:
     std::unique_ptr<QFile> file;
 
     QIODevice *device {nullptr};
+#if __cplusplus >= 201703L
+    std::optional<QMimeType> mimeType;
+#else
     std::experimental::optional<QMimeType> mimeType;
+#endif
 };
 
 TextureIOResult TextureIOPrivate::ensureDeviceOpened(Capabilities caps)
@@ -226,7 +234,11 @@ void TextureIO::setMimeType(const QMimeType &mimeType)
     if (mimeType.isValid())
         d->mimeType = mimeType;
     else
+#if __cplusplus >= 201703L
+        d->mimeType = std::nullopt;
+#else
         d->mimeType = std::experimental::nullopt;
+#endif
     d->resetHandler();
 }
 
@@ -238,7 +250,11 @@ void TextureIO::setMimeType(const QString &mimeType)
         // leads to error in ensureHandlerCreated
         d->mimeType = QMimeDatabase().mimeTypeForName(mimeType);
     else
+#if __cplusplus >= 201703L
+        d->mimeType = std::nullopt;
+#else
         d->mimeType = std::experimental::nullopt;
+#endif
     d->resetHandler();
 }
 
