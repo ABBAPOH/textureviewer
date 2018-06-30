@@ -141,18 +141,18 @@ private:
 
     TextureData *d {nullptr};
 
-    friend bool operator==(const Texture &lhs, const Texture &rhs);
-    friend bool operator!=(const Texture &lhs, const Texture &rhs);
+    friend bool TEXTURELIB_EXPORT operator==(const Texture &lhs, const Texture &rhs);
+    friend bool TEXTURELIB_EXPORT operator!=(const Texture &lhs, const Texture &rhs);
 
-    friend QDataStream &operator <<(QDataStream &stream, const Texture &texture);
-    friend QDataStream &operator >>(QDataStream &stream, Texture &texture);
+    friend QDataStream TEXTURELIB_EXPORT &operator <<(QDataStream &stream, const Texture &texture);
+    friend QDataStream TEXTURELIB_EXPORT &operator >>(QDataStream &stream, Texture &texture);
 };
 
-bool operator==(const Texture &lhs, const Texture &rhs);
-bool operator!=(const Texture &lhs, const Texture &rhs);
+bool TEXTURELIB_EXPORT operator==(const Texture &lhs, const Texture &rhs);
+bool TEXTURELIB_EXPORT operator!=(const Texture &lhs, const Texture &rhs);
 
-QDataStream &operator<<(QDataStream &stream, const Texture &texture);
-QDataStream &operator>>(QDataStream &stream, Texture &texture);
+QDataStream TEXTURELIB_EXPORT &operator<<(QDataStream &stream, const Texture &texture);
+QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture);
 
 Q_DECLARE_METATYPE(Texture::Type)
 Q_DECLARE_METATYPE(Texture::Format)

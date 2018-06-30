@@ -20,7 +20,7 @@ enum class TextureIOError
     HandlerError,
 };
 
-QString toUserString(TextureIOError status);
+QString TEXTURELIB_EXPORT toUserString(TextureIOError status);
 
 // we can't do the following
 // using TextureIOResult = std::experimental::expected<void, TextureIOError>;
@@ -72,4 +72,4 @@ inline bool operator!=(const TextureIOResult &lhs, const TextureIOResult &rhs) n
     return lhs.m_value != rhs.m_value;
 }
 
-QString toUserString(TextureIOResult result);
+QString TEXTURELIB_EXPORT toUserString(TextureIOResult result);

@@ -9,7 +9,7 @@ Product {
     cpp.includePaths: project.includePaths
     cpp.libraryPaths: project.libraryPaths
     cpp.cxxLanguageVersion: {
-        if (qbs.targetOS.contains("macos") || qbs.targetOS.contains("windows"))
+        if (qbs.targetOS.contains("macos"))
             return "c++14"; // XCode 9.4 does not support c++17 headers yet
         return "c++17";
     }

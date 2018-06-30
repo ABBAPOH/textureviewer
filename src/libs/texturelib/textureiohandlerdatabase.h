@@ -9,6 +9,7 @@ class QPluginLoader;
 
 class TEXTURELIB_EXPORT TextureIOHandlerDatabase
 {
+    Q_DISABLE_COPY(TextureIOHandlerDatabase)
 public:
     TextureIOHandlerDatabase();
     ~TextureIOHandlerDatabase();

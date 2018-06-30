@@ -46,7 +46,13 @@ Project {
     property stringList libraryPaths: []
 
     property stringList cFlags: []
-    property stringList cxxFlags: qbs.targetOS.contains("macos") ? ["-Wno-unknown-pragmas"] : []
+    property stringList cxxFlags: {
+        if (qbs.targetOS.contains("macos"))
+            return ["-Wno-unknown-pragmas"];
+        if (qbs.targetOS.contains("windows"))
+            return ["/std:c++17", "/Zc:__cplusplus"]
+        return []
+    }
     property stringList linkFlags: []
 
     qbsSearchPaths: "qbs"
