@@ -6,19 +6,19 @@
 
 #define CHECK_SIDE(side, rv) \
     if (side < 0 || side >= d->faces) { \
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid side" << side; \
+        qCWarning(texture) << "was called with invalid side" << side; \
         return rv; \
     } \
 
 #define CHECK_LEVEL(level, rv) \
     if (level < 0 || level >= d->levels) { \
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid level" << level; \
+        qCWarning(texture) << "was called with invalid level" << level; \
         return rv; \
     } \
 
 #define CHECK_LAYER(layer, rv) \
     if (layer < 0 || layer >= d->layers) { \
-        qCWarning(texture) << Q_FUNC_INFO << "was called with invalid layer" << layer; \
+        qCWarning(texture) << "was called with invalid layer" << layer; \
         return rv; \
     } \
 
@@ -26,13 +26,13 @@
     if (x < 0 || x >= d->levelWidth(level) \
         || y < 0 || y >= d->levelHeight(level) \
         || z < 0 || z >= d->levelDepth(level)) { \
-        qCWarning(texture) << Q_FUNC_INFO << "point (" << x << y << z << ")" << "is out of bounds"; \
+        qCWarning(texture) << "point (" << x << y << z << ")" << "is out of bounds"; \
         return rv; \
     } \
 
 #define CHECK_ZERO_X(x, rv) \
     if (x != 0) { \
-        qCWarning(texture) << Q_FUNC_INFO << "x should be 0"; \
+        qCWarning(texture) << "x should be 0"; \
         return rv; \
     } \
 
@@ -145,7 +145,7 @@ Texture::Texture(const QString &file)
 {
     auto ok = load(file);
     if (!ok)
-        qCWarning(texture) << Q_FUNC_INFO << "Can't load texture from file" << file << toUserString(ok);
+        qCWarning(texture) << "Can't load texture from file" << file << toUserString(ok);
 }
 
 Texture::Texture(QStringView file) :
@@ -165,7 +165,7 @@ Texture::Texture(const QImage& image)
         format = Texture::Format::RGB_888;
         break;
     default:
-        qCWarning(texture) << Q_FUNC_INFO << "unsupported image format" << image.format();
+        qCWarning(texture) << "unsupported image format" << image.format();
         return;
     }
 
@@ -483,7 +483,7 @@ QImage Texture::toImage() const
     if (d->type == Texture::Type::TextureCubeMap
             || d->type == Texture::Type::TextureCubeMapArray
             || d->type == Texture::Type::Texture3D) {
-        qCWarning(texture) << Q_FUNC_INFO << "unsupported texture type" << int(d->type);
+        qCWarning(texture) << "unsupported texture type" << int(d->type);
         return QImage();
     }
 
@@ -500,13 +500,13 @@ QImage Texture::toImage() const
     }
 
     if (imageFormat == QImage::Format_Invalid) {
-        qCWarning(texture) << Q_FUNC_INFO << "unsupported texture format" << int(d->format);
+        qCWarning(texture) << "unsupported texture format" << int(d->format);
         return QImage();
     }
 
     QImage result(d->width, d->height, imageFormat);
     if (result.isNull()) {
-        qCWarning(texture) << Q_FUNC_INFO << "can't create image";
+        qCWarning(texture) << "can't create image";
         return QImage();
     }
 
