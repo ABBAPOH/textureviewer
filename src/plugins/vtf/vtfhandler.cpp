@@ -61,6 +61,8 @@ static quint32 computePitch(VTFImageFormat format, quint32 width)
     switch (format) {
     case VTFImageFormat::BGRA_8888:
         return (width * 32 + 7) >> 3;
+    case VTFImageFormat::RGB_888:
+        return (width * 24 + 7) >> 3;
     default:
         break;
     }
@@ -106,7 +108,15 @@ bool VTFHandler::read(Texture &texture)
         return false;
 
     const auto highFormat = vtfFormat(header.highResImageFormat);
-    if (highFormat != VTFImageFormat::BGRA_8888) {
+
+    auto format = Texture::Format::Invalid;
+    switch (highFormat) {
+    case VTFImageFormat::BGRA_8888: format = Texture::Format::BGRA_8888; break;
+    case VTFImageFormat::RGB_888: format = Texture::Format::RGB_888; break;
+    default: break;
+    }
+
+    if (format == Texture::Format::Invalid) {
         qCWarning(vtfhandler) << "format" << header.highResImageFormat << "is not supported";
         return false;
     }
@@ -117,7 +127,7 @@ bool VTFHandler::read(Texture &texture)
             return false;
     }
 
-    auto result = Texture::create(Texture::Type::Texture2D, Texture::Format::BGRA_8888, header.width, header.height, 1);
+    auto result = Texture::create(Texture::Type::Texture2D, format, header.width, header.height, 1);
     if (result.isNull()) {
         qCWarning(vtfhandler) << "Can't create resulting texture, file is too big or corrupted";
         return false;
@@ -129,9 +139,9 @@ bool VTFHandler::read(Texture &texture)
         auto depth = std::max<quint16>(1, header.depth >> level);
         auto pitch = computePitch(highFormat, width);
 
-        if (pitch > texture.bytesPerLine(level)) {
+        if (pitch > result.bytesPerLine(level)) {
             qCWarning(vtfhandler) << "Pitch is bigger than texture's bytesPerLine:"
-                                  << pitch << ">=" << texture.bytesPerLine();
+                                  << pitch << ">=" << result.bytesPerLine(level);
             return false;
         }
 
@@ -139,7 +149,7 @@ bool VTFHandler::read(Texture &texture)
             for (int face = 0; face < 1; ++face) { // TODO: where do we get faces??
                 for (int z = 0; z < depth; ++z) {
                     for (int y = 0; y < height; ++y) {
-                        const auto line = texture.lineData(
+                        const auto line = result.lineData(
                                     Texture::Position()
                                     .y(y)
                                     .z(z)

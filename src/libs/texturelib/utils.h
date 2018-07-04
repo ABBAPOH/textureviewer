@@ -29,7 +29,8 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
         format = GL_BGRA;
         break;
     case Texture::Format::RGB_888:
-        format = GL_BGR; // for DDS only
+//        format = GL_BGR; // for DDS only
+        format = GL_RGB; // for DDS only
         break;
     }
 
