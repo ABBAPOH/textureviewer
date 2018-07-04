@@ -63,6 +63,11 @@ public:
         NegativeZ = 5,
     };
 
+    enum class Alignment {
+        Byte, // 1-byte alignment
+        Word, // 4-bytes alignment
+    };
+
     class Position;
 
     using DataSpan = gsl::span<uchar>;
@@ -73,6 +78,8 @@ public:
     static Texture create3DTexture(Format format, int width, int height, int depth, int levels = 1);
     static Texture createCubeMapTexture(Format format, int size, int levels = 1, int layers = -1);
     static Texture create(Type type, Format format, int width, int height, int depth, int levels = 1, int layers = 1);
+
+    static qsizetype bytesPerLine(Format format, int width, Alignment align = Alignment::Byte);
 
     bool isNull() const;
     Type type() const;

@@ -67,15 +67,6 @@ TextureData *TextureData::create(
     auto ulayers = uint(layers);
     auto ubbp = uint(bbpForFormat(format));
 
-//    const auto bytesPerLine = ((uwidth * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
-
-//    // sanity check for potential overflows
-//    if (std::numeric_limits<int>::max() / ubbp / uwidth < 1
-//        || bytesPerLine <= 0
-//        || std::numeric_limits<qsizetype>::max() / uint(bytesPerLine) / uheight / udepth / ufaces / ulayers < 1
-//        || std::numeric_limits<qsizetype>::max() / sizeof(uchar *) / uwidth / uheight / udepth / ufaces / ulayers < 1)
-//        return nullptr;
-
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
 
@@ -84,11 +75,27 @@ TextureData *TextureData::create(
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
 
-//        const auto bytesPerLine = ((w * ubbp + 31) >> 5) << 2; // bytes per scanline (must be multiple of 4)
-        const auto bytesPerLine = (w * ubbp) / 8; // bytes per scanline
+        // bytesPerLine already checks overflow
+        const auto bytesPerLine = Texture::bytesPerLine(format, int(w)); // bytes per scanline
+        if (!bytesPerLine)
+            return nullptr;
 
-        // TODO: check overflows!!!
+        // check that single mipmap doesn't overflow
+        if (std::numeric_limits<qsizetype>::max() / bytesPerLine / h / d / ufaces / ulayers < 1
+                || std::numeric_limits<qsizetype>::max() / sizeof(uchar *) / w / h / d / ufaces / ulayers < 1) {
+            qCWarning(texture) << "potential integer overflow";
+            return nullptr;
+        }
+
         const auto bytesPerLevel = bytesPerLine * h * d * ufaces * ulayers;
+
+        // check we didn't overflow total memory
+        const auto uTotalBytes = size_t(totalBytes);
+        if (size_t(uTotalBytes + size_t(bytesPerLevel)) < uTotalBytes) {
+            qCWarning(texture) << "potential integer overflow";
+            return nullptr;
+        }
+
         levelInfos.push_back({totalBytes, bytesPerLine, bytesPerLevel});
 
         totalBytes += bytesPerLevel;
@@ -282,6 +289,31 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
 
     result = Texture(TextureData::create(type, format, width, height, depth, layers, levels));
     return result;
+}
+
+qsizetype Texture::bytesPerLine(Format format, int width, Alignment align)
+{
+    const auto uwidth = quint32(width);
+    const auto bitsPerTexel = quint32(bbpForFormat(format));
+
+    if (std::numeric_limits<int>::max() / bitsPerTexel / uwidth < 1) {
+        qCWarning(texture) << "potential integer overflow";
+        return 0;
+    }
+
+    switch (format) {
+    case Texture::Format::Invalid:
+    case Texture::Format::FormatsCount:
+        return 0;
+    case Format::ARGB32:
+    case Format::BGRA_8888:
+    case Format::RGB_888:
+        if (align == Alignment::Byte)
+            return (uwidth * bitsPerTexel + 7) >> 3;
+        else if (align == Alignment::Word)
+            return ((uwidth * bitsPerTexel + 31) >> 5) << 2;
+    }
+    return 0;
 }
 
 bool Texture::isNull() const
