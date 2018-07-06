@@ -137,13 +137,7 @@ bool VTFHandler::read(Texture &texture)
         auto width = std::max<quint16>(1, header.width >> level);
         auto height = std::max<quint16>(1, header.height >> level);
         auto depth = std::max<quint16>(1, header.depth >> level);
-        auto pitch = computePitch(highFormat, width);
-
-        if (pitch > result.bytesPerLine(level)) {
-            qCWarning(vtfhandler) << "Pitch is bigger than texture's bytesPerLine:"
-                                  << pitch << ">=" << result.bytesPerLine(level);
-            return false;
-        }
+        auto pitch = Texture::bytesPerLine(format, width);
 
         for (int layer = 0; layer < header.frames; ++layer) {
             for (int face = 0; face < 1; ++face) { // TODO: where do we get faces??
