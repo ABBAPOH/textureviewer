@@ -75,19 +75,21 @@ TextureData *TextureData::create(
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
 
-        // bytesPerLine already checks overflow
+        // calculateBytesPerLine already checks overflow
         const auto bytesPerLine = Texture::calculateBytesPerLine(format, int(w)); // bytes per scanline
         if (!bytesPerLine)
             return nullptr;
 
+        // calculateBytesPerSlice already checks overflow
+        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(format, bytesPerLine, h);
+
         // check that single mipmap doesn't overflow
-        if (std::numeric_limits<qsizetype>::max() / bytesPerLine / h / d / ufaces / ulayers < 1
+        if (std::numeric_limits<qsizetype>::max() / bytesPerSlice / d / ufaces / ulayers < 1
                 || std::numeric_limits<qsizetype>::max() / sizeof(uchar *) / w / h / d / ufaces / ulayers < 1) {
             qCWarning(texture) << "potential integer overflow";
             return nullptr;
         }
 
-        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(format, bytesPerLine, int(h));
         const auto bytesPerLevel = bytesPerSlice * d * ufaces * ulayers;
 
         // check we didn't overflow total memory
@@ -131,8 +133,38 @@ TextureData *TextureData::create(
     return data.release();
 }
 
+qsizetype TextureData::calculateBytesPerLine(Texture::Format format, qsizetype bitsPerTexel, quint32 width, Texture::Alignment align)
+{
+    if (std::numeric_limits<int>::max() / bitsPerTexel / width < 1) {
+        qCWarning(texture) << "potential integer overflow";
+        return 0;
+    }
+
+    switch (format) {
+    case Texture::Format::Invalid:
+    case Texture::Format::FormatsCount:
+        return 0;
+    case Texture::Format::ARGB32:
+    case Texture::Format::BGRA_8888:
+    case Texture::Format::RGB_888:
+        if (align == Texture::Alignment::Byte)
+            return (width * bitsPerTexel + 7) >> 3;
+        else if (align == Texture::Alignment::Word)
+            return ((width * bitsPerTexel + 31) >> 5) << 2;
+        break;
+    case Texture::Format::DXT1:
+        return std::max(1u, (width + 3) / 4) * bitsPerTexel;
+    }
+    return 0;
+}
+
 qsizetype TextureData::calculateBytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height)
 {
+    if (std::numeric_limits<int>::max() / bytesPerLine / height < 1) {
+        qCWarning(texture) << "potential integer overflow";
+        return 0;
+    }
+
     switch (format) {
     case Texture::Format::ARGB32:
     case Texture::Format::BGRA_8888:
@@ -309,30 +341,8 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
 
 qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
 {
-    const auto uwidth = quint32(width);
     const auto bitsPerTexel = quint32(bbpForFormat(format));
-
-    if (std::numeric_limits<int>::max() / bitsPerTexel / uwidth < 1) {
-        qCWarning(texture) << "potential integer overflow";
-        return 0;
-    }
-
-    switch (format) {
-    case Texture::Format::Invalid:
-    case Texture::Format::FormatsCount:
-        return 0;
-    case Format::ARGB32:
-    case Format::BGRA_8888:
-    case Format::RGB_888:
-        if (align == Alignment::Byte)
-            return (uwidth * bitsPerTexel + 7) >> 3;
-        else if (align == Alignment::Word)
-            return ((uwidth * bitsPerTexel + 31) >> 5) << 2;
-        break;
-    case Format::DXT1:
-        return std::max(1u, (uwidth + 3) / 4) * bitsPerTexel;
-    }
-    return 0;
+    return TextureData::calculateBytesPerLine(format, bitsPerTexel, quint32(width), align);
 }
 
 qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, Alignment align)
@@ -341,13 +351,7 @@ qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, 
     if (!bbl)
         return 0;
 
-    const auto uheight = quint32(height);
-    if (std::numeric_limits<int>::max() / bbl / uheight < 1) {
-        qCWarning(texture) << "potential integer overflow";
-        return 0;
-    }
-
-    return TextureData::calculateBytesPerSlice(format, bbl, uheight);
+    return TextureData::calculateBytesPerSlice(format, bbl, quint32(height));
 }
 
 bool Texture::isNull() const

@@ -19,6 +19,7 @@ public:
             int depth, int layers,
             int levels);
 
+    static qsizetype calculateBytesPerLine(Texture::Format format, qsizetype bitsPerTexel, quint32 width, Texture::Alignment align);
     static qsizetype calculateBytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height);
 
     inline int levelWidth(int level) const { return std::max(width >> level, 1); }
