@@ -19,6 +19,8 @@ public:
             int depth, int layers,
             int levels);
 
+    static qsizetype bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, int height);
+
     inline int levelWidth(int level) const { return std::max(width >> level, 1); }
     inline int levelHeight(int level) const { return std::max(height >> level, 1); }
     inline int levelDepth(int level) const { return std::max(depth >> level, 1); }
@@ -26,7 +28,8 @@ public:
     inline qsizetype bytesPerLine(int level) const { return levelInfos[level].bytesPerLine; }
     inline qsizetype bytesPerImage(int level) const
     {
-        return levelInfos[level].bytesPerLine * levelHeight(level) * levelDepth(level);
+        return bytesPerSlice(format, levelInfos[level].bytesPerLine, levelHeight(level)) * levelDepth(level);
+//        return levelInfos[level].bytesPerLine * levelHeight(level) * levelDepth(level);
     }
     inline qsizetype levelOffset(int level) const { return levelInfos[level].offset; }
     qsizetype offset(int side, int level, int layer) const;
@@ -66,6 +69,8 @@ inline int bbpForFormat(Texture::Format format)
         return 32;
     case Texture::Format::RGB_888:
         return 24;
+    case Texture::Format::DXT1:
+        return 8; // block size, not a texel size
     }
     return 0;
 }

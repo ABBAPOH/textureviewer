@@ -16,6 +16,7 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     }
 
     GLenum format = 0;
+    bool compressed = false;
     GLenum type = GL_UNSIGNED_BYTE;
     switch (texture.format()) {
     case Texture::Format::Invalid:
@@ -31,6 +32,10 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     case Texture::Format::RGB_888:
 //        format = GL_BGR; // for DDS only
         format = GL_RGB; // for DDS only
+        break;
+    case Texture::Format::DXT1:
+        format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        compressed = true;
         break;
     }
 
@@ -55,7 +60,10 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     case Texture::Type::Texture2D:
         funcs->glBindTexture(GL_TEXTURE_2D, result);
         for (int level = 0; level < texture.levels(); ++level) {
-            funcs->glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, texture.width(level), texture.height(level), 0, format, type, texture.data(level));
+            if (!compressed)
+                funcs->glTexImage2D(GL_TEXTURE_2D, level, GL_RGB, texture.width(level), texture.height(level), 0, format, type, texture.data(level));
+            else
+                funcs->glCompressedTexImage2D(GL_TEXTURE_2D, level, format, texture.width(level), texture.height(level), 0, texture.bytesPerImage(level), texture.data(level));
         }
         if (texture.levels() == 1)
             funcs->glGenerateMipmap(GL_TEXTURE_2D);

@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>dds/ARGB8888.dds</file>
+        <file>dds/DXT1.dds</file>
         <file>dds/R8G8B8.dds</file>
         <file>vtf/ABGR8888.vtf</file>
         <file>vtf/ARGB8888.vtf</file>

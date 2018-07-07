@@ -115,7 +115,8 @@ void Window::initializeGL()
     {
 //        Texture image(u":/dds/ARGB8888.dds");
 //        Texture image(u":/vtf/BGRA8888.vtf");
-        Texture image(u":/vtf/RGB_888.vtf");
+//        Texture image(u":/vtf/RGB_888.vtf");
+        Texture image(u":/dds/DXT1.dds");
 
         if (image.isNull()) {
             qCritical() << "Can't load image";

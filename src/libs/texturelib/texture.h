@@ -51,6 +51,7 @@ public:
         ARGB32,
         RGB_888,
         BGRA_8888,
+        DXT1,
         FormatsCount // should be the last
     };
 

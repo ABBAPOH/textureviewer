@@ -460,6 +460,8 @@ quint32 computePitch(const DDSHeader &header, int format, quint32 width)
     case FormatA8R8G8B8:
     case FormatR8G8B8:
         return (width * header.pixelFormat.rgbBitCount + 7) >> 3;
+    case FormatDXT1:
+        return std::max(1u, (width + 3) / 4) * 8;
     default:
         break;
     }
@@ -491,6 +493,8 @@ bool DDSHandler::read(Texture &texture)
             result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
         } else if (m_format == FormatR8G8B8) {
             result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
+        } else if (m_format == FormatDXT1) {
+            result = Texture::create2DTexture(Texture::Format::DXT1, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
         } else {
             qCWarning(ddshandler) << "Unsupported format" << m_format;
             return false;
@@ -533,24 +537,38 @@ bool DDSHandler::read(Texture &texture)
                 auto height = std::max<quint32>(1, m_header.height >> level);
 //                auto depth = std::max<quint32>(1, m_header.depth >> level);
                 const auto pitch = computePitch(m_header, m_format, width);
-
-                if (pitch > result.bytesPerLine(level)) {
-                    qCWarning(ddshandler) << "Pitch is bigger than texture's bytesPerLine:"
-                                          << pitch << ">=" << result.bytesPerLine(level);
-                    return false;
-                }
-
-                for (quint32 y = 0; y < height; ++y) {
-                    const auto line = result.lineData(
-                                Texture::Position()
-                                .y(y)
-                                .side(Texture::Side(face))
-                                .level(level)
-                                .layer(layer));
-                    auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
-                    if (read != pitch) {
+                if (m_format == FormatDXT1) {
+                    qsizetype size = pitch * std::max<quint32>(1, (height + 3) / 4);
+                    if (size != result.bytesPerImage(level)) {
+                        qCWarning(ddshandler) << "Image size != texture size:"
+                                              << size << "!=" << result.bytesPerImage(level);
+                        return false;
+                    }
+                    const auto data = result.data(Texture::Side(face), level, layer);
+                    const auto read = device()->read(reinterpret_cast<char *>(data), size);
+                    if (read != size) {
                         qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
                         return false;
+                    }
+                } else {
+                    if (pitch > result.bytesPerLine(level)) {
+                        qCWarning(ddshandler) << "Pitch is bigger than texture's bytesPerLine:"
+                                              << pitch << ">=" << result.bytesPerLine(level);
+                        return false;
+                    }
+
+                    for (quint32 y = 0; y < height; ++y) {
+                        const auto line = result.lineData(
+                                    Texture::Position()
+                                    .y(y)
+                                    .side(Texture::Side(face))
+                                    .level(level)
+                                    .layer(layer));
+                        auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
+                        if (read != pitch) {
+                            qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
+                            return false;
+                        }
                     }
                 }
             }

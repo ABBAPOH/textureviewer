@@ -87,7 +87,7 @@ TextureData *TextureData::create(
             return nullptr;
         }
 
-        const auto bytesPerLevel = bytesPerLine * h * d * ufaces * ulayers;
+        const auto bytesPerLevel = TextureData::bytesPerSlice(format, bytesPerLine, int(h)) * d * ufaces * ulayers;
 
         // check we didn't overflow total memory
         const auto uTotalBytes = size_t(totalBytes);
@@ -128,6 +128,21 @@ TextureData *TextureData::create(
         return nullptr;
 
     return data.release();
+}
+
+qsizetype TextureData::bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, int height)
+{
+    switch (format) {
+    case Texture::Format::ARGB32:
+    case Texture::Format::BGRA_8888:
+    case Texture::Format::RGB_888:
+        return bytesPerLine * height;
+    case Texture::Format::DXT1:
+        return bytesPerLine * std::max(1, (height + 3) / 4);
+    default:
+        break;
+    }
+    return 0;
 }
 
 qsizetype TextureData::offset(int side, int level, int layer) const
@@ -312,6 +327,9 @@ qsizetype Texture::bytesPerLine(Format format, int width, Alignment align)
             return (uwidth * bitsPerTexel + 7) >> 3;
         else if (align == Alignment::Word)
             return ((uwidth * bitsPerTexel + 31) >> 5) << 2;
+        break;
+    case Format::DXT1:
+        return std::max(1u, (uwidth + 3) / 4) * bitsPerTexel;
     }
     return 0;
 }
