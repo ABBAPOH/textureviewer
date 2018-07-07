@@ -154,6 +154,7 @@ qsizetype TextureData::calculateBytesPerLine(Texture::Format format, qsizetype b
         break;
     case Texture::Format::DXT1:
     case Texture::Format::DXT3:
+    case Texture::Format::DXT5:
         return std::max(1u, (width + 3) / 4) * bitsPerTexel;
     }
     return 0;
@@ -173,6 +174,7 @@ qsizetype TextureData::calculateBytesPerSlice(Texture::Format format, qsizetype 
         return bytesPerLine * height;
     case Texture::Format::DXT1:
     case Texture::Format::DXT3:
+    case Texture::Format::DXT5:
         return bytesPerLine * std::max(1u, (height + 3) / 4);
     default:
         break;
@@ -376,7 +378,8 @@ Texture::Format Texture::format() const
 bool Texture::isCompressed() const
 {
     return d && (d->format == Format::DXT1
-                || d->format == Format::DXT3);
+                 || d->format == Format::DXT3
+                 || d->format == Format::DXT5);
 }
 
 int Texture::width() const

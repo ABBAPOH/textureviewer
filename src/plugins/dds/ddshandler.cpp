@@ -465,6 +465,8 @@ Texture::Format convertFormat(Format format)
         return Texture::Format::DXT1;
     case FormatDXT3:
         return Texture::Format::DXT3;
+    case FormatDXT5:
+        return Texture::Format::DXT5;
     default:
         break;
     }

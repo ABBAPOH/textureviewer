@@ -74,6 +74,7 @@ inline int bbpForFormat(Texture::Format format)
     case Texture::Format::DXT1:
         return 8; // block sizein bytes, not a texel size
     case Texture::Format::DXT3:
+    case Texture::Format::DXT5:
         return 16; // block size in bytes, not a texel size
     }
     return 0;

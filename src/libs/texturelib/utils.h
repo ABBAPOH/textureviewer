@@ -41,6 +41,10 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
         format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
         compressed = true;
         break;
+    case Texture::Format::DXT5:
+        format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        compressed = true;
+        break;
     }
 
     GLuint result = 0;

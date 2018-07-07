@@ -53,6 +53,7 @@ public:
         BGRA_8888,
         DXT1,
         DXT3,
+        DXT5,
         FormatsCount // should be the last
     };
 
