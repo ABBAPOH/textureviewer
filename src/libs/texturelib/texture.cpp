@@ -76,7 +76,7 @@ TextureData *TextureData::create(
         auto d = std::max<uint>(udepth >> level, 1);
 
         // bytesPerLine already checks overflow
-        const auto bytesPerLine = Texture::bytesPerLine(format, int(w)); // bytes per scanline
+        const auto bytesPerLine = Texture::calculateBytesPerLine(format, int(w)); // bytes per scanline
         if (!bytesPerLine)
             return nullptr;
 
@@ -307,7 +307,7 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
     return result;
 }
 
-qsizetype Texture::bytesPerLine(Format format, int width, Alignment align)
+qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
 {
     const auto uwidth = quint32(width);
     const auto bitsPerTexel = quint32(bbpForFormat(format));
@@ -337,7 +337,7 @@ qsizetype Texture::bytesPerLine(Format format, int width, Alignment align)
 
 qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, Alignment align)
 {
-    const auto bbl = bytesPerLine(format, width, align);
+    const auto bbl = calculateBytesPerLine(format, width, align);
     if (!bbl)
         return 0;
 
