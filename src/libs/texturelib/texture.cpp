@@ -692,4 +692,20 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
     return stream;
 }
 
+
+
+QDebug operator<<(QDebug &d, const Texture::Position &position)
+{
+    auto s = QString("Texture::Position(x = %1, y = %2, z = %3"
+                     ", face = %4, level = %5, layer = %6)").arg(
+                QString::number(position.x()),
+                QString::number(position.y()),
+                QString::number(position.z()),
+                QString::number(position.face()),
+                QString::number(position.level()),
+                QString::number(position.layer()));
+    d << s;
+    return d;
+}
+
 Q_LOGGING_CATEGORY(texture, "texturelib.texture")

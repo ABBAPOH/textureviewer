@@ -210,4 +210,6 @@ private:
     int m_layer {0};
 };
 
+QDebug operator<<(QDebug &d, const Texture::Position &position);
+
 #endif // TEXTURE_H
