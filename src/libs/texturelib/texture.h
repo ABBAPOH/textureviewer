@@ -190,7 +190,7 @@ public:
 
     inline constexpr Side side() const { return m_side; }
     inline constexpr Position &side(Side side) { m_side = side; return *this; }
-    inline constexpr void setZ(Side side) { m_side = side; }
+    inline constexpr void setSide(Side side) { m_side = side; }
 
     inline constexpr int face() const { return int(m_side); }
 
