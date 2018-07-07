@@ -87,7 +87,8 @@ TextureData *TextureData::create(
             return nullptr;
         }
 
-        const auto bytesPerLevel = TextureData::bytesPerSlice(format, bytesPerLine, int(h)) * d * ufaces * ulayers;
+        const auto bytesPerSlice = TextureData::bytesPerSlice(format, bytesPerLine, int(h));
+        const auto bytesPerLevel = bytesPerSlice * d * ufaces * ulayers;
 
         // check we didn't overflow total memory
         const auto uTotalBytes = size_t(totalBytes);
@@ -96,7 +97,7 @@ TextureData *TextureData::create(
             return nullptr;
         }
 
-        levelInfos.push_back({totalBytes, bytesPerLine, bytesPerLevel});
+        levelInfos.push_back({totalBytes, bytesPerLine, bytesPerSlice, bytesPerLevel});
 
         totalBytes += bytesPerLevel;
 
@@ -130,7 +131,7 @@ TextureData *TextureData::create(
     return data.release();
 }
 
-qsizetype TextureData::bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, int height)
+qsizetype TextureData::bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height)
 {
     switch (format) {
     case Texture::Format::ARGB32:
@@ -138,7 +139,7 @@ qsizetype TextureData::bytesPerSlice(Texture::Format format, qsizetype bytesPerL
     case Texture::Format::RGB_888:
         return bytesPerLine * height;
     case Texture::Format::DXT1:
-        return bytesPerLine * std::max(1, (height + 3) / 4);
+        return bytesPerLine * std::max(1u, (height + 3) / 4);
     default:
         break;
     }
@@ -334,6 +335,21 @@ qsizetype Texture::bytesPerLine(Format format, int width, Alignment align)
     return 0;
 }
 
+qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, Alignment align)
+{
+    const auto bbl = bytesPerLine(format, width, align);
+    if (!bbl)
+        return 0;
+
+    const auto uheight = quint32(height);
+    if (std::numeric_limits<int>::max() / bbl / uheight < 1) {
+        qCWarning(texture) << "potential integer overflow";
+        return 0;
+    }
+
+    return TextureData::bytesPerSlice(format, bbl, uheight);
+}
+
 bool Texture::isNull() const
 {
     return !d;
@@ -424,6 +440,16 @@ qsizetype Texture::bytesPerLine(int level) const
     CHECK_LEVEL(level, 0);
 
     return d->bytesPerLine(level);
+}
+
+qsizetype Texture::bytesPerSlice(int level) const
+{
+    if (!d)
+        return 0;
+
+    CHECK_LEVEL(level, 0);
+
+    return d->bytesPerSlice(level);
 }
 
 qsizetype Texture::bytesPerImage(int level) const

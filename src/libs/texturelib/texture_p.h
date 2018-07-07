@@ -19,17 +19,17 @@ public:
             int depth, int layers,
             int levels);
 
-    static qsizetype bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, int height);
+    static qsizetype bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height);
 
     inline int levelWidth(int level) const { return std::max(width >> level, 1); }
     inline int levelHeight(int level) const { return std::max(height >> level, 1); }
     inline int levelDepth(int level) const { return std::max(depth >> level, 1); }
 
     inline qsizetype bytesPerLine(int level) const { return levelInfos[level].bytesPerLine; }
+    inline qsizetype bytesPerSlice(int level) const { return levelInfos[level].bytesPerSlice; }
     inline qsizetype bytesPerImage(int level) const
     {
-        return bytesPerSlice(format, levelInfos[level].bytesPerLine, levelHeight(level)) * levelDepth(level);
-//        return levelInfos[level].bytesPerLine * levelHeight(level) * levelDepth(level);
+        return levelInfos[level].bytesPerSlice * levelDepth(level);
     }
     inline qsizetype levelOffset(int level) const { return levelInfos[level].offset; }
     qsizetype offset(int side, int level, int layer) const;
@@ -49,6 +49,7 @@ public:
     {
         qsizetype offset {0};
         qsizetype bytesPerLine {0};
+        qsizetype bytesPerSlice {0};
         qsizetype bytes {0};
     };
 

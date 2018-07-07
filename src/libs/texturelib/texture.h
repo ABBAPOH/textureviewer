@@ -81,6 +81,7 @@ public:
     static Texture create(Type type, Format format, int width, int height, int depth, int levels = 1, int layers = 1);
 
     static qsizetype bytesPerLine(Format format, int width, Alignment align = Alignment::Byte);
+    static qsizetype calculateBytesPerSlice(Format format, int width, int height, Alignment align = Alignment::Byte);
 
     bool isNull() const;
     Type type() const;
@@ -100,6 +101,7 @@ public:
     qsizetype bytes() const;
     qsizetype bitsPerTexel() const;
     qsizetype bytesPerLine(int level = 0) const;
+    qsizetype bytesPerSlice(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
     qsizetype Q_DECL_DEPRECATED levelOffset(int level = 0) const;
     qsizetype offset(int level = 0, int layer = 0) const;
