@@ -468,6 +468,21 @@ quint32 computePitch(const DDSHeader &header, int format, quint32 width)
     return 0;
 }
 
+Texture::Format convertFormat(Format format)
+{
+    switch (format) {
+    case FormatA8R8G8B8:
+        return Texture::Format::ARGB32;
+    case FormatR8G8B8:
+        return Texture::Format::RGB_888;
+    case FormatDXT1:
+        return Texture::Format::DXT1;
+    default:
+        break;
+    }
+    return Texture::Format::Invalid;
+}
+
 bool DDSHandler::read(Texture &texture)
 {
     if (!canRead(device()))
@@ -475,8 +490,6 @@ bool DDSHandler::read(Texture &texture)
 
     if (!doScan())
         return false;
-
-    Texture result;
 
     const auto layers = std::max<quint32>(1, m_header10.arraySize);
     const auto levels = std::max<quint32>(1, m_header.mipMapCount);
@@ -488,18 +501,15 @@ bool DDSHandler::read(Texture &texture)
     } else if (isVolumeMap(m_header)) {
         qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
         return false;
-    } else {
-        if (m_format == FormatA8R8G8B8) {
-            result = Texture::create2DTexture(Texture::Format::ARGB32, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
-        } else if (m_format == FormatR8G8B8) {
-            result = Texture::create2DTexture(Texture::Format::RGB_888, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
-        } else if (m_format == FormatDXT1) {
-            result = Texture::create2DTexture(Texture::Format::DXT1, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
-        } else {
-            qCWarning(ddshandler) << "Unsupported format" << m_format;
-            return false;
-        }
     }
+
+    const auto textureFormat = convertFormat(Format(m_format));
+    if (textureFormat == Texture::Format::Invalid) {
+        qCWarning(ddshandler) << "Unsupported format" << m_format;
+        return false;
+    }
+
+    auto result = Texture::create2DTexture(textureFormat, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
 
     if (result.isNull()) {
         qCWarning(ddshandler) << "Can't create texture";
