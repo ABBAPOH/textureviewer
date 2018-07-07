@@ -87,7 +87,7 @@ TextureData *TextureData::create(
             return nullptr;
         }
 
-        const auto bytesPerSlice = TextureData::bytesPerSlice(format, bytesPerLine, int(h));
+        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(format, bytesPerLine, int(h));
         const auto bytesPerLevel = bytesPerSlice * d * ufaces * ulayers;
 
         // check we didn't overflow total memory
@@ -131,7 +131,7 @@ TextureData *TextureData::create(
     return data.release();
 }
 
-qsizetype TextureData::bytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height)
+qsizetype TextureData::calculateBytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height)
 {
     switch (format) {
     case Texture::Format::ARGB32:
@@ -347,7 +347,7 @@ qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, 
         return 0;
     }
 
-    return TextureData::bytesPerSlice(format, bbl, uheight);
+    return TextureData::calculateBytesPerSlice(format, bbl, uheight);
 }
 
 bool Texture::isNull() const
