@@ -460,17 +460,17 @@ qsizetype Texture::offset(int level, int layer) const
     return d->offset(0, level, layer);
 }
 
-auto Texture::lineData(const Texture::Position &p) -> DataSpan
+auto Texture::lineData(const Texture::Position &p) -> Data
 {
     if (!d)
-        return DataSpan();
+        return Data();
 
     auto data = dataImpl(p.face(), p.level(), p.layer()); // detach here
     if (!data)
-        return DataSpan();
+        return Data();
 
-    CHECK_ZERO_X(p.x(), DataSpan());
-    CHECK_POINT(p.x(), p.y(), p.z(), p.level(), DataSpan());
+    CHECK_ZERO_X(p.x(), Data());
+    CHECK_POINT(p.x(), p.y(), p.z(), p.level(), Data());
 
     const auto pointer = data
             // actually, depth should be always 1 for cubemaps, but do the correct math here
@@ -479,20 +479,20 @@ auto Texture::lineData(const Texture::Position &p) -> DataSpan
             + d->bytesPerLine(p.level()) * p.y();
     const auto size = d->bytesPerLine(p.level());
 
-    return DataSpan(pointer, size);
+    return Data(pointer, size);
 }
 
-auto Texture::lineData(const Texture::Position &p) const -> ConstDataSpan
+auto Texture::lineData(const Texture::Position &p) const -> ConstData
 {
     if (!d)
-        return ConstDataSpan();
+        return ConstData();
 
     auto data = dataImpl(p.face(), p.level(), p.layer());
     if (!data)
-        return ConstDataSpan();
+        return ConstData();
 
-    CHECK_ZERO_X(p.x(), DataSpan());
-    CHECK_POINT(p.x(), p.y(), p.z(), p.level(), ConstDataSpan());
+    CHECK_ZERO_X(p.x(), Data());
+    CHECK_POINT(p.x(), p.y(), p.z(), p.level(), ConstData());
 
     const auto pointer = data
             // actually, depth should be always 1 for cubemaps, but do the correct math here
@@ -501,10 +501,10 @@ auto Texture::lineData(const Texture::Position &p) const -> ConstDataSpan
             + d->bytesPerLine(p.level()) * p.y();
     const auto size = d->bytesPerLine(p.level());
 
-    return ConstDataSpan(pointer, size);
+    return ConstData(pointer, size);
 }
 
-auto Texture::constLineData(const Texture::Position &p) const -> ConstDataSpan
+auto Texture::constLineData(const Texture::Position &p) const -> ConstData
 {
     return lineData(p);
 }

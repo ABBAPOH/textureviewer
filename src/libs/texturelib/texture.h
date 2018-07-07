@@ -71,8 +71,8 @@ public:
 
     class Position;
 
-    using DataSpan = gsl::span<uchar>;
-    using ConstDataSpan = gsl::span<const uchar>;
+    using Data = gsl::span<uchar>;
+    using ConstData = gsl::span<const uchar>;
 
     static Texture create1DTexture(Format format, int width, int levels = 1, int layers = -1);
     static Texture create2DTexture(Format format, int width, int height, int levels = 1, int layers = -1);
@@ -128,9 +128,9 @@ public:
     // TODO: need testing
     // Ok, here's another usecase: converting to QImage, QImage has an alignment of 4,
     // so we forced to fill it line by line even if format is the same
-    DataSpan lineData(const Position &p);
-    ConstDataSpan lineData(const Position &p) const;
-    ConstDataSpan constLineData(const Position &p) const;
+    Data lineData(const Position &p);
+    ConstData lineData(const Position &p) const;
+    ConstData constLineData(const Position &p) const;
 
     Texture copy() const;
 
