@@ -454,20 +454,6 @@ bool DDSHandler::canRead() const
     return canRead(device());
 }
 
-quint32 computePitch(const DDSHeader &header, int format, quint32 width)
-{
-    switch (format) {
-    case FormatA8R8G8B8:
-    case FormatR8G8B8:
-        return (width * header.pixelFormat.rgbBitCount + 7) >> 3;
-    case FormatDXT1:
-        return std::max(1u, (width + 3) / 4) * 8;
-    default:
-        break;
-    }
-    return 0;
-}
-
 Texture::Format convertFormat(Format format)
 {
     switch (format) {
@@ -516,7 +502,7 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    const auto pitch = computePitch(m_header, m_format, m_header.width);
+    const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(m_header.width));
 
     if (pitch != m_header.pitchOrLinearSize) {
         qCDebug(ddshandler) << "Computed pitch differs from the actual pitch"
@@ -546,7 +532,7 @@ bool DDSHandler::read(Texture &texture)
                 auto width = std::max<quint32>(1, m_header.width >> level);
                 auto height = std::max<quint32>(1, m_header.height >> level);
 //                auto depth = std::max<quint32>(1, m_header.depth >> level);
-                const auto pitch = computePitch(m_header, m_format, width);
+                const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(width));
                 if (m_format == FormatDXT1) {
                     qsizetype size = pitch * std::max<quint32>(1, (height + 3) / 4);
                     if (size != result.bytesPerImage(level)) {
@@ -643,7 +629,8 @@ bool DDSHandler::write(const Texture &texture)
     dds.pixelFormat.gBitMask = info.gBitMask;
     dds.pixelFormat.bBitMask = info.bBitMask;
 
-    dds.pitchOrLinearSize = computePitch(dds, format, dds.width);
+    dds.pitchOrLinearSize =
+            quint32(Texture::calculateBytesPerLine(texture.format(), texture.width()));
 
     s << dds;
 
