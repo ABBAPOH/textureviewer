@@ -535,7 +535,7 @@ bool DDSHandler::read(Texture &texture)
                 auto height = std::max<quint32>(1, m_header.height >> level);
 //                auto depth = std::max<quint32>(1, m_header.depth >> level);
                 const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(width));
-                if (m_format == FormatDXT1 || m_format == FormatDXT3) {
+                if (result.isCompressed()) {
                     qsizetype size = pitch * std::max<quint32>(1, (height + 3) / 4);
                     if (size != result.bytesPerImage(level)) {
                         qCWarning(ddshandler) << "Image size != texture size:"

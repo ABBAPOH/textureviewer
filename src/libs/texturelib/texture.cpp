@@ -373,6 +373,12 @@ Texture::Format Texture::format() const
     return d ? d->format : Format::Invalid;
 }
 
+bool Texture::isCompressed() const
+{
+    return d && (d->format == Format::DXT1
+                || d->format == Format::DXT3);
+}
+
 int Texture::width() const
 {
     return d ? d->width : 0;

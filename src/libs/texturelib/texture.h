@@ -88,6 +88,8 @@ public:
     Type type() const;
     Format format() const;
 
+    bool isCompressed() const;
+
     // ok, opengl does not support really huge textures, so int will be enough
     // (although they use uint32 for sizes)
     int width() const;
