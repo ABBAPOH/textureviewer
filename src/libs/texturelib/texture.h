@@ -52,6 +52,7 @@ public:
         RGB_888,
         BGRA_8888,
         DXT1,
+        DXT3,
         FormatsCount // should be the last
     };
 

@@ -153,6 +153,7 @@ qsizetype TextureData::calculateBytesPerLine(Texture::Format format, qsizetype b
             return ((width * bitsPerTexel + 31) >> 5) << 2;
         break;
     case Texture::Format::DXT1:
+    case Texture::Format::DXT3:
         return std::max(1u, (width + 3) / 4) * bitsPerTexel;
     }
     return 0;
@@ -171,6 +172,7 @@ qsizetype TextureData::calculateBytesPerSlice(Texture::Format format, qsizetype 
     case Texture::Format::RGB_888:
         return bytesPerLine * height;
     case Texture::Format::DXT1:
+    case Texture::Format::DXT3:
         return bytesPerLine * std::max(1u, (height + 3) / 4);
     default:
         break;
