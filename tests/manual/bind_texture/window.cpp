@@ -170,5 +170,6 @@ void Window::paintGL()
 
     QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
     _funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    _texture->release();
     _program->release();
 }
