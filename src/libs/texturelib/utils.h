@@ -4,6 +4,7 @@
 #include <TextureLib/Texture>
 #include <QOpenGLFunctions>
 #include <QDebug>
+#include <QtGui/QOpenGLTexture>
 
 namespace Utils {
 
@@ -96,6 +97,8 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     }
     return {0, 0};
 }
+
+std::unique_ptr<QOpenGLTexture> makeOpenGLTexture(const Texture &texture);
 
 } // namespace Utils
 
