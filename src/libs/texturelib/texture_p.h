@@ -14,14 +14,24 @@ public:
     TextureData &operator=(const TextureData &) = delete;
     TextureData &operator=(TextureData &&) = delete;
 
-    static TextureData *create(Texture::Type type,
-            Texture::Format format, int width,
+    static TextureData *create(
+            Texture::Type type,
+            Texture::Format format,
+            int width,
             int height,
-            int depth, int layers,
+            int depth,
+            int layers,
             int levels);
 
-    static qsizetype calculateBytesPerLine(const TexelFormat &format, quint32 width, Texture::Alignment align = Texture::Alignment::Byte);
-    static qsizetype calculateBytesPerSlice(const TexelFormat &format, quint32 width, quint32 height, Texture::Alignment align = Texture::Alignment::Byte);
+    static qsizetype calculateBytesPerLine(
+            const TexelFormat &format,
+            quint32 width,
+            Texture::Alignment align = Texture::Alignment::Byte);
+    static qsizetype calculateBytesPerSlice(
+            const TexelFormat &format,
+            quint32 width,
+            quint32 height,
+            Texture::Alignment align = Texture::Alignment::Byte);
 
     inline int levelWidth(int level) const { return std::max(width >> level, 1); }
     inline int levelHeight(int level) const { return std::max(height >> level, 1); }
