@@ -144,7 +144,7 @@ qsizetype TextureData::calculateBytesPerLine(Texture::Format format, qsizetype b
     case Texture::Format::Invalid:
     case Texture::Format::FormatsCount:
         return 0;
-    case Texture::Format::ARGB32:
+    case Texture::Format::RGBA_8888:
     case Texture::Format::BGRA_8888:
     case Texture::Format::RGB_888:
         if (align == Texture::Alignment::Byte)
@@ -168,7 +168,7 @@ qsizetype TextureData::calculateBytesPerSlice(Texture::Format format, qsizetype 
     }
 
     switch (format) {
-    case Texture::Format::ARGB32:
+    case Texture::Format::RGBA_8888:
     case Texture::Format::BGRA_8888:
     case Texture::Format::RGB_888:
         return bytesPerLine * height;
@@ -215,31 +215,34 @@ Texture::Texture(QStringView file) :
 Texture::Texture(const QImage& image)
     : d(nullptr)
 {
+    QImage copy;
     Texture::Format format = Texture::Format::Invalid;
     switch (image.format()) {
     case QImage::Format_ARGB32:
-        format = Texture::Format::ARGB32;
+        format = Texture::Format::RGBA_8888;
+        copy = image.convertToFormat(QImage::Format_RGBA8888);
         break;
     case QImage::Format_RGB888:
         format = Texture::Format::RGB_888;
+        copy = image;
         break;
     default:
         qCWarning(texture) << "unsupported image format" << image.format();
         return;
     }
 
-    auto result = Texture::create(Texture::Type::Texture2D, format, image.width(), image.height(), 1);
-    if (result.bytesPerLine() < image.bytesPerLine()) {
+    auto result = Texture::create(Texture::Type::Texture2D, format, copy.width(), copy.height(), 1);
+    if (result.bytesPerLine() < copy.bytesPerLine()) {
         qCWarning(texture) << Q_FUNC_INFO
                            << "texture line size is less than an image line size"
-                           << result.bytesPerLine() << "<" << image.bytesPerLine();
+                           << result.bytesPerLine() << "<" << copy.bytesPerLine();
         return;
     }
 
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < result.height(); ++y) {
         const auto line = result.lineData(Position().y(y));
-        memcpy(line.data(), image.scanLine(y), size_t(image.bytesPerLine()));
+        memcpy(line.data(), copy.scanLine(y), size_t(copy.bytesPerLine()));
     }
 
     *this = std::move(result);
@@ -580,8 +583,8 @@ QImage Texture::toImage() const
 
     QImage::Format imageFormat = QImage::Format_Invalid;
     switch (d->format) {
-    case Texture::Format::ARGB32:
-        imageFormat = QImage::Format_ARGB32;
+    case Texture::Format::RGBA_8888:
+        imageFormat = QImage::Format_RGBA8888;
         break;
     case Texture::Format::RGB_888:
         imageFormat = QImage::Format_RGB888;

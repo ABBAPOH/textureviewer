@@ -23,8 +23,8 @@ std::pair<GLenum, GLuint> bindTexture(OpenGLFunctions *funcs, const Texture &tex
     case Texture::Format::FormatsCount:
         Q_UNREACHABLE();
         break;
-    case Texture::Format::ARGB32:
-        Q_UNIMPLEMENTED();
+    case Texture::Format::RGBA_8888:
+        format = GL_RGBA;
         break;
     case Texture::Format::BGRA_8888:
         format = GL_BGRA;

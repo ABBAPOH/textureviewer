@@ -48,9 +48,9 @@ public:
 
     enum class Format {
         Invalid = 0,
-        ARGB32,
-        RGB_888,
+        RGBA_8888,
         BGRA_8888,
+        RGB_888,
         DXT1,
         DXT3,
         DXT5,

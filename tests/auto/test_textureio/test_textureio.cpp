@@ -65,7 +65,7 @@ void TestTextureIO::read_data()
     QTest::addColumn<int>("layers");
     QTest::addColumn<int>("levels");
 
-    QTest::newRow("64x64, ARGB32, 1, 1") << Texture::Type::Texture2D << 64 << 64 << 1 << Texture::Format::ARGB32 << 1 << 1;
+    QTest::newRow("64x64, ARGB32, 1, 1") << Texture::Type::Texture2D << 64 << 64 << 1 << Texture::Format::RGBA_8888 << 1 << 1;
 }
 
 static QByteArray generateData(int width, int height, Texture::Format format)
@@ -135,7 +135,7 @@ void TestTextureIO::write_data()
     QTest::addColumn<int>("layers");
     QTest::addColumn<int>("levels");
 
-    QTest::newRow("64x64, ARGB32, 1, 1") << Texture::Type::Texture2D << 64 << 64 << 1 << Texture::Format::ARGB32 << 1 << 1;
+    QTest::newRow("64x64, ARGB32, 1, 1") << Texture::Type::Texture2D << 64 << 64 << 1 << Texture::Format::RGBA_8888 << 1 << 1;
 }
 
 void TestTextureIO::write()
