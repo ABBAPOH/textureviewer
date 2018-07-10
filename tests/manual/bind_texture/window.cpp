@@ -124,7 +124,7 @@ void Window::initializeGL()
             return;
         }
 
-        _texture1 = Utils::bindTexture(_funcs, image);
+        _texture = Utils::makeOpenGLTexture(image);
     }
 
 //    {
@@ -165,11 +165,10 @@ void Window::paintGL()
     _program->bind();
 
     _funcs->glActiveTexture(GL_TEXTURE0);
-    _funcs->glBindTexture(_texture1.first, _texture1.second);
+    _texture->bind();
     _funcs->glUniform1i(_program->uniformLocation("ourTexture1"), 0);
 
     QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
     _funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
     _program->release();
-    _funcs->glBindTexture(_texture1.first, 0);
 }

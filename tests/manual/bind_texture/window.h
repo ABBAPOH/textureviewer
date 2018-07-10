@@ -4,6 +4,7 @@
 #include <QtGui/QOpenGLWindow>
 #include <QtGui/QOpenGLFunctions>
 #include <QtGui/QOpenGLBuffer>
+#include <QtGui/QOpenGLTexture>
 #include <QtGui/QOpenGLVertexArrayObject>
 #include <QtGui/QOpenGLShaderProgram>
 
@@ -27,7 +28,7 @@ private:
     QOpenGLBuffer _ibo {QOpenGLBuffer::IndexBuffer};
     QOpenGLVertexArrayObject _vao;
     std::unique_ptr<QOpenGLShaderProgram> _program;
-    std::pair<GLenum, GLuint> _texture1 {};
+    std::unique_ptr<QOpenGLTexture> _texture;
 };
 
 #endif // WINDOW_H
