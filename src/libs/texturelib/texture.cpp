@@ -65,7 +65,6 @@ TextureData *TextureData::create(
     auto udepth = uint(depth);
     auto ufaces = ::isCubeMap(type) ? uint(6) : uint(1);
     auto ulayers = uint(layers);
-    auto ubbp = uint(bbpForFormat(format));
 
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
@@ -75,13 +74,15 @@ TextureData *TextureData::create(
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
 
+        const auto texelFormat = TexelFormat::texelFormat(format);
+
         // calculateBytesPerLine already checks overflow
-        const auto bytesPerLine = Texture::calculateBytesPerLine(format, int(w)); // bytes per scanline
+        const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w); // bytes per scanline
         if (!bytesPerLine)
             return nullptr;
 
         // calculateBytesPerSlice already checks overflow
-        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(format, bytesPerLine, h);
+        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(texelFormat, w, h);
 
         // check that single mipmap doesn't overflow
         if (std::numeric_limits<qsizetype>::max() / bytesPerSlice / d / ufaces / ulayers < 1
@@ -118,7 +119,6 @@ TextureData *TextureData::create(
     data->faces = int(ufaces);
     data->levels = levels;
     data->layers = layers;
-    data->bitsPerTexel = int(ubbp);
     data->format = format;
     data->type = type;
 
@@ -133,14 +133,23 @@ TextureData *TextureData::create(
     return data.release();
 }
 
-qsizetype TextureData::calculateBytesPerLine(Texture::Format format, qsizetype bitsPerTexel, quint32 width, Texture::Alignment align)
+qsizetype TextureData::calculateBytesPerLine(
+        const TexelFormat &format, quint32 width, Texture::Alignment align)
 {
-    if (std::numeric_limits<int>::max() / bitsPerTexel / width < 1) {
+    const auto bitsPerTexel = qsizetype(format.bitsPerTexel());
+    const auto blockSize = qsizetype(format.blockSize());
+
+    if (bitsPerTexel && std::numeric_limits<qsizetype>::max() / bitsPerTexel / width < 1) {
         qCWarning(texture) << "potential integer overflow";
         return 0;
     }
 
-    switch (format) {
+    if (blockSize && std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
+        qCWarning(texture) << "potential integer overflow";
+        return 0;
+    }
+
+    switch (format.format()) {
     case Texture::Format::Invalid:
     case Texture::Format::FormatsCount:
         return 0;
@@ -155,19 +164,21 @@ qsizetype TextureData::calculateBytesPerLine(Texture::Format format, qsizetype b
     case Texture::Format::DXT1:
     case Texture::Format::DXT3:
     case Texture::Format::DXT5:
-        return std::max(1u, (width + 3) / 4) * bitsPerTexel;
+        return std::max(1u, (width + 3) / 4) * blockSize;
     }
     return 0;
 }
 
-qsizetype TextureData::calculateBytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height)
+qsizetype TextureData::calculateBytesPerSlice(
+        const TexelFormat &format, quint32 width, quint32 height, Texture::Alignment align)
 {
+    const auto bytesPerLine = calculateBytesPerLine(format, width, align);
     if (std::numeric_limits<int>::max() / bytesPerLine / height < 1) {
         qCWarning(texture) << "potential integer overflow";
         return 0;
     }
 
-    switch (format) {
+    switch (format.format()) {
     case Texture::Format::RGBA_8888:
     case Texture::Format::BGRA_8888:
     case Texture::Format::RGB_888:
@@ -348,17 +359,14 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
 
 qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
 {
-    const auto bitsPerTexel = quint32(bbpForFormat(format));
-    return TextureData::calculateBytesPerLine(format, bitsPerTexel, quint32(width), align);
+    return TextureData::calculateBytesPerLine(
+                TexelFormat::texelFormat(format), quint32(width), align);
 }
 
 qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, Alignment align)
 {
-    const auto bbl = calculateBytesPerLine(format, width, align);
-    if (!bbl)
-        return 0;
-
-    return TextureData::calculateBytesPerSlice(format, bbl, quint32(height));
+    return TextureData::calculateBytesPerSlice(
+                TexelFormat::texelFormat(format), quint32(width), quint32(height), align);
 }
 
 bool Texture::isNull() const
@@ -447,7 +455,7 @@ qsizetype Texture::bytes() const
 
 qsizetype Texture::bitsPerTexel() const
 {
-    return d ? d->bitsPerTexel : 0;
+    return d ? TexelFormat::texelFormat(d->format).bitsPerTexel() : 0;
 }
 
 qsizetype Texture::bytesPerLine(int level) const

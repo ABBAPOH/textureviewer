@@ -2,6 +2,7 @@
 #define TEXTURE_P_H
 
 #include "texture.h"
+#include "texelformat.h"
 
 class TextureData
 {
@@ -19,8 +20,8 @@ public:
             int depth, int layers,
             int levels);
 
-    static qsizetype calculateBytesPerLine(Texture::Format format, qsizetype bitsPerTexel, quint32 width, Texture::Alignment align);
-    static qsizetype calculateBytesPerSlice(Texture::Format format, qsizetype bytesPerLine, quint32 height);
+    static qsizetype calculateBytesPerLine(const TexelFormat &format, quint32 width, Texture::Alignment align = Texture::Alignment::Byte);
+    static qsizetype calculateBytesPerSlice(const TexelFormat &format, quint32 width, quint32 height, Texture::Alignment align = Texture::Alignment::Byte);
 
     inline int levelWidth(int level) const { return std::max(width >> level, 1); }
     inline int levelHeight(int level) const { return std::max(height >> level, 1); }
@@ -44,7 +45,6 @@ public:
     int faces {0};
     int levels {0};
     int layers {0};
-    int bitsPerTexel {0};
 
     struct LevelInfo
     {
@@ -62,22 +62,8 @@ public:
 
 inline int bbpForFormat(Texture::Format format)
 {
-    switch(format) {
-    case Texture::Format::Invalid:
-    case Texture::Format::FormatsCount:
-        Q_UNREACHABLE();
-    case Texture::Format::RGBA_8888:
-    case Texture::Format::BGRA_8888:
-        return 32;
-    case Texture::Format::RGB_888:
-        return 24;
-    case Texture::Format::DXT1:
-        return 8; // block sizein bytes, not a texel size
-    case Texture::Format::DXT3:
-    case Texture::Format::DXT5:
-        return 16; // block size in bytes, not a texel size
-    }
-    return 0;
+    const auto &texelFormat = TexelFormat::texelFormat(format);
+    return std::max(texelFormat.bitsPerTexel(), texelFormat.blockSize());
 }
 
 #endif // TEXTURE_P_H
