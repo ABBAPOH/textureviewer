@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(extramimetypes);
+    Q_INIT_RESOURCE(images);
 
     QGuiApplication a(argc, argv);
 

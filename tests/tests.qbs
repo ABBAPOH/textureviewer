@@ -4,6 +4,7 @@ Project {
     references: [
         "auto/auto.qbs",
         "manual/manual.qbs",
+        "shared/shared.qbs",
     ]
 }
 
