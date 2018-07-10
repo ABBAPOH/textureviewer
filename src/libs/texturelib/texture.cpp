@@ -139,16 +139,6 @@ qsizetype TextureData::calculateBytesPerLine(
     const auto bitsPerTexel = qsizetype(format.bitsPerTexel());
     const auto blockSize = qsizetype(format.blockSize());
 
-    if (bitsPerTexel && std::numeric_limits<qsizetype>::max() / bitsPerTexel / width < 1) {
-        qCWarning(texture) << "potential integer overflow";
-        return 0;
-    }
-
-    if (blockSize && std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
-        qCWarning(texture) << "potential integer overflow";
-        return 0;
-    }
-
     switch (format.format()) {
     case Texture::Format::Invalid:
     case Texture::Format::FormatsCount:
@@ -156,6 +146,10 @@ qsizetype TextureData::calculateBytesPerLine(
     case Texture::Format::RGBA_8888:
     case Texture::Format::BGRA_8888:
     case Texture::Format::RGB_888:
+        if (bitsPerTexel && std::numeric_limits<qsizetype>::max() / bitsPerTexel / width < 1) {
+            qCWarning(texture) << "potential integer overflow";
+            return 0;
+        }
         if (align == Texture::Alignment::Byte)
             return (width * bitsPerTexel + 7) >> 3;
         else if (align == Texture::Alignment::Word)
@@ -164,6 +158,10 @@ qsizetype TextureData::calculateBytesPerLine(
     case Texture::Format::DXT1:
     case Texture::Format::DXT3:
     case Texture::Format::DXT5:
+        if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
+            qCWarning(texture) << "potential integer overflow";
+            return 0;
+        }
         return std::max(1u, (width + 3) / 4) * blockSize;
     }
     return 0;
@@ -173,19 +171,23 @@ qsizetype TextureData::calculateBytesPerSlice(
         const TexelFormat &format, quint32 width, quint32 height, Texture::Alignment align)
 {
     const auto bytesPerLine = calculateBytesPerLine(format, width, align);
-    if (std::numeric_limits<int>::max() / bytesPerLine / height < 1) {
-        qCWarning(texture) << "potential integer overflow";
-        return 0;
-    }
 
     switch (format.format()) {
     case Texture::Format::RGBA_8888:
     case Texture::Format::BGRA_8888:
     case Texture::Format::RGB_888:
+        if (std::numeric_limits<qsizetype>::max() / bytesPerLine / height < 1) {
+            qCWarning(texture) << "potential integer overflow";
+            return 0;
+        }
         return bytesPerLine * height;
     case Texture::Format::DXT1:
     case Texture::Format::DXT3:
     case Texture::Format::DXT5:
+        if (std::numeric_limits<qsizetype>::max() / bytesPerLine / ((height + 3) / 4) < 1) {
+            qCWarning(texture) << "potential integer overflow";
+            return 0;
+        }
         return bytesPerLine * std::max(1u, (height + 3) / 4);
     default:
         break;
