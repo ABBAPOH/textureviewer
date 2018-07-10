@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "texelformat.h"
 
 QOpenGLTexture::Target convertType(const Texture &texture)
 {
@@ -20,65 +21,6 @@ QOpenGLTexture::Target convertType(const Texture &texture)
         return QOpenGLTexture::Target::TargetCubeMap;
     case Texture::Type::TextureCubeMapArray:
         return QOpenGLTexture::Target::TargetCubeMapArray;
-    }
-    Q_UNREACHABLE();
-}
-
-QOpenGLTexture::PixelFormat getPixelFormat(const Texture &texture)
-{
-    switch (texture.format()) {
-    case Texture::Format::Invalid:
-    case Texture::Format::FormatsCount:
-        Q_UNREACHABLE();
-    case Texture::Format::BGRA_8888:
-        return QOpenGLTexture::BGRA;
-    case Texture::Format::RGBA_8888:
-        return QOpenGLTexture::RGBA;
-    case Texture::Format::RGB_888:
-        return QOpenGLTexture::RGB;
-    case Texture::Format::DXT1:
-    case Texture::Format::DXT3:
-    case Texture::Format::DXT5:
-        return QOpenGLTexture::NoSourceFormat;
-    }
-    Q_UNREACHABLE();
-}
-
-QOpenGLTexture::TextureFormat getTextureFormat(const Texture &texture)
-{
-    switch (texture.format()) {
-    case Texture::Format::Invalid:
-    case Texture::Format::FormatsCount:
-        Q_UNREACHABLE();
-    case Texture::Format::BGRA_8888:
-    case Texture::Format::RGBA_8888:
-        return QOpenGLTexture::RGBA8_UNorm;
-    case Texture::Format::RGB_888:
-        return QOpenGLTexture::RGB8_UNorm;
-    case Texture::Format::DXT1:
-        return QOpenGLTexture::QOpenGLTexture::RGBA_DXT1;
-    case Texture::Format::DXT3:
-        return QOpenGLTexture::QOpenGLTexture::RGBA_DXT3;
-    case Texture::Format::DXT5:
-        return QOpenGLTexture::QOpenGLTexture::RGBA_DXT5;
-    }
-    Q_UNREACHABLE();
-}
-
-QOpenGLTexture::PixelType getPixelType(const Texture &texture)
-{
-    switch (texture.format()) {
-    case Texture::Format::Invalid:
-    case Texture::Format::FormatsCount:
-        Q_UNREACHABLE();
-    case Texture::Format::BGRA_8888:
-    case Texture::Format::RGBA_8888:
-    case Texture::Format::RGB_888:
-        return QOpenGLTexture::UInt8;
-    case Texture::Format::DXT1:
-    case Texture::Format::DXT3:
-    case Texture::Format::DXT5:
-        return QOpenGLTexture::NoPixelType;
     }
     Q_UNREACHABLE();
 }
@@ -109,9 +51,10 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
     }
 
     const auto target = convertType(texture);
-    const auto textureFormat = getTextureFormat(texture);
-    const auto pixelFormat = getPixelFormat(texture);
-    const auto pixelType = getPixelType(texture);
+    const auto &texelFormat = TexelFormat::texelFormat(texture.format());
+    const auto textureFormat = texelFormat.oglTextureFormat();
+    const auto pixelFormat = texelFormat.oglPixelFormat();
+    const auto pixelType = texelFormat.oglPixelType();
 
     auto result = std::make_unique<QOpenGLTexture>(target);
     result->setFormat(textureFormat);
