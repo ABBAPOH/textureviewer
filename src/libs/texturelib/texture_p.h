@@ -60,10 +60,4 @@ public:
     uchar *data {nullptr};
 };
 
-inline int bbpForFormat(Texture::Format format)
-{
-    const auto &texelFormat = TexelFormat::texelFormat(format);
-    return std::max(texelFormat.bitsPerTexel(), texelFormat.blockSize());
-}
-
 #endif // TEXTURE_P_H
