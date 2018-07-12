@@ -254,7 +254,7 @@ Texture::Texture(const QImage& image)
 
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < result.height(); ++y) {
-        const auto line = result.lineData(Position().y(y), {});
+        const auto line = result.lineData({0, y}, {});
         memcpy(line.data(), copy.scanLine(y), size_t(copy.bytesPerLine()));
     }
 
@@ -630,7 +630,7 @@ QImage Texture::toImage() const
 
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < height(); ++y) {
-        const auto line = lineData(Position().y(y), {});
+        const auto line = lineData({0, y}, {});
         memcpy(result.scanLine(y), line.data(), size_t(line.size()));
     }
 

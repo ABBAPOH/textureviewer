@@ -133,6 +133,8 @@ public:
     // TODO: need testing
     // Ok, here's another usecase: converting to QImage, QImage has an alignment of 4,
     // so we forced to fill it line by line even if format is the same
+    // TODO: replace Position with z/y overloads?
+    // TODO: explore if we need this API or it's ok to use imageData instead
     Data lineData(const Position &p, const Index &index);
     ConstData lineData(const Position &p, const Index &index) const;
     ConstData constLineData(const Position &p, const Index &index) const;
@@ -178,6 +180,8 @@ public:
     using Side = Texture::Side;
 
     inline constexpr Position() = default;
+    inline constexpr Position(int x) : m_x(x) {}
+    inline constexpr Position(int x, int y) : m_x(x), m_y(y) {}
     inline constexpr Position(int x, int y, int z) : m_x(x), m_y(y), m_z(z) {}
 
     inline constexpr int x() const { return m_x; }
