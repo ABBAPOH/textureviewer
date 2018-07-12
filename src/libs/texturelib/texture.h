@@ -115,9 +115,9 @@ public:
     ConstData imageData(Index index) const;
     ConstData constImageData(Index index) const;
 
-    inline uchar *data() { return dataImpl(0, 0, 0); }
-    inline const uchar *data() const { return dataImpl(0, 0, 0); }
-    inline const uchar *constData() const { return dataImpl(0, 0, 0); }
+    inline Data data() { return {dataImpl(0, 0, 0), bytes()}; }
+    inline ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
+    inline ConstData constData() const { return {dataImpl(0, 0, 0), bytes()}; }
 
     // TODO: do we need a texel API?
     // we can't return a pointer to the texels as they may not be aligned even to char size

@@ -75,7 +75,7 @@ static QByteArray generateData(int width, int height, Texture::Format format)
     if (texture.isNull())
         return QByteArray();
 
-    return QByteArray((char*)texture.data(), int(texture.bytes()));
+    return QByteArray((char*)texture.data().data(), int(texture.bytes()));
 }
 
 static Texture createTexture(

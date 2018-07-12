@@ -56,7 +56,7 @@ static bool verifyTexture(const Texture &texture, const QImage &second)
     if (texture.bytes() != image.sizeInBytes())
         return false;
 
-    return memcmp(texture.data(), image.bits(), image.sizeInBytes()) == 0;
+    return memcmp(texture.data().data(), image.bits(), image.sizeInBytes()) == 0;
 }
 
 class TestDds: public QObject

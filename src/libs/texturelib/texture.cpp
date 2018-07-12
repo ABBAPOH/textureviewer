@@ -589,7 +589,7 @@ Texture Texture::copy() const
         return result;
 
     Q_ASSERT(result.d->nbytes == d->nbytes);
-    memcpy(result.data(), data(), size_t(d->nbytes));
+    memcpy(result.data().data(), data().data(), size_t(d->nbytes));
 
     return result;
 }
@@ -739,7 +739,7 @@ QDataStream &operator<<(QDataStream &stream, const Texture &texture)
            << quint32(texture.layers())
            << quint32(texture.levels())
            << QByteArray::fromRawData(
-                  reinterpret_cast<const char *>(texture.data()), int(texture.bytes()));
+                  reinterpret_cast<const char *>(texture.data().data()), int(texture.data().size()));
     return stream;
 }
 
@@ -772,7 +772,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
                                   int(layers),
                                   int(levels)));
         if (result.bytes() == data.size()) {
-            memmove(result.data(), data.data(), size_t(data.size()));
+            memmove(result.data().data(), data.data(), size_t(data.size()));
             texture = result;
         }
     }
