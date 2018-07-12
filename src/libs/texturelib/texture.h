@@ -109,7 +109,7 @@ public:
     qsizetype bytesPerSlice(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
     qsizetype Q_DECL_DEPRECATED levelOffset(int level = 0) const;
-    qsizetype offset(int level = 0, int layer = 0) const;
+    qsizetype offset(Index index) const;
 
     Data imageData(Index index);
     ConstData imageData(Index index) const;

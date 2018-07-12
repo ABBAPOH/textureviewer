@@ -501,17 +501,18 @@ qsizetype Texture::levelOffset(int level) const
 }
 
 /*!
-    Returns the offset in bytes for the given \a level and \a layer.
+    Returns the offset in bytes for the given \a index from the beggining of the data.
 */
-qsizetype Texture::offset(int level, int layer) const
+qsizetype Texture::offset(Index index) const
 {
     if (!d)
         return 0;
 
-    CHECK_LEVEL(level, 0);
-    CHECK_LAYER(layer, 0);
+    CHECK_LEVEL(index.level(), 0);
+    CHECK_LAYER(index.layer(), 0);
+    CHECK_SIDE(index.face(), 0);
 
-    return d->offset(0, level, layer);
+    return d->offset(index.face(), index.level(), index.layer());
 }
 
 auto Texture::imageData(Index index) -> Data

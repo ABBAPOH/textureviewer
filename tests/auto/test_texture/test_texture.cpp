@@ -314,7 +314,7 @@ void TestTexture::offset()
     const auto texture = Texture::create(type, format, width, height, depth, levels, layers);
 
     QVERIFY(!texture.isNull());
-    QCOMPARE(texture.offset(level, layer), offset);
+    QCOMPARE(texture.offset({level, layer}), offset);
 }
 
 QTEST_MAIN(TestTexture)
