@@ -5,6 +5,7 @@
 #include <QOpenGLFunctions>
 #include <QDebug>
 #include <QtGui/QOpenGLTexture>
+#include <memory>
 
 namespace Utils {
 
