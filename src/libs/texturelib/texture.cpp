@@ -490,16 +490,6 @@ qsizetype Texture::bytesPerImage(int level) const
     return d->bytesPerImage(level);
 }
 
-qsizetype Texture::levelOffset(int level) const
-{
-    if (!d)
-        return 0;
-
-    CHECK_LEVEL(level, 0);
-
-    return d->levelOffset(level);
-}
-
 /*!
     Returns the offset in bytes for the given \a index from the beggining of the data.
 */
