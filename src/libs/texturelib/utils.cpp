@@ -41,6 +41,7 @@ QOpenGLTexture::CubeMapFace getFace(Texture::Side side)
     case Texture::Side::NegativeZ:
         return QOpenGLTexture::CubeMapNegativeZ;
     }
+    Q_UNREACHABLE();
 }
 
 std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
