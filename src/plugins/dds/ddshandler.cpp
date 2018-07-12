@@ -481,8 +481,8 @@ bool DDSHandler::read(Texture &texture)
     if (!doScan())
         return false;
 
-    const auto layers = std::max<quint32>(1, m_header10.arraySize);
-    const auto levels = std::max<quint32>(1, m_header.mipMapCount);
+    const auto ulayers = std::max(1u, m_header10.arraySize);
+    const auto ulevels = std::max(1u, m_header.mipMapCount);
     const auto faces = isCubeMap(m_header) ? 6 : 1;
 
     if (isCubeMap(m_header)) {
@@ -499,7 +499,7 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    auto result = Texture::create2DTexture(textureFormat, int(m_header.width), int(m_header.height), levels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
+    auto result = Texture::create2DTexture(textureFormat, int(m_header.width), int(m_header.height), ulevels, m_header10.arraySize > 0 ? m_header10.arraySize : -1);
 
     if (result.isNull()) {
         qCWarning(ddshandler) << "Can't create texture";
@@ -525,20 +525,20 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    for (quint32 layer = 0; layer < layers; ++layer) {
+    for (int layer = 0; layer < int(ulayers); ++layer) {
         for (int face = 0; face < faces; ++face) {
             if (isCubeMap(m_header)
                     && !(m_header.caps2 & (faceFlags[face]))) {
                 continue;
             }
 
-            for (quint32 level = 0; level < levels; ++level) {
-                auto width = std::max<quint32>(1, m_header.width >> level);
-                auto height = std::max<quint32>(1, m_header.height >> level);
+            for (int level = 0; level < int(ulevels); ++level) {
+                auto uwidth = std::max<quint32>(1, m_header.width >> level);
+                auto uheight = std::max<quint32>(1, m_header.height >> level);
 //                auto depth = std::max<quint32>(1, m_header.depth >> level);
-                const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(width));
+                const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(uwidth));
                 if (result.isCompressed()) {
-                    qsizetype size = pitch * std::max<quint32>(1, (height + 3) / 4);
+                    qsizetype size = pitch * std::max<quint32>(1, (uheight + 3) / 4);
                     if (size != result.bytesPerImage(level)) {
                         qCWarning(ddshandler) << "Image size != texture size:"
                                               << size << "!=" << result.bytesPerImage(level);
@@ -557,9 +557,9 @@ bool DDSHandler::read(Texture &texture)
                         return false;
                     }
 
-                    for (quint32 y = 0; y < height; ++y) {
+                    for (quint32 y = 0; y < uheight; ++y) {
                         const auto line = result.lineData(
-                                    {0, y}, {Texture::Side(face), level, layer});
+                                    {0, int(y)}, {Texture::Side(face), level, layer});
                         auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
                         if (read != pitch) {
                             qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
