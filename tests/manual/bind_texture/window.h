@@ -16,6 +16,7 @@ class Window : public QOpenGLWindow
 {
 public:
     Window();
+    ~Window();
 
 protected:
     void initializeGL() override;

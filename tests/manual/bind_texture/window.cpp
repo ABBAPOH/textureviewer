@@ -46,6 +46,13 @@ Window::Window()
     resize(640, 480);
 }
 
+Window::~Window()
+{
+    makeCurrent();
+    _texture.reset();
+    doneCurrent();
+}
+
 void Window::initializeGL()
 {
     if (!context()) {
