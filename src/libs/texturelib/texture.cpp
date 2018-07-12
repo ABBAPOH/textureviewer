@@ -780,4 +780,14 @@ QDebug operator<<(QDebug &d, const Texture::Position &position)
     return d;
 }
 
+QDebug operator<<(QDebug& d, const Texture::Index& index)
+{
+    auto s = QString("Texture::Index(face = %1, level = %2, layer = %3)").arg(
+                QString::number(index.face()),
+                QString::number(index.level()),
+                QString::number(index.layer()));
+    d << s;
+    return d;
+}
+
 Q_LOGGING_CATEGORY(texture, "texturelib.texture")

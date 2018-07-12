@@ -72,6 +72,7 @@ public:
     };
 
     class Position;
+    class Index;
 
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
@@ -218,5 +219,39 @@ private:
 };
 
 QDebug operator<<(QDebug &d, const Texture::Position &position);
+
+class Texture::Index
+{
+public:
+    using Side = Texture::Side;
+
+    inline constexpr explicit Index(int level = 0, int layer = 0) noexcept
+        : m_level(level)
+        , m_layer(layer)
+    {}
+    inline constexpr explicit Index(Texture::Side side, int level = 0, int layer = 0) noexcept
+        : m_side(side)
+        , m_level(level)
+        , m_layer(layer)
+    {}
+
+    inline constexpr Side side() const noexcept { return m_side; }
+    inline constexpr void setSide(Side side) noexcept { m_side = side; }
+
+    inline constexpr int face() const { return int(m_side); }
+
+    inline constexpr int level() const noexcept { return m_level; }
+    inline constexpr void setLevel(int level) noexcept { m_level = level; }
+
+    inline constexpr int layer() const noexcept { return m_layer; }
+    inline constexpr void setLayer(int layer) noexcept { m_layer = layer; }
+
+private:
+    Side m_side {Side(0)};
+    int m_level {0};
+    int m_layer {0};
+};
+
+QDebug operator<<(QDebug &d, const Texture::Index &index);
 
 #endif // TEXTURE_H
