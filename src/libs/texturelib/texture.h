@@ -134,9 +134,9 @@ public:
     // TODO: need testing
     // Ok, here's another usecase: converting to QImage, QImage has an alignment of 4,
     // so we forced to fill it line by line even if format is the same
-    Data lineData(const Position &p);
-    ConstData lineData(const Position &p) const;
-    ConstData constLineData(const Position &p) const;
+    Data lineData(const Position &p, const Index &index);
+    ConstData lineData(const Position &p, const Index &index) const;
+    ConstData constLineData(const Position &p, const Index &index) const;
 
     Texture copy() const;
 
@@ -180,7 +180,6 @@ public:
 
     inline constexpr Position() = default;
     inline constexpr Position(int x, int y, int z) : m_x(x), m_y(y), m_z(z) {}
-    inline constexpr Position(Side side, int x, int y) : m_x(x), m_y(y), m_side(side) {}
 
     inline constexpr int x() const { return m_x; }
     inline constexpr Position &x(int x) { m_x = x; return *this; }
@@ -194,27 +193,10 @@ public:
     inline constexpr Position &z(int z) { m_x = z; return *this; }
     inline constexpr void setZ(int z) { m_z = z; }
 
-    inline constexpr Side side() const { return m_side; }
-    inline constexpr Position &side(Side side) { m_side = side; return *this; }
-    inline constexpr void setSide(Side side) { m_side = side; }
-
-    inline constexpr int face() const { return int(m_side); }
-
-    inline constexpr int level() const { return m_level; }
-    inline constexpr Position &level(int level) { m_level = level; return *this; }
-    inline constexpr void setLevel(int level) { m_level = level; }
-
-    inline constexpr int layer() const { return m_layer; }
-    inline constexpr Position &layer(int layer) { m_layer = layer; return *this; }
-    inline constexpr void setLayer(int layer) { m_layer = layer; }
-
 private:
     int m_x {0};
     int m_y {0};
     int m_z {0};
-    Side m_side {Side(0)};
-    int m_level {0};
-    int m_layer {0};
 };
 
 QDebug operator<<(QDebug &d, const Texture::Position &position);

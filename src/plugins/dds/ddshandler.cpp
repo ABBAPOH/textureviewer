@@ -560,10 +560,8 @@ bool DDSHandler::read(Texture &texture)
                     for (quint32 y = 0; y < height; ++y) {
                         const auto line = result.lineData(
                                     Texture::Position()
-                                    .y(y)
-                                    .side(Texture::Side(face))
-                                    .level(level)
-                                    .layer(layer));
+                                    .y(y),
+                                    {Texture::Side(face), level, layer});
                         auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
                         if (read != pitch) {
                             qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
@@ -639,7 +637,7 @@ bool DDSHandler::write(const Texture &texture)
     s << dds;
 
     for (int y = 0; y < texture.height(); ++y) {
-        const auto line = texture.constLineData(Texture::Position().y(y));
+        const auto line = texture.constLineData(Texture::Position().y(y), {});
         const auto written = s.device()->write(reinterpret_cast<const char *>(line.data()), line.size());
         if (written != line.size()) {
             qCWarning(ddshandler) << "Can't write to file:" << s.device()->errorString();

@@ -146,10 +146,8 @@ bool VTFHandler::read(Texture &texture)
                         const auto line = result.lineData(
                                     Texture::Position()
                                     .y(y)
-                                    .z(z)
-                                    .side(Texture::Side(face))
-                                    .layer(layer)
-                                    .level(level));
+                                    .z(z),
+                                    {(Texture::Side(face)), layer, level});
                         auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
                         if (read != pitch) {
                             qCWarning(vtfhandler) << "Can't read from file:"

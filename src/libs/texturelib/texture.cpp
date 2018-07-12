@@ -254,7 +254,7 @@ Texture::Texture(const QImage& image)
 
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < result.height(); ++y) {
-        const auto line = result.lineData(Position().y(y));
+        const auto line = result.lineData(Position().y(y), {});
         memcpy(line.data(), copy.scanLine(y), size_t(copy.bytesPerLine()));
     }
 
@@ -529,53 +529,53 @@ auto Texture::constImageData(Index index) const -> ConstData
     return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
 }
 
-auto Texture::lineData(const Texture::Position &p) -> Data
+auto Texture::lineData(const Texture::Position &p, const Texture::Index& i) -> Data
 {
     if (!d)
         return Data();
 
-    auto data = dataImpl(p.face(), p.level(), p.layer()); // detach here
+    auto data = dataImpl(i.face(), i.level(), i.layer()); // detach here
     if (!data)
         return Data();
 
     CHECK_ZERO_X(p.x(), Data());
-    CHECK_POINT(p.x(), p.y(), p.z(), p.level(), Data());
+    CHECK_POINT(p.x(), p.y(), p.z(), i.level(), Data());
 
     const auto pointer = data
             // actually, depth should be always 1 for cubemaps, but do the correct math here
-            + d->bytesPerLine(p.level()) * height(p.level()) * depth(p.level()) * p.face()
-            + d->bytesPerLine(p.level()) * height(p.level()) * p.z()
-            + d->bytesPerLine(p.level()) * p.y();
-    const auto size = d->bytesPerLine(p.level());
+            + d->bytesPerLine(i.level()) * height(i.level()) * depth(i.level()) * i.face()
+            + d->bytesPerLine(i.level()) * height(i.level()) * p.z()
+            + d->bytesPerLine(i.level()) * p.y();
+    const auto size = d->bytesPerLine(i.level());
 
     return Data(pointer, size);
 }
 
-auto Texture::lineData(const Texture::Position &p) const -> ConstData
+auto Texture::lineData(const Texture::Position &p, const Texture::Index& i) const -> ConstData
 {
     if (!d)
         return ConstData();
 
-    auto data = dataImpl(p.face(), p.level(), p.layer());
+    auto data = dataImpl(i.face(), i.level(), i.layer());
     if (!data)
         return ConstData();
 
     CHECK_ZERO_X(p.x(), Data());
-    CHECK_POINT(p.x(), p.y(), p.z(), p.level(), ConstData());
+    CHECK_POINT(p.x(), p.y(), p.z(), i.level(), ConstData());
 
     const auto pointer = data
             // actually, depth should be always 1 for cubemaps, but do the correct math here
-            + d->bytesPerLine(p.level()) * height(p.level()) * depth(p.level()) * p.face()
-            + d->bytesPerLine(p.level()) * height(p.level()) * p.z()
-            + d->bytesPerLine(p.level()) * p.y();
-    const auto size = d->bytesPerLine(p.level());
+            + d->bytesPerLine(i.level()) * height(i.level()) * depth(i.level()) * i.face()
+            + d->bytesPerLine(i.level()) * height(i.level()) * p.z()
+            + d->bytesPerLine(i.level()) * p.y();
+    const auto size = d->bytesPerLine(i.level());
 
     return ConstData(pointer, size);
 }
 
-auto Texture::constLineData(const Texture::Position &p) const -> ConstData
+auto Texture::constLineData(const Texture::Position &p, const Texture::Index& index) const -> ConstData
 {
-    return lineData(p);
+    return lineData(p, index);
 }
 
 /*!
@@ -639,7 +639,7 @@ QImage Texture::toImage() const
 
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < height(); ++y) {
-        const auto line = lineData(Position().y(y));
+        const auto line = lineData(Position().y(y), {});
         memcpy(result.scanLine(y), line.data(), size_t(line.size()));
     }
 
@@ -783,14 +783,10 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
 
 QDebug operator<<(QDebug &d, const Texture::Position &position)
 {
-    auto s = QString("Texture::Position(x = %1, y = %2, z = %3"
-                     ", face = %4, level = %5, layer = %6)").arg(
+    auto s = QString("Texture::Position(x = %1, y = %2, z = %3)").arg(
                 QString::number(position.x()),
                 QString::number(position.y()),
-                QString::number(position.z()),
-                QString::number(position.face()),
-                QString::number(position.level()),
-                QString::number(position.layer()));
+                QString::number(position.z()));
     d << s;
     return d;
 }
