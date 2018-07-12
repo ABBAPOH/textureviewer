@@ -115,14 +115,9 @@ public:
     ConstData imageData(Index index) const;
     ConstData constImageData(Index index) const;
 
-    inline uchar *data(int level = 0, int layer = 0) { return dataImpl(0, level, layer); }
-    inline uchar *data(Side side, int level = 0, int layer = 0) { return dataImpl(int(side), level, layer); }
-
-    inline const uchar *data(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
-    inline const uchar *data(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
-
-    inline const uchar *constData(int level = 0, int layer = 0) const { return dataImpl(0, level, layer); }
-    inline const uchar *constData(Side side, int level = 0, int layer = 0) const { return dataImpl(int(side), level, layer); }
+    inline uchar *data() { return dataImpl(0, 0, 0); }
+    inline const uchar *data() const { return dataImpl(0, 0, 0); }
+    inline const uchar *constData() const { return dataImpl(0, 0, 0); }
 
     // TODO: do we need a texel API?
     // we can't return a pointer to the texels as they may not be aligned even to char size
