@@ -32,7 +32,7 @@ void TestTexture::defaultConstructed()
     QCOMPARE(tex.bytesPerImage(), 0);
     QCOMPARE(tex.bytes(), 0);
 
-    QCOMPARE(tex.data(), nullptr);
+    QCOMPARE(tex.imageData({}).data(), nullptr);
     QCOMPARE(tex.constData(), nullptr);
 }
 

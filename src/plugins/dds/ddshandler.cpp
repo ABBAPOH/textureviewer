@@ -544,8 +544,8 @@ bool DDSHandler::read(Texture &texture)
                                               << size << "!=" << result.bytesPerImage(level);
                         return false;
                     }
-                    const auto data = result.data(Texture::Side(face), level, layer);
-                    const auto read = device()->read(reinterpret_cast<char *>(data), size);
+                    const auto data = result.imageData({Texture::Side(face), level, layer});
+                    const auto read = device()->read(reinterpret_cast<char *>(data.data()), size);
                     if (read != size) {
                         qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
                         return false;

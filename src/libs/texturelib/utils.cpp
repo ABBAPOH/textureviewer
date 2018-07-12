@@ -75,7 +75,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
                                     getFace(Texture::Side(face)),
                                     pixelFormat,
                                     pixelType,
-                                    texture.data(level, layer));
+                                    texture.imageData({Texture::Side(face), level, layer}).data());
                     }
                 }
             }
@@ -87,7 +87,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
                                 layer,
                                 pixelFormat,
                                 pixelType,
-                                texture.data(level, layer));
+                                texture.imageData({level, layer}).data());
                 }
             }
         }
@@ -101,14 +101,17 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
                                     level,
                                     layer,
                                     getFace(Texture::Side(face)),
-                                    texture.data(level, layer));
+                                    texture.imageData({Texture::Side(face), level, layer}).data());
                     }
                 }
             }
         } else {
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
-                    result->setCompressedData(level, layer, texture.data(level, layer));
+                    result->setCompressedData(
+                                level,
+                                layer,
+                                texture.imageData({level, layer}).data());
                 }
             }
         }

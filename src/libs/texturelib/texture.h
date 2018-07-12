@@ -111,6 +111,10 @@ public:
     qsizetype Q_DECL_DEPRECATED levelOffset(int level = 0) const;
     qsizetype offset(int level = 0, int layer = 0) const;
 
+    Data imageData(Index index);
+    ConstData imageData(Index index) const;
+    ConstData constImageData(Index index) const;
+
     inline uchar *data(int level = 0, int layer = 0) { return dataImpl(0, level, layer); }
     inline uchar *data(Side side, int level = 0, int layer = 0) { return dataImpl(int(side), level, layer); }
 
@@ -225,11 +229,11 @@ class Texture::Index
 public:
     using Side = Texture::Side;
 
-    inline constexpr explicit Index(int level = 0, int layer = 0) noexcept
+    inline constexpr Index(int level = 0, int layer = 0) noexcept
         : m_level(level)
         , m_layer(layer)
     {}
-    inline constexpr explicit Index(Texture::Side side, int level = 0, int layer = 0) noexcept
+    inline constexpr Index(Texture::Side side, int level = 0, int layer = 0) noexcept
         : m_side(side)
         , m_level(level)
         , m_layer(layer)

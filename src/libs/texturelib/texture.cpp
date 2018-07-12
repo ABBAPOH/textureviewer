@@ -514,6 +514,21 @@ qsizetype Texture::offset(int level, int layer) const
     return d->offset(0, level, layer);
 }
 
+auto Texture::imageData(Index index) -> Data
+{
+    return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
+}
+
+auto Texture::imageData(Index index) const -> ConstData
+{
+    return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
+}
+
+auto Texture::constImageData(Index index) const -> ConstData
+{
+    return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
+}
+
 auto Texture::lineData(const Texture::Position &p) -> Data
 {
     if (!d)
