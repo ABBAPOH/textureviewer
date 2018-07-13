@@ -13,7 +13,7 @@ static const TexelFormat formats[] = {
 static_assert (sizeof (formats) == sizeof(TexelFormat) * size_t(Texture::Format::FormatsCount),
                "Some Texture::Format eniumerations are not handled in an array");
 
-const TexelFormat &TexelFormat::texelFormat(Texture::Format format)
+const TexelFormat &TexelFormat::texelFormat(Texture::Format format) noexcept
 {
     return formats[int(format)];
 }
