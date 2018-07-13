@@ -68,6 +68,20 @@ static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
     return true;
 }
 
+static Texture::Format convertFormat(VTFImageFormat format)
+{
+    switch (format) {
+    case VTFImageFormat::RGBA_8888: return Texture::Format::RGBA_8888;
+    case VTFImageFormat::BGRA_8888: return Texture::Format::BGRA_8888;
+    case VTFImageFormat::RGB_888: return Texture::Format::RGB_888;
+    case VTFImageFormat::BGR_888: return Texture::Format::BGR_888;
+    case VTFImageFormat::DXT1: return Texture::Format::DXT1;
+    case VTFImageFormat::DXT3: return Texture::Format::DXT3;
+    case VTFImageFormat::DXT5: return Texture::Format::DXT5;
+    default: return Texture::Format::Invalid;
+    }
+}
+
 bool VTFHandler::canRead() const
 {
     return canRead(device());
@@ -95,19 +109,7 @@ bool VTFHandler::read(Texture &texture)
         return false;
 
     const auto highFormat = vtfFormat(header.highResImageFormat);
-
-    auto format = Texture::Format::Invalid;
-    switch (highFormat) {
-    case VTFImageFormat::RGBA_8888: format = Texture::Format::RGBA_8888; break;
-    case VTFImageFormat::BGRA_8888: format = Texture::Format::BGRA_8888; break;
-    case VTFImageFormat::RGB_888: format = Texture::Format::RGB_888; break;
-    case VTFImageFormat::BGR_888: format = Texture::Format::BGR_888; break;
-    case VTFImageFormat::DXT1: format = Texture::Format::DXT1; break;
-    case VTFImageFormat::DXT3: format = Texture::Format::DXT3; break;
-    case VTFImageFormat::DXT5: format = Texture::Format::DXT5; break;
-    default: break;
-    }
-
+    const auto format = convertFormat(highFormat);
     if (format == Texture::Format::Invalid) {
         qCWarning(vtfhandler) << "format" << header.highResImageFormat << "is not supported";
         return false;
