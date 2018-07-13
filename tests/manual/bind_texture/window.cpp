@@ -120,7 +120,8 @@ void Window::initializeGL()
     _program->link();
 
     {
-        Texture image(u":/dds/BGRA_8888.dds");
+//        Texture image(u":/dds/BGRA_8888.dds");
+        Texture image(u":/vtf/RGBA8888.vtf");
 //        Texture image(u":/vtf/BGRA8888.vtf");
 //        Texture image(u":/vtf/RGB_888.vtf");
 //        Texture image(u":/dds/DXT5.dds");

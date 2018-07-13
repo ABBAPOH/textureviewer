@@ -98,6 +98,7 @@ bool VTFHandler::read(Texture &texture)
 
     auto format = Texture::Format::Invalid;
     switch (highFormat) {
+    case VTFImageFormat::RGBA_8888: format = Texture::Format::RGBA_8888; break;
     case VTFImageFormat::BGRA_8888: format = Texture::Format::BGRA_8888; break;
     case VTFImageFormat::RGB_888: format = Texture::Format::RGB_888; break;
     case VTFImageFormat::BGR_888: format = Texture::Format::BGR_888; break;
