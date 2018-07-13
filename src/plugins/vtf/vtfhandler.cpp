@@ -100,6 +100,7 @@ bool VTFHandler::read(Texture &texture)
     switch (highFormat) {
     case VTFImageFormat::BGRA_8888: format = Texture::Format::BGRA_8888; break;
     case VTFImageFormat::RGB_888: format = Texture::Format::RGB_888; break;
+    case VTFImageFormat::BGR_888: format = Texture::Format::BGR_888; break;
     default: break;
     }
 
