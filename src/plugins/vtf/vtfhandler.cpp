@@ -56,19 +56,6 @@ static bool validateHeader(const VTFHeader &header)
     return true;
 }
 
-static quint32 computePitch(VTFImageFormat format, quint32 width)
-{
-    switch (format) {
-    case VTFImageFormat::BGRA_8888:
-        return (width * 32 + 7) >> 3;
-    case VTFImageFormat::RGB_888:
-        return (width * 24 + 7) >> 3;
-    default:
-        break;
-    }
-    return 0;
-}
-
 static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
 {
     const auto buffer = std::make_unique<char[]>(size_t(size));
