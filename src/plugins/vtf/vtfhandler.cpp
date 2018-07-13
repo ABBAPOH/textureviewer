@@ -102,6 +102,9 @@ bool VTFHandler::read(Texture &texture)
     case VTFImageFormat::BGRA_8888: format = Texture::Format::BGRA_8888; break;
     case VTFImageFormat::RGB_888: format = Texture::Format::RGB_888; break;
     case VTFImageFormat::BGR_888: format = Texture::Format::BGR_888; break;
+    case VTFImageFormat::DXT1: format = Texture::Format::DXT1; break;
+    case VTFImageFormat::DXT3: format = Texture::Format::DXT3; break;
+    case VTFImageFormat::DXT5: format = Texture::Format::DXT5; break;
     default: break;
     }
 
@@ -131,14 +134,30 @@ bool VTFHandler::read(Texture &texture)
         for (int layer = 0; layer < header.frames; ++layer) {
             for (int face = 0; face < 1; ++face) { // TODO: where do we get faces??
                 for (int z = 0; z < depth; ++z) {
-                    for (int y = 0; y < height; ++y) {
-                        const auto line = result.lineData(
-                                    {0, y, z}, {(Texture::Side(face)), layer, level});
-                        auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
-                        if (read != pitch) {
+                    if (result.isCompressed()) {
+                        qsizetype size = pitch * std::max<quint32>(1, (height + 3) / 4);
+                        if (size != result.bytesPerImage(level)) {
+                            qCWarning(vtfhandler) << "Image size != texture size:"
+                                                  << size << "!=" << result.bytesPerImage(level);
+                            return false;
+                        }
+                        const auto data = result.imageData({Texture::Side(face), level, layer});
+                        const auto read = device()->read(reinterpret_cast<char *>(data.data()), size);
+                        if (read != size) {
                             qCWarning(vtfhandler) << "Can't read from file:"
                                                   << device()->errorString();
                             return false;
+                        }
+                    } else {
+                        for (int y = 0; y < height; ++y) {
+                            const auto line = result.lineData(
+                                        {0, y, z}, {(Texture::Side(face)), layer, level});
+                            auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
+                            if (read != pitch) {
+                                qCWarning(vtfhandler) << "Can't read from file:"
+                                                      << device()->errorString();
+                                return false;
+                            }
                         }
                     }
                 }
