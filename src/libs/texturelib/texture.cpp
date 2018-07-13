@@ -200,11 +200,6 @@ qsizetype TextureData::offset(int side, int level, int layer) const
     return levelInfos[level].offset + bytesPerImage(level) * (faces * layer + side);
 }
 
-Texture::Texture() noexcept
-    : d(nullptr)
-{
-}
-
 Texture::Texture(const Texture &other)
     : d(other.d)
 {

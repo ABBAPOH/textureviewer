@@ -18,7 +18,7 @@ class TextureData;
 class TEXTURELIB_EXPORT Texture
 {
 public:
-    Texture() noexcept;
+    inline Texture() noexcept {}
     Texture(const Texture &other);
     explicit Texture(const QString &file);
     explicit Texture(QStringView file);
