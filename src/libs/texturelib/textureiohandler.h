@@ -6,16 +6,19 @@
 #include <QtCore/QMimeType>
 
 #include <memory>
+#include <experimental/memory>
 
 class TEXTURELIB_EXPORT TextureIOHandler
 {
     Q_DISABLE_COPY(TextureIOHandler)
 public:
+    using QIODevicePointer = std::experimental::fundamentals_v2::observer_ptr<QIODevice>;
+
     TextureIOHandler();
     virtual ~TextureIOHandler();
 
-    QIODevice *device() const;
-    void setDevice(QIODevice *device);
+    QIODevicePointer device() const;
+    void setDevice(QIODevicePointer device);
 
     QMimeType mimeType() const;
     void setMimeType(const QMimeType &mimeType);
@@ -25,7 +28,7 @@ public:
     virtual bool write(const Texture &texture);
 
 private:
-    QIODevice *_device {nullptr};
+    QIODevicePointer _device;
     QMimeType _mimeType;
     QByteArray _subType;
 

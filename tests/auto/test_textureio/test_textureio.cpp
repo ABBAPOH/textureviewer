@@ -41,14 +41,14 @@ void TestTextureIO::setters()
 
     TextureIO io;
 
-    io.setDevice(&file);
-    QCOMPARE(io.device(), &file);
+    io.setDevice(TextureIO::QIODevicePointer(&file));
+    QCOMPARE(io.device().get(), &file);
     io.setDevice(nullptr);
     QVERIFY(io.device() == nullptr);
 
     io.setFileName("file.txt");
     QCOMPARE(io.fileName(), QString("file.txt"));
-    QVERIFY(qobject_cast<QFile *>(io.device()) != nullptr);
+    QVERIFY(qobject_cast<QFile *>(io.device().get()) != nullptr);
     QCOMPARE(io.mimeType().name(), QString("text/plain"));
 
     io.setMimeType(QMimeDatabase().mimeTypeForName("text/html"));
@@ -118,7 +118,7 @@ void TestTextureIO::read()
     buffer.close(); // close device to ensure TextureIO will open it with correct mode
 
     TextureIO io;
-    io.setDevice(&buffer);
+    io.setDevice(TextureIO::QIODevicePointer(&buffer));
     io.setMimeType("application/octet-stream");
     const auto result = io.read();
     QVERIFY2(result, qPrintable(toUserString(result.error())));
@@ -151,7 +151,7 @@ void TestTextureIO::write()
     QBuffer buffer;
 
     TextureIO io;
-    io.setDevice(&buffer);
+    io.setDevice(TextureIO::QIODevicePointer(&buffer));
     io.setMimeType("application/octet-stream");
 
     Texture expectedTexture;

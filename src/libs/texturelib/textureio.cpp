@@ -33,6 +33,8 @@ class TextureIOPrivate
     TextureIO *q_ptr {nullptr};
 
 public:
+    using QIODevicePointer = TextureIO::QIODevicePointer;
+
     explicit TextureIOPrivate(TextureIO *qq) : q_ptr(qq) {}
 
     TextureIOResult ensureDeviceOpened(Capabilities caps);
@@ -44,7 +46,7 @@ public:
     QString fileName;
     std::unique_ptr<QFile> file;
 
-    QIODevice *device {nullptr};
+    QIODevicePointer device;
 #if __cplusplus >= 201703L
     std::optional<QMimeType> mimeType;
 #else
@@ -133,7 +135,7 @@ TextureIO::TextureIO(const QString &fileName, const QMimeType &mimeType) :
 /*!
     Creates an TextureIO object with the given \a device and \a mimeType.
 */
-TextureIO::TextureIO(QIODevice *device, const QMimeType &mimeType) :
+TextureIO::TextureIO(QIODevicePointer device, const QMimeType &mimeType) :
     d_ptr(new TextureIOPrivate(this))
 {
     setDevice(device);
@@ -154,7 +156,7 @@ TextureIO::TextureIO(const QString &fileName, const QString &mimeType) :
 /*!
     Creates an TextureIO object with the given \a device and \a mimeType.
 */
-TextureIO::TextureIO(QIODevice *device, const QString &mimeType) :
+TextureIO::TextureIO(QIODevicePointer device, const QString &mimeType) :
     d_ptr(new TextureIOPrivate(this))
 {
     setDevice(device);
@@ -188,7 +190,7 @@ void TextureIO::setFileName(const QString &fileName)
         return;
 
     d->file.reset(new QFile(fileName));
-    d->device = d->file.get();
+    d->device.reset(d->file.get());
     d->mimeType = QMimeDatabase().mimeTypeForFile(fileName);
     d->fileName = fileName;
     d->resetHandler();
@@ -199,14 +201,14 @@ void TextureIO::setFileName(const QString &fileName)
     This property holds the device that is set to this TextureIO object.
 */
 
-QIODevice *TextureIO::device() const
+TextureIO::QIODevicePointer TextureIO::device() const
 {
     Q_D(const TextureIO);
 
     return d->device;
 }
 
-void TextureIO::setDevice(QIODevice *device)
+void TextureIO::setDevice(QIODevicePointer device)
 {
     Q_D(TextureIO);
 

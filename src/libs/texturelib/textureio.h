@@ -9,6 +9,7 @@
 #include <QtCore/QMimeType>
 
 #include <tl/expected.h>
+#include <experimental/memory>
 
 class QIODevice;
 
@@ -18,12 +19,13 @@ class TEXTURELIB_EXPORT TextureIO
     Q_DISABLE_COPY(TextureIO)
     Q_DECLARE_PRIVATE(TextureIO)
 public:
+    using QIODevicePointer = std::experimental::fundamentals_v2::observer_ptr<QIODevice>;
 
     TextureIO();
     explicit TextureIO(const QString &fileName, const QMimeType &mimeType = QMimeType());
-    explicit TextureIO(QIODevice *device, const QMimeType &mimeType = QMimeType());
+    explicit TextureIO(QIODevicePointer device, const QMimeType &mimeType = QMimeType());
     TextureIO(const QString &fileName, const QString &mimeType);
-    TextureIO(QIODevice *device, const QString &mimeType);
+    TextureIO(QIODevicePointer device, const QString &mimeType);
     ~TextureIO();
 
     template<class Value, class Error>
@@ -35,8 +37,8 @@ public:
     QString fileName() const;
     void setFileName(const QString &fileName);
 
-    QIODevice *device() const;
-    void setDevice(QIODevice *device);
+    QIODevicePointer device() const;
+    void setDevice(QIODevicePointer device);
 
     QMimeType mimeType() const;
     void setMimeType(const QMimeType &mimeType);

@@ -592,7 +592,7 @@ bool DDSHandler::write(const Texture &texture)
         return false;
     }
 
-    QDataStream s(device());
+    QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
 
     DDSHeader dds;
@@ -646,7 +646,7 @@ bool DDSHandler::write(const Texture &texture)
     return true;
 }
 
-bool DDSHandler::canRead(QIODevice *device)
+bool DDSHandler::canRead(QIODevicePointer device)
 {
     if (!device) {
         qCWarning(ddshandler) << "DDSHandler: canRead() called with no device";
@@ -669,7 +669,7 @@ bool DDSHandler::doScan() const
     qint64 oldPos = device()->pos();
     device()->seek(0);
 
-    QDataStream s(device());
+    QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
     s >> that->m_header;
     if (m_header.pixelFormat.fourCC == dx10Magic)

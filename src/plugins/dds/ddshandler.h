@@ -58,7 +58,7 @@ public: // ImageIOHandler interface
     bool read(Texture &texture) override;
     bool write(const Texture &texture) override;
 
-    static bool canRead(QIODevice *device);
+    static bool canRead(QIODevicePointer device);
 
 private:
     bool doScan() const;

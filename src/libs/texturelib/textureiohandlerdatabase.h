@@ -11,12 +11,14 @@ class TEXTURELIB_EXPORT TextureIOHandlerDatabase
 {
     Q_DISABLE_COPY(TextureIOHandlerDatabase)
 public:
+    using QIODevicePointer = TextureIOHandler::QIODevicePointer;
+
     TextureIOHandlerDatabase();
     ~TextureIOHandlerDatabase();
 
     using Capabilities = TextureIOHandlerPlugin::Capabilities;
 
-    std::unique_ptr<TextureIOHandler> create(QIODevice *device, const QMimeType &mimeType, Capabilities caps);
+    std::unique_ptr<TextureIOHandler> create(QIODevicePointer device, const QMimeType &mimeType, Capabilities caps);
     std::vector<QMimeType> availableMimeTypes(Capabilities caps) const;
     TextureIOHandlerPlugin *plugin(const QString &mimeType) const;
     void registerPlugin(const QString &mimeType, TextureIOHandlerPlugin *plugin);

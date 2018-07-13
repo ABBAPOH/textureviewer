@@ -10,7 +10,7 @@ bool TestHandler::canRead() const
 
 bool TestHandler::read(Texture &texture)
 {
-    QDataStream s(device());
+    QDataStream s(device().get());
     s >> texture;
     if (s.status() != QDataStream::Ok) {
         qWarning() << "Can't read texture";
@@ -22,7 +22,7 @@ bool TestHandler::read(Texture &texture)
 
 bool TestHandler::write(const Texture &texture)
 {
-    QDataStream stream(device());
+    QDataStream stream(device().get());
     stream << texture;
 
     if (stream.status() != QDataStream::Ok) {

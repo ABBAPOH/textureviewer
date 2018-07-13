@@ -16,7 +16,7 @@ public: // ImageIOHandler interface
     bool read(Texture &texture) override;
 
 private:
-    bool canRead(QIODevice *device) const;
+    bool canRead(QIODevicePointer device) const;
 };
 
 class VTFHandlerPlugin : public TextureIOHandlerPlugin

@@ -69,7 +69,7 @@ static quint32 computePitch(VTFImageFormat format, quint32 width)
     return 0;
 }
 
-static bool readPadding(QIODevice *device, qint64 size)
+static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
 {
     const auto buffer = std::make_unique<char[]>(size_t(size));
     const auto read = device->read(buffer.get(), size);
@@ -93,7 +93,7 @@ bool VTFHandler::read(Texture &texture)
 
     VTFHeader header;
 
-    QDataStream s(device());
+    QDataStream s(device().get());
     s >> header;
 
     if (s.status() != QDataStream::Ok) {
@@ -164,7 +164,7 @@ bool VTFHandler::read(Texture &texture)
     return true;
 }
 
-bool VTFHandler::canRead(QIODevice *device) const
+bool VTFHandler::canRead(QIODevicePointer device) const
 {
     if (!device) {
         qCWarning(vtfhandler) << "canRead() called with no device";
