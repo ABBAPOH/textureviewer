@@ -139,13 +139,7 @@ qsizetype TextureData::calculateBytesPerLine(
     const auto bitsPerTexel = qsizetype(format.bitsPerTexel());
     const auto blockSize = qsizetype(format.blockSize());
 
-    switch (format.format()) {
-    case Texture::Format::Invalid:
-    case Texture::Format::FormatsCount:
-        return 0;
-    case Texture::Format::RGBA_8888:
-    case Texture::Format::BGRA_8888:
-    case Texture::Format::RGB_888:
+    if (bitsPerTexel) {
         if (bitsPerTexel && std::numeric_limits<qsizetype>::max() / bitsPerTexel / width < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
@@ -154,16 +148,15 @@ qsizetype TextureData::calculateBytesPerLine(
             return (width * bitsPerTexel + 7) >> 3;
         else if (align == Texture::Alignment::Word)
             return ((width * bitsPerTexel + 31) >> 5) << 2;
-        break;
-    case Texture::Format::DXT1:
-    case Texture::Format::DXT3:
-    case Texture::Format::DXT5:
+    } else if (blockSize) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
         return std::max(1u, (width + 3) / 4) * blockSize;
     }
+
+    Q_UNREACHABLE();
     return 0;
 }
 
@@ -172,26 +165,21 @@ qsizetype TextureData::calculateBytesPerSlice(
 {
     const auto bytesPerLine = calculateBytesPerLine(format, width, align);
 
-    switch (format.format()) {
-    case Texture::Format::RGBA_8888:
-    case Texture::Format::BGRA_8888:
-    case Texture::Format::RGB_888:
+    if (format.bitsPerTexel()) {
         if (std::numeric_limits<qsizetype>::max() / bytesPerLine / height < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
         return bytesPerLine * height;
-    case Texture::Format::DXT1:
-    case Texture::Format::DXT3:
-    case Texture::Format::DXT5:
+    } else if (format.blockSize()) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / bytesPerLine / ((height + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
         return bytesPerLine * std::max(1u, (height + 3) / 4);
-    default:
-        break;
     }
+
+    Q_UNREACHABLE();
     return 0;
 }
 
