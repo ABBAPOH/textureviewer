@@ -8,7 +8,6 @@
         <file>dds/R8G8B8.dds</file>
         <file>dds/RGBX_8888.dds</file>
         <file>vtf/ABGR_8888.vtf</file>
-        <file>vtf/ARGB_8888.vtf</file>
         <file>vtf/BGRA_8888.vtf</file>
         <file>vtf/BGRX_8888.vtf</file>
         <file>vtf/RGBA_8888.vtf</file>
