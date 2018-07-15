@@ -123,7 +123,14 @@ bool VTFHandler::read(Texture &texture)
             return false;
     }
 
-    auto result = Texture::create(Texture::Type::Texture2D, format, header.width, header.height, 1);
+    auto result = Texture::create(
+                Texture::Type::Texture2D,
+                format,
+                header.width,
+                header.height,
+                1,
+                header.mipmapCount,
+                header.frames);
     if (result.isNull()) {
         qCWarning(vtfhandler) << "Can't create resulting texture, file is too big or corrupted";
         return false;
@@ -155,7 +162,7 @@ bool VTFHandler::read(Texture &texture)
                     } else {
                         for (int y = 0; y < height; ++y) {
                             const auto line = result.lineData(
-                                        {0, y, z}, {(Texture::Side(face)), layer, level});
+                                        {0, y, z}, {(Texture::Side(face)), level, layer});
                             auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
                             if (read != pitch) {
                                 qCWarning(vtfhandler) << "Can't read from file:"
