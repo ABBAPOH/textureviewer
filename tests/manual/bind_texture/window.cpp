@@ -133,6 +133,9 @@ void Window::initializeGL()
         _texture = Utils::makeOpenGLTexture(image);
     }
 
+    _funcs->glEnable(GL_BLEND);
+    _funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 //    {
 //        QImage image("/Users/arch/Programming/qt5/opengl/textures/container.jpg");
 //        if (image.isNull()) {
