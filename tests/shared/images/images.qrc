@@ -7,11 +7,11 @@
         <file>dds/DXT5.dds</file>
         <file>dds/R8G8B8.dds</file>
         <file>dds/RGBX_8888.dds</file>
-        <file>vtf/ABGR8888.vtf</file>
-        <file>vtf/ARGB8888.vtf</file>
-        <file>vtf/BGRA8888.vtf</file>
-        <file>vtf/BGRX8888.vtf</file>
-        <file>vtf/RGBA8888.vtf</file>
+        <file>vtf/ABGR_8888.vtf</file>
+        <file>vtf/ARGB_8888.vtf</file>
+        <file>vtf/BGRA_8888.vtf</file>
+        <file>vtf/BGRX_8888.vtf</file>
+        <file>vtf/RGBA_8888.vtf</file>
         <file>vtf/RGB_888.vtf</file>
     </qresource>
 </RCC>
