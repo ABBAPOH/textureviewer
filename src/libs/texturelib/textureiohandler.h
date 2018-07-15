@@ -31,8 +31,6 @@ private:
     QIODevicePointer _device;
     QMimeType _mimeType;
     QByteArray _subType;
-
-    friend class ImageDocument;
 };
 
 class TEXTURELIB_EXPORT TextureIOHandlerPlugin : public QObject
