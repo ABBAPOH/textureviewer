@@ -14,14 +14,13 @@ public:
     TextureData &operator=(const TextureData &) = delete;
     TextureData &operator=(TextureData &&) = delete;
 
-    static TextureData *create(
-            Texture::Type type,
+    static TextureData *create(Texture::Type type,
             Texture::Format format,
             int width,
             int height,
             int depth,
-            int layers,
-            int levels);
+            int levels,
+            int layers);
 
     static qsizetype calculateBytesPerLine(
             const TexelFormat &format,
