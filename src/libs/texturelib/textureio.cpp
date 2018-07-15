@@ -269,14 +269,14 @@ TextureIO::ReadResult TextureIO::read()
 
     auto ok = d->ensureHandlerCreated(Capability::CanRead);
     if (!ok)
-        return tl::make_unexpected(ok.error());
+        return makeUnexpected(ok.error());
 
     Texture texture;
     if (!d->handler->read(texture))
         ok = TextureIOError::HandlerError;
 
     if (!ok)
-        return tl::make_unexpected(ok.error());
+        return makeUnexpected(ok.error());
 
     return texture;
 }

@@ -1,0 +1,25 @@
+#include <qglobal.h>
+
+#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+
+#include <private/expected.h>
+template<class Value, class Error>
+using Expected = Private::expected<Value, Error>;
+
+template <class E>
+Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
+  return Private::unexpected<typename std::decay<E>::type>(std::forward<E>(e));
+}
+
+#elif defined(Q_OS_LINUX)
+
+#include <tl/expected.h>
+template<class Value, class Error>
+using Expected = tl::expected<Value, Error>;
+
+template <class E>
+Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
+  return tl::unexpected<typename std::decay<E>::type>(std::forward<E>(e));
+}
+
+#endif

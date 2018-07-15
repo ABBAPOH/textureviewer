@@ -102,7 +102,7 @@
 #define TL_EXPECTED_11_CONSTEXPR constexpr
 #endif
 
-namespace tl {
+namespace Private {
 template <class T, class E> class expected;
 
 #ifndef TL_MONOSTATE_INPLACE_MUTEX
@@ -2121,7 +2121,7 @@ void swap(expected<T, E> &lhs,
           expected<T, E> &rhs) noexcept(noexcept(lhs.swap(rhs))) {
   lhs.swap(rhs);
 }
-} // namespace tl
+} // namespace Private
 
 #define TL_OPTIONAL_EXPECTED_MUTEX
 #endif // TL_EXPECTED_HPP

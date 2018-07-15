@@ -8,7 +8,7 @@
 #include <QtCore/QScopedPointer>
 #include <QtCore/QMimeType>
 
-#include <tl/expected.h>
+#include <Expected>
 #include <ObserverPointer>
 
 class QIODevice;
@@ -27,9 +27,6 @@ public:
     TextureIO(const QString &fileName, const QString &mimeType);
     TextureIO(QIODevicePointer device, const QString &mimeType);
     ~TextureIO();
-
-    template<class Value, class Error>
-    using Expected = tl::expected<Value, Error>;
 
     using ReadResult = Expected<Texture, TextureIOError>;
     using WriteResult = TextureIOResult;
