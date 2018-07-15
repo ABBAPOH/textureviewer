@@ -10,7 +10,7 @@
 template<typename T>
 using Optional = std::optional<T>;
 
-inline constexpr std::nullopt_t NullOptional() noexcept { return std::nullopt; }
+inline constexpr std::nullopt_t nullOptional() noexcept { return std::nullopt; }
 
 #else
 
