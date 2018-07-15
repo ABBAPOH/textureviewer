@@ -4,7 +4,7 @@
 
 #include <QtCore/QCoreApplication>
 
-#include <Optional>
+#include <OptionalType>
 
 // TODO: move to TextureIO
 enum class TextureIOError

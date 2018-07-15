@@ -4,7 +4,7 @@
 #include "textureiohandlerdatabase.h"
 #include "textureioresult.h"
 
-#include <Optional>
+#include <OptionalType>
 
 #include <QtCore/QFile>
 #include <QtCore/QMimeDatabase>

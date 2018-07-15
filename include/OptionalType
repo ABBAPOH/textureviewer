@@ -1,5 +1,5 @@
-#ifndef OPTIONAL_H
-#define OPTIONAL_H
+#ifndef OPTIONALTYPE_H
+#define OPTIONALTYPE_H
 
 #include <qglobal.h>
 
@@ -23,4 +23,4 @@ inline constexpr std::experimental::nullopt_t nullOptional() noexcept { return s
 
 #endif // __cplusplus >= 201703L
 
-#endif // OPTIONAL_H
+#endif // OPTIONALTYPE_H
