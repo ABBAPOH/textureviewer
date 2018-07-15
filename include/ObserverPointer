@@ -32,8 +32,8 @@
 // N4336 Working Draft, C++ Extensions for Library Fundamentals, Version 2
 //
 
-#ifndef OBSERVER_PTR_H
-#define OBSERVER_PTR_H
+#ifndef OBSERVER_POINTER_H
+#define OBSERVER_POINTER_H
 
 #include <qglobal.h>
 
@@ -242,12 +242,12 @@ template <typename _Tp>
 } // namespace std
 
 template <typename T>
-using observer_ptr = Private::observer_ptr<T>;
+using ObserverPointer = Private::observer_ptr<T>;
 
 #elif defined(Q_OS_LINUX) // Linux has it's own implementation
 #include <experimental/memory>
 template <typename T>
-using observer_ptr = std::experimental::fundamentals_v2::observer_ptr<T>;
+using ObserverPointer = std::experimental::fundamentals_v2::observer_ptr<T>;
 #endif // defined(Q_OS_MAC) || defined(Q_OS_WIN)
 
-#endif // OBSERVER_PTR_H
+#endif // OBSERVER_POINTER_H

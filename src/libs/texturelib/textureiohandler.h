@@ -6,13 +6,13 @@
 #include <QtCore/QMimeType>
 
 #include <memory>
-#include <observer_ptr>
+#include <ObserverPointer>
 
 class TEXTURELIB_EXPORT TextureIOHandler
 {
     Q_DISABLE_COPY(TextureIOHandler)
 public:
-    using QIODevicePointer = observer_ptr<QIODevice>;
+    using QIODevicePointer = ObserverPointer<QIODevice>;
 
     TextureIOHandler();
     virtual ~TextureIOHandler();
