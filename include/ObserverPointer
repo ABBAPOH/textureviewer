@@ -11,9 +11,11 @@ template <typename T>
 using ObserverPointer = Private::observer_ptr<T>;
 
 #elif defined(Q_OS_LINUX) // Linux has it's own implementation
+
 #include <experimental/memory>
 template <typename T>
 using ObserverPointer = std::experimental::fundamentals_v2::observer_ptr<T>;
+
 #endif // defined(Q_OS_MAC) || defined(Q_OS_WIN)
 
 #endif // OBSERVER_POINTER_H

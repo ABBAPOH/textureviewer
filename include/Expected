@@ -11,7 +11,7 @@ Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
   return Private::unexpected<typename std::decay<E>::type>(std::forward<E>(e));
 }
 
-#elif defined(Q_OS_LINUX)
+#elif defined(Q_OS_LINUX) // Linux has it's own implementation
 
 #include <tl/expected.h>
 template<class Value, class Error>
