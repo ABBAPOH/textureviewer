@@ -1,0 +1,26 @@
+#ifndef OPTIONAL_H
+#define OPTIONAL_H
+
+#include <qglobal.h>
+
+#if __cplusplus >= 201703L
+
+#include <optional>
+
+template<typename T>
+using Optional = std::optional<T>;
+
+inline constexpr std::nullopt_t NullOptional() noexcept { return std::nullopt; }
+
+#else
+
+#include <experimental/optional>
+
+template<typename T>
+using Optional = std::experimental::optional<T>;
+
+inline constexpr std::experimental::nullopt_t nullOptional() noexcept { return std::experimental::nullopt; }
+
+#endif // __cplusplus >= 201703L
+
+#endif // OPTIONAL_H
