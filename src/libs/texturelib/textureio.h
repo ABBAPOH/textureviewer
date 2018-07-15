@@ -9,7 +9,7 @@
 #include <QtCore/QMimeType>
 
 #include <tl/expected.h>
-#include <experimental/memory>
+#include <observer_ptr>
 
 class QIODevice;
 
@@ -19,7 +19,7 @@ class TEXTURELIB_EXPORT TextureIO
     Q_DISABLE_COPY(TextureIO)
     Q_DECLARE_PRIVATE(TextureIO)
 public:
-    using QIODevicePointer = std::experimental::fundamentals_v2::observer_ptr<QIODevice>;
+    using QIODevicePointer = observer_ptr<QIODevice>;
 
     TextureIO();
     explicit TextureIO(const QString &fileName, const QMimeType &mimeType = QMimeType());
