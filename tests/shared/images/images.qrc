@@ -1,10 +1,12 @@
 <RCC>
     <qresource prefix="/">
         <file>dds/BGRA_8888.dds</file>
+        <file>dds/BGRX_8888.dds</file>
         <file>dds/DXT1.dds</file>
         <file>dds/DXT3.dds</file>
         <file>dds/DXT5.dds</file>
         <file>dds/R8G8B8.dds</file>
+        <file>dds/RGBX_8888.dds</file>
         <file>vtf/ABGR8888.vtf</file>
         <file>vtf/ARGB8888.vtf</file>
         <file>vtf/BGRA8888.vtf</file>

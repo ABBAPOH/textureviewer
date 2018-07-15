@@ -459,6 +459,8 @@ Texture::Format convertFormat(Format format)
     switch (format) {
     case FormatA8R8G8B8: return Texture::Format::BGRA_8888;
     case FormatR8G8B8: return Texture::Format::RGB_888;
+    case FormatX8B8G8R8: return Texture::Format::RGBX_8888;
+    case FormatX8R8G8B8: return Texture::Format::BGRX_8888;
     case FormatDXT1: return Texture::Format::DXT1;
     case FormatDXT3: return Texture::Format::DXT3;
     case FormatDXT5: return Texture::Format::DXT5;
