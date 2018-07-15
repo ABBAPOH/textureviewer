@@ -10,6 +10,7 @@
         <file>vtf/ABGR8888.vtf</file>
         <file>vtf/ARGB8888.vtf</file>
         <file>vtf/BGRA8888.vtf</file>
+        <file>vtf/BGRX8888.vtf</file>
         <file>vtf/RGBA8888.vtf</file>
         <file>vtf/RGB_888.vtf</file>
     </qresource>

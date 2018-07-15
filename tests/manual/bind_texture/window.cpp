@@ -121,8 +121,8 @@ void Window::initializeGL()
 
     {
 //        Texture image(u":/dds/BGRA_8888.dds");
-        Texture image(u":/dds/RGBX_8888.dds");
-//        Texture image(u":/vtf/BGRA8888.vtf");
+//        Texture image(u":/dds/RGBX_8888.dds");
+        Texture image(u":/vtf/BGRX8888.vtf");
 //        Texture image(u":/vtf/RGB_888.vtf");
 //        Texture image(u":/dds/DXT5.dds");
 
