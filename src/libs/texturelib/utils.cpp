@@ -61,7 +61,8 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
     result->setFormat(textureFormat);
     result->setSize(texture.width(), texture.height(), texture.depth());
     result->setMipLevels(texture.levels());
-    result->setLayers(texture.layers());
+    if (texture.layers() > 1)
+        result->setLayers(texture.layers());
     result->allocateStorage();
     if (!texture.isCompressed()) {
         if (texture.type() == Texture::Type::TextureCubeMap
