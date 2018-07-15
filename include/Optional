@@ -12,7 +12,7 @@ using Optional = std::optional<T>;
 
 inline constexpr std::nullopt_t nullOptional() noexcept { return std::nullopt; }
 
-#else
+#else // __cplusplus >= 201703L
 
 #include <experimental/optional>
 
