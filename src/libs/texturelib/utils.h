@@ -8,7 +8,7 @@
 
 namespace Utils {
 
-std::unique_ptr<QOpenGLTexture> makeOpenGLTexture(const Texture &texture);
+std::unique_ptr<QOpenGLTexture> TEXTURELIB_EXPORT makeOpenGLTexture(const Texture &texture);
 
 } // namespace Utils
 

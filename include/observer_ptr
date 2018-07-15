@@ -37,7 +37,7 @@
 
 #include <qglobal.h>
 
-#if defined(Q_OS_MAC)
+#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
 
 #include <memory>
 #include <type_traits>
@@ -248,6 +248,6 @@ using observer_ptr = Private::observer_ptr<T>;
 #include <experimental/memory>
 template <typename T>
 using observer_ptr = std::experimental::fundamentals_v2::observer_ptr<T>;
-#endif // Q_OS_MAC
+#endif // defined(Q_OS_MAC) || defined(Q_OS_WIN)
 
 #endif // OBSERVER_PTR_H
