@@ -7,8 +7,8 @@ template<class Value, class Error>
 using Expected = Private::expected<Value, Error>;
 
 template <class E>
-Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
-  return Private::unexpected<typename std::decay<E>::type>(std::forward<E>(e));
+inline Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
+  return Private::make_unexpected(std::forward<E>(e));
 }
 
 #elif defined(Q_OS_LINUX) // Linux has it's own implementation
@@ -18,8 +18,8 @@ template<class Value, class Error>
 using Expected = tl::expected<Value, Error>;
 
 template <class E>
-Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
-  return tl::unexpected<typename std::decay<E>::type>(std::forward<E>(e));
+inline Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
+  return tl::make_unexpected(std::forward<E>(e));
 }
 
 #endif
