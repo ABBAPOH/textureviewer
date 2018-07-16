@@ -54,12 +54,12 @@ public:
         ABGR_8888,
         RGBX_8888,
         BGRX_8888,
-        RGBA_10101002_Rev,
-        BGRA_10101002_Rev,
         // unsigned 24bit
         RGB_888,
         BGR_888,
-        // unsigned 16bit
+        // packed formats
+        RGBA_10101002_Rev,
+        BGRA_10101002_Rev,
         RGB_565,
         BGRX_4444_Rev,
         BGRX_5551_Rev,
