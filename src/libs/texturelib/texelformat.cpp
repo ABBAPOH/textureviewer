@@ -1,6 +1,6 @@
 #include "texelformat.h"
 
-static const TexelFormat formats[] = {
+static constexpr const TexelFormat formats[] = {
     {},
     {Texture::Format::RGBA_8888, 32, 0, QOpenGLTexture::RGBA8_UNorm, QOpenGLTexture::RGBA, QOpenGLTexture::UInt8},
     {Texture::Format::BGRA_8888, 32, 0, QOpenGLTexture::RGBA8_UNorm, QOpenGLTexture::BGRA, QOpenGLTexture::UInt8},
@@ -16,6 +16,17 @@ static const TexelFormat formats[] = {
 
 static_assert (sizeof (formats) == sizeof(TexelFormat) * size_t(Texture::Format::FormatsCount),
                "Some Texture::Format eniumerations are not handled in an array");
+
+constexpr bool checkFormats()
+{
+    for (int i = 0; i < int(Texture::Format::FormatsCount); ++i) {
+        if (formats[i].format() != Texture::Format(i))
+            return false;
+    }
+    return true;
+}
+
+static_assert (checkFormats(), "Corrupted formats array");
 
 const TexelFormat &TexelFormat::texelFormat(Texture::Format format) noexcept
 {
