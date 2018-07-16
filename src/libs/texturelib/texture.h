@@ -48,14 +48,18 @@ public:
 
     enum class Format {
         Invalid = 0,
+        // unsigned 32bit
         RGBA_8888,
         BGRA_8888,
         ABGR_8888,
         RGBX_8888,
         BGRX_8888,
+        // unsigned 24bit
         RGB_888,
         BGR_888,
+        // unsigned 16bit
         RGB_565,
+        // compressed
         DXT1,
         DXT3,
         DXT5,
