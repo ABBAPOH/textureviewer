@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>dds/BGRA_8888.dds</file>
+        <file>dds/BGRA_10101002.dds</file>
         <file>dds/BGRX_8888.dds</file>
         <file>dds/BGRX_4444.dds</file>
         <file>dds/BGRX_5551.dds</file>
