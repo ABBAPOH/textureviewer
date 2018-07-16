@@ -120,9 +120,7 @@ void Window::initializeGL()
     m_program->link();
 
     {
-        Texture image(u":/dds/RGBA_10101002.dds");
-//        Texture image(u":/dds/RGBX_8888.dds");
-//        Texture image(u":/vtf/BGR_888.vtf");
+        Texture image(u":/vtf/DXT1.vtf");
 
         if (image.isNull()) {
             qCritical() << "Can't load image";
@@ -135,24 +133,6 @@ void Window::initializeGL()
 
     m_funcs->glEnable(GL_BLEND);
     m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-//    {
-//        QImage image("/Users/arch/Programming/qt5/opengl/textures/container.jpg");
-//        if (image.isNull()) {
-//            qCritical() << "Can't load image";
-//            qApp->quit();
-//            return;
-//        }
-//        image = image.convertToFormat(QImage::Format_RGB888);
-
-//        GLuint tex;
-//        _funcs->glGenTextures(1, &tex);
-//        _funcs->glBindTexture(GL_TEXTURE_2D, tex);
-//        _funcs->glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.width(), image.height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image.bits());
-//        _funcs->glGenerateMipmap(GL_TEXTURE_2D);
-//        _funcs->glBindTexture(GL_TEXTURE_2D, 0);
-//        _texture1 = {GL_TEXTURE_2D, tex};
-//    }
 }
 
 void Window::resizeGL(int w, int h)
