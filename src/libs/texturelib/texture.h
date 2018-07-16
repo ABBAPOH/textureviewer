@@ -61,6 +61,7 @@ public:
         RGBA_10101002_Rev,
         BGRA_10101002_Rev,
         BGR_565,
+        RGB_565,
         BGRA_4444,
         BGRX_4444,
         BGRA_5551,

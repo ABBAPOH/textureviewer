@@ -24,6 +24,7 @@
         <file>vtf/DXT1.vtf</file>
         <file>vtf/DXT3.vtf</file>
         <file>vtf/DXT5.vtf</file>
+        <file>vtf/RGB_565.vtf</file>
         <file>vtf/RGBA_8888.vtf</file>
         <file>vtf/RGB_888.vtf</file>
     </qresource>

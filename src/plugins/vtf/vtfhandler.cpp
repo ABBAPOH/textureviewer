@@ -78,6 +78,7 @@ static Texture::Format convertFormat(VTFImageFormat format)
     case VTFImageFormat::BGRA_4444: return Texture::Format::BGRA_4444;
     case VTFImageFormat::BGRX_5551: return Texture::Format::BGRX_5551;
     case VTFImageFormat::BGRA_5551: return Texture::Format::BGRA_5551;
+    case VTFImageFormat::RGB_565: return Texture::Format::RGB_565;
     case VTFImageFormat::RGB_888: return Texture::Format::RGB_888;
     case VTFImageFormat::BGR_888: return Texture::Format::BGR_888;
     case VTFImageFormat::DXT1: return Texture::Format::DXT1;
