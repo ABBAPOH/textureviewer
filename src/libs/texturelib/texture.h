@@ -93,10 +93,6 @@ public:
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
 
-    static Texture create1DTexture(Format format, int width, int levels = 1, int layers = -1);
-    static Texture create2DTexture(Format format, int width, int height, int levels = 1, int layers = -1);
-    static Texture create3DTexture(Format format, int width, int height, int depth, int levels = 1);
-    static Texture createCubeMapTexture(Format format, int size, int levels = 1, int layers = -1);
     static Texture create(Type type, Format format, int width, int height, int depth, int levels = 1, int layers = 1);
 
     static qsizetype calculateBytesPerLine(Format format, int width, Alignment align = Alignment::Byte);

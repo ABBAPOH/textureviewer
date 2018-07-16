@@ -275,33 +275,6 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create1DTexture(Format format, int width, int levels, int layers)
-{
-    const auto type = layers == -1 ? Type::Texture1D : Type::Texture1DArray;
-    layers = layers == -1 ? 1 : layers;
-    return Texture(TextureData::create(type, format, width, 1, 1, levels, layers));
-}
-
-Texture Texture::create2DTexture(Format format, int width, int height, int levels, int layers)
-{
-    const auto type = layers == -1 ? Type::Texture2D : Type::Texture2DArray;
-    layers = layers == -1 ? 1 : layers;
-    return Texture(TextureData::create(type, format, width, height, 1, levels, layers));
-}
-
-Texture Texture::create3DTexture(
-        Format format, int width, int height, int depth, int levels)
-{
-    return Texture(TextureData::create(Type::Texture3D, format, width, height, depth, levels, 1));
-}
-
-Texture Texture::createCubeMapTexture(Texture::Format format, int size, int levels, int layers)
-{
-    const auto type = layers == -1 ? Type::TextureCubeMap : Type::TextureCubeMapArray;
-    layers = layers == -1 ? 1 : layers;
-    return Texture(TextureData::create(type, format, size, size, 1, levels, layers));
-}
-
 Texture Texture::create(Texture::Type type, Texture::Format format, int width, int height, int depth, int levels, int layers)
 {
     Texture result;
