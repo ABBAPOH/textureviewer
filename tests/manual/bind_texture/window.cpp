@@ -49,7 +49,7 @@ Window::Window()
 Window::~Window()
 {
     makeCurrent();
-    _texture.reset();
+    m_texture.reset();
     doneCurrent();
 }
 
@@ -58,18 +58,18 @@ void Window::initializeGL()
     if (!context()) {
         throw std::runtime_error("Can't get OGL context");
     }
-    _funcs = context()->versionFunctions<QOpenGLFunctions_3_3_Core>();
-    if (!_funcs) {
+    m_funcs = context()->versionFunctions<QOpenGLFunctions_3_3_Core>();
+    if (!m_funcs) {
         qCritical() << "Can't get OGL 3.2";
         qApp->quit();
         return;
     }
-    _funcs->initializeOpenGLFunctions();
-    qInfo() << "real OGL version" << (char *)_funcs->glGetString(GL_VERSION);
+    m_funcs->initializeOpenGLFunctions();
+    qInfo() << "real OGL version" << (char *)m_funcs->glGetString(GL_VERSION);
 
     {
         GLint nrAttributes;
-        _funcs->glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
+        m_funcs->glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
         qInfo() << "Maximum nr of vertex attributes supported: " << nrAttributes;
     }
 
@@ -88,36 +88,36 @@ void Window::initializeGL()
             1, 2, 3    // Второй треугольник
         };
 
-        _vao.create();
-        QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
+        m_vao.create();
+        QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
 
-        _vbo.create();
-        _vbo.bind();
-        _vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        _vbo.allocate(vertices, sizeof(vertices));
+        m_vbo.create();
+        m_vbo.bind();
+        m_vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+        m_vbo.allocate(vertices, sizeof(vertices));
 
-        _ibo.create();
-        _ibo.bind();
-        _ibo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        _ibo.allocate(indices, sizeof(indices));
+        m_ibo.create();
+        m_ibo.bind();
+        m_ibo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+        m_ibo.allocate(indices, sizeof(indices));
 
         // Атрибут с координатами
-        _funcs->glEnableVertexAttribArray(0);
-        _funcs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), nullptr);
+        m_funcs->glEnableVertexAttribArray(0);
+        m_funcs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), nullptr);
 
         // Атрибут с цветом
-        _funcs->glEnableVertexAttribArray(1);
-        _funcs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3* sizeof(GLfloat)));
+        m_funcs->glEnableVertexAttribArray(1);
+        m_funcs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3* sizeof(GLfloat)));
 
         // Атрибут с текстурой
-        _funcs->glEnableVertexAttribArray(2);
-        _funcs->glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+        m_funcs->glEnableVertexAttribArray(2);
+        m_funcs->glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
     }
 
-    _program = std::make_unique<QOpenGLShaderProgram>();
-    _program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-    _program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
-    _program->link();
+    m_program = std::make_unique<QOpenGLShaderProgram>();
+    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
+    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
+    m_program->link();
 
     {
 //        Texture image(u":/dds/BGRA_8888.dds");
@@ -130,11 +130,11 @@ void Window::initializeGL()
             return;
         }
 
-        _texture = Utils::makeOpenGLTexture(image);
+        m_texture = Utils::makeOpenGLTexture(image);
     }
 
-    _funcs->glEnable(GL_BLEND);
-    _funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    m_funcs->glEnable(GL_BLEND);
+    m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 //    {
 //        QImage image("/Users/arch/Programming/qt5/opengl/textures/container.jpg");
@@ -157,28 +157,28 @@ void Window::initializeGL()
 
 void Window::resizeGL(int w, int h)
 {
-    if (!_funcs)
+    if (!m_funcs)
         return;
 
-    _funcs->glViewport(0, 0, w, h);
+    m_funcs->glViewport(0, 0, w, h);
 }
 
 void Window::paintGL()
 {
-    if (!_funcs)
+    if (!m_funcs)
         return;
 
-    _funcs->glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    _funcs->glClear(GL_COLOR_BUFFER_BIT);
+    m_funcs->glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+    m_funcs->glClear(GL_COLOR_BUFFER_BIT);
 
-    _program->bind();
+    m_program->bind();
 
-    _funcs->glActiveTexture(GL_TEXTURE0);
-    _texture->bind();
-    _funcs->glUniform1i(_program->uniformLocation("ourTexture1"), 0);
+    m_funcs->glActiveTexture(GL_TEXTURE0);
+    m_texture->bind();
+    m_funcs->glUniform1i(m_program->uniformLocation("ourTexture1"), 0);
 
-    QOpenGLVertexArrayObject::Binder vaoBinder(&_vao);
-    _funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-    _texture->release();
-    _program->release();
+    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
+    m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    m_texture->release();
+    m_program->release();
 }
