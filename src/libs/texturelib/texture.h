@@ -54,15 +54,15 @@ public:
         ABGR_8888,
         RGBX_8888,
         BGRX_8888,
-        BGRA_10101002, // check name
-        RGBA_10101002, // check name
+        BGRA_10101002_Rev,
+        RGBA_10101002_Rev,
         // unsigned 24bit
         RGB_888,
         BGR_888,
         // unsigned 16bit
         RGB_565,
-        BGRX_4444, // check name
-        BGRX_5551, // check name
+        BGRX_4444_Rev,
+        BGRX_5551_Rev,
         // compressed
         DXT1,
         DXT3,
