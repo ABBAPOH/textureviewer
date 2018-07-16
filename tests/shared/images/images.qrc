@@ -5,7 +5,7 @@
         <file>dds/BGRA_10101002_Rev.dds</file>
         <file>dds/BGRX_8888.dds</file>
         <file>dds/BGRX_4444_Rev.dds</file>
-        <file>dds/BGRX_5551_Rev.dds</file>
+        <file>dds/BGRX_5551.dds</file>
         <file>dds/DXT1.dds</file>
         <file>dds/DXT3.dds</file>
         <file>dds/DXT5.dds</file>
@@ -17,6 +17,7 @@
         <file>vtf/BGR_888.vtf</file>
         <file>vtf/BGRA_4444.vtf</file>
         <file>vtf/BGRA_8888.vtf</file>
+        <file>vtf/BGRX_5551.vtf</file>
         <file>vtf/BGRX_8888.vtf</file>
         <file>vtf/DXT1.vtf</file>
         <file>vtf/DXT3.vtf</file>
