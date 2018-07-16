@@ -1,8 +1,10 @@
+#ifndef EXPECTED_H
+#define EXPECTED_H
+
 #include <qglobal.h>
 
-#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
-
 #include <private/expected.h>
+
 template<class Value, class Error>
 using Expected = Private::expected<Value, Error>;
 
@@ -11,15 +13,4 @@ inline Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
   return Private::make_unexpected(std::forward<E>(e));
 }
 
-#elif defined(Q_OS_LINUX) // Linux has it's own implementation
-
-#include <tl/expected.h>
-template<class Value, class Error>
-using Expected = tl::expected<Value, Error>;
-
-template <class E>
-inline Private::unexpected<typename std::decay<E>::type> makeUnexpected(E &&e) {
-  return tl::make_unexpected(std::forward<E>(e));
-}
-
-#endif
+#endif // EXPECTED_H
