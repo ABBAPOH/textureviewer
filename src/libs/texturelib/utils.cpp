@@ -98,21 +98,25 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
                     for (int face = 0; face < 6; ++face) {
+                        const auto data = texture.imageData({Texture::Side(face), level, layer});
                         result->setCompressedData(
                                     level,
                                     layer,
                                     getFace(Texture::Side(face)),
-                                    texture.imageData({Texture::Side(face), level, layer}).data());
+                                    int(data.size()),
+                                    data.data());
                     }
                 }
             }
         } else {
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
+                    const auto data = texture.imageData({level, layer});
                     result->setCompressedData(
                                 level,
                                 layer,
-                                texture.imageData({level, layer}).data());
+                                int(data.size()),
+                                data.data());
                 }
             }
         }
