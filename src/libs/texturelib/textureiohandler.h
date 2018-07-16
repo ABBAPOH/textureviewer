@@ -20,16 +20,12 @@ public:
     QIODevicePointer device() const;
     void setDevice(QIODevicePointer device);
 
-    QMimeType mimeType() const;
-    void setMimeType(const QMimeType &mimeType);
-
     virtual bool canRead() const = 0;
     virtual bool read(Texture &texture) = 0;
     virtual bool write(const Texture &texture);
 
 private:
     QIODevicePointer m_device;
-    QMimeType m_mimeType;
 };
 
 class TEXTURELIB_EXPORT TextureIOHandlerPlugin : public QObject

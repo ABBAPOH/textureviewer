@@ -38,23 +38,6 @@ void TextureIOHandler::setDevice(QIODevicePointer device)
 }
 
 /*!
-    Returns the mime type that is currently assigned to the TextureIOHandler. If
-    no mime type has been assigned yet, an empty string is returned.
-*/
-QMimeType TextureIOHandler::mimeType() const
-{
-    return m_mimeType;
-}
-
-/*!
-    \internal
-*/
-void TextureIOHandler::setMimeType(const QMimeType &mimeType)
-{
-    m_mimeType = mimeType;
-}
-
-/*!
     \fn bool TextureIOHandler::canRead()
 
     Returns true if an image can be read from the device (i.e., the image format is supported,

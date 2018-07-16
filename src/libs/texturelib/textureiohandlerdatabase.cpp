@@ -84,7 +84,6 @@ std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevicePoin
         return result;
 
     result->setDevice(device);
-    result->setMimeType(mimeType);
 
     return result;
 }
