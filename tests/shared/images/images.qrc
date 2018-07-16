@@ -11,6 +11,7 @@
         <file>dds/R8G8B8.dds</file>
         <file>dds/RGB_565.dds</file>
         <file>dds/RGBX_8888.dds</file>
+        <file>dds/RGBA_10101002.dds</file>
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_888.vtf</file>
         <file>vtf/BGRA_8888.vtf</file>

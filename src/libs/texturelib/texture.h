@@ -55,6 +55,7 @@ public:
         RGBX_8888,
         BGRX_8888,
         BGRA_10101002,
+        RGBA_10101002,
         // unsigned 24bit
         RGB_888,
         BGR_888,
