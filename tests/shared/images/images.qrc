@@ -6,6 +6,7 @@
         <file>dds/DXT3.dds</file>
         <file>dds/DXT5.dds</file>
         <file>dds/R8G8B8.dds</file>
+        <file>dds/RGB_565.dds</file>
         <file>dds/RGBX_8888.dds</file>
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_888.vtf</file>

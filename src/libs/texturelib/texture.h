@@ -55,6 +55,7 @@ public:
         BGRX_8888,
         RGB_888,
         BGR_888,
+        RGB_565,
         DXT1,
         DXT3,
         DXT5,
