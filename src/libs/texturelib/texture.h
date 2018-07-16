@@ -62,7 +62,7 @@ public:
         BGRA_10101002_Rev,
         RGB_565,
         BGRA_4444,
-        BGRX_4444_Rev,
+        BGRX_4444,
         BGRA_5551,
         BGRX_5551,
         // compressed
