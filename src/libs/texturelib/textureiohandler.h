@@ -28,9 +28,9 @@ public:
     virtual bool write(const Texture &texture);
 
 private:
-    QIODevicePointer _device;
-    QMimeType _mimeType;
-    QByteArray _subType;
+    QIODevicePointer m_device;
+    QMimeType m_mimeType;
+    QByteArray m_subType;
 };
 
 class TEXTURELIB_EXPORT TextureIOHandlerPlugin : public QObject

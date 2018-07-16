@@ -26,7 +26,7 @@ TextureIOHandler::~TextureIOHandler()
 */
 auto TextureIOHandler::device() const -> QIODevicePointer
 {
-    return _device;
+    return m_device;
 }
 
 /*!
@@ -34,7 +34,7 @@ auto TextureIOHandler::device() const -> QIODevicePointer
 */
 void TextureIOHandler::setDevice(QIODevicePointer device)
 {
-    _device = device;
+    m_device = device;
 }
 
 /*!
@@ -43,7 +43,7 @@ void TextureIOHandler::setDevice(QIODevicePointer device)
 */
 QMimeType TextureIOHandler::mimeType() const
 {
-    return _mimeType;
+    return m_mimeType;
 }
 
 /*!
@@ -51,7 +51,7 @@ QMimeType TextureIOHandler::mimeType() const
 */
 void TextureIOHandler::setMimeType(const QMimeType &mimeType)
 {
-    _mimeType = mimeType;
+    m_mimeType = mimeType;
 }
 
 /*!
