@@ -21,21 +21,11 @@ TextureIOHandler::~TextureIOHandler()
 }
 
 /*!
+    \fn QIODevicePointer TextureIOHandler::device() const
+
     Returns the device currently assigned to the TextureIOHandler. If no device
     has been assigned, nullptr is returned.
 */
-auto TextureIOHandler::device() const -> QIODevicePointer
-{
-    return m_device;
-}
-
-/*!
-    \internal
-*/
-void TextureIOHandler::setDevice(QIODevicePointer device)
-{
-    m_device = device;
-}
 
 /*!
     \fn bool TextureIOHandler::canRead()
