@@ -60,6 +60,7 @@ public:
         // unsigned 16bit
         RGB_565,
         BGRX_4444,
+        BGRX_5551,
         // compressed
         DXT1,
         DXT3,
