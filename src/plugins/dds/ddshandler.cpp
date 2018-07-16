@@ -462,6 +462,7 @@ Texture::Format convertFormat(Format format)
     case FormatX8B8G8R8: return Texture::Format::RGBX_8888;
     case FormatX8R8G8B8: return Texture::Format::BGRX_8888;
     case FormatR5G6B5: return Texture::Format::RGB_565;
+    case FormatA4R4G4B4: return Texture::Format::BGRA_4444;
     case FormatX4R4G4B4: return Texture::Format::BGRX_4444_Rev;
     case FormatX1R5G5B5: return Texture::Format::BGRX_5551_Rev;
     case FormatA2B10G10R10: return Texture::Format::RGBA_10101002_Rev;
