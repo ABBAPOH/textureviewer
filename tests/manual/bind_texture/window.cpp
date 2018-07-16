@@ -41,7 +41,8 @@ const char *const fragmentShaderSource =
 "}"
 ;
 
-Window::Window()
+Window::Window(const Texture& texture)
+    : m_image(texture)
 {
     resize(640, 480);
 }
@@ -119,17 +120,7 @@ void Window::initializeGL()
     m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
     m_program->link();
 
-    {
-        Texture image(u":/vtf/DXT1.vtf");
-
-        if (image.isNull()) {
-            qCritical() << "Can't load image";
-            qApp->quit();
-            return;
-        }
-
-        m_texture = Utils::makeOpenGLTexture(image);
-    }
+    m_texture = Utils::makeOpenGLTexture(m_image);
 
     m_funcs->glEnable(GL_BLEND);
     m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

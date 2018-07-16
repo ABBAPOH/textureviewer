@@ -1,6 +1,8 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <TextureLib/Texture>
+
 #include <QtGui/QOpenGLWindow>
 #include <QtGui/QOpenGLFunctions>
 #include <QtGui/QOpenGLBuffer>
@@ -15,7 +17,7 @@
 class Window : public QOpenGLWindow
 {
 public:
-    Window();
+    explicit Window(const Texture &texture);
     ~Window();
 
 protected:
@@ -24,6 +26,7 @@ protected:
     void paintGL() override;
 
 private:
+    Texture m_image;
     QOpenGLFunctions_3_3_Core *m_funcs {nullptr};
     QOpenGLBuffer m_vbo {QOpenGLBuffer::VertexBuffer};
     QOpenGLBuffer m_ibo {QOpenGLBuffer::IndexBuffer};
