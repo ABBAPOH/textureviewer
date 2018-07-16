@@ -63,6 +63,7 @@ public:
         RGB_565,
         BGRA_4444,
         BGRX_4444_Rev,
+        BGRA_5551,
         BGRX_5551,
         // compressed
         DXT1,
