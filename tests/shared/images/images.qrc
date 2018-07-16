@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>dds/BGR_888.dds</file>
         <file>dds/BGRA_4444.dds</file>
         <file>dds/BGRA_5551.dds</file>
         <file>dds/BGRA_8888.dds</file>
@@ -10,7 +11,6 @@
         <file>dds/DXT1.dds</file>
         <file>dds/DXT3.dds</file>
         <file>dds/DXT5.dds</file>
-        <file>dds/R8G8B8.dds</file>
         <file>dds/RGB_565.dds</file>
         <file>dds/RGBX_8888.dds</file>
         <file>dds/RGBA_10101002_Rev.dds</file>
