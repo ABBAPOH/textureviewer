@@ -87,6 +87,7 @@ public:
         Word, // 4-bytes alignment
     };
 
+    class Size;
     class Position;
     class Index;
 
@@ -185,6 +186,34 @@ Q_DECLARE_METATYPE(Texture::Type)
 Q_DECLARE_METATYPE(Texture::Format)
 
 Q_DECLARE_LOGGING_CATEGORY(texture)
+
+class Texture::Size
+{
+public:
+    inline constexpr Size() noexcept = default;
+    inline constexpr Size(int width) noexcept
+        : m_width(width), m_height(1), m_depth(1) {}
+    inline constexpr Size(int width, int height) noexcept
+        : m_width(width), m_height(height), m_depth(1) {}
+    inline constexpr Size(QSize size) noexcept
+        : m_width(size.width()), m_height(size.height()), m_depth(1) {}
+    inline constexpr Size(int width, int height, int depth) noexcept
+        : m_width(width), m_height(height), m_depth(depth) {}
+
+    inline constexpr int width() const noexcept { return m_width; }
+    inline constexpr void setWidth(int w) noexcept { m_width = w; }
+
+    inline constexpr int height() const { return m_height; }
+    inline constexpr void setHeight(int h) noexcept { m_height = h; }
+
+    inline constexpr int depth() const { return m_depth; }
+    inline constexpr void setDepth(int d) noexcept { m_depth = d; }
+
+private:
+    int m_width {0};
+    int m_height {0};
+    int m_depth {0};
+};
 
 class Texture::Position
 {
