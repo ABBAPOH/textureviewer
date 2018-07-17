@@ -758,4 +758,12 @@ QDebug operator<<(QDebug& d, const Texture::Index& index)
     return d;
 }
 
+QString toQString(Texture::Format format)
+{
+    const auto &mo = Texture::staticMetaObject;
+    const auto index = mo.indexOfEnumerator("Format");
+    const auto en = mo.enumerator(index);
+    return en.valueToKey(int(format));
+}
+
 Q_LOGGING_CATEGORY(texture, "texturelib.texture")

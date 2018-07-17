@@ -6,6 +6,7 @@
 #include <TextureLib/TextureIOResult>
 
 #include <QtCore/QLoggingCategory>
+#include <QtCore/QMetaEnum>
 #include <QtCore/QDataStream>
 #include <QtGui/QImage>
 
@@ -17,6 +18,7 @@ class TextureData;
 
 class TEXTURELIB_EXPORT Texture
 {
+    Q_GADGET
 public:
     inline Texture() noexcept {}
     Texture(const Texture &other);
@@ -77,6 +79,7 @@ public:
         RGBA_16161616F,
         FormatsCount // should be the last
     };
+    Q_ENUM(Format)
 
     enum class Side {
         PositiveX = 0,
@@ -284,5 +287,7 @@ private:
 };
 
 QDebug operator<<(QDebug &d, const Texture::Index &index);
+
+QString toQString(Texture::Format format);
 
 #endif // TEXTURE_H
