@@ -12,8 +12,9 @@
         <file>dds/DXT1.dds</file>
         <file>dds/DXT3.dds</file>
         <file>dds/DXT5.dds</file>
-        <file>dds/RGBX_8888.dds</file>
         <file>dds/RGBA_10101002_Rev.dds</file>
+        <file>dds/RGBA_16161616F.dds</file>
+        <file>dds/RGBX_8888.dds</file>
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_565.vtf</file>
         <file>vtf/BGR_888.vtf</file>
@@ -29,6 +30,7 @@
         <file>vtf/RGB_565.vtf</file>
         <file>vtf/RGBA_8888.vtf</file>
         <file>vtf/RGBA_16161616.vtf</file>
+        <file>vtf/RGBA_16161616F.vtf</file>
         <file>vtf/RGB_888.vtf</file>
     </qresource>
 </RCC>

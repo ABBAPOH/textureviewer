@@ -122,8 +122,8 @@ void Window::initializeGL()
 
     m_texture = Utils::makeOpenGLTexture(m_image);
 
-    m_funcs->glEnable(GL_BLEND);
-    m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//    m_funcs->glEnable(GL_BLEND);
+//    m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void Window::resizeGL(int w, int h)

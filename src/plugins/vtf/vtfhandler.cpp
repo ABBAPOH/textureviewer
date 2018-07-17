@@ -87,6 +87,7 @@ static Texture::Format convertFormat(VTFImageFormat format)
     case VTFImageFormat::DXT1_ONEBITALPHA: return Texture::Format::DXT1a;
     case VTFImageFormat::DXT3: return Texture::Format::DXT3;
     case VTFImageFormat::DXT5: return Texture::Format::DXT5;
+    case VTFImageFormat::RGBA_16161616F: return Texture::Format::RGBA_16161616F;
     default: return Texture::Format::Invalid;
     }
 }
