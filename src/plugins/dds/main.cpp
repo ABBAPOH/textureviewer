@@ -8,6 +8,7 @@ class DdsHandlerPlugin : public TextureIOHandlerPlugin
 
 public:
     DdsHandlerPlugin() = default;
+
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override
     {
         if (mimeType.name() == u"image/x-dds")
