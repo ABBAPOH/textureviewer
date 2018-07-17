@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/qt-project.org/qmime/packages">
         <file>x-vtf.xml</file>
+        <file>x-pkm.xml</file>
     </qresource>
 </RCC>

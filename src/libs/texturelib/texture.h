@@ -75,6 +75,7 @@ public:
         DXT1a,
         DXT3,
         DXT5,
+        ETC1_RGB8,
         // floating point
         RGBA_16161616F,
         FormatsCount // should be the last

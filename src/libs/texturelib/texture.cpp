@@ -353,7 +353,8 @@ bool Texture::isCompressed() const
     return d && (d->format == Format::DXT1
                  || d->format == Format::DXT1a
                  || d->format == Format::DXT3
-                 || d->format == Format::DXT5);
+                 || d->format == Format::DXT5
+                 || d->format == Format::ETC1_RGB8);
 }
 
 int Texture::width() const

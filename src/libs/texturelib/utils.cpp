@@ -122,5 +122,10 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
         }
     }
 
+    if (texture.levels() == 1) {
+        result->setMinMagFilters(QOpenGLTexture::Linear, QOpenGLTexture::Linear);
+        result->generateMipMaps();
+    }
+
     return result;
 }

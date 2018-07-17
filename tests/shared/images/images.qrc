@@ -16,8 +16,7 @@
         <file>dds/RGBA_16161616.dds</file>
         <file>dds/RGBA_16161616F.dds</file>
         <file>dds/RGBX_8888.dds</file>
-        <file>pkm/ETC1_A.pkm</file>
-        <file>pkm/ETC1_RGB.pkm</file>
+        <file>pkm/ETC1_RGB8.pkm</file>
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_565.vtf</file>
         <file>vtf/BGR_888.vtf</file>
