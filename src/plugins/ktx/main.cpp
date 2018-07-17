@@ -1,6 +1,7 @@
 //#include "ktxhandler.h"
 
 #include <TextureLib/TextureIOHandler>
+#include <TextureLib/TextureIOHandlerPlugin>
 
 class KtxHandlerPlugin : public TextureIOHandlerPlugin
 {

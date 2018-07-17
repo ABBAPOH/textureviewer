@@ -1,5 +1,7 @@
 #include "vtfhandler.h"
 
+#include <TextureLib/TextureIOHandlerPlugin>
+
 class VTFHandlerPlugin : public TextureIOHandlerPlugin
 {
     Q_OBJECT

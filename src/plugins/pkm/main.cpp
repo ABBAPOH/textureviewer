@@ -1,5 +1,7 @@
 #include "pkmhandler.h"
 
+#include <TextureLib/TextureIOHandlerPlugin>
+
 class PkmHandlerPlugin : public TextureIOHandlerPlugin
 {
     Q_OBJECT

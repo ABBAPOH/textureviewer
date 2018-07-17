@@ -3,6 +3,7 @@
 #include "texturelib_global.h"
 
 #include <TextureLib/TextureIOHandler>
+#include <TextureLib/TextureIOHandlerPlugin>
 #include <memory>
 
 class QPluginLoader;

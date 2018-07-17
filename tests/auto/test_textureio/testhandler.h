@@ -1,6 +1,7 @@
 #pragma once
 
 #include <TextureLib/TextureIOHandler>
+#include <TextureLib/TextureIOHandlerPlugin>
 
 class TestHandler : public TextureIOHandler
 {

@@ -1,5 +1,7 @@
 #include "ddshandler.h"
 
+#include <TextureLib/TextureIOHandlerPlugin>
+
 class DdsHandlerPlugin : public TextureIOHandlerPlugin
 {
     Q_OBJECT
