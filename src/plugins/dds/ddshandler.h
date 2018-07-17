@@ -69,15 +69,4 @@ private:
     DDSHeaderDX10 m_header10;
 };
 
-class DdsHandlerPlugin : public TextureIOHandlerPlugin
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(DdsHandlerPlugin)
-    Q_PLUGIN_METADATA(IID "org.arch.ImageDocument.DdsHandlerPlugin" FILE "dds.json")
-public:
-    DdsHandlerPlugin() {}
-    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
-    Capabilities capabilities(const QMimeType &mimeType) const override;
-};
-
 Q_DECLARE_LOGGING_CATEGORY(ddshandler)
