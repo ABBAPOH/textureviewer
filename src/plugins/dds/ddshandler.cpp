@@ -161,101 +161,6 @@ static const Format knownFourCCs[] = {
 };
 static const size_t knownFourCCsSize = sizeof(knownFourCCs)/sizeof(Format);
 
-struct FormatName
-{
-    Format format;
-    const char *const name;
-};
-static const FormatName formatNames[] = {
-    { FormatUnknown,  "unknown" },
-
-    { FormatR8G8B8,   "R8G8B8"  },
-    { FormatA8R8G8B8, "A8R8G8B8" },
-    { FormatX8R8G8B8, "X8R8G8B8" },
-    { FormatR5G6B5,   "R5G6B5" },
-    { FormatX1R5G5B5, "X1R5G5B5" },
-    { FormatA1R5G5B5, "A1R5G5B5" },
-    { FormatA4R4G4B4, "A4R4G4B4" },
-    { FormatR3G3B2, "R3G3B2" },
-    { FormatA8, "A8" },
-    { FormatA8R3G3B2, "A8R3G3B2" },
-    { FormatX4R4G4B4, "X4R4G4B4" },
-    { FormatA2B10G10R10, "A2B10G10R10" },
-    { FormatA8B8G8R8, "A8B8G8R8" },
-    { FormatX8B8G8R8, "X8B8G8R8" },
-    { FormatG16R16, "G16R16" },
-    { FormatA2R10G10B10, "A2R10G10B10" },
-    { FormatA16B16G16R16, "A16B16G16R16" },
-
-    { FormatA8P8, "A8P8" },
-    { FormatP8, "P8" },
-
-    { FormatL8, "L8" },
-    { FormatA8L8, "A8L8" },
-    { FormatA4L4, "A4L4" },
-
-    { FormatV8U8, "V8U8" },
-    { FormatL6V5U5, "L6V5U5" },
-    { FormatX8L8V8U8, "X8L8V8U8" },
-    { FormatQ8W8V8U8, "Q8W8V8U8" },
-    { FormatV16U16, "V16U16" },
-    { FormatA2W10V10U10, "A2W10V10U10" },
-
-    { FormatUYVY, "UYVY" },
-    { FormatR8G8B8G8, "R8G8_B8G8" },
-    { FormatYUY2, "YUY2" },
-    { FormatG8R8G8B8, "G8R8_G8B8" },
-    { FormatDXT1, "DXT1" },
-    { FormatDXT2, "DXT2" },
-    { FormatDXT3, "DXT3" },
-    { FormatDXT4, "DXT4" },
-    { FormatDXT5, "DXT5" },
-    { FormatRXGB, "RXGB" },
-    { FormatATI2, "ATI2" },
-
-    { FormatD16Lockable, "D16Lockable" },
-    { FormatD32, "D32" },
-    { FormatD15S1, "D15S1" },
-    { FormatD24S8, "D24S8" },
-    { FormatD24X8, "D24X8" },
-    { FormatD24X4S4, "D24X4S4" },
-    { FormatD16, "D16" },
-
-    { FormatD32FLockable, "D32FLockable" },
-    { FormatD24FS8, "D24FS8" },
-
-    { FormatD32Lockable, "D32Lockable" },
-    { FormatS8Lockable, "S8Lockable" },
-
-    { FormatL16, "L16" },
-
-    { FormatVertexData, "VertexData" },
-    { FormatIndex32, "Index32" },
-    { FormatIndex32, "Index32" },
-
-    { FormatQ16W16V16U16, "Q16W16V16U16" },
-
-    { FormatMulti2ARGB8, "Multi2ARGB8" },
-
-    { FormatR16F, "R16F" },
-    { FormatG16R16F, "G16R16F" },
-    { FormatA16B16G16R16F, "A16B16G16R16F" },
-
-    { FormatR32F, "R32F" },
-    { FormatG32R32F, "G32R32F" },
-    { FormatA32B32G32R32F, "A32B32G32R32F" },
-
-    { FormatCxV8U8, "CxV8U8" },
-
-    { FormatA1, "A1" },
-    { FormatA2B10G10R10_XR_BIAS, "A2B10G10R10_XR_BIAS" },
-    { FormatBinaryBuffer, "BinaryBuffer" },
-
-    { FormatP4, "P4" },
-    { FormatA4P4, "A4P4" }
-};
-static const size_t formatNamesSize = sizeof(formatNames)/sizeof(FormatName);
-
 static inline bool isCubeMap(const DDSHeader &dds)
 {
     return (dds.caps2 & DDSHeader::Caps2CubeMap) != 0;
@@ -416,27 +321,6 @@ static qint64 mipmapOffset(const DDSHeader &dds, const int format, const int lev
     for (int i = 0; i < level; ++i)
         result += mipmapSize(dds, format, i);
     return result;
-}
-
-static QByteArray formatName(int format)
-{
-    for (size_t i = 0; i < formatNamesSize; ++i) {
-        if (formatNames[i].format == format)
-            return formatNames[i].name;
-    }
-
-    return formatNames[0].name;
-}
-
-static int formatByName(const QByteArray &name)
-{
-    const QByteArray loweredName = name.toLower();
-    for (size_t i = 0; i < formatNamesSize; ++i) {
-        if (QByteArray(formatNames[i].name).toLower() == loweredName)
-            return formatNames[i].format;
-    }
-
-    return FormatUnknown;
 }
 
 DDSHandler::DDSHandler() :
