@@ -42,7 +42,10 @@ public:
 
     constexpr inline bool isCompressed() const noexcept { return m_blockSize != 0; }
 
+    using TexelFormats = gsl::span<const TexelFormat>;
+
     static const TexelFormat &texelFormat(Texture::Format format) noexcept;
+    static TexelFormats texelFormats() noexcept;
 
 private:
     Texture::Format m_format {Texture::Format::Invalid};

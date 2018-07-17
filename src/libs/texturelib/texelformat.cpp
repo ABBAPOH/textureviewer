@@ -58,3 +58,8 @@ const TexelFormat &TexelFormat::texelFormat(Texture::Format format) noexcept
 {
     return formats[int(format)];
 }
+
+TexelFormat::TexelFormats TexelFormat::texelFormats() noexcept
+{
+    return {formats};
+}
