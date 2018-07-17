@@ -37,6 +37,7 @@ QDebug&operator<<(QDebug& d, const KtxHeader& header)
       << "glType:" << header.glType << ","
       << "glTypeSize:" << header.glTypeSize << ","
       << "glFormat:" << header.glFormat << ","
+      << "glInternalFormat:" << header.glInternalFormat << ","
       << "glBaseInternalFormat:" << header.glBaseInternalFormat << ","
       << "pixelWidth:" << header.pixelWidth << ","
       << "pixelHeight:" << header.pixelHeight << ","
