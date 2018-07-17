@@ -388,6 +388,21 @@ bool DDSHandler::write(const Texture &texture)
         return false;
     }
 
+    if (texture.layers() > 1) {
+        qCWarning(ddshandler) << "Writing layers are not supported";
+        return false;
+    }
+
+    if (texture.depth() > 1) {
+        qCWarning(ddshandler) << "Writing volume maps are not supported";
+        return false;
+    }
+
+    if (texture.type() == Texture::Type::TextureCubeMap) {
+        qCWarning(ddshandler) << "Writing cube maps are not supported";
+        return false;
+    }
+
     QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
 
