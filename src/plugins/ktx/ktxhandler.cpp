@@ -35,6 +35,8 @@ bool KtxHandler::read(Texture& texture)
     if (!readPadding(device(), header.bytesOfKeyValueData))
         return false;
 
+    readPadding(device(), 3 - ((device()->pos() + 3) % 4));
+
     TexelFormat texelFormat;
     if (header.glFormat == 0) {
         texelFormat = {Texture::Format::Invalid, 0, 0, QOpenGLTexture::TextureFormat(header.glInternalFormat)};
