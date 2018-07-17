@@ -12,14 +12,16 @@ public:
 public: // TextureIOHandlerPlugin interface
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override
     {
-        Q_UNUSED(mimeType);
-        return std::make_unique<PkmHandler>();
+        if (mimeType.name() == u"image/x-pkm")
+            return std::make_unique<PkmHandler>();
+        return nullptr;
     }
 
     Capabilities capabilities(const QMimeType &mimeType) const override
     {
-        Q_UNUSED(mimeType);
-        return CanRead;
+        if (mimeType.name() == u"image/x-pkm")
+            return CanRead;
+        return Capabilities();
     }
 };
 
