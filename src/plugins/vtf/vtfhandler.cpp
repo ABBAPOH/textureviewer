@@ -71,6 +71,7 @@ static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
 static Texture::Format convertFormat(VTFImageFormat format)
 {
     switch (format) {
+    case VTFImageFormat::RGBA_16161616: return Texture::Format::RGBA_16161616;
     case VTFImageFormat::RGBA_8888: return Texture::Format::RGBA_8888;
     case VTFImageFormat::BGRA_8888: return Texture::Format::BGRA_8888;
     case VTFImageFormat::ABGR_8888: return Texture::Format::ABGR_8888;

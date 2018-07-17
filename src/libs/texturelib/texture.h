@@ -48,6 +48,8 @@ public:
 
     enum class Format {
         Invalid = 0,
+        // unsigned 64bit
+        RGBA_16161616,
         // unsigned 32bit
         RGBA_8888,
         BGRA_8888,
