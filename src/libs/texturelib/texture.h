@@ -76,6 +76,13 @@ public:
         DXT3,
         DXT5,
         RGB8_ETC1,
+        RGB8_ETC2,
+        RGBA8_ETC2_EAC,
+        RGB8_PunchThrough_Alpha1_ETC2,
+        R11_EAC_UNorm,
+        RG11_EAC_UNorm,
+        R11_EAC_SNorm,
+        RG11_EAC_SNorm,
         // floating point
         RGBA_16161616F,
         FormatsCount // should be the last

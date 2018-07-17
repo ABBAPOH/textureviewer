@@ -37,6 +37,21 @@ QDataStream &operator<<(QDataStream &s, const PkmHeader &header)
     return s;
 }
 
+static Texture::Format convertFormat(quint16 format)
+{
+    switch (format) {
+    case 0: return Texture::Format::RGB8_ETC1;
+    case 1: return Texture::Format::RGB8_ETC2;
+    case 3: return Texture::Format::RGBA8_ETC2_EAC;
+    case 4: return Texture::Format::RGB8_PunchThrough_Alpha1_ETC2;
+    case 5: return Texture::Format::R11_EAC_UNorm;
+    case 6: return Texture::Format::RG11_EAC_UNorm;
+    case 7: return Texture::Format::R11_EAC_SNorm;
+    case 8: return Texture::Format::RG11_EAC_SNorm;
+    }
+    return Texture::Format::Invalid;
+}
+
 bool PkmHandler::read(Texture& texture)
 {
     PkmHeader header;
@@ -55,9 +70,16 @@ bool PkmHandler::read(Texture& texture)
 
     if (header.version[0] == '1' && header.version[1] == '0') {
         format = Texture::Format::RGB8_ETC1;
+    } else if (header.version[0] == '2' && header.version[1] == '0') {
+        format = convertFormat(header.textureType);
     } else {
         qCWarning(pkmhandler) << "Unsupported version"
                               << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
+        return false;
+    }
+
+    if (format == Texture::Format::Invalid) {
+        qCWarning(pkmhandler) << "Unsupported format" << header.textureType;
         return false;
     }
 

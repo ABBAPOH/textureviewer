@@ -16,7 +16,14 @@
         <file>dds/RGBA_16161616.dds</file>
         <file>dds/RGBA_16161616F.dds</file>
         <file>dds/RGBX_8888.dds</file>
-        <file>pkm/ETC1_RGB8.pkm</file>
+        <file>pkm/R11_EAC_SNorm.pkm</file>
+        <file>pkm/R11_EAC_UNorm.pkm</file>
+        <file>pkm/RG11_EAC_SNorm.pkm</file>
+        <file>pkm/RG11_EAC_UNorm.pkm</file>
+        <file>pkm/RGB8_ETC1.pkm</file>
+        <file>pkm/RGB8_ETC2.pkm</file>
+        <file>pkm/RGB8_PunchThrough_Alpha1_ETC2.pkm</file>
+        <file>pkm/RGBA8_ETC2_EAC.pkm</file>
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_565.vtf</file>
         <file>vtf/BGR_888.vtf</file>
