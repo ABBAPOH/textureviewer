@@ -5,7 +5,6 @@
 #include <TextureLib/TextureIOHandler>
 #include "vtfheader.h"
 
-
 class VTFHandler : public TextureIOHandler
 {
 public:
