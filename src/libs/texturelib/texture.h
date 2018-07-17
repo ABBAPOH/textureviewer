@@ -95,6 +95,7 @@ public:
     using ConstData = gsl::span<const uchar>;
 
     static Texture create(Type type, Format format, int width, int height, int depth, int levels = 1, int layers = 1);
+    static Texture create(Type type, Format format, Size size, int levels = 1, int layers = 1);
 
     static qsizetype calculateBytesPerLine(Format format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(Format format, int width, int height, Alignment align = Alignment::Byte);

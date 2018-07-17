@@ -315,6 +315,11 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
     return result;
 }
 
+Texture Texture::create(Texture::Type type, Texture::Format format, Texture::Size size, int levels, int layers)
+{
+    return create(type, format, size.width(), size.height(), size.depth(), levels, layers);
+}
+
 qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(
