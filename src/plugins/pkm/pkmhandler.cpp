@@ -72,11 +72,18 @@ static Texture::Format convertFormat(quint16 format)
 bool PkmHandler::read(Texture& texture)
 {
     PkmHeader header;
+
     {
         QDataStream s(device().get());
         s.setByteOrder(QDataStream::BigEndian);
         s >> header;
+
         qCDebug(pkmhandler) << "header:" << header;
+
+        if (s.status() != QDataStream::Ok) {
+            qCWarning(pkmhandler) << "Invalid data stream status:" << s.status();
+            return false;
+        }
     }
 
     if (QLatin1String(reinterpret_cast<const char *>(header.magic), 4) != "PKM ") {
