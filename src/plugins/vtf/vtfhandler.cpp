@@ -108,6 +108,8 @@ bool VTFHandler::read(Texture &texture)
         QDataStream s(device().get());
         s >> header;
 
+        qCDebug(vtfhandler) << "header:" << header;
+
         if (s.status() != QDataStream::Ok) {
             qCWarning(vtfhandler) << "Invalid data stream status:" << s.status();
             return false;
@@ -185,8 +187,6 @@ bool VTFHandler::read(Texture &texture)
     }
 
     texture = std::move(result);
-
-    qCDebug(vtfhandler) << "header:" << header;
 
     return true;
 }
