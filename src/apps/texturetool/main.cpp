@@ -1,4 +1,5 @@
 #include "abstracttool.h"
+#include "converttool.h"
 #include "exception.h"
 #include "mainparser.h"
 #include "showtool.h"
@@ -18,8 +19,10 @@ using DescriptionMap = MainParser::DescriptionMap;
 
 static ToolsMap createTools()
 {
+    auto convertTool = std::make_unique<ConvertTool>();
     auto showTool = std::make_unique<ShowTool>();
     ToolsMap result;
+    result[convertTool->id()] = std::move(convertTool);
     result[showTool->id()] = std::move(showTool);
     return result;
 }
