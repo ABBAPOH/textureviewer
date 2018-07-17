@@ -214,7 +214,6 @@ static const FormatInfo &getFormatInfo(Format format)
         if (info.format == format)
             return info;
     }
-    Q_ASSERT(false);
     return formatInfos[0];
 }
 
