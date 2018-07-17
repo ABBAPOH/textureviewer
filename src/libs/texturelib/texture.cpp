@@ -401,6 +401,11 @@ int Texture::depth(int level) const
     return d->levelDepth(level);
 }
 
+int Texture::faces() const
+{
+    return d ? d->faces : 0;
+}
+
 int Texture::levels() const
 {
     return d ? d->levels : 0;
