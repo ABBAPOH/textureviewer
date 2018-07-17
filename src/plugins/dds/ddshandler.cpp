@@ -398,7 +398,7 @@ bool DDSHandler::write(const Texture &texture)
         return false;
     }
 
-    if (texture.type() == Texture::Type::TextureCubeMap) {
+    if (texture.faces() > 1) {
         qCWarning(ddshandler) << "Writing cube maps are not supported";
         return false;
     }
@@ -449,12 +449,16 @@ bool DDSHandler::write(const Texture &texture)
 
     s << dds;
 
-    for (int y = 0; y < texture.height(); ++y) {
-        const auto line = texture.constLineData({0, y}, {});
-        const auto written = s.device()->write(reinterpret_cast<const char *>(line.data()), line.size());
-        if (written != line.size()) {
-            qCWarning(ddshandler) << "Can't write to file:" << s.device()->errorString();
-            return false;
+    for (int layer = 0; layer < texture.layers(); ++layer) {
+        for (int face = 0; face < texture.faces(); ++face) {
+            for (int level = 0; level < texture.levels(); ++level) {
+                const auto data = texture.imageData({Texture::Side(face), level, layer});
+                const auto writen = device()->write(reinterpret_cast<const char *>(data.data()), data.size());
+                if (writen != data.size()) {
+                    qCWarning(ddshandler) << "Can't write to device:" << device()->errorString();
+                    return false;
+                }
+            }
         }
     }
 
