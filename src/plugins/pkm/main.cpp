@@ -9,7 +9,6 @@ class PkmHandlerPlugin : public TextureIOHandlerPlugin
 public:
     PkmHandlerPlugin() = default;
 
-public: // TextureIOHandlerPlugin interface
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override
     {
         if (mimeType.name() == u"image/x-pkm")
