@@ -131,9 +131,7 @@ bool VTFHandler::read(Texture &texture)
     auto result = Texture::create(
                 Texture::Type::Texture2D,
                 format,
-                header.width,
-                header.height,
-                1,
+                {header.width, header.height},
                 header.mipmapCount,
                 header.frames);
     if (result.isNull()) {

@@ -501,7 +501,7 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    auto result = Texture::create(Texture::Type::Texture2D, textureFormat, int(m_header.width), int(m_header.height), 1, ulevels, ulayers);
+    auto result = Texture::create(Texture::Type::Texture2D, textureFormat, {int(m_header.width), int(m_header.height)}, ulevels, ulayers);
 
     if (result.isNull()) {
         qCWarning(ddshandler) << "Can't create texture";

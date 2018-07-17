@@ -157,7 +157,7 @@ void TestTexture::construct()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    const auto texture = Texture::create(type, format, width, height, depth, levels, layers);
+    const auto texture = Texture::create(type, format, {width, height, depth}, levels, layers);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.type(), type);
@@ -248,7 +248,7 @@ void TestTexture::bytesPerLine()
     QFETCH(qsizetype, bpl);
     QFETCH(qsizetype, bpi);
 
-    const auto texture = Texture::create(type, format, width, height, depth, levels);
+    const auto texture = Texture::create(type, format, {width, height, depth}, levels);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.bitsPerTexel(), bpt);
@@ -311,7 +311,7 @@ void TestTexture::offset()
     QFETCH(int, layer);
     QFETCH(qsizetype, offset);
 
-    const auto texture = Texture::create(type, format, width, height, depth, levels, layers);
+    const auto texture = Texture::create(type, format, {width, height, depth}, levels, layers);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.offset({level, layer}), offset);

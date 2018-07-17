@@ -275,8 +275,12 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create(Texture::Type type, Texture::Format format, int width, int height, int depth, int levels, int layers)
+Texture Texture::create(Texture::Type type, Texture::Format format, Texture::Size size, int levels, int layers)
 {
+    const auto width = size.width();
+    const auto height = size.height();
+    const auto depth = size.depth();
+
     Texture result;
     switch (type) {
     case Texture::Type::None:
@@ -313,11 +317,6 @@ Texture Texture::create(Texture::Type type, Texture::Format format, int width, i
 
     result = Texture(TextureData::create(type, format, width, height, depth, levels, layers));
     return result;
-}
-
-Texture Texture::create(Texture::Type type, Texture::Format format, Texture::Size size, int levels, int layers)
-{
-    return create(type, format, size.width(), size.height(), size.depth(), levels, layers);
 }
 
 qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
