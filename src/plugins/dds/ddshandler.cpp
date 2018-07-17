@@ -476,6 +476,28 @@ static Texture::Format convertFormat(Format format)
     }
 }
 
+static Format convertFormat(Texture::Format format)
+{
+    switch (format) {
+    case Texture::Format::BGR_888: return FormatR8G8B8;
+    case Texture::Format::BGRA_8888: return FormatA8R8G8B8;
+    case Texture::Format::RGBX_8888: return FormatX8B8G8R8;
+    case Texture::Format::BGRX_8888: return FormatX8R8G8B8;
+    case Texture::Format::BGR_565: return FormatR5G6B5;
+    case Texture::Format::BGRA_4444: return FormatA4R4G4B4;
+    case Texture::Format::BGRX_4444: return FormatX4R4G4B4;
+    case Texture::Format::BGRA_5551: return FormatA1R5G5B5;
+    case Texture::Format::BGRX_5551: return FormatX1R5G5B5;
+    case Texture::Format::RGBA_10101002_Rev: return FormatA2B10G10R10;
+    case Texture::Format::BGRA_10101002_Rev: return FormatA2R10G10B10;
+    case Texture::Format::DXT1: return FormatDXT1;
+    case Texture::Format::DXT3: return FormatDXT3;
+    case Texture::Format::DXT5: return FormatDXT5;
+    case Texture::Format::RGBA_16161616F: return FormatA16B16G16R16F;
+    default: return FormatUnknown;
+    }
+}
+
 bool DDSHandler::read(Texture &texture)
 {
     if (!canRead(device()))
@@ -581,15 +603,7 @@ bool DDSHandler::read(Texture &texture)
 
 bool DDSHandler::write(const Texture &texture)
 {
-    auto format = FormatUnknown;
-    switch (texture.format()) {
-    case Texture::Format::RGB_888:
-        format = FormatR8G8B8;
-        break;
-    default:
-        break;
-    }
-
+    const auto format = convertFormat(texture.format());
     if (format == FormatUnknown) {
         qCWarning(ddshandler) << "unsupported format" << int(texture.format());
         return false;
