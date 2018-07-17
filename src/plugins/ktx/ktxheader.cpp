@@ -31,7 +31,7 @@ QDataStream&operator>>(QDataStream& s, KtxHeader& header)
 
 QDebug&operator<<(QDebug& d, const KtxHeader& header)
 {
-    d << "VtfHeader {"
+    d << "KtxHeader {"
       << "identifier:" << QLatin1String(reinterpret_cast<const char*>(header.identifier), 12) << ","
       << "endianness:" << QString::number(header.endianness, 16) << ","
       << "glType:" << header.glType << ","
