@@ -58,6 +58,9 @@ static bool validateHeader(const VTFHeader &header)
 
 static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
 {
+    if (size == 0)
+        return true;
+
     const auto buffer = std::make_unique<char[]>(size_t(size));
     const auto read = device->read(buffer.get(), size);
     if (read != size) {
