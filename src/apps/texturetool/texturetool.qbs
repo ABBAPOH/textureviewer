@@ -9,4 +9,10 @@ ConsoleApp {
         "*.cpp",
         "*.h"
     ]
+
+    Group {
+        fileTagsFilter: ["application"]
+        qbs.install: true
+        qbs.installDir: project.install_binary_path
+    }
 }
