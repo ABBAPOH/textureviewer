@@ -84,10 +84,10 @@ bool KtxHandler::read(Texture& texture)
                                           << device()->errorString();
                     return false;
                 }
-                readPadding(device(), device()->pos() % 4);
+                readPadding(device(), 3 - ((device()->pos() + 3) % 4));
             }
         }
-        readPadding(device(), device()->pos() % 4);
+        readPadding(device(), 3 - ((device()->pos() + 3) % 4));
     }
 
     texture = std::move(result);
