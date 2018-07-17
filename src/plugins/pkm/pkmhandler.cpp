@@ -54,7 +54,7 @@ bool PkmHandler::read(Texture& texture)
     Texture::Format format = Texture::Format::Invalid;
 
     if (header.version[0] == '1' && header.version[1] == '0') {
-        format = Texture::Format::ETC1_RGB8;
+        format = Texture::Format::RGB8_ETC1;
     } else {
         qCWarning(pkmhandler) << "Unsupported version"
                               << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
