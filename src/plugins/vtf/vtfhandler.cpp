@@ -104,12 +104,14 @@ bool VTFHandler::read(Texture &texture)
 
     VTFHeader header;
 
-    QDataStream s(device().get());
-    s >> header;
+    {
+        QDataStream s(device().get());
+        s >> header;
 
-    if (s.status() != QDataStream::Ok) {
-        qCWarning(vtfhandler) << "Invalid data stream status:" << s.status();
-        return false;
+        if (s.status() != QDataStream::Ok) {
+            qCWarning(vtfhandler) << "Invalid data stream status:" << s.status();
+            return false;
+        }
     }
 
     if (!validateHeader(header))
