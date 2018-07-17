@@ -37,6 +37,23 @@ QDataStream &operator<<(QDataStream &s, const PkmHeader &header)
     return s;
 }
 
+QDebug &operator<<(QDebug &d, const PkmHeader &header)
+{
+    d << "PkmHeader {"
+      << "magic:" << QLatin1String(reinterpret_cast<const char *>(header.magic), 4) << ","
+      << "version:" << (QString("%1.%2")
+                        .arg(QLatin1Char(header.version[0]))
+                        .arg(QLatin1Char(header.version[1]))) << ","
+      << "textureType:" << header.textureType << ","
+      << "paddedWidth:" << header.paddedWidth << ","
+      << "paddedHeight:" << header.paddedHeight << ","
+      << "width:" << header.paddedHeight << ","
+      << "height:" << header.paddedHeight
+      << "}";
+
+    return d;
+}
+
 static Texture::Format convertFormat(quint16 format)
 {
     switch (format) {
@@ -59,6 +76,7 @@ bool PkmHandler::read(Texture& texture)
         QDataStream s(device().get());
         s.setByteOrder(QDataStream::BigEndian);
         s >> header;
+        qCDebug(pkmhandler) << "header:" << header;
     }
 
     if (QLatin1String(reinterpret_cast<const char *>(header.magic), 4) != "PKM ") {
