@@ -454,7 +454,7 @@ bool DDSHandler::canRead() const
     return canRead(device());
 }
 
-Texture::Format convertFormat(Format format)
+static Texture::Format convertFormat(Format format)
 {
     switch (format) {
     case FormatR8G8B8: return Texture::Format::BGR_888;
