@@ -1,6 +1,7 @@
 #include "abstracttool.h"
 #include "exception.h"
 #include "mainparser.h"
+#include "showtool.h"
 #include "toolparser.h"
 
 #include <QtCore/QDebug>
@@ -17,7 +18,9 @@ using DescriptionMap = MainParser::DescriptionMap;
 
 static ToolsMap createTools()
 {
+    auto showTool = std::make_unique<ShowTool>();
     ToolsMap result;
+    result[showTool->id()] = std::move(showTool);
     return result;
 }
 
