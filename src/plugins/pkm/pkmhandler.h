@@ -15,18 +15,6 @@ public: // ImageIOHandler interface
     bool read(Texture &texture) override;
 };
 
-class PkmHandlerPlugin : public TextureIOHandlerPlugin
-{
-    Q_OBJECT
-    Q_DISABLE_COPY(PkmHandlerPlugin)
-    Q_PLUGIN_METADATA(IID "org.arch.ImageDocument.PkmHandlerPlugin" FILE "pkm.json")
-public:
-    PkmHandlerPlugin() = default;
-
-    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
-    Capabilities capabilities(const QMimeType &mimeType) const override;
-};
-
 Q_DECLARE_LOGGING_CATEGORY(pkmhandler)
 
 #endif // PKMHANDLER_H

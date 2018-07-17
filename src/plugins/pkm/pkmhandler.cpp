@@ -119,16 +119,4 @@ bool PkmHandler::read(Texture& texture)
     return true;
 }
 
-std::unique_ptr<TextureIOHandler> PkmHandlerPlugin::create(const QMimeType& mimeType)
-{
-    Q_UNUSED(mimeType);
-    return std::make_unique<PkmHandler>();
-}
-
-TextureIOHandlerPlugin::Capabilities PkmHandlerPlugin::capabilities(const QMimeType& mimeType) const
-{
-    Q_UNUSED(mimeType);
-    return CanRead;
-}
-
 Q_LOGGING_CATEGORY(pkmhandler, "pluigns.textureformats.pkmhandler")
