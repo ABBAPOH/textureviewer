@@ -12,7 +12,6 @@ public:
     VTFHandler() = default;
 
 public: // ImageIOHandler interface
-    bool canRead() const override;
     bool read(Texture &texture) override;
 
 private:

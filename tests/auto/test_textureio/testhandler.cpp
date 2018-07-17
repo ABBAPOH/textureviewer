@@ -3,11 +3,6 @@
 #include <QtPlugin>
 #include <QDebug>
 
-bool TestHandler::canRead() const
-{
-    return true;
-}
-
 bool TestHandler::read(Texture &texture)
 {
     QDataStream s(device().get());

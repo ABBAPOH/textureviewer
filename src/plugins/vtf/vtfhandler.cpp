@@ -92,11 +92,6 @@ static Texture::Format convertFormat(VTFImageFormat format)
     }
 }
 
-bool VTFHandler::canRead() const
-{
-    return canRead(device());
-}
-
 bool VTFHandler::read(Texture &texture)
 {
     if (!canRead(device()))

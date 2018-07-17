@@ -227,11 +227,6 @@ QByteArray DDSHandler::name() const
     return QByteArrayLiteral("dds");
 }
 
-bool DDSHandler::canRead() const
-{
-    return canRead(device());
-}
-
 static Texture::Format convertFormat(Format format)
 {
     switch (format) {

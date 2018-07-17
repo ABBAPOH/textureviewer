@@ -11,7 +11,6 @@ public:
     PkmHandler() = default;
 
 public: // ImageIOHandler interface
-    bool canRead() const override { return true; }
     bool read(Texture &texture) override;
 };
 

@@ -20,7 +20,6 @@ public:
     inline QIODevicePointer device() const { return m_device; }
     inline void setDevice(QIODevicePointer device) { m_device = device; }
 
-    virtual bool canRead() const = 0;
     virtual bool read(Texture &texture) = 0;
     virtual bool write(const Texture &texture);
 

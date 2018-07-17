@@ -5,7 +5,6 @@
 class TestHandler : public TextureIOHandler
 {
 public:
-    virtual bool canRead() const override;
     virtual bool read(Texture &texture) override;
     virtual bool write(const Texture &contents) override;
 };

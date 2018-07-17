@@ -54,7 +54,6 @@ public:
     QByteArray name() const;
 
 public: // ImageIOHandler interface
-    bool canRead() const override;
     bool read(Texture &texture) override;
     bool write(const Texture &texture) override;
 
