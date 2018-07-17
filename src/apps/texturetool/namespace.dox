@@ -1,0 +1,5 @@
+/*!
+    \namespace TextureTool
+
+    \brief The TextureTool namespace contains classes that implements texturetool program.
+*/
