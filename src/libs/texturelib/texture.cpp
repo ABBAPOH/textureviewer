@@ -69,12 +69,12 @@ TextureData *TextureData::create(
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
 
+    const auto texelFormat = TexelFormat::texelFormat(format);
+
     for (int level = 0; level < levels; ++level) {
         auto w = std::max<uint>(uwidth >> level, 1);
         auto h = std::max<uint>(uheight >> level, 1);
         auto d = std::max<uint>(udepth >> level, 1);
-
-        const auto texelFormat = TexelFormat::texelFormat(format);
 
         // calculateBytesPerLine already checks overflow
         const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w); // bytes per scanline
@@ -120,6 +120,7 @@ TextureData *TextureData::create(
     data->levels = levels;
     data->layers = layers;
     data->format = format;
+    data->compressed = texelFormat.isCompressed();
     data->type = type;
 
     data->levelInfos = std::move(levelInfos);
@@ -350,11 +351,7 @@ Texture::Format Texture::format() const
 
 bool Texture::isCompressed() const
 {
-    return d && (d->format == Format::DXT1
-                 || d->format == Format::DXT1a
-                 || d->format == Format::DXT3
-                 || d->format == Format::DXT5
-                 || d->format == Format::ETC1_RGB8);
+    return d && d->compressed;
 }
 
 int Texture::width() const

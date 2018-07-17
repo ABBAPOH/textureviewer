@@ -40,6 +40,8 @@ public:
         return m_oglPixelType;
     }
 
+    constexpr inline bool isCompressed() const noexcept { return m_blockSize != 0; }
+
     static const TexelFormat &texelFormat(Texture::Format format) noexcept;
 
 private:

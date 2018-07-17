@@ -48,6 +48,7 @@ public:
     QAtomicInt ref {0};
     Texture::Type type {Texture::Type::None};
     Texture::Format format {Texture::Format::Invalid};
+    bool compressed {false};
     int width {0};
     int height {0};
     int depth {0};
