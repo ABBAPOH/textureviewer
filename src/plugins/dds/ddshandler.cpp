@@ -419,6 +419,8 @@ bool DDSHandler::write(const Texture &texture)
     for (int i = 0; i < DDSHeader::ReservedCount; i++)
         dds.reserved1[i] = 0;
     dds.caps = DDSHeader::CapsTexture;
+    if (texture.levels() > 1)
+        dds.caps |= DDSHeader::CapsMipmap;
     dds.caps2 = 0;
     dds.caps3 = 0;
     dds.caps4 = 0;
