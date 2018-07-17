@@ -23,6 +23,7 @@
         <file>vtf/BGRX_5551.vtf</file>
         <file>vtf/BGRX_8888.vtf</file>
         <file>vtf/DXT1.vtf</file>
+        <file>vtf/DXT1a.vtf</file>
         <file>vtf/DXT3.vtf</file>
         <file>vtf/DXT5.vtf</file>
         <file>vtf/RGB_565.vtf</file>

@@ -351,6 +351,7 @@ Texture::Format Texture::format() const
 bool Texture::isCompressed() const
 {
     return d && (d->format == Format::DXT1
+                 || d->format == Format::DXT1a
                  || d->format == Format::DXT3
                  || d->format == Format::DXT5);
 }

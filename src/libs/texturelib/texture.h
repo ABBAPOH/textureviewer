@@ -68,6 +68,7 @@ public:
         BGRX_5551,
         // compressed
         DXT1,
+        DXT1a,
         DXT3,
         DXT5,
         FormatsCount // should be the last
