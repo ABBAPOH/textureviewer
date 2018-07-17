@@ -411,14 +411,16 @@ bool DDSHandler::write(const Texture &texture)
 
     const auto &info = getFormatInfo(format);
     if (info.format == FormatUnknown) {
-        qCWarning(ddshandler) << "Can't find info for format" << format;
-        return false;
+        dds.pixelFormat.fourCC = format;
+        // TODO: do we need flag RGB and aplha?
+        dds.pixelFormat.flags = DDSPixelFormat::FlagFourCC;
+    } else {
+        dds.pixelFormat.fourCC = 0;
+        dds.pixelFormat.flags = info.flags;
     }
 
     // Filling pixelformat
     dds.pixelFormat.size = pixelFormatSize;
-    dds.pixelFormat.flags = info.flags;
-    dds.pixelFormat.fourCC = 0;
     dds.pixelFormat.rgbBitCount = info.bitCount;
     dds.pixelFormat.aBitMask = info.aBitMask;
     dds.pixelFormat.rBitMask = info.rBitMask;
