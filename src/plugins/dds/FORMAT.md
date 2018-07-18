@@ -18,8 +18,8 @@
 | FormatA8            |    no     |
 | FormatA8R3G3B2      |    no     |
 | FormatX4R4G4B4      |    yes    |
-| FormatA2B10G10R1    |    yes    |
-| FormatA8B8G8R8      |    yes    |
+| FormatA2B10G10R10   |    yes    |
+| FormatA8B8G8R8      |    no     |
 | FormatX8B8G8R8      |    yes    |
 | FormatG16R16        |    no     |
 | FormatA2R10G10B10   |    yes    |
@@ -65,7 +65,7 @@
 | FormatMulti2ARGB8   |    no     |
 | FormatR16F          |    no     |
 | FormatG16R16F       |    no     |
-| FormatA16B16G16R16F |    no     |
+| FormatA16B16G16R16F |    yes    |
 | FormatR32F          |    no     |
 | FormatG32R32F       |    no     |
 | FormatA32B32G32R32F |    no     |
