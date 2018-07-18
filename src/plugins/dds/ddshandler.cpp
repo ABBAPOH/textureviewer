@@ -232,6 +232,7 @@ static Texture::Format convertFormat(Format format)
     switch (format) {
     case FormatR8G8B8: return Texture::Format::BGR_888;
     case FormatA8R8G8B8: return Texture::Format::BGRA_8888;
+    case FormatA8B8G8R8: return Texture::Format::RGBA_8888;
     case FormatX8B8G8R8: return Texture::Format::RGBX_8888;
     case FormatX8R8G8B8: return Texture::Format::BGRX_8888;
     case FormatR5G6B5: return Texture::Format::BGR_565;

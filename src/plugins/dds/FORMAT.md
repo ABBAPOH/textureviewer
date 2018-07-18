@@ -23,7 +23,7 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | A8R3G3B2      |    no     |
 | X4R4G4B4      |    yes    |
 | A2B10G10R10   |    yes    |
-| A8B8G8R8      |    no     |
+| A8B8G8R8      |    yes    |
 | X8B8G8R8      |    yes    |
 | G16R16        |    no     |
 | A2R10G10B10   |    yes    |
