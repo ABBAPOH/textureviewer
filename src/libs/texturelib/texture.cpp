@@ -663,7 +663,6 @@ QDataStream &operator<<(QDataStream &stream, const Texture &texture)
 QDataStream &operator>>(QDataStream &stream, Texture &texture)
 {
     texture = Texture();
-    quint32 type;
     quint32 format;
     quint32 width;
     quint32 height;
@@ -672,8 +671,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
     quint32 layers;
     quint32 levels;
     QByteArray data;
-    stream >> type
-            >> format
+    stream >> format
             >> width
             >> height
             >> depth
