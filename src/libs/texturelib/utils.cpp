@@ -1,7 +1,7 @@
 #include "utils.h"
 #include "texelformat.h"
 
-QOpenGLTexture::Target convertType(const Texture &texture)
+QOpenGLTexture::Target getTarget(const Texture &texture)
 {
     switch (texture.type()) {
     case Texture::Type::None:
@@ -51,7 +51,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
         return nullptr;
     }
 
-    const auto target = convertType(texture);
+    const auto target = getTarget(texture);
     const auto &texelFormat = TexelFormat::texelFormat(texture.format());
     const auto textureFormat = texelFormat.oglTextureFormat();
     const auto pixelFormat = texelFormat.oglPixelFormat();
