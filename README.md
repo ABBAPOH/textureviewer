@@ -4,4 +4,4 @@
 This program is distributed under the [GNU LGPL](LICENSE)
 
 ## Formats
-* [vtf](src/plugins/vtf/FORMAT.md)
+* [VTF](src/plugins/vtf/FORMAT.md) (Valve Texture Format)
