@@ -38,4 +38,24 @@ QDataStream &operator<<(QDataStream &s, const VTFHeader &header);
 
 QDebug &operator<<(QDebug &d, const VTFHeader &header);
 
+struct VTFResourceEntry
+{
+    union
+    {
+        quint32 type; // Use MK_VTF_??? macros to be endian compliant with the type
+        uchar typeBytes[4];
+    };
+    quint32 data; // Resource data or offset from the beginning of the file
+};
+
+inline QDataStream &operator>>(QDataStream &s, VTFResourceEntry &entry)
+{
+    return s >> entry.type >> entry.data;
+}
+
+inline QDataStream &operator<<(QDataStream &s, const VTFResourceEntry &entry)
+{
+    return s << entry.type << entry.data;
+}
+
 #endif // VTFHEADER_H

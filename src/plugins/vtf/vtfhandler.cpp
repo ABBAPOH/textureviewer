@@ -9,7 +9,7 @@ inline bool isPower2(T value)
 
 static bool validateHeader(const VTFHeader &header)
 {
-    if (header.headerSize != 80) {
+    if (header.headerSize % 16 != 0) {
         qCWarning(vtfhandler) << "Invalid header.headerSize:" << header.headerSize;
         return false;
     }
@@ -48,8 +48,13 @@ static bool validateHeader(const VTFHeader &header)
         return false;
     }
 
-    if (!(header.version[0] == 7 && header.version[1] == 2)) {
-        qCWarning(vtfhandler) << "Only version 7.2 is supported";
+    if (header.numResources > maxResourcesCount) {
+        qCWarning(vtfhandler) << "invalid numResources:" << header.numResources;
+        return false;
+    }
+
+    if (!(header.version[0] >= 7)) {
+        qCWarning(vtfhandler) << "Versions before 7.0 are not supported";
         return false;
     }
 
@@ -95,42 +100,16 @@ static Texture::Format convertFormat(VTFImageFormat format)
     }
 }
 
-bool VTFHandler::read(Texture &texture)
+static bool readTexture(
+        VTFHandler::QIODevicePointer device,
+        const VTFHeader &header,
+        Texture &texture)
 {
-    if (!canRead(device()))
-        return false;
-
-    VTFHeader header;
-
-    {
-        QDataStream s(device().get());
-        s >> header;
-
-        qCDebug(vtfhandler) << "header:" << header;
-
-        if (s.status() != QDataStream::Ok) {
-            qCWarning(vtfhandler) << "Invalid data stream status:" << s.status();
-            return false;
-        }
-    }
-
-    if (!validateHeader(header))
-        return false;
-
-    if (!readPadding(device(), header.headerSize - device()->pos()))
-        return false;
-
     const auto highFormat = vtfFormat(header.highResImageFormat);
     const auto format = convertFormat(highFormat);
     if (format == Texture::Format::Invalid) {
         qCWarning(vtfhandler) << "format" << header.highResImageFormat << "is not supported";
         return false;
-    }
-
-    if (header.version[0] == 7 && header.version[1] == 2) {
-        auto lowSize = header.lowResImageHeight * header.lowResImageHeight / 2;
-        if (!readPadding(device(), lowSize))
-            return false;
     }
 
     const auto depth = std::max<quint16>(1, header.depth);
@@ -161,20 +140,20 @@ bool VTFHandler::read(Texture &texture)
                             return false;
                         }
                         const auto data = result.imageData({Texture::Side(face), level, layer});
-                        const auto read = device()->read(reinterpret_cast<char *>(data.data()), size);
+                        const auto read = device->read(reinterpret_cast<char *>(data.data()), size);
                         if (read != size) {
-                            qCWarning(vtfhandler) << "Can't read from file:"
-                                                  << device()->errorString();
+                            qCWarning(vtfhandler) << "Can't read from device:"
+                                                  << device->errorString();
                             return false;
                         }
                     } else {
                         for (int y = 0; y < height; ++y) {
                             const auto line = result.lineData(
-                                        {0, y, z}, {(Texture::Side(face)), level, layer});
-                            auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
+                            {0, y, z}, {(Texture::Side(face)), level, layer});
+                            auto read = device->read(reinterpret_cast<char *>(line.data()), pitch);
                             if (read != pitch) {
-                                qCWarning(vtfhandler) << "Can't read from file:"
-                                                      << device()->errorString();
+                                qCWarning(vtfhandler) << "Can't read from device:"
+                                                      << device->errorString();
                                 return false;
                             }
                         }
@@ -185,8 +164,79 @@ bool VTFHandler::read(Texture &texture)
     }
 
     texture = std::move(result);
-
     return true;
+}
+
+bool VTFHandler::read(Texture &texture)
+{
+    if (!canRead(device()))
+        return false;
+
+    VTFHeader header;
+
+    QDataStream s(device().get());
+    s >> header;
+
+    qCDebug(vtfhandler) << "header:" << header;
+
+    if (s.status() != QDataStream::Ok) {
+        qCWarning(vtfhandler) << "Invalid data stream status:" << s.status();
+        return false;
+    }
+
+    if (!validateHeader(header))
+        return false;
+
+    // read padding after header before resources entries
+    if (!readPadding(device(), 15 - (device()->pos() + 15) % 16))
+        return false;
+
+    if (header.version[0] == 7) {
+        if (header.version[1] == 0
+                || header.version[1] == 1
+                || header.version[1] == 2) {
+            const auto lowSize = header.lowResImageHeight * header.lowResImageHeight / 2;
+            if (!readPadding(device(), lowSize))
+                return false;
+            return readTexture(device(), header, texture);
+        }
+
+        if (header.version[1] == 3
+                || header.version[1] == 4
+                || header.version[1] == 5) {
+
+            std::vector<VTFResourceEntry> resources;
+            resources.reserve(header.numResources);
+            for (quint32 i = 0; i < header.numResources; ++i) {
+                resources.emplace_back();
+                s >> resources.back();
+            }
+
+            // Sort entries by offset in a file so we can simply skip padding instead of seeking
+            // (in case we need any other resources except Image)
+            const auto lessThan = [](const VTFResourceEntry &lhs, const VTFResourceEntry &rhs)
+            {
+                return lhs.data < rhs.data;
+            };
+            std::sort(resources.begin(), resources.end(), lessThan);
+
+            for (const auto &entry: resources) {
+                if (entry.type == quint32(VTFResourceType::LegacyImage)) {
+                    if (!readPadding(device(), entry.data - device()->pos()))
+                        return false;
+                    return readTexture(device(), header, texture);
+                }
+            }
+
+            qCWarning(vtfhandler) << "Can't find any image resource";
+            return false;
+
+        }
+    }
+
+    qCWarning(vtfhandler) << "Unsupported version"
+                          << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
+    return false;
 }
 
 bool VTFHandler::canRead(QIODevicePointer device) const

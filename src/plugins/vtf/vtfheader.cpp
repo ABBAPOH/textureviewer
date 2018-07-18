@@ -30,10 +30,14 @@ QDataStream &operator>>(QDataStream &s, VTFHeader &header)
     if (header.version[0] >= 7) {
         if (header.version[1] >= 2)
             s >> header.depth;
+        else
+            header.depth = 0;
         if (header.version[1] >= 3) {
             for (int i = 0; i < 3; ++i)
                 s >> header.padding2[i];
             s >> header.numResources;
+        } else {
+            header.numResources = 0;
         }
     }
 

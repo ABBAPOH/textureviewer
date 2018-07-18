@@ -34,6 +34,11 @@
         <file>pkm/RGB8_ETC2.pkm</file>
         <file>pkm/RGB8_PunchThrough_Alpha1_ETC2.pkm</file>
         <file>pkm/RGBA8_ETC2_EAC.pkm</file>
+        <file>vtf/7.0.vtf</file>
+        <file>vtf/7.1.vtf</file>
+        <file>vtf/7.3.vtf</file>
+        <file>vtf/7.4.vtf</file>
+        <file>vtf/7.5.vtf</file>
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_565.vtf</file>
         <file>vtf/BGR_888.vtf</file>
