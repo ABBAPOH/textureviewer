@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>dds/ATI2.dds</file>
         <file>dds/BGR_565.dds</file>
         <file>dds/BGR_888.dds</file>
         <file>dds/BGRA_4444.dds</file>
