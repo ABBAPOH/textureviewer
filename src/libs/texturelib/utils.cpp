@@ -3,24 +3,22 @@
 
 QOpenGLTexture::Target getTarget(const Texture &texture)
 {
-    switch (texture.type()) {
-    case Texture::Type::None:
-        Q_UNREACHABLE();
-        break;
-    case Texture::Type::Texture1D:
-        return QOpenGLTexture::Target::Target1D;
-    case Texture::Type::Texture1DArray:
-        return QOpenGLTexture::Target::Target1DArray;
-    case Texture::Type::Texture2D:
-        return QOpenGLTexture::Target::Target2D;
-    case Texture::Type::Texture2DArray:
-        return QOpenGLTexture::Target::Target2DArray;
-    case Texture::Type::Texture3D:
-        return QOpenGLTexture::Target::Target3D;
-    case Texture::Type::TextureCubeMap:
-        return QOpenGLTexture::Target::TargetCubeMap;
-    case Texture::Type::TextureCubeMapArray:
-        return QOpenGLTexture::Target::TargetCubeMapArray;
+    if (texture.layers() > 1) {
+        if (texture.faces() > 1)
+            return QOpenGLTexture::Target::TargetCubeMapArray;
+        else if (texture.height() > 1)
+            return QOpenGLTexture::Target::Target2DArray;
+        else
+            return QOpenGLTexture::Target::Target1DArray;
+    } else {
+        if (texture.faces() > 1)
+            return QOpenGLTexture::Target::TargetCubeMap;
+        else if (texture.depth() > 1)
+            return QOpenGLTexture::Target::Target3D;
+        else if (texture.height() > 1)
+            return QOpenGLTexture::Target::Target2D;
+        else
+            return QOpenGLTexture::Target::Target1D;
     }
     Q_UNREACHABLE();
 }
