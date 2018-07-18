@@ -33,3 +33,9 @@ Currently only version 7.2 is supported
 | RGBA_16161616F     |     yes   |
 | RGBA_16161616      |     yes   |
 | UVLX_8888          |     no    |
+
+### TODO List
+
+* Check other versions (7.3, 7.4, 7.5)
+* Check cubemaps
+* Check volume textures
