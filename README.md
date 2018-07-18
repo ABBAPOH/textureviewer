@@ -1,4 +1,4 @@
-# textureviewer
+# Texture Viewer
 
 ## License
 This program is distributed under the [GNU LGPL](LICENSE)
