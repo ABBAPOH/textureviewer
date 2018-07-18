@@ -75,6 +75,7 @@ public:
         DXT1a,
         DXT3,
         DXT5,
+        RXGB,
         RGB8_ETC1,
         RGB8_ETC2,
         RGBA8_ETC2_EAC,

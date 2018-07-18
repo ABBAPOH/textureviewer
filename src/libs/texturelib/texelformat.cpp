@@ -28,6 +28,7 @@ static constexpr const TexelFormat formats[] = {
     {Texture::Format::DXT1a, 0, 8, QOpenGLTexture::QOpenGLTexture::RGBA_DXT1},
     {Texture::Format::DXT3, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT3},
     {Texture::Format::DXT5, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT5},
+    {Texture::Format::RXGB, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT5},
     {Texture::Format::RGB8_ETC1, 0, 8, QOpenGLTexture::QOpenGLTexture::RGB8_ETC1},
     {Texture::Format::RGB8_ETC2, 0, 8, QOpenGLTexture::QOpenGLTexture::RGB8_ETC2},
     {Texture::Format::RGBA8_ETC2_EAC, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA8_ETC2_EAC},

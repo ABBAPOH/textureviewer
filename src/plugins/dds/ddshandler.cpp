@@ -245,6 +245,7 @@ static Texture::Format convertFormat(Format format)
     case FormatDXT1: return Texture::Format::DXT1;
     case FormatDXT3: return Texture::Format::DXT3;
     case FormatDXT5: return Texture::Format::DXT5;
+    case FormatRXGB: return Texture::Format::RXGB;
     case FormatA16B16G16R16F: return Texture::Format::RGBA_16161616F;
     default: return Texture::Format::Invalid;
     }
@@ -267,6 +268,7 @@ static Format convertFormat(Texture::Format format)
     case Texture::Format::DXT1: return FormatDXT1;
     case Texture::Format::DXT3: return FormatDXT3;
     case Texture::Format::DXT5: return FormatDXT5;
+    case Texture::Format::RXGB: return FormatRXGB;
     case Texture::Format::RGBA_16161616F: return FormatA16B16G16R16F;
     default: return FormatUnknown;
     }
