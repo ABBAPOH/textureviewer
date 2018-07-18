@@ -47,9 +47,9 @@ static bool validateHeader(const VTFHeader &header)
         return false;
     }
 
-    if (header.lowResImageHeight > 16 ||  header.lowResImageHeight > 16) {
+    if (header.lowResImageWidth > 16 ||  header.lowResImageHeight > 16) {
         qCWarning(vtfhandler) << "invalid low resolution size:"
-                              << QSize(header.lowResImageHeight, header.lowResImageHeight);
+                              << QSize(header.lowResImageWidth, header.lowResImageHeight);
         return false;
     }
 
@@ -76,9 +76,8 @@ static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
     if (read != size) {
         qCWarning(vtfhandler) << "Can't read padding of size" << size
                               << ":" << device->errorString();
-        return false;
     }
-    return true;
+    return read == size;
 }
 
 static Texture::Format convertFormat(VTFImageFormat format)
