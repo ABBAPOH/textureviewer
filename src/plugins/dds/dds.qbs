@@ -2,5 +2,5 @@ import qbs.base 1.0
 
 Plugin {
     Depends { name: "TextureLib" }
-    files: [ "*.cpp", "*.h", "*.json" ]
+    files: [ "*.cpp", "*.h", "*.json", "*.md" ]
 }
