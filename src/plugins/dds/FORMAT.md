@@ -1,7 +1,11 @@
 ## Direct Draw Surface Format
 
 [Programming guide](https://docs.microsoft.com/en-us/windows/desktop/direct3ddds/dx-graphics-dds-pguide)
+
 [Reference for DDS](https://docs.microsoft.com/en-us/windows/desktop/direct3ddds/dx-graphics-dds-reference)
+
+DDS stores bytes in a reversed order, so the format A8R8G8B8 in a table belows is actually a
+B8G8R8A8 format. The same is true for all uncompressed formats.
 
 ### Direct3D 9
 
