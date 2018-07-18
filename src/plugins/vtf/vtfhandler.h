@@ -12,9 +12,6 @@ public:
 
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
-
-private:
-    bool canRead(QIODevicePointer device) const;
 };
 
 Q_DECLARE_LOGGING_CATEGORY(vtfhandler)

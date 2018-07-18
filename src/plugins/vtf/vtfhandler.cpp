@@ -9,6 +9,11 @@ inline bool isPower2(T value)
 
 static bool validateHeader(const VTFHeader &header)
 {
+    if (header.signature != 0x00465456) {
+        qCWarning(vtfhandler) << "Invalid header.signature:" << header.signature;
+        return false;
+    }
+
     if (header.headerSize % 16 != 0) {
         qCWarning(vtfhandler) << "Invalid header.headerSize:" << header.headerSize;
         return false;
@@ -169,9 +174,6 @@ static bool readTexture(
 
 bool VTFHandler::read(Texture &texture)
 {
-    if (!canRead(device()))
-        return false;
-
     VTFHeader header;
 
     QDataStream s(device().get());
@@ -237,21 +239,6 @@ bool VTFHandler::read(Texture &texture)
     qCWarning(vtfhandler) << "Unsupported version"
                           << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
     return false;
-}
-
-bool VTFHandler::canRead(QIODevicePointer device) const
-{
-    if (!device) {
-        qCWarning(vtfhandler) << "canRead() called with no device";
-        return false;
-    }
-
-    if (device->isSequential()) {
-        qCWarning(vtfhandler) << "Sequential devices are not supported";
-        return false;
-    }
-
-    return device->peek(4) == QByteArrayLiteral("VTF\0");
 }
 
 Q_LOGGING_CATEGORY(vtfhandler, "pluigns.textureformats.vtfhandler")
