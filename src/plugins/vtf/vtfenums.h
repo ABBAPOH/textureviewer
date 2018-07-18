@@ -39,7 +39,7 @@ enum class VTFImageFormat : quint32
     FormatCount
 };
 
-inline VTFImageFormat vtfFormat(quint32 value)
+inline constexpr VTFImageFormat vtfFormat(quint32 value) noexcept
 {
     if (value >= quint32(VTFImageFormat::FormatCount))
         return VTFImageFormat::None;

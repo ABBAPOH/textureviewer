@@ -2,7 +2,7 @@
 #include "vtfenums.h"
 
 template<typename T>
-inline bool isPower2(T value)
+inline constexpr bool isPower2(T value) noexcept
 {
     return (value - 1) ^ value;
 }
