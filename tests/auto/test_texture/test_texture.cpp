@@ -46,98 +46,98 @@ void TestTexture::construct_data()
     QTest::addColumn<qsizetype>("bytes");
 
     // 1D texture
-    QTest::newRow("ARGB32, 1x1x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 1x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888 // type / format
             << 1 << 1 << 1 // width / height / depth
             << 1 << 1 // levels / layers
             << qsizetype(4); // result
-    QTest::newRow("ARGB32, 64x1x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 64x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 1 << 1
             << 1 << 1
             << qsizetype(256);
-    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
             << 1 << 1
             << qsizetype(400);
     // 1D texture array
-    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
             << 1 << 1
             << qsizetype(400);
-    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=8")
+    QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=8")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
             << 1 << 8
             << qsizetype(3200);
-    QTest::newRow("ARGB32, 100x1x1, levels=1, layers=10")
+    QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=10")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
             << 1 << 10
             << qsizetype(4000);
     // 2D texture
-    QTest::newRow("ARGB32, 1x1x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 1x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 1 << 1 << 1
             << 1 << 1
             << qsizetype(4);
-    QTest::newRow("ARGB32, 64x64x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 64x64x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 1 << 1
             << qsizetype(16384);
-    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
             << 1 << 1
             << qsizetype(40000);
     // 2D array
-    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
             << 1 << 1
             << qsizetype(40000);
-    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=8")
+    QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=8")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
             << 1 << 8
             << qsizetype(320000);
-    QTest::newRow("ARGB32, 100x100x1, levels=1, layers=10")
+    QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=10")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
             << 1 << 10
             << qsizetype(400000);
     // 3D texture
-    QTest::newRow("ARGB32, 64x64x64, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 64x64x64, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 64
             << 1 << 1
             << qsizetype(1048576);
-    QTest::newRow("ARGB32, 100x100x100, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, 100x100x100, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 100
             << 1 << 1
             << qsizetype(4000000);
     // CubeMap
-    QTest::newRow("ARGB32, size=1, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, size=1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 1 << 1 << 1
             << 1 << 1
             << qsizetype(24);
-    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, size=64, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 1 << 1
             << qsizetype(98304);
     // CubeMap Array
-    QTest::newRow("ARGB32, size=64, levels=1, layers=1")
+    QTest::newRow("RGBA_8888, size=64, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 1 << 1
             << qsizetype(98304);
-    QTest::newRow("ARGB32, size=64, levels=1, layers=8")
+    QTest::newRow("RGBA_8888, size=64, levels=1, layers=8")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 1 << 8
@@ -178,52 +178,52 @@ void TestTexture::bytesPerLine_data()
     QTest::addColumn<qsizetype>("bpl");
     QTest::addColumn<qsizetype>("bpi");
 
-    QTest::newRow("ARGB32, 1x1x1, level 0/1")
+    QTest::newRow("RGBA_8888, 1x1x1, level 0/1")
             << Texture::Format::RGBA_8888
             << 1 << 1 << 1
             << 1 << 0
             << qsizetype(32) << qsizetype(4) << qsizetype(4);
-    QTest::newRow("ARGB32, 64x1x1, level 0/1")
+    QTest::newRow("RGBA_8888, 64x1x1, level 0/1")
             << Texture::Format::RGBA_8888
             << 64 << 1 << 1
             << 1 << 0
             << qsizetype(32) << qsizetype(256) << qsizetype(256);
-    QTest::newRow("ARGB32, 64x64x64, level 0/1")
+    QTest::newRow("RGBA_8888, 64x64x64, level 0/1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 64
             << 1 << 0
             << qsizetype(32) << qsizetype(256) << qsizetype(1048576);
-    QTest::newRow("ARGB32, 4x4x4, level 0/1")
+    QTest::newRow("RGBA_8888, 4x4x4, level 0/1")
             << Texture::Format::RGBA_8888
             << 4 << 4 << 4
             << 1 << 0
             << qsizetype(32) << qsizetype(16) << qsizetype(256);
-    QTest::newRow("ARGB32, 4x4x4, level 0/3")
+    QTest::newRow("RGBA_8888, 4x4x4, level 0/3")
             << Texture::Format::RGBA_8888
             << 4 << 4 << 4
             << 3 << 0
             << qsizetype(32) << qsizetype(16) << qsizetype(256);
-    QTest::newRow("ARGB32, 4x4x4, level 1/3")
+    QTest::newRow("RGBA_8888, 4x4x4, level 1/3")
             << Texture::Format::RGBA_8888
             << 4 << 4 << 4
             << 3 << 1
             << qsizetype(32) << qsizetype(8) << qsizetype(32);
-    QTest::newRow("ARGB32, 4x4x4, level 2/3")
+    QTest::newRow("RGBA_8888, 4x4x4, level 2/3")
             << Texture::Format::RGBA_8888
             << 4 << 4 << 4
             << 3 << 2
             << qsizetype(32) << qsizetype(4) << qsizetype(4);
-    QTest::newRow("ARGB32, 5x4x4, level 0/3")
+    QTest::newRow("RGBA_8888, 5x4x4, level 0/3")
             << Texture::Format::RGBA_8888
             << 5 << 4 << 4
             << 3 << 0
             << qsizetype(32) << qsizetype(20) << qsizetype(320);
-    QTest::newRow("ARGB32, 5x4x4, level 1/3")
+    QTest::newRow("RGBA_8888, 5x4x4, level 1/3")
             << Texture::Format::RGBA_8888
             << 5 << 4 << 4
             << 3 << 1
             << qsizetype(32) << qsizetype(8) << qsizetype(32);
-    QTest::newRow("ARGB32, 5x4x4, level 2/3")
+    QTest::newRow("RGBA_8888, 5x4x4, level 2/3")
             << Texture::Format::RGBA_8888
             << 4 << 4 << 4
             << 3 << 2
@@ -262,28 +262,28 @@ void TestTexture::offset_data()
     QTest::addColumn<int>("layer");
     QTest::addColumn<qsizetype>("offset");
 
-    QTest::newRow("ARGB32, 1x1x1, level 0/1, layer 0/1")
+    QTest::newRow("RGBA_8888, 1x1x1, level 0/1, layer 0/1")
             << Texture::Format::RGBA_8888
             << 1 << 1 << 1
             << 1 << 1
             << 0 << 0
             << qsizetype(0);
 
-    QTest::newRow("ARGB32, 64x64x1, level 0/1, layer 1/10")
+    QTest::newRow("RGBA_8888, 64x64x1, level 0/1, layer 1/10")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 1 << 10
             << 0 << 1
             << qsizetype(1 * 64*64*4);
 
-    QTest::newRow("ARGB32, 64x64x1, level 1/2, layer 0/1")
+    QTest::newRow("RGBA_8888, 64x64x1, level 1/2, layer 0/1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 2 << 1
             << 1 << 0
             << qsizetype(64*64*4);
 
-    QTest::newRow("ARGB32, 64x64x1, level 2/3, layer 0/1")
+    QTest::newRow("RGBA_8888, 64x64x1, level 2/3, layer 0/1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
             << 3 << 1
