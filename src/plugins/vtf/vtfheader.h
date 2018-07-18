@@ -40,11 +40,7 @@ QDebug &operator<<(QDebug &d, const VTFHeader &header);
 
 struct VTFResourceEntry
 {
-    union
-    {
-        quint32 type; // Use MK_VTF_??? macros to be endian compliant with the type
-        uchar typeBytes[4];
-    };
+    quint32 type; // the type of the resource, see VTFResourceType enum
     quint32 data; // Resource data or offset from the beginning of the file
 };
 
