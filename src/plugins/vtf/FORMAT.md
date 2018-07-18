@@ -1,10 +1,10 @@
 ## Valve Texture Format
 
 [Format description](https://developer.valvesoftware.com/wiki/Valve_Texture_Format)
-[Nem's Tools](http://nemesis.thewavelength.net/index.php?c=149)
-[vtf.h](https://github.com/ValveSoftware/source-sdk-2013/blob/master/sp/src/public/vtf/vtf.h)
 
-Currently only version 7.2 is supported
+[Nem's Tools](http://nemesis.thewavelength.net/index.php?c=149)
+
+[vtf.h](https://github.com/ValveSoftware/source-sdk-2013/blob/master/sp/src/public/vtf/vtf.h)
 
 | Format             | Supported |
 | ------------------ |:---------:|
@@ -38,6 +38,5 @@ Currently only version 7.2 is supported
 
 ### TODO List
 
-* Check other versions (7.3, 7.4, 7.5)
 * Check cubemaps
 * Check volume textures
