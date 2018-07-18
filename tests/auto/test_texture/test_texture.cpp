@@ -41,6 +41,7 @@ void TestTexture::construct_data()
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
     QTest::addColumn<int>("depth");
+    QTest::addColumn<bool>("cubemap");
     QTest::addColumn<int>("levels");
     QTest::addColumn<int>("layers");
     QTest::addColumn<qsizetype>("bytes");
@@ -49,97 +50,115 @@ void TestTexture::construct_data()
     QTest::newRow("RGBA_8888, 1x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888 // type / format
             << 1 << 1 << 1 // width / height / depth
+            << false // cubemap
             << 1 << 1 // levels / layers
             << qsizetype(4); // result
     QTest::newRow("RGBA_8888, 64x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 1 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(256);
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(400);
     // 1D texture array
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(400);
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=8")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
+            << false // cubemap
             << 1 << 8
             << qsizetype(3200);
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=10")
             << Texture::Format::RGBA_8888
             << 100 << 1 << 1
+            << false // cubemap
             << 1 << 10
             << qsizetype(4000);
     // 2D texture
     QTest::newRow("RGBA_8888, 1x1x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 1 << 1 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(4);
     QTest::newRow("RGBA_8888, 64x64x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(16384);
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(40000);
     // 2D array
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
+            << false // cubemap
             << 1 << 1
             << qsizetype(40000);
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=8")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
+            << false // cubemap
             << 1 << 8
             << qsizetype(320000);
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=10")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 1
+            << false // cubemap
             << 1 << 10
             << qsizetype(400000);
     // 3D texture
     QTest::newRow("RGBA_8888, 64x64x64, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 64
+            << false // cubemap
             << 1 << 1
             << qsizetype(1048576);
     QTest::newRow("RGBA_8888, 100x100x100, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 100 << 100 << 100
+            << false // cubemap
             << 1 << 1
             << qsizetype(4000000);
     // CubeMap
     QTest::newRow("RGBA_8888, size=1, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 1 << 1 << 1
+            << true // cubemap
             << 1 << 1
             << qsizetype(24);
     QTest::newRow("RGBA_8888, size=64, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
+            << true // cubemap
             << 1 << 1
             << qsizetype(98304);
     // CubeMap Array
     QTest::newRow("RGBA_8888, size=64, levels=1, layers=1")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
+            << true // cubemap
             << 1 << 1
             << qsizetype(98304);
     QTest::newRow("RGBA_8888, size=64, levels=1, layers=8")
             << Texture::Format::RGBA_8888
             << 64 << 64 << 1
+            << true // cubemap
             << 1 << 8
             << qsizetype(786432);
 }
@@ -150,11 +169,13 @@ void TestTexture::construct()
     QFETCH(int, width);
     QFETCH(int, height);
     QFETCH(int, depth);
+    QFETCH(bool, cubemap);
     QFETCH(int, layers);
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    const auto texture = Texture::create(format, {width, height, depth}, levels, layers);
+    const auto texture = Texture::create(
+                format, {width, height, depth}, Texture::IsCubemap(cubemap), levels, layers);
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.format(), format);
