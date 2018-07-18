@@ -2,6 +2,8 @@
 
 [Format description](https://developer.valvesoftware.com/wiki/Valve_Texture_Format)
 
+Currently only version 7.2 is supported
+
 | Format             | Supported |
 | ------------------ |:---------:|
 | RGBA_8888          |     yes   |
