@@ -5,35 +5,35 @@
 #include <memory>
 
 #define CHECK_SIDE(side, rv) \
-    if (side < 0 || side >= d->faces) { \
-        qCWarning(texture) << "was called with invalid side" << side; \
-        return rv; \
+    if ((side) < 0 || (side) >= d->faces) { \
+        qCWarning(texture) << "was called with invalid side" << (side); \
+        return (rv); \
     } \
 
 #define CHECK_LEVEL(level, rv) \
-    if (level < 0 || level >= d->levels) { \
-        qCWarning(texture) << "was called with invalid level" << level; \
-        return rv; \
+    if ((level) < 0 || (level) >= d->levels) { \
+        qCWarning(texture) << "was called with invalid level" << (level); \
+        return (rv); \
     } \
 
 #define CHECK_LAYER(layer, rv) \
-    if (layer < 0 || layer >= d->layers) { \
-        qCWarning(texture) << "was called with invalid layer" << layer; \
-        return rv; \
+    if ((layer) < 0 || (layer) >= d->layers) { \
+        qCWarning(texture) << "was called with invalid layer" << (layer); \
+        return (rv); \
     } \
 
 #define CHECK_POINT(x, y, z, level, rv) \
-    if (x < 0 || x >= d->levelWidth(level) \
-        || y < 0 || y >= d->levelHeight(level) \
-        || z < 0 || z >= d->levelDepth(level)) { \
-        qCWarning(texture) << "point (" << x << y << z << ")" << "is out of bounds"; \
-        return rv; \
+    if ((x) < 0 || (x) >= d->levelWidth(level) \
+        || (y) < 0 || (y) >= d->levelHeight(level) \
+        || (z) < 0 || (z) >= d->levelDepth(level)) { \
+        qCWarning(texture) << "point (" << (x) << (y) << (z) << ")" << "is out of bounds"; \
+        return (rv); \
     } \
 
 #define CHECK_ZERO_X(x, rv) \
-    if (x != 0) { \
+    if ((x) != 0) { \
         qCWarning(texture) << "x should be 0"; \
-        return rv; \
+        return (rv); \
     } \
 
 TextureData::~TextureData()
@@ -105,7 +105,7 @@ TextureData *TextureData::create(
         }
     }
 
-    data.reset(new TextureData);
+    data = std::make_unique<TextureData>();
 
     data->ref.ref();
     data->width = width;
@@ -141,7 +141,7 @@ qsizetype TextureData::calculateBytesPerLine(
         }
         if (align == Texture::Alignment::Byte)
             return (width * bitsPerTexel + 7) >> 3;
-        else if (align == Texture::Alignment::Word)
+        if (align == Texture::Alignment::Word)
             return ((width * bitsPerTexel + 31) >> 5) << 2;
     } else if (blockSize) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
@@ -166,7 +166,9 @@ qsizetype TextureData::calculateBytesPerSlice(
             return 0;
         }
         return bytesPerLine * height;
-    } else if (format.blockSize()) { // compressed format
+    }
+
+    if (format.blockSize()) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / bytesPerLine / ((height + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;

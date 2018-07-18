@@ -9,16 +9,12 @@
 /*!
     Creates an TextureIOHandler object.
 */
-TextureIOHandler::TextureIOHandler()
-{
-}
+TextureIOHandler::TextureIOHandler() = default;
 
 /*!
     Destroys the TextureIOHandler object.
 */
-TextureIOHandler::~TextureIOHandler()
-{
-}
+TextureIOHandler::~TextureIOHandler() = default;
 
 /*!
     \fn QIODevicePointer TextureIOHandler::device() const

@@ -59,4 +59,4 @@ inline bool operator!=(const TextureIOResult &lhs, const TextureIOResult &rhs) n
     return lhs.m_value != rhs.m_value;
 }
 
-QString TEXTURELIB_EXPORT toUserString(TextureIOResult result);
+QString TEXTURELIB_EXPORT toUserString(const TextureIOResult& result);

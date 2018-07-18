@@ -60,7 +60,7 @@ public: // ImageIOHandler interface
     static bool canRead(QIODevicePointer device);
 
 private:
-    bool doScan() const;
+    bool doScan();
     bool verifyHeader(const DDSHeader &dds) const;
 
 private:

@@ -66,7 +66,7 @@ void Window::initializeGL()
         return;
     }
     m_funcs->initializeOpenGLFunctions();
-    qInfo() << "real OGL version" << (char *)m_funcs->glGetString(GL_VERSION);
+    qInfo() << "real OGL version" << reinterpret_cast<const char *>(m_funcs->glGetString(GL_VERSION));
 
     {
         GLint nrAttributes;
@@ -108,11 +108,11 @@ void Window::initializeGL()
 
         // Атрибут с цветом
         m_funcs->glEnableVertexAttribArray(1);
-        m_funcs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(3* sizeof(GLfloat)));
+        m_funcs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3* sizeof(GLfloat)));
 
         // Атрибут с текстурой
         m_funcs->glEnableVertexAttribArray(2);
-        m_funcs->glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (GLvoid*)(6 * sizeof(GLfloat)));
+        m_funcs->glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(6 * sizeof(GLfloat)));
     }
 
     m_program = std::make_unique<QOpenGLShaderProgram>();
@@ -149,7 +149,7 @@ void Window::paintGL()
     m_funcs->glUniform1i(m_program->uniformLocation("ourTexture1"), 0);
 
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
-    m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+    m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     m_texture->release();
     m_program->release();
 }

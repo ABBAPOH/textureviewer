@@ -158,9 +158,7 @@ TextureIO::TextureIO(QIODevicePointer device, const QString &mimeType) :
 /*!
     Destroys TextureIO object.
 */
-TextureIO::~TextureIO()
-{
-}
+TextureIO::~TextureIO() = default;
 
 /*!
     \property TextureIO::fileName
@@ -181,7 +179,7 @@ void TextureIO::setFileName(const QString &fileName)
     if (d->fileName == fileName)
         return;
 
-    d->file.reset(new QFile(fileName));
+    d->file = std::make_unique<QFile>(fileName);
     d->device.reset(d->file.get());
     d->mimeType = QMimeDatabase().mimeTypeForFile(fileName);
     d->fileName = fileName;

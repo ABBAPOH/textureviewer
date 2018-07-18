@@ -479,19 +479,18 @@ bool DDSHandler::canRead(QIODevicePointer device)
     return device->peek(4) == QByteArrayLiteral("DDS ");
 }
 
-bool DDSHandler::doScan() const
+bool DDSHandler::doScan()
 {
-    DDSHandler *that = const_cast<DDSHandler *>(this);
-    that->m_format = FormatUnknown;
+    m_format = FormatUnknown;
 
     qint64 oldPos = device()->pos();
     device()->seek(0);
 
     QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
-    s >> that->m_header;
+    s >> m_header;
     if (m_header.pixelFormat.fourCC == dx10Magic)
-        s >> that->m_header10;
+        s >> m_header10;
 
     device()->seek(oldPos);
 
@@ -501,7 +500,7 @@ bool DDSHandler::doScan() const
     if (!verifyHeader(m_header))
         return false;
 
-    that->m_format = getFormat(m_header);
+    this->m_format = getFormat(m_header);
 
     return true;
 }

@@ -6,19 +6,19 @@ QOpenGLTexture::Target getTarget(const Texture &texture)
     if (texture.layers() > 1) {
         if (texture.faces() > 1)
             return QOpenGLTexture::Target::TargetCubeMapArray;
-        else if (texture.height() > 1)
+        if (texture.height() > 1)
             return QOpenGLTexture::Target::Target2DArray;
-        else
-            return QOpenGLTexture::Target::Target1DArray;
+
+        return QOpenGLTexture::Target::Target1DArray;
     } else {
         if (texture.faces() > 1)
             return QOpenGLTexture::Target::TargetCubeMap;
-        else if (texture.depth() > 1)
+        if (texture.depth() > 1)
             return QOpenGLTexture::Target::Target3D;
-        else if (texture.height() > 1)
+        if (texture.height() > 1)
             return QOpenGLTexture::Target::Target2D;
-        else
-            return QOpenGLTexture::Target::Target1D;
+
+        return QOpenGLTexture::Target::Target1D;
     }
     Q_UNREACHABLE();
 }

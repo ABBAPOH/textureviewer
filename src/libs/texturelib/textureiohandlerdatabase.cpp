@@ -17,7 +17,7 @@ TextureIOHandlerDatabase::TextureIOHandlerDatabase()
 
         const auto metaData = staticPlugin.metaData().value("MetaData").toObject();
         const auto mimeTypes = metaData.value("MimeTypes").toArray();
-        for (auto mimeType : mimeTypes) {
+        for (const auto &mimeType : mimeTypes) {
             registerPlugin(mimeType.toString(), handlerPlugin);
         }
     }
@@ -47,7 +47,7 @@ TextureIOHandlerDatabase::TextureIOHandlerDatabase()
                            << "does not contain an textureformat plugin";
                 continue;
             }
-            for (auto mimeTypeName : mimeTypes) {
+            for (const auto &mimeTypeName : mimeTypes) {
                 registerPlugin(mimeTypeName.toString(), handlerPlugin);
             }
             loaders.push_back(std::move(loader));

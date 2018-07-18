@@ -107,7 +107,7 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 /*!
     Returns the human-readable message describing the \a result.
 */
-QString toUserString(TextureIOResult result)
+QString toUserString(const TextureIOResult &result)
 {
     return result ? TextureIOResult::tr("No error") : toUserString(result.error());
 }

@@ -39,19 +39,19 @@ int main(int argc, char *argv[])
 {
     try {
         QCoreApplication app(argc, argv);
-        app.setApplicationName("texturetool");
-        app.setApplicationVersion("1.0");
-        app.addLibraryPath(app.applicationDirPath() + TextureIO::pluginsDirPath());
+        QCoreApplication::setApplicationName("texturetool");
+        QCoreApplication::setApplicationVersion("1.0");
+        QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath() + TextureIO::pluginsDirPath());
 
         const auto tools = createTools();
 
         MainParser parser(getDescriptions(tools));
-        parser.process(app.arguments());
+        parser.process(QCoreApplication::arguments());
 
         const auto toolName = parser.toolName();
         const auto it = tools.find(toolName.toLatin1());
         if (it == tools.end()) {
-            parser.showError(app.translate("TextureTool", "Unknown command %1").arg(toolName));
+            MainParser::showError(QCoreApplication::translate("TextureTool", "Unknown command %1").arg(toolName));
             parser.showHelp(EXIT_FAILURE);
         }
 

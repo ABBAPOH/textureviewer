@@ -40,7 +40,7 @@ QVariant TextureModel::headerData(int section, Qt::Orientation orientation, int 
         if (role == Qt::DisplayRole || role == Qt::ToolTipRole) {
             if (section == ColumnName)
                 return tr("name");
-            else if (section == ColumnValue)
+            if (section == ColumnValue)
                 return tr("value");
         }
     }

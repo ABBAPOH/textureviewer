@@ -11,7 +11,7 @@ namespace TextureTool {
 
 namespace {
 
-static const char toolId[] = "show";
+const char toolId[] = "show";
 
 struct Options
 {
@@ -19,7 +19,7 @@ struct Options
     QString fileName;
 };
 
-static Options parseOptions(const QStringList &arguments)
+Options parseOptions(const QStringList &arguments)
 {
     ToolParser parser(toolId);
     parser.addPositionalArgument(QStringLiteral("file"),
@@ -32,10 +32,10 @@ static Options parseOptions(const QStringList &arguments)
 
     const auto positional = parser.positionalArguments();
     if (positional.size() > 1) {
-        parser.showError(ShowTool::tr("Too many file arguments"));
+        ToolParser::showError(ShowTool::tr("Too many file arguments"));
         parser.showHelp(EXIT_FAILURE);
-    } else if (positional.size() == 0) {
-        parser.showError(ShowTool::tr("File argument missing"));
+    } else if (positional.isEmpty()) {
+        ToolParser::showError(ShowTool::tr("File argument missing"));
         parser.showHelp(EXIT_FAILURE);
     } else {
         result.showInfo = true;
@@ -45,12 +45,7 @@ static Options parseOptions(const QStringList &arguments)
     return result;
 }
 
-static inline void showMessage(const QString &message)
-{
-    ToolParser::showMessage(message);
-}
-
-static QString modelToText(QAbstractTableModel *model)
+QString modelToText(QAbstractTableModel *model)
 {
     QStringList result;
     for (int row = 0, rowCount = model->rowCount(); row < rowCount; ++row) {
@@ -63,7 +58,7 @@ static QString modelToText(QAbstractTableModel *model)
     return result.join("\n");
 }
 
-static void showImageInfo(const QString &filePath)
+void showImageInfo(const QString &filePath)
 {
     TextureIO io(filePath);
     const auto result = io.read();

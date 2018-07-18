@@ -10,7 +10,7 @@ namespace TextureTool {
 
 namespace {
 
-static const char toolId[] = "convert";
+const char toolId[] = "convert";
 
 struct Options
 {
@@ -20,7 +20,7 @@ struct Options
     QString outputMimeType;
 };
 
-static Options parseOptions(const QStringList &arguments)
+Options parseOptions(const QStringList &arguments)
 {
     ToolParser parser(toolId);
     QCommandLineOption inputTypeOption(QStringLiteral("input-type"),
@@ -42,7 +42,7 @@ static Options parseOptions(const QStringList &arguments)
 
     const auto positional = parser.positionalArguments();
     if (positional.size() != 2) {
-        parser.showError(ConvertTool::tr("Incorrect input/output arguments"));
+        ToolParser::showError(ConvertTool::tr("Incorrect input/output arguments"));
         parser.showHelp(EXIT_FAILURE);
     }
 
@@ -54,7 +54,7 @@ static Options parseOptions(const QStringList &arguments)
     return options;
 }
 
-static void convert(const Options &options)
+void convert(const Options &options)
 {
     TextureIO io(options.inputFile);
     if (!options.inputMimeType.isEmpty())
@@ -72,8 +72,7 @@ static void convert(const Options &options)
     const auto ok = io.write(*result);
     if (!ok) {
         throw RuntimeError(ConvertTool::tr("Can't write image %1: %2").
-                           arg(options.outputFile).
-                           arg(toUserString(ok.error())));
+                           arg(options.outputFile, toUserString(ok.error())));
     }
 }
 
