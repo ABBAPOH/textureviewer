@@ -14,11 +14,12 @@ public:
     TextureData &operator=(const TextureData &) = delete;
     TextureData &operator=(TextureData &&) = delete;
 
-    static TextureData *create(Texture::Type type,
+    static TextureData *create(
             Texture::Format format,
             int width,
             int height,
             int depth,
+            bool isCubemap,
             int levels,
             int layers);
 
@@ -46,7 +47,6 @@ public:
     qsizetype offset(int side, int level, int layer) const;
 
     QAtomicInt ref {0};
-    Texture::Type type {Texture::Type::None};
     Texture::Format format {Texture::Format::Invalid};
     bool compressed {false};
     int width {0};

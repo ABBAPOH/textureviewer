@@ -36,22 +36,17 @@
         return rv; \
     } \
 
-static inline bool isCubeMap(Texture::Type type)
-{
-    return type == Texture::Type::TextureCubeMap || type == Texture::Type::TextureCubeMapArray;
-}
-
 TextureData::~TextureData()
 {
     free(data);
 }
 
 TextureData *TextureData::create(
-        Texture::Type type,
         Texture::Format format,
         int width,
         int height,
         int depth,
+        bool isCubemap,
         int levels,
         int layers)
 {
@@ -63,7 +58,7 @@ TextureData *TextureData::create(
     auto uwidth = uint(width);
     auto uheight = uint(height);
     auto udepth = uint(depth);
-    auto ufaces = ::isCubeMap(type) ? uint(6) : uint(1);
+    auto ufaces = isCubemap ? uint(6) : uint(1);
     auto ulayers = uint(layers);
 
     qsizetype totalBytes = 0;
@@ -121,7 +116,6 @@ TextureData *TextureData::create(
     data->layers = layers;
     data->format = format;
     data->compressed = texelFormat.isCompressed();
-    data->type = type;
 
     data->levelInfos = std::move(levelInfos);
 
@@ -228,7 +222,7 @@ Texture::Texture(const QImage& image)
         return;
     }
 
-    auto result = Texture::create(Texture::Type::Texture2D, format, copy.width(), copy.height(), 1);
+    auto result = Texture::create(format, {copy.width(), copy.height()});
     if (result.bytesPerLine() < copy.bytesPerLine()) {
         qCWarning(texture) << Q_FUNC_INFO
                            << "texture line size is less than an image line size"
@@ -276,48 +270,25 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create(Texture::Type type, Texture::Format format, Texture::Size size, int levels, int layers)
+Texture Texture::create(Format format, Size size, IsCubemap isCubemap, int levels, int layers)
 {
     const auto width = size.width();
     const auto height = size.height();
     const auto depth = size.depth();
 
-    Texture result;
-    switch (type) {
-    case Texture::Type::None:
-        return result;
-    case Texture::Type::Texture1D:
-        if (height != 1 || depth != 1 || layers != 1)
-            return result;
-        break;
-    case Texture::Type::Texture1DArray:
-        if (height != 1 || depth != 1)
-            return result;
-        break;
-    case Texture::Type::Texture2D:
-        if (depth != 1 || layers != 1)
-            return result;
-        break;
-    case Texture::Type::Texture2DArray:
-        if (depth != 1)
-            return result;
-        break;
-    case Texture::Type::Texture3D:
-        if (layers != 1)
-            return result;
-        break;
-    case Texture::Type::TextureCubeMap:
-        if (width != height || depth != 1 || layers != 1)
-            return result;
-        break;
-    case Texture::Type::TextureCubeMapArray:
+    if (isCubemap == IsCubemap::Yes) {
         if (width != height || depth != 1)
-            return result;
-        break;
+            return Texture();
+    } else {
+        if (depth > 1 && layers > 1) // array of 3d texture are not supported
+            return Texture();
     }
+    return Texture(TextureData::create(format, width, height, depth, bool(isCubemap), levels, layers));
+}
 
-    result = Texture(TextureData::create(type, format, width, height, depth, levels, layers));
-    return result;
+Texture Texture::create(Texture::Format format, Texture::Size size, int levels, int layers)
+{
+    return create(format, size, IsCubemap::No, levels, layers);
 }
 
 qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
@@ -335,13 +306,6 @@ qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, 
 bool Texture::isNull() const
 {
     return !d;
-}
-
-Texture::Type Texture::type() const
-{
-    if (!d)
-        return Type::None;
-    return d->type;
 }
 
 Texture::Format Texture::format() const
@@ -539,7 +503,7 @@ auto Texture::constLineData(const Texture::Position &p, const Texture::Index& in
 Texture Texture::copy() const
 {
     Texture result(TextureData::create(
-                       d->type, d->format, d->width, d->height, d->depth, d->layers, d->levels));
+                       d->format, d->width, d->height, d->faces == 6, d->depth, d->layers, d->levels));
     if (result.isNull())
         return result;
 
@@ -554,10 +518,8 @@ QImage Texture::toImage() const
     if (!d)
         return QImage();
 
-    if (d->type == Texture::Type::TextureCubeMap
-            || d->type == Texture::Type::TextureCubeMapArray
-            || d->type == Texture::Type::Texture3D) {
-        qCWarning(texture) << "unsupported texture type" << int(d->type);
+    if (d->faces > 1|| d->depth > 1) {
+        qCWarning(texture) << "Cubemaps and volumemaps are not supported";
         return QImage();
     }
 
@@ -663,11 +625,11 @@ bool operator==(const Texture &lhs, const Texture &rhs)
         return false;
 
     // obviously different stuff?
-    if (lhs.d->type != rhs.d->type
-            || lhs.d->format != rhs.d->format
+    if (lhs.d->format != rhs.d->format
             || lhs.d->width  != rhs.d->width
             || lhs.d->height != rhs.d->height
             || lhs.d->depth  != rhs.d->depth
+            || lhs.d->faces  != rhs.d->faces
             || lhs.d->layers != rhs.d->layers
             || lhs.d->levels != rhs.d->levels)
         return false;
@@ -686,11 +648,11 @@ bool operator!=(const Texture &lhs, const Texture &rhs)
 
 QDataStream &operator<<(QDataStream &stream, const Texture &texture)
 {
-    stream << quint32(texture.type())
-           << quint32(texture.format())
+    stream << quint32(texture.format())
            << quint32(texture.width())
            << quint32(texture.height())
            << quint32(texture.depth())
+           << quint32(texture.faces())
            << quint32(texture.layers())
            << quint32(texture.levels())
            << QByteArray::fromRawData(
@@ -706,6 +668,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
     quint32 width;
     quint32 height;
     quint32 depth;
+    quint32 faces;
     quint32 layers;
     quint32 levels;
     QByteArray data;
@@ -714,16 +677,17 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
             >> width
             >> height
             >> depth
+            >> faces
             >> layers
             >> levels
             >> data;
     if (stream.status() == QDataStream::Ok) {
         auto result = Texture(TextureData::create(
-                                  Texture::Type(type),
                                   Texture::Format(format),
                                   int(width),
                                   int(height),
                                   int(depth),
+                                  faces > 1,
                                   int(layers),
                                   int(levels)));
         if (result.bytes() == data.size()) {

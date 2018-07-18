@@ -133,10 +133,10 @@ bool VTFHandler::read(Texture &texture)
             return false;
     }
 
+    const auto depth = std::max<quint16>(1, header.depth);
     auto result = Texture::create(
-                Texture::Type::Texture2D,
                 format,
-                {header.width, header.height},
+                {header.width, header.height, depth},
                 header.mipmapCount,
                 header.frames);
     if (result.isNull()) {

@@ -63,8 +63,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
         result->setLayers(texture.layers());
     result->allocateStorage();
     if (!texture.isCompressed()) {
-        if (texture.type() == Texture::Type::TextureCubeMap
-                || texture.type() == Texture::Type::TextureCubeMapArray) {
+        if (texture.faces() > 1) {
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
                     for (int face = 0; face < 6; ++face) {
@@ -91,8 +90,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
             }
         }
     } else {
-        if (texture.type() == Texture::Type::TextureCubeMap
-                || texture.type() == Texture::Type::TextureCubeMapArray) {
+        if (texture.faces() > 1) {
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
                     for (int face = 0; face < 6; ++face) {

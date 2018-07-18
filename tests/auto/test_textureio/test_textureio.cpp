@@ -57,7 +57,6 @@ void TestTextureIO::setters()
 
 void TestTextureIO::read_data()
 {
-    QTest::addColumn<Texture::Type>("type");
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
     QTest::addColumn<int>("depth");
@@ -65,43 +64,11 @@ void TestTextureIO::read_data()
     QTest::addColumn<int>("layers");
     QTest::addColumn<int>("levels");
 
-    QTest::newRow("64x64, ARGB32, 1, 1") << Texture::Type::Texture2D << 64 << 64 << 1 << Texture::Format::RGBA_8888 << 1 << 1;
-}
-
-static QByteArray generateData(int width, int height, Texture::Format format)
-{
-    Texture texture = Texture::create(Texture::Type::Texture2D, format, width, height, 1);
-
-    if (texture.isNull())
-        return QByteArray();
-
-    return QByteArray((char*)texture.data().data(), int(texture.bytes()));
-}
-
-static Texture createTexture(
-        Texture::Type type,
-        Texture::Format format,
-        int width,
-        int height,
-        int depth,
-        int layers,
-        int levels)
-{
-    Texture result;
-
-    switch (type) {
-    case Texture::Type::Texture2D:
-        result =  Texture::create(Texture::Type::Texture2D, format, width, height, 1);
-        break;
-    default:
-        return result;
-    }
-    return result;
+    QTest::newRow("64x64, ARGB32, 1, 1") << 64 << 64 << 1 << Texture::Format::RGBA_8888 << 1 << 1;
 }
 
 void TestTextureIO::read()
 {
-    QFETCH(Texture::Type, type);
     QFETCH(Texture::Format, format);
     QFETCH(int, width);
     QFETCH(int, height);
@@ -109,7 +76,7 @@ void TestTextureIO::read()
     QFETCH(int, layers);
     QFETCH(int, levels);
 
-    auto expectedTexture = createTexture(type, format, width, height, depth, layers, levels);
+    auto expectedTexture = Texture::create(format, {width, height, depth}, layers, levels);
 
     QBuffer buffer;
     QVERIFY(buffer.open(QIODevice::WriteOnly));
@@ -127,7 +94,6 @@ void TestTextureIO::read()
 
 void TestTextureIO::write_data()
 {
-    QTest::addColumn<Texture::Type>("type");
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
     QTest::addColumn<int>("depth");
@@ -135,12 +101,11 @@ void TestTextureIO::write_data()
     QTest::addColumn<int>("layers");
     QTest::addColumn<int>("levels");
 
-    QTest::newRow("64x64, ARGB32, 1, 1") << Texture::Type::Texture2D << 64 << 64 << 1 << Texture::Format::RGBA_8888 << 1 << 1;
+    QTest::newRow("64x64, ARGB32, 1, 1") << 64 << 64 << 1 << Texture::Format::RGBA_8888 << 1 << 1;
 }
 
 void TestTextureIO::write()
 {
-    QFETCH(Texture::Type, type);
     QFETCH(Texture::Format, format);
     QFETCH(int, width);
     QFETCH(int, height);
@@ -154,14 +119,7 @@ void TestTextureIO::write()
     io.setDevice(TextureIO::QIODevicePointer(&buffer));
     io.setMimeType("application/octet-stream");
 
-    Texture expectedTexture;
-
-    switch (type) {
-    case Texture::Type::Texture2D:
-        expectedTexture =  Texture::create(Texture::Type::Texture2D, format, width, height, 1);
-    default:
-        break;
-    }
+    auto expectedTexture = Texture::create(format, {width, height, depth}, levels, layers);
 
     const auto ok = io.write(expectedTexture);
     QVERIFY2(ok, qPrintable(toUserString(ok)));

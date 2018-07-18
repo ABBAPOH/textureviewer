@@ -37,15 +37,9 @@ public:
     void detach();
     bool isDetached() const;
 
-    enum class Type {
-        None = 0,
-        Texture1D,
-        Texture1DArray,
-        Texture2D,
-        Texture2DArray,
-        Texture3D,
-        TextureCubeMap,
-        TextureCubeMapArray
+    enum class IsCubemap {
+        No = 0,
+        Yes
     };
 
     enum class Format {
@@ -112,13 +106,13 @@ public:
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
 
-    static Texture create(Type type, Format format, Size size, int levels = 1, int layers = 1);
+    static Texture create(Format format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1);
+    static Texture create(Format format, Size size, int levels = 1, int layers = 1);
 
     static qsizetype calculateBytesPerLine(Format format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(Format format, int width, int height, Alignment align = Alignment::Byte);
 
     bool isNull() const;
-    Type type() const;
     Format format() const;
 
     bool isCompressed() const;
@@ -201,7 +195,6 @@ bool TEXTURELIB_EXPORT operator!=(const Texture &lhs, const Texture &rhs);
 QDataStream TEXTURELIB_EXPORT &operator<<(QDataStream &stream, const Texture &texture);
 QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture);
 
-Q_DECLARE_METATYPE(Texture::Type)
 Q_DECLARE_METATYPE(Texture::Format)
 
 Q_DECLARE_LOGGING_CATEGORY(texture)
