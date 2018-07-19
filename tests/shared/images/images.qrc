@@ -13,6 +13,7 @@
         <file>dds/DXT1.dds</file>
         <file>dds/DXT3.dds</file>
         <file>dds/DXT5.dds</file>
+        <file>dds/L8.dds</file>
         <file>dds/RGB_332.dds</file>
         <file>dds/RGBA_8888.dds</file>
         <file>dds/RGBA_10101002_Rev.dds</file>
@@ -55,6 +56,7 @@
         <file>vtf/DXT1a.vtf</file>
         <file>vtf/DXT3.vtf</file>
         <file>vtf/DXT5.vtf</file>
+        <file>vtf/L8.vtf</file>
         <file>vtf/RGB_565.vtf</file>
         <file>vtf/RGB_888.vtf</file>
         <file>vtf/RGBA_8888.vtf</file>

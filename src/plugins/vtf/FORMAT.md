@@ -13,7 +13,7 @@
 | RGB_888            |     yes   |
 | BGR_888            |     yes   |
 | RGB_565            |     yes   |
-| I8                 |     no    |
+| I8                 |     ??    |
 | IA88               |     no    |
 | P8                 |     no    |
 | A8                 |     no    |

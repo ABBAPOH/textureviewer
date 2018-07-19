@@ -30,7 +30,7 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | A16B16G16R16  |    yes    |
 | A8P8          |    no     |
 | P8            |    no     |
-| L8            |    no     |
+| L8            |    ??     |
 | A8L8          |    no     |
 | A4L4          |    no     |
 | V8U8          |    no     |
@@ -90,3 +90,4 @@ Not supported
 * Cubemaps
 * Volumemaps
 * DX10 support
+* Check Luminance with GLES
