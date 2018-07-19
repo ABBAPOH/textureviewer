@@ -18,7 +18,7 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | X1R5G5B5      |    yes    |
 | A1R5G5B5      |    yes    |
 | A4R4G4B4      |    yes    |
-| R3G3B2        |    no     |
+| R3G3B2        |    yes    |
 | A8            |    no     |
 | A8R3G3B2      |    no     |
 | X4R4G4B4      |    yes    |

@@ -265,6 +265,7 @@ static Format convertFormat(Texture::Format format)
     case Texture::Format::BGRX_4444: return FormatX4R4G4B4;
     case Texture::Format::BGRA_5551: return FormatA1R5G5B5;
     case Texture::Format::BGRX_5551: return FormatX1R5G5B5;
+    case Texture::Format::RGB_332: return FormatR3G3B2;
     case Texture::Format::RGBA_10101002_Rev: return FormatA2B10G10R10;
     case Texture::Format::BGRA_10101002_Rev: return FormatA2R10G10B10;
     case Texture::Format::DXT1: return FormatDXT1;
