@@ -20,6 +20,7 @@
         <file>dds/RGBA_8888.dds</file>
         <file>dds/RGBX_8888.dds</file>
         <file>dds/RXGB.dds</file>
+
         <file>ktx/R11_EAC_SNorm.ktx</file>
         <file>ktx/R11_EAC_UNorm.ktx</file>
         <file>ktx/RG11_EAC_SNorm.ktx</file>
@@ -27,6 +28,7 @@
         <file>ktx/RGB8_ETC2.ktx</file>
         <file>ktx/RGB8_PunchThrough_Alpha1_ETC2.ktx</file>
         <file>ktx/RGBA8_ETC2_EAC.ktx</file>
+
         <file>pkm/R11_EAC_SNorm.pkm</file>
         <file>pkm/R11_EAC_UNorm.pkm</file>
         <file>pkm/RG11_EAC_SNorm.pkm</file>
@@ -35,6 +37,7 @@
         <file>pkm/RGB8_ETC2.pkm</file>
         <file>pkm/RGB8_PunchThrough_Alpha1_ETC2.pkm</file>
         <file>pkm/RGBA8_ETC2_EAC.pkm</file>
+
         <file>vtf/7.0.vtf</file>
         <file>vtf/7.1.vtf</file>
         <file>vtf/7.3.vtf</file>
