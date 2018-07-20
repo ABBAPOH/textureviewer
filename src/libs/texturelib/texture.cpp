@@ -120,7 +120,7 @@ TextureData *TextureData::create(
     data->levelInfos = std::move(levelInfos);
 
     data->nbytes = totalBytes;
-    data->data = static_cast<uchar *>(malloc(size_t(data->nbytes)));
+    data->data = static_cast<uchar *>(calloc(size_t(data->nbytes), 1));
 
     if (!data->data)
         return nullptr;
