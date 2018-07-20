@@ -55,6 +55,8 @@ public:
         // unsigned 24bit
         RGB_888,
         BGR_888,
+        // 16 bit
+        LA88,
         // packed formats
         RGBA_10101002_Rev,
         BGRA_10101002_Rev,
