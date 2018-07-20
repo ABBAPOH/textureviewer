@@ -50,12 +50,6 @@ void Window::initializeGL()
     m_funcs->initializeOpenGLFunctions();
     qInfo() << "real OGL version" << reinterpret_cast<const char *>(m_funcs->glGetString(GL_VERSION));
 
-    {
-        GLint nrAttributes;
-        m_funcs->glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
-        qInfo() << "Maximum nr of vertex attributes supported: " << nrAttributes;
-    }
-
     { // setup vertex data
 
         GLfloat vertices[] = {
