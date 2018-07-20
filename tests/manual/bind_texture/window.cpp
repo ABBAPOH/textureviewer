@@ -59,11 +59,11 @@ void Window::initializeGL()
     { // setup vertex data
 
         GLfloat vertices[] = {
-            // Позиции          // Цвета             // Текстурные координаты
-             0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,   // Верхний правый
-             0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,   // Нижний правый
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,   // Нижний левый
-            -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f    // Верхний левый
+            // Позиции           // Текстурные координаты
+             0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // Верхний правый
+             0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // Нижний правый
+            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // Нижний левый
+            -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // Верхний левый
         };
 
         GLuint indices[] = {  // Помните, что мы начинаем с 0!
@@ -86,15 +86,11 @@ void Window::initializeGL()
 
         // Атрибут с координатами
         m_funcs->glEnableVertexAttribArray(0);
-        m_funcs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), nullptr);
-
-        // Атрибут с цветом
-        m_funcs->glEnableVertexAttribArray(1);
-        m_funcs->glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3* sizeof(GLfloat)));
+        m_funcs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr);
 
         // Атрибут с текстурой
-        m_funcs->glEnableVertexAttribArray(2);
-        m_funcs->glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(6 * sizeof(GLfloat)));
+        m_funcs->glEnableVertexAttribArray(1);
+        m_funcs->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
     }
 
     m_program = std::make_unique<QOpenGLShaderProgram>();
@@ -108,8 +104,7 @@ void Window::initializeGL()
                                            : u":/shaders/gles/fragment.shader"));
 
     m_program->bindAttributeLocation("position", 0);
-    m_program->bindAttributeLocation("color", 1);
-    m_program->bindAttributeLocation("texCoord", 2);
+    m_program->bindAttributeLocation("texCoord", 1);
 
     m_program->link();
 
