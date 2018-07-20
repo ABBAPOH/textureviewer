@@ -106,6 +106,11 @@ void Window::initializeGL()
                                            m_coreProfile
                                            ? u":/shaders/gl33/fragment.shader"
                                            : u":/shaders/gles/fragment.shader"));
+
+    m_program->bindAttributeLocation("position", 0);
+    m_program->bindAttributeLocation("color", 1);
+    m_program->bindAttributeLocation("texCoord", 2);
+
     m_program->link();
 
     m_texture = Utils::makeOpenGLTexture(m_image);
