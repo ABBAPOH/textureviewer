@@ -26,6 +26,10 @@ protected:
     void paintGL() override;
 
 private:
+    void initializeGeometry();
+    void initializeShaders();
+
+private:
     Texture m_image;
     bool m_coreProfile {false};
     QOpenGLFunctions *m_funcs {nullptr};

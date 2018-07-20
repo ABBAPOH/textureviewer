@@ -39,73 +39,28 @@ Window::~Window()
 void Window::initializeGL()
 {
     if (!context()) {
-        throw std::runtime_error("Can't get OGL context");
+        qCritical() << "Can't get OGL context";
+        close();
+        return;
     }
+
     m_funcs = context()->functions();
     if (!m_funcs) {
         qCritical() << "Can't get OGL functions";
-        qApp->quit();
+        close();
         return;
     }
+
     m_funcs->initializeOpenGLFunctions();
-    qInfo() << "real OGL version" << reinterpret_cast<const char *>(m_funcs->glGetString(GL_VERSION));
-
-    { // setup vertex data
-
-        GLfloat vertices[] = {
-            // Позиции           // Текстурные координаты
-             0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // Верхний правый
-             0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // Нижний правый
-            -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // Нижний левый
-            -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // Верхний левый
-        };
-
-        GLuint indices[] = {  // Помните, что мы начинаем с 0!
-            0, 1, 3,   // Первый треугольник
-            1, 2, 3    // Второй треугольник
-        };
-
-        m_vao.create();
-        QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
-
-        m_vbo.create();
-        m_vbo.bind();
-        m_vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        m_vbo.allocate(vertices, sizeof(vertices));
-
-        m_ibo.create();
-        m_ibo.bind();
-        m_ibo.setUsagePattern(QOpenGLBuffer::StaticDraw);
-        m_ibo.allocate(indices, sizeof(indices));
-
-        // Атрибут с координатами
-        m_funcs->glEnableVertexAttribArray(0);
-        m_funcs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr);
-
-        // Атрибут с текстурой
-        m_funcs->glEnableVertexAttribArray(1);
-        m_funcs->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
-    }
-
-    m_program = std::make_unique<QOpenGLShaderProgram>();
-    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, readAll(
-                                           m_coreProfile
-                                           ? u":/shaders/gl33/vertex.shader"
-                                           : u":/shaders/gles/vertex.shader"));
-    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, readAll(
-                                           m_coreProfile
-                                           ? u":/shaders/gl33/fragment.shader"
-                                           : u":/shaders/gles/fragment.shader"));
-
-    m_program->bindAttributeLocation("position", 0);
-    m_program->bindAttributeLocation("texCoord", 1);
-
-    m_program->link();
-
-    m_texture = Utils::makeOpenGLTexture(m_image);
-
     m_funcs->glEnable(GL_BLEND);
     m_funcs->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    qInfo() << "real OGL version" << reinterpret_cast<const char *>(m_funcs->glGetString(GL_VERSION));
+
+    initializeGeometry();
+    initializeShaders();
+
+    m_texture = Utils::makeOpenGLTexture(m_image);
 }
 
 void Window::resizeGL(int w, int h)
@@ -134,4 +89,59 @@ void Window::paintGL()
     m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     m_texture->release();
     m_program->release();
+}
+
+void Window::initializeGeometry()
+{
+    GLfloat vertices[] = {
+        // Позиции           // Текстурные координаты
+         0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // Верхний правый
+         0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // Нижний правый
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // Нижний левый
+        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // Верхний левый
+    };
+
+    GLuint indices[] = {  // Помните, что мы начинаем с 0!
+        0, 1, 3,   // Первый треугольник
+        1, 2, 3    // Второй треугольник
+    };
+
+    m_vao.create();
+    QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
+
+    m_vbo.create();
+    m_vbo.bind();
+    m_vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_vbo.allocate(vertices, sizeof(vertices));
+
+    m_ibo.create();
+    m_ibo.bind();
+    m_ibo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    m_ibo.allocate(indices, sizeof(indices));
+
+    // Атрибут с координатами
+    m_funcs->glEnableVertexAttribArray(0);
+    m_funcs->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr);
+
+    // Атрибут с текстурой
+    m_funcs->glEnableVertexAttribArray(1);
+    m_funcs->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
+}
+
+void Window::initializeShaders()
+{
+    m_program = std::make_unique<QOpenGLShaderProgram>();
+    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, readAll(
+                                           m_coreProfile
+                                           ? u":/shaders/gl33/vertex.shader"
+                                           : u":/shaders/gles/vertex.shader"));
+    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, readAll(
+                                           m_coreProfile
+                                           ? u":/shaders/gl33/fragment.shader"
+                                           : u":/shaders/gles/fragment.shader"));
+
+    m_program->bindAttributeLocation("position", 0);
+    m_program->bindAttributeLocation("texCoord", 1);
+
+    m_program->link();
 }
