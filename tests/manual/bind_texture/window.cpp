@@ -8,20 +8,6 @@
 #include <TextureLib/TextureIO>
 #include <TextureLib/Utils>
 
-namespace {
-
-QByteArray readAll(QStringView path)
-{
-    QFile file(path.toString());
-    if (!file.open(QIODevice::ReadOnly)) {
-        qWarning() << "Can't open file:" << file.errorString() << file.error();
-        return QByteArray();
-    }
-    return file.readAll();
-}
-
-} //  namespace
-
 Window::Window(const Texture& texture, bool coreProfile)
     : m_image(texture)
     , m_coreProfile(coreProfile)
@@ -131,14 +117,14 @@ void Window::initializeGeometry()
 void Window::initializeShaders()
 {
     m_program = std::make_unique<QOpenGLShaderProgram>();
-    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, readAll(
-                                           m_coreProfile
-                                           ? u":/shaders/gl33/vertex.shader"
-                                           : u":/shaders/gles/vertex.shader"));
-    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, readAll(
-                                           m_coreProfile
-                                           ? u":/shaders/gl33/fragment.shader"
-                                           : u":/shaders/gles/fragment.shader"));
+    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex,
+                                       m_coreProfile
+                                       ? QStringLiteral(":/shaders/gl33/vertex.shader")
+                                       : QStringLiteral(":/shaders/gles/vertex.shader"));
+    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment,
+                                       m_coreProfile
+                                       ? QStringLiteral(":/shaders/gl33/fragment.shader")
+                                       : QStringLiteral(":/shaders/gles/fragment.shader"));
 
     m_program->bindAttributeLocation("position", 0);
     m_program->bindAttributeLocation("texCoord", 1);
