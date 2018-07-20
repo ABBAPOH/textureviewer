@@ -44,7 +44,11 @@ void Window::initializeGL()
     qInfo() << "real OGL version" << reinterpret_cast<const char *>(m_funcs->glGetString(GL_VERSION));
 
     initializeGeometry();
-    initializeShaders();
+    if (!initializeShaders()) {
+        qCritical() << "Can't initialize shaders";
+        close();
+        return;
+    }
 
     m_texture = Utils::makeOpenGLTexture(m_image);
 }
@@ -114,20 +118,25 @@ void Window::initializeGeometry()
     m_funcs->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
 }
 
-void Window::initializeShaders()
+bool Window::initializeShaders()
 {
     m_program = std::make_unique<QOpenGLShaderProgram>();
-    m_program->addShaderFromSourceFile(QOpenGLShader::Vertex,
-                                       m_coreProfile
-                                       ? QStringLiteral(":/shaders/gl33/vertex.shader")
-                                       : QStringLiteral(":/shaders/gles/vertex.shader"));
-    m_program->addShaderFromSourceFile(QOpenGLShader::Fragment,
-                                       m_coreProfile
-                                       ? QStringLiteral(":/shaders/gl33/fragment.shader")
-                                       : QStringLiteral(":/shaders/gles/fragment.shader"));
+    if (!m_program->addShaderFromSourceFile(QOpenGLShader::Vertex,
+                                            m_coreProfile
+                                            ? QStringLiteral(":/shaders/gl33/vertex.shader")
+                                            : QStringLiteral(":/shaders/gles/vertex.shader"))) {
+        return false;
+    }
+
+    if (!m_program->addShaderFromSourceFile(QOpenGLShader::Fragment,
+                                            m_coreProfile
+                                            ? QStringLiteral(":/shaders/gl33/fragment.shader")
+                                            : QStringLiteral(":/shaders/gles/fragment.shader"))) {
+        return false;
+    }
 
     m_program->bindAttributeLocation("position", 0);
     m_program->bindAttributeLocation("texCoord", 1);
 
-    m_program->link();
+    return m_program->link();
 }

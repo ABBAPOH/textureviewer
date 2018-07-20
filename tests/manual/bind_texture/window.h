@@ -27,7 +27,7 @@ protected:
 
 private:
     void initializeGeometry();
-    void initializeShaders();
+    bool initializeShaders();
 
 private:
     Texture m_image;
