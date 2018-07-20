@@ -30,7 +30,7 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | A16B16G16R16  |    yes    |
 | A8P8          |    no     |
 | P8            |    no     |
-| L8            |    ??     |
+| L8            |    yes    |
 | A8L8          |    no     |
 | A4L4          |    no     |
 | V8U8          |    no     |
