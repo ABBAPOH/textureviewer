@@ -7,6 +7,6 @@ varying vec2 TexCoord;
 
 void main() {
     ourColor = color;
-    TexCoord = vec2(texCoord.x, 1.0f - texCoord.y);
+    TexCoord = vec2(texCoord.x, 1.0 - texCoord.y);
     gl_Position = vec4(position, 1.0);
 }
