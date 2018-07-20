@@ -22,8 +22,9 @@ QByteArray readAll(QStringView path)
 
 } //  namespace
 
-Window::Window(const Texture& texture)
+Window::Window(const Texture& texture, bool coreProfile)
     : m_image(texture)
+    , m_coreProfile(coreProfile)
 {
     resize(640, 480);
 }
@@ -97,8 +98,14 @@ void Window::initializeGL()
     }
 
     m_program = std::make_unique<QOpenGLShaderProgram>();
-    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, readAll(u":/shaders/gl33/vertex.shader"));
-    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, readAll(u":/shaders/gl33/fragment.shader"));
+    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, readAll(
+                                           m_coreProfile
+                                           ? u":/shaders/gl33/vertex.shader"
+                                           : u":/shaders/gles/vertex.shader"));
+    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, readAll(
+                                           m_coreProfile
+                                           ? u":/shaders/gl33/fragment.shader"
+                                           : u":/shaders/gles/fragment.shader"));
     m_program->link();
 
     m_texture = Utils::makeOpenGLTexture(m_image);

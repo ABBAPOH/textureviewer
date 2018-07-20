@@ -17,7 +17,7 @@
 class Window : public QOpenGLWindow
 {
 public:
-    explicit Window(const Texture &texture);
+    explicit Window(const Texture &texture, bool coreProfile = false);
     ~Window();
 
 protected:
@@ -27,6 +27,7 @@ protected:
 
 private:
     Texture m_image;
+    bool m_coreProfile {false};
     QOpenGLFunctions *m_funcs {nullptr};
     QOpenGLBuffer m_vbo {QOpenGLBuffer::VertexBuffer};
     QOpenGLBuffer m_ibo {QOpenGLBuffer::IndexBuffer};
