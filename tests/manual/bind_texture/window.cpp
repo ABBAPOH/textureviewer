@@ -2,44 +2,25 @@
 
 #include <QDebug>
 #include <QCoreApplication>
+#include <QFile>
 #include <QTime>
 #include <TextureLib/Texture>
 #include <TextureLib/TextureIO>
 #include <TextureLib/Utils>
 
-const char* const vertexShaderSource = "\n"
-"#version 330 core \n"
+namespace {
 
-"layout (location = 0) in vec3 position;\n"
-"layout (location = 1) in vec3 color;\n"
-"layout (location = 2) in vec2 texCoord;\n"
+QByteArray readAll(QStringView path)
+{
+    QFile file(path.toString());
+    if (!file.open(QIODevice::ReadOnly)) {
+        qWarning() << "Can't open file:" << file.errorString() << file.error();
+        return QByteArray();
+    }
+    return file.readAll();
+}
 
-"out vec3 ourColor;\n"
-"out vec2 TexCoord;\n"
-
-"void main()\n"
-"{\n"
-"    gl_Position = vec4(position, 1.0);\n"
-"    ourColor = color;\n"
-"    TexCoord = vec2(texCoord.x, 1.0f - texCoord.y);\n"
-//"    TexCoord = texCoord;\n"
-"}";
-
-const char *const fragmentShaderSource =
-"#version 330 core\n"
-
-"in vec3 ourColor;\n"
-"in vec2 TexCoord;\n"
-
-"out vec4 color;\n"
-
-"uniform sampler2D ourTexture1;\n"
-
-"void main()\n"
-"{\n"
-"    color = texture(ourTexture1, TexCoord);\n"
-"}"
-;
+} //  namespace
 
 Window::Window(const Texture& texture)
     : m_image(texture)
@@ -116,8 +97,8 @@ void Window::initializeGL()
     }
 
     m_program = std::make_unique<QOpenGLShaderProgram>();
-    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, vertexShaderSource);
-    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, fragmentShaderSource);
+    m_program->addShaderFromSourceCode(QOpenGLShader::Vertex, readAll(u":/shaders/gl33/vertex.shader"));
+    m_program->addShaderFromSourceCode(QOpenGLShader::Fragment, readAll(u":/shaders/gl33/fragment.shader"));
     m_program->link();
 
     m_texture = Utils::makeOpenGLTexture(m_image);

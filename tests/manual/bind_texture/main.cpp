@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     }
 
     QSurfaceFormat fmt;
-    fmt.setVersion(3, 2);
+    fmt.setVersion(3, 3);
     fmt.setProfile(QSurfaceFormat::CoreProfile);
     QSurfaceFormat::setDefaultFormat(fmt);
 
