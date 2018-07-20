@@ -27,7 +27,7 @@ protected:
 
 private:
     Texture m_image;
-    QOpenGLFunctions_3_3_Core *m_funcs {nullptr};
+    QOpenGLFunctions *m_funcs {nullptr};
     QOpenGLBuffer m_vbo {QOpenGLBuffer::VertexBuffer};
     QOpenGLBuffer m_ibo {QOpenGLBuffer::IndexBuffer};
     QOpenGLVertexArrayObject m_vao;

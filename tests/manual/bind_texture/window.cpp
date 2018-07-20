@@ -59,9 +59,9 @@ void Window::initializeGL()
     if (!context()) {
         throw std::runtime_error("Can't get OGL context");
     }
-    m_funcs = context()->versionFunctions<QOpenGLFunctions_3_3_Core>();
+    m_funcs = context()->functions();
     if (!m_funcs) {
-        qCritical() << "Can't get OGL 3.2";
+        qCritical() << "Can't get OGL functions";
         qApp->quit();
         return;
     }
