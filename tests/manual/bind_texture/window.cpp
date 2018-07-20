@@ -71,9 +71,8 @@ void Window::paintGL()
 
     m_program->bind();
 
-    m_funcs->glActiveTexture(GL_TEXTURE0);
     m_texture->bind();
-    m_funcs->glUniform1i(m_program->uniformLocation("ourTexture1"), 0);
+    m_program->setUniformValue("ourTexture1", 0);
 
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
     m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
