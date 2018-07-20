@@ -68,6 +68,7 @@ public:
         BGRX_5551,
         RGB_332,
         // 8bit
+        A8,
         L8,
         // compressed
         DXT1,

@@ -242,6 +242,7 @@ static Texture::Format convertFormat(Format format)
     case FormatX1R5G5B5: return Texture::Format::BGRX_5551;
     case FormatR3G3B2: return Texture::Format::RGB_332;
     case FormatA8L8: return Texture::Format::LA88;
+    case FormatA8: return Texture::Format::A8;
     case FormatL8: return Texture::Format::L8;
     case FormatA2B10G10R10: return Texture::Format::RGBA_10101002_Rev;
     case FormatA2R10G10B10: return Texture::Format::BGRA_10101002_Rev;
@@ -269,6 +270,7 @@ static Format convertFormat(Texture::Format format)
     case Texture::Format::BGRX_5551: return FormatX1R5G5B5;
     case Texture::Format::RGB_332: return FormatR3G3B2;
     case Texture::Format::LA88: return FormatA8L8;
+    case Texture::Format::A8: return FormatA8;
     case Texture::Format::L8: return FormatL8;
     case Texture::Format::RGBA_10101002_Rev: return FormatA2B10G10R10;
     case Texture::Format::BGRA_10101002_Rev: return FormatA2R10G10B10;
