@@ -39,21 +39,14 @@ bool KtxHandler::read(Texture& texture)
 
     TexelFormat texelFormat;
     if (header.glFormat == 0) {
-        texelFormat = {Texture::Format::Invalid, 0, 0, QOpenGLTexture::TextureFormat(header.glInternalFormat)};
+        texelFormat = TexelFormat::findOGLFormat(
+                    QOpenGLTexture::TextureFormat(header.glInternalFormat));
     }
 
-    const auto texelFormats = TexelFormat::texelFormats();
-
-    auto compareFormats = [texelFormat](const TexelFormat &other)
-    {
-        return other.oglTextureFormat() == texelFormat.oglTextureFormat();
-    };
-    const auto it = std::find_if(texelFormats.begin(), texelFormats.end(), compareFormats);
-    if (it == texelFormats.end()) {
+    if (texelFormat.format() == Texture::Format::Invalid) {
         qCWarning(ktxhandler) << "Can't find appropriate format";
         return false;
     }
-    texelFormat = *it;
 
     const auto size = Texture::Size(
                 header.pixelWidth,

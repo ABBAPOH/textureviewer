@@ -47,6 +47,26 @@ public:
     static const TexelFormat &texelFormat(Texture::Format format) noexcept;
     static TexelFormats texelFormats() noexcept;
 
+    // private method
+    static TexelFormat findOGLFormatConst(
+            QOpenGLTexture::TextureFormat textureFormat,
+            QOpenGLTexture::PixelFormat pixelFormat,
+            QOpenGLTexture::PixelType pixelType) noexcept;
+
+    // private method
+    static TexelFormat findOGLFormatLinear(
+            QOpenGLTexture::TextureFormat textureFormat,
+            QOpenGLTexture::PixelFormat pixelFormat,
+            QOpenGLTexture::PixelType pixelType) noexcept;
+
+    static inline TexelFormat findOGLFormat(
+            QOpenGLTexture::TextureFormat textureFormat,
+            QOpenGLTexture::PixelFormat pixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
+            QOpenGLTexture::PixelType pixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
+    {
+        return findOGLFormatConst(textureFormat, pixelFormat, pixelType);
+    }
+
 private:
     Texture::Format m_format {Texture::Format::Invalid};
     int m_bitsPerTexel {0};

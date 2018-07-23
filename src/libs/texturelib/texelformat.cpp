@@ -71,3 +71,89 @@ TexelFormat::TexelFormats TexelFormat::texelFormats() noexcept
 {
     return {formats};
 }
+
+struct OGLMapping
+{
+    using Format = Texture::Format;
+
+    static constexpr auto maxSize = size_t(Texture::Format::FormatsCount) * 2;
+
+    static constexpr uint getHash(const TexelFormat &format)
+    {
+        return qHash(format.oglTextureFormat())
+                ^ qHash(format.oglPixelFormat())
+                ^ qHash(format.oglPixelType());
+    }
+
+    static constexpr size_t firstIndex(const TexelFormat &format)
+    {
+        return getHash(format) % maxSize;
+    }
+
+    static constexpr size_t nextIndex(size_t index) { return (index + 3) % maxSize; }
+
+    constexpr OGLMapping()
+        : data{}
+    {
+        for (auto &item: gsl::span<Format>(data))
+            item = Format::Invalid;
+
+        for (const auto &format: gsl::span<const TexelFormat>(formats)) {
+            auto index = firstIndex(format);
+            while (data[index] != Format::Invalid) {
+                index = nextIndex(index);
+            }
+            data[index] = format.format();
+        }
+    }
+
+    Format data[maxSize];
+};
+
+constexpr const OGLMapping oGLMapping;
+
+/*!
+    \internal
+
+    Searches for the requested type using stupid constexpr hash.
+    However, according to the benchmark this is almost 2 times faster than the linear search
+    even for 35 formats.
+*/
+TexelFormat TexelFormat::findOGLFormatConst(
+        QOpenGLTexture::TextureFormat textureFormat,
+        QOpenGLTexture::PixelFormat pixelFormat,
+        QOpenGLTexture::PixelType pixelType) noexcept
+{
+    const auto texelFormat = TexelFormat{
+            Texture::Format::Invalid, 0, 0, textureFormat, pixelFormat, pixelType};
+    auto index = OGLMapping::firstIndex(texelFormat);
+    while (oGLMapping.data[index] != Texture::Format::Invalid) {
+        const auto &format = formats[size_t(oGLMapping.data[index])];
+        if (format.oglTextureFormat() == textureFormat
+                && format.oglPixelFormat() == pixelFormat
+                && format.oglPixelType() == pixelType) {
+            return format;
+        }
+        index = OGLMapping::nextIndex(index);
+    }
+    return TexelFormat();
+}
+
+TexelFormat TexelFormat::findOGLFormatLinear(
+        QOpenGLTexture::TextureFormat textureFormat,
+        QOpenGLTexture::PixelFormat pixelFormat,
+        QOpenGLTexture::PixelType pixelType) noexcept
+{
+    const auto compareFormats = [=](const TexelFormat &other)
+    {
+        return other.oglTextureFormat() == textureFormat
+                && other.oglPixelFormat() == pixelFormat
+                && other.oglPixelType() == pixelType;
+    };
+
+    const auto formats = TexelFormats(::formats);
+    const auto it = std::find_if(formats.begin(), formats.end(), compareFormats);
+    if (it != formats.end())
+        return *it;
+    return TexelFormat();
+}
