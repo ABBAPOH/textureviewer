@@ -50,6 +50,7 @@
         <file>vtf/ABGR_8888.vtf</file>
         <file>vtf/BGR_565.vtf</file>
         <file>vtf/BGR_888.vtf</file>
+        <file>vtf/BGR_888_Bluescreen.vtf</file>
         <file>vtf/BGRA_4444.vtf</file>
         <file>vtf/BGRA_5551.vtf</file>
         <file>vtf/BGRA_8888.vtf</file>
@@ -63,6 +64,7 @@
         <file>vtf/LA88.vtf</file>
         <file>vtf/RGB_565.vtf</file>
         <file>vtf/RGB_888.vtf</file>
+        <file>vtf/RGB_888_Bluescreen.vtf</file>
         <file>vtf/RGBA_8888.vtf</file>
         <file>vtf/RGBA_16161616.vtf</file>
         <file>vtf/RGBA_16161616F.vtf</file>
