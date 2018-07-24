@@ -96,6 +96,8 @@ static Texture::Format convertFormat(VTFImageFormat format)
     case VTFImageFormat::RGB_888: return Texture::Format::RGB_888;
     case VTFImageFormat::BGR_888: return Texture::Format::BGR_888;
     case VTFImageFormat::I8: return Texture::Format::L8;
+    case VTFImageFormat::IA88: return Texture::Format::LA88;
+    case VTFImageFormat::A8: return Texture::Format::A8;
     case VTFImageFormat::DXT1: return Texture::Format::DXT1;
     case VTFImageFormat::DXT1_ONEBITALPHA: return Texture::Format::DXT1a;
     case VTFImageFormat::DXT3: return Texture::Format::DXT3;

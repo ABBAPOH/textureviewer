@@ -13,10 +13,10 @@
 | RGB_888            |     yes   |
 | BGR_888            |     yes   |
 | RGB_565            |     yes   |
-| I8                 |     ??    |
-| IA88               |     no    |
+| I8                 |     yes   |
+| IA88               |     yes   |
 | P8                 |     no    |
-| A8                 |     no    |
+| A8                 |     yes   |
 | RGB_888_BlueScreen |     no    |
 | BGR_888_BlueScreen |     no    |
 | ARGB_8888          |     no    |
