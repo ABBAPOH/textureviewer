@@ -100,7 +100,7 @@ struct FormatInfo
     quint32 aBitMask;
 };
 
-static const FormatInfo formatInfos[] = {
+static constexpr const FormatInfo formatInfos[] = {
     { DDSFormat::Unknown,                            {},  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
     { DDSFormat::A8R8G8B8,    DDSPixelFormatFlag::RGBA, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 },
     { DDSFormat::X8R8G8B8,    DDSPixelFormatFlag::RGB,  32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
@@ -134,7 +134,6 @@ static const FormatInfo formatInfos[] = {
     { DDSFormat::V16U16,      DDSPixelFormatFlag::Normal, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
     { DDSFormat::A2W10V10U10, DDSPixelFormatFlag::Normal, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 }
 };
-static const size_t formatInfosSize = sizeof(formatInfos)/sizeof(FormatInfo);
 
 static constexpr const DDSFormat knownFourCCs[] = {
     DDSFormat::A16B16G16R16,
@@ -183,8 +182,7 @@ static DDSFormat getFormat(const DDSHeader &dds)
                 return fourCC;
         }
     } else {
-        for (size_t i = 0; i < formatInfosSize; ++i) {
-            const FormatInfo &info = formatInfos[i];
+        for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
             if ((format.flags & info.flags) == info.flags &&
                 format.rgbBitCount == info.bitCount &&
                 format.rBitMask == info.rBitMask &&
@@ -201,8 +199,7 @@ static DDSFormat getFormat(const DDSHeader &dds)
 
 static const FormatInfo &getFormatInfo(DDSFormat format)
 {
-    for (size_t i = 0; i < formatInfosSize; ++i) {
-        const FormatInfo &info = formatInfos[i];
+    for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
         if (info.format == format)
             return info;
     }
