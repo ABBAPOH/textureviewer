@@ -130,4 +130,33 @@ Q_DECLARE_OPERATORS_FOR_FLAGS(DDSPixelFormatFlags)
 static_assert(sizeof(DDSPixelFormatFlags) == sizeof(quint32),
               "Flags size is not uint32, fix streaming operators");
 
+enum class DDSCapsFlag : quint32 {
+    Complex = 0x000008,
+    Texture = 0x001000,
+    Mipmap  = 0x400000
+};
+
+Q_DECLARE_FLAGS(DDSCapsFlags, DDSCapsFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(DDSCapsFlags)
+
+static_assert(sizeof(DDSCapsFlags) == sizeof(quint32),
+              "Flags size is not uint32, fix streaming operators");
+
+enum class DDSCaps2Flag : quint32 {
+    CubeMap          = 0x0200,
+    CubeMapPositiveX = 0x0400,
+    CubeMapNegativeX = 0x0800,
+    CubeMapPositiveY = 0x1000,
+    CubeMapNegativeY = 0x2000,
+    CubeMapPositiveZ = 0x4000,
+    CubeMapNegativeZ = 0x8000,
+    Volume           = 0x200000
+};
+
+Q_DECLARE_FLAGS(DDSCaps2Flags, DDSCaps2Flag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(DDSCaps2Flags)
+
+static_assert(sizeof(DDSCaps2Flags) == sizeof(quint32),
+              "Flags size is not uint32, fix streaming operators");
+
 #endif // ENUMS_H

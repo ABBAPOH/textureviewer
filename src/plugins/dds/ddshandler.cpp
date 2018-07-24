@@ -80,13 +80,13 @@ struct FaceOffset
     int x, y;
 };
 
-static int faceFlags[6] = {
-    DDSHeader::Caps2CubeMapPositiveX,
-    DDSHeader::Caps2CubeMapNegativeX,
-    DDSHeader::Caps2CubeMapPositiveY,
-    DDSHeader::Caps2CubeMapNegativeY,
-    DDSHeader::Caps2CubeMapPositiveZ,
-    DDSHeader::Caps2CubeMapNegativeZ
+static DDSCaps2Flag faceFlags[6] = {
+    DDSCaps2Flag::CubeMapPositiveX,
+    DDSCaps2Flag::CubeMapNegativeX,
+    DDSCaps2Flag::CubeMapPositiveY,
+    DDSCaps2Flag::CubeMapNegativeY,
+    DDSCaps2Flag::CubeMapPositiveZ,
+    DDSCaps2Flag::CubeMapNegativeZ
 };
 
 struct FormatInfo
@@ -163,12 +163,12 @@ static const size_t knownFourCCsSize = sizeof(knownFourCCs)/sizeof(DDSFormat);
 
 static inline bool isCubeMap(const DDSHeader &dds)
 {
-    return (dds.caps2 & DDSHeader::Caps2CubeMap) != 0;
+    return (dds.caps2 & DDSCaps2Flag::CubeMap) != 0;
 }
 
 static inline bool isVolumeMap(const DDSHeader &dds)
 {
-    return (dds.caps2 & DDSHeader::Caps2Volume) != 0;
+    return (dds.caps2 & DDSCaps2Flag::Volume) != 0;
 }
 
 static DDSFormat getFormat(const DDSHeader &dds)
@@ -418,9 +418,9 @@ bool DDSHandler::write(const Texture &texture)
     dds.mipMapCount = quint32(texture.levels() > 1 ? texture.levels() : 0);
     for (int i = 0; i < DDSHeader::ReservedCount; i++)
         dds.reserved1[i] = 0;
-    dds.caps = DDSHeader::CapsTexture;
+    dds.caps = DDSCapsFlag::Texture;
     if (texture.levels() > 1)
-        dds.caps |= DDSHeader::CapsMipmap;
+        dds.caps |= DDSCapsFlag::Mipmap;
     dds.caps2 = 0;
     dds.caps3 = 0;
     dds.caps4 = 0;

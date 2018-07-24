@@ -63,23 +63,6 @@ QDataStream &operator<<(QDataStream &s, const DDSPixelFormat &pixelFormat);
 
 struct DDSHeader
 {
-    enum DDSCapsFlags {
-        CapsComplex = 0x000008,
-        CapsTexture = 0x001000,
-        CapsMipmap  = 0x400000
-    };
-
-    enum DDSCaps2Flags {
-        Caps2CubeMap          = 0x0200,
-        Caps2CubeMapPositiveX = 0x0400,
-        Caps2CubeMapNegativeX = 0x0800,
-        Caps2CubeMapPositiveY = 0x1000,
-        Caps2CubeMapNegativeY = 0x2000,
-        Caps2CubeMapPositiveZ = 0x4000,
-        Caps2CubeMapNegativeZ = 0x8000,
-        Caps2Volume           = 0x200000
-    };
-
     enum { ReservedCount = 11 };
 
     quint32 magic;
@@ -92,8 +75,8 @@ struct DDSHeader
     quint32 mipMapCount;
     quint32 reserved1[ReservedCount];
     DDSPixelFormat pixelFormat;
-    quint32 caps;
-    quint32 caps2;
+    DDSCapsFlags caps;
+    DDSCaps2Flags caps2;
     quint32 caps3;
     quint32 caps4;
     quint32 reserved2;
