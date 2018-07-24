@@ -82,4 +82,19 @@ private:
     QOpenGLTexture::PixelType m_oglPixelType {QOpenGLTexture::PixelType::NoPixelType};
 };
 
+constexpr inline bool operator==(const TexelFormat &lhs, const TexelFormat &rhs)
+{
+    return lhs.format() == rhs.format()
+            && lhs.bitsPerTexel() == rhs.bitsPerTexel()
+            && lhs.blockSize() == rhs.blockSize()
+            && lhs.oglTextureFormat() == rhs.oglTextureFormat()
+            && lhs.oglPixelFormat() == rhs.oglPixelFormat()
+            && lhs.oglPixelType() == rhs.oglPixelType();
+}
+
+constexpr inline bool operator!=(const TexelFormat &lhs, const TexelFormat &rhs)
+{
+    return !(lhs == rhs);
+}
+
 #endif // TEXELFORMAT_H
