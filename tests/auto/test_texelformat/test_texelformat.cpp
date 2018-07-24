@@ -128,8 +128,7 @@ void TestTexelFormat::testFindOGLFormat()
         if (i.format() == Texture::Format::RXGB)
             continue; // Not supported in ktx
         auto j = TexelFormat::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
-        if (i != j)
-            QCOMPARE(j, i);
+        QCOMPARE(j, i);
     }
 }
 
