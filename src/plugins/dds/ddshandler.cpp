@@ -171,13 +171,6 @@ static inline bool isVolumeMap(const DDSHeader &dds)
     return (dds.caps2 & DDSHeader::Caps2Volume) != 0;
 }
 
-static inline QRgb yuv2rgb(quint8 Y, quint8 U, quint8 V)
-{
-    return qRgb(quint8(Y + 1.13983 * (V - 128)),
-                quint8(Y - 0.39465 * (U - 128) - 0.58060 * (V - 128)),
-                quint8(Y + 2.03211 * (U - 128)));
-}
-
 static Format getFormat(const DDSHeader &dds)
 {
     const DDSPixelFormat &format = dds.pixelFormat;
