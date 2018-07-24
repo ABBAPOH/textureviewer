@@ -410,8 +410,8 @@ bool DDSHandler::write(const Texture &texture)
     // Filling header
     dds.magic = ddsMagic;
     dds.size = 124;
-    dds.flags = DDSHeader::FlagCaps | DDSHeader::FlagHeight |
-                DDSHeader::FlagWidth | DDSHeader::FlagPixelFormat;
+    dds.flags = DDSFlag::Caps | DDSFlag::Height |
+                DDSFlag::Width | DDSFlag::PixelFormat;
     dds.height = quint32(texture.height());
     dds.width = quint32(texture.width());
     dds.depth = 0;
@@ -508,9 +508,9 @@ bool DDSHandler::doScan()
 
 bool DDSHandler::verifyHeader(const DDSHeader &dds) const
 {
-    quint32 flags = dds.flags;
-    quint32 requiredFlags = DDSHeader::FlagCaps | DDSHeader::FlagHeight
-            | DDSHeader::FlagWidth | DDSHeader::FlagPixelFormat;
+    const auto flags = dds.flags;
+    const auto requiredFlags = DDSFlag::Caps | DDSFlag::Height
+            | DDSFlag::Width | DDSFlag::PixelFormat;
     if ((flags & requiredFlags) != requiredFlags) {
         qCWarning(ddshandler) << "Wrong dds.flags - not all required flags present. "
                                  "Actual flags :" << flags;

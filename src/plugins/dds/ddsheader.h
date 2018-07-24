@@ -63,17 +63,6 @@ QDataStream &operator<<(QDataStream &s, const DDSPixelFormat &pixelFormat);
 
 struct DDSHeader
 {
-    enum DDSFlags {
-        FlagCaps        = 0x000001,
-        FlagHeight      = 0x000002,
-        FlagWidth       = 0x000004,
-        FlagPitch       = 0x000008,
-        FlagPixelFormat = 0x001000,
-        FlagMipmapCount = 0x020000,
-        FlagLinearSize  = 0x080000,
-        FlagDepth       = 0x800000
-    };
-
     enum DDSCapsFlags {
         CapsComplex = 0x000008,
         CapsTexture = 0x001000,
@@ -95,7 +84,7 @@ struct DDSHeader
 
     quint32 magic;
     quint32 size;
-    quint32 flags;
+    DDSFlags flags;
     quint32 height;
     quint32 width;
     quint32 pitchOrLinearSize;
