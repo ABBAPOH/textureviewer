@@ -91,7 +91,7 @@ static int faceFlags[6] = {
 
 struct FormatInfo
 {
-    Format format;
+    DDSFormat format;
     quint32 flags;
     quint32 bitCount;
     quint32 rBitMask;
@@ -101,65 +101,65 @@ struct FormatInfo
 };
 
 static const FormatInfo formatInfos[] = {
-    { FormatUnknown,                            0,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
-    { FormatA8R8G8B8,    DDSPixelFormat::FlagRGBA, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 },
-    { FormatX8R8G8B8,    DDSPixelFormat::FlagRGB,  32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
-    { FormatA2B10G10R10, DDSPixelFormat::FlagRGBA, 32, 0x000003ff, 0x0000fc00, 0x3ff00000, 0xc0000000 },
-    { FormatA8B8G8R8,    DDSPixelFormat::FlagRGBA, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
-    { FormatX8B8G8R8,    DDSPixelFormat::FlagRGB,  32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
-    { FormatG16R16,      DDSPixelFormat::FlagRGBA, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
-    { FormatG16R16,      DDSPixelFormat::FlagRGB,  32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
-    { FormatA2R10G10B10, DDSPixelFormat::FlagRGBA, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 },
+    { DDSFormat::Unknown,                            0,  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    { DDSFormat::A8R8G8B8,    DDSPixelFormat::FlagRGBA, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 },
+    { DDSFormat::X8R8G8B8,    DDSPixelFormat::FlagRGB,  32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
+    { DDSFormat::A2B10G10R10, DDSPixelFormat::FlagRGBA, 32, 0x000003ff, 0x0000fc00, 0x3ff00000, 0xc0000000 },
+    { DDSFormat::A8B8G8R8,    DDSPixelFormat::FlagRGBA, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
+    { DDSFormat::X8B8G8R8,    DDSPixelFormat::FlagRGB,  32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
+    { DDSFormat::G16R16,      DDSPixelFormat::FlagRGBA, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
+    { DDSFormat::G16R16,      DDSPixelFormat::FlagRGB,  32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
+    { DDSFormat::A2R10G10B10, DDSPixelFormat::FlagRGBA, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 },
 
-    { FormatR8G8B8,      DDSPixelFormat::FlagRGB,  24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
+    { DDSFormat::R8G8B8,      DDSPixelFormat::FlagRGB,  24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
 
-    { FormatR5G6B5,      DDSPixelFormat::FlagRGB,  16, 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000 },
-    { FormatX1R5G5B5,    DDSPixelFormat::FlagRGB,  16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00000000 },
-    { FormatA1R5G5B5,    DDSPixelFormat::FlagRGBA, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000 },
-    { FormatA4R4G4B4,    DDSPixelFormat::FlagRGBA, 16, 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000 },
-    { FormatA8R3G3B2,    DDSPixelFormat::FlagRGBA, 16, 0x000000e0, 0x0000001c, 0x00000003, 0x0000ff00 },
-    { FormatX4R4G4B4,    DDSPixelFormat::FlagRGB,  16, 0x00000f00, 0x000000f0, 0x0000000f, 0x00000000 },
-    { FormatA8L8,        DDSPixelFormat::FlagLA,   16, 0x000000ff, 0x00000000, 0x00000000, 0x0000ff00 },
-    { FormatL16,   DDSPixelFormat::FlagLuminance,  16, 0x0000ffff, 0x00000000, 0x00000000, 0x00000000 },
+    { DDSFormat::R5G6B5,      DDSPixelFormat::FlagRGB,  16, 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000 },
+    { DDSFormat::X1R5G5B5,    DDSPixelFormat::FlagRGB,  16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00000000 },
+    { DDSFormat::A1R5G5B5,    DDSPixelFormat::FlagRGBA, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000 },
+    { DDSFormat::A4R4G4B4,    DDSPixelFormat::FlagRGBA, 16, 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000 },
+    { DDSFormat::A8R3G3B2,    DDSPixelFormat::FlagRGBA, 16, 0x000000e0, 0x0000001c, 0x00000003, 0x0000ff00 },
+    { DDSFormat::X4R4G4B4,    DDSPixelFormat::FlagRGB,  16, 0x00000f00, 0x000000f0, 0x0000000f, 0x00000000 },
+    { DDSFormat::A8L8,        DDSPixelFormat::FlagLA,   16, 0x000000ff, 0x00000000, 0x00000000, 0x0000ff00 },
+    { DDSFormat::L16,   DDSPixelFormat::FlagLuminance,  16, 0x0000ffff, 0x00000000, 0x00000000, 0x00000000 },
 
-    { FormatR3G3B2,      DDSPixelFormat::FlagRGB,  8,  0x000000e0, 0x0000001c, 0x00000003, 0x00000000 },
-    { FormatA8,        DDSPixelFormat::FlagAlpha,  8,  0x00000000, 0x00000000, 0x00000000, 0x000000ff },
-    { FormatL8,    DDSPixelFormat::FlagLuminance,  8,  0x000000ff, 0x00000000, 0x00000000, 0x00000000 },
-    { FormatA4L4,        DDSPixelFormat::FlagLA,   8,  0x0000000f, 0x00000000, 0x00000000, 0x000000f0 },
+    { DDSFormat::R3G3B2,      DDSPixelFormat::FlagRGB,  8,  0x000000e0, 0x0000001c, 0x00000003, 0x00000000 },
+    { DDSFormat::A8,        DDSPixelFormat::FlagAlpha,  8,  0x00000000, 0x00000000, 0x00000000, 0x000000ff },
+    { DDSFormat::L8,    DDSPixelFormat::FlagLuminance,  8,  0x000000ff, 0x00000000, 0x00000000, 0x00000000 },
+    { DDSFormat::A4L4,        DDSPixelFormat::FlagLA,   8,  0x0000000f, 0x00000000, 0x00000000, 0x000000f0 },
 
-    { FormatV8U8,        DDSPixelFormat::FlagNormal, 16, 0x000000ff, 0x0000ff00, 0x00000000, 0x00000000 },
-    { FormatL6V5U5,                                0, 16, 0x0000001f, 0x000003e0, 0x0000fc00, 0x00000000 },
-    { FormatX8L8V8U8,                              0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
-    { FormatQ8W8V8U8,    DDSPixelFormat::FlagNormal, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
-    { FormatV16U16,      DDSPixelFormat::FlagNormal, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
-    { FormatA2W10V10U10, DDSPixelFormat::FlagNormal, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 }
+    { DDSFormat::V8U8,        DDSPixelFormat::FlagNormal, 16, 0x000000ff, 0x0000ff00, 0x00000000, 0x00000000 },
+    { DDSFormat::L6V5U5,                                0, 16, 0x0000001f, 0x000003e0, 0x0000fc00, 0x00000000 },
+    { DDSFormat::X8L8V8U8,                              0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
+    { DDSFormat::Q8W8V8U8,    DDSPixelFormat::FlagNormal, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
+    { DDSFormat::V16U16,      DDSPixelFormat::FlagNormal, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
+    { DDSFormat::A2W10V10U10, DDSPixelFormat::FlagNormal, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 }
 };
 static const size_t formatInfosSize = sizeof(formatInfos)/sizeof(FormatInfo);
 
-static const Format knownFourCCs[] = {
-    FormatA16B16G16R16,
-    FormatV8U8,
-    FormatUYVY,
-    FormatR8G8B8G8,
-    FormatYUY2,
-    FormatG8R8G8B8,
-    FormatDXT1,
-    FormatDXT2,
-    FormatDXT3,
-    FormatDXT4,
-    FormatDXT5,
-    FormatRXGB,
-    FormatATI2,
-    FormatQ16W16V16U16,
-    FormatR16F,
-    FormatG16R16F,
-    FormatA16B16G16R16F,
-    FormatR32F,
-    FormatG32R32F,
-    FormatA32B32G32R32F,
-    FormatCxV8U8
+static const DDSFormat knownFourCCs[] = {
+    DDSFormat::A16B16G16R16,
+    DDSFormat::V8U8,
+    DDSFormat::UYVY,
+    DDSFormat::R8G8B8G8,
+    DDSFormat::YUY2,
+    DDSFormat::G8R8G8B8,
+    DDSFormat::DXT1,
+    DDSFormat::DXT2,
+    DDSFormat::DXT3,
+    DDSFormat::DXT4,
+    DDSFormat::DXT5,
+    DDSFormat::RXGB,
+    DDSFormat::ATI2,
+    DDSFormat::Q16W16V16U16,
+    DDSFormat::R16F,
+    DDSFormat::G16R16F,
+    DDSFormat::A16B16G16R16F,
+    DDSFormat::R32F,
+    DDSFormat::G32R32F,
+    DDSFormat::A32B32G32R32F,
+    DDSFormat::CxV8U8
 };
-static const size_t knownFourCCsSize = sizeof(knownFourCCs)/sizeof(Format);
+static const size_t knownFourCCsSize = sizeof(knownFourCCs)/sizeof(DDSFormat);
 
 static inline bool isCubeMap(const DDSHeader &dds)
 {
@@ -171,16 +171,16 @@ static inline bool isVolumeMap(const DDSHeader &dds)
     return (dds.caps2 & DDSHeader::Caps2Volume) != 0;
 }
 
-static Format getFormat(const DDSHeader &dds)
+static DDSFormat getFormat(const DDSHeader &dds)
 {
     const DDSPixelFormat &format = dds.pixelFormat;
     if (format.flags & DDSPixelFormat::FlagPaletteIndexed4) {
-        return FormatP4;
+        return DDSFormat::P4;
     } else if (format.flags & DDSPixelFormat::FlagPaletteIndexed8) {
-        return FormatP8;
+        return DDSFormat::P8;
     } else if (format.flags & DDSPixelFormat::FlagFourCC) {
         for (size_t i = 0; i < knownFourCCsSize; ++i) {
-            if (dds.pixelFormat.fourCC == knownFourCCs[i])
+            if (DDSFormat(dds.pixelFormat.fourCC) == knownFourCCs[i])
                 return knownFourCCs[i];
         }
     } else {
@@ -197,10 +197,10 @@ static Format getFormat(const DDSHeader &dds)
         }
     }
 
-    return FormatUnknown;
+    return DDSFormat::Unknown;
 }
 
-static const FormatInfo &getFormatInfo(Format format)
+static const FormatInfo &getFormatInfo(DDSFormat format)
 {
     for (size_t i = 0; i < formatInfosSize; ++i) {
         const FormatInfo &info = formatInfos[i];
@@ -211,7 +211,7 @@ static const FormatInfo &getFormatInfo(Format format)
 }
 
 DDSHandler::DDSHandler() :
-    m_format(FormatA8R8G8B8)
+    m_format(DDSFormat::A8R8G8B8)
 {
 }
 
@@ -220,60 +220,60 @@ QByteArray DDSHandler::name() const
     return QByteArrayLiteral("dds");
 }
 
-static Texture::Format convertFormat(Format format)
+static Texture::Format convertFormat(DDSFormat format)
 {
     switch (format) {
-    case FormatR8G8B8: return Texture::Format::BGR_888;
-    case FormatA8R8G8B8: return Texture::Format::BGRA_8888;
-    case FormatA8B8G8R8: return Texture::Format::RGBA_8888;
-    case FormatX8B8G8R8: return Texture::Format::RGBX_8888;
-    case FormatX8R8G8B8: return Texture::Format::BGRX_8888;
-    case FormatR5G6B5: return Texture::Format::BGR_565;
-    case FormatA4R4G4B4: return Texture::Format::BGRA_4444;
-    case FormatX4R4G4B4: return Texture::Format::BGRX_4444;
-    case FormatA1R5G5B5: return Texture::Format::BGRA_5551;
-    case FormatX1R5G5B5: return Texture::Format::BGRX_5551;
-    case FormatR3G3B2: return Texture::Format::RGB_332;
-    case FormatA8L8: return Texture::Format::LA88;
-    case FormatA8: return Texture::Format::A8;
-    case FormatL8: return Texture::Format::L8;
-    case FormatA2B10G10R10: return Texture::Format::RGBA_10101002_Rev;
-    case FormatA2R10G10B10: return Texture::Format::BGRA_10101002_Rev;
-    case FormatDXT1: return Texture::Format::DXT1;
-    case FormatDXT3: return Texture::Format::DXT3;
-    case FormatDXT5: return Texture::Format::DXT5;
-    case FormatRXGB: return Texture::Format::RXGB;
-    case FormatATI2: return Texture::Format::RG_ATI2N_UNorm;
-    case FormatA16B16G16R16F: return Texture::Format::RGBA_16161616F;
+    case DDSFormat::R8G8B8: return Texture::Format::BGR_888;
+    case DDSFormat::A8R8G8B8: return Texture::Format::BGRA_8888;
+    case DDSFormat::A8B8G8R8: return Texture::Format::RGBA_8888;
+    case DDSFormat::X8B8G8R8: return Texture::Format::RGBX_8888;
+    case DDSFormat::X8R8G8B8: return Texture::Format::BGRX_8888;
+    case DDSFormat::R5G6B5: return Texture::Format::BGR_565;
+    case DDSFormat::A4R4G4B4: return Texture::Format::BGRA_4444;
+    case DDSFormat::X4R4G4B4: return Texture::Format::BGRX_4444;
+    case DDSFormat::A1R5G5B5: return Texture::Format::BGRA_5551;
+    case DDSFormat::X1R5G5B5: return Texture::Format::BGRX_5551;
+    case DDSFormat::R3G3B2: return Texture::Format::RGB_332;
+    case DDSFormat::A8L8: return Texture::Format::LA88;
+    case DDSFormat::A8: return Texture::Format::A8;
+    case DDSFormat::L8: return Texture::Format::L8;
+    case DDSFormat::A2B10G10R10: return Texture::Format::RGBA_10101002_Rev;
+    case DDSFormat::A2R10G10B10: return Texture::Format::BGRA_10101002_Rev;
+    case DDSFormat::DXT1: return Texture::Format::DXT1;
+    case DDSFormat::DXT3: return Texture::Format::DXT3;
+    case DDSFormat::DXT5: return Texture::Format::DXT5;
+    case DDSFormat::RXGB: return Texture::Format::RXGB;
+    case DDSFormat::ATI2: return Texture::Format::RG_ATI2N_UNorm;
+    case DDSFormat::A16B16G16R16F: return Texture::Format::RGBA_16161616F;
     default: return Texture::Format::Invalid;
     }
 }
 
-static Format convertFormat(Texture::Format format)
+static DDSFormat convertFormat(Texture::Format format)
 {
     switch (format) {
-    case Texture::Format::BGR_888: return FormatR8G8B8;
-    case Texture::Format::BGRA_8888: return FormatA8R8G8B8;
-    case Texture::Format::RGBX_8888: return FormatX8B8G8R8;
-    case Texture::Format::BGRX_8888: return FormatX8R8G8B8;
-    case Texture::Format::BGR_565: return FormatR5G6B5;
-    case Texture::Format::BGRA_4444: return FormatA4R4G4B4;
-    case Texture::Format::BGRX_4444: return FormatX4R4G4B4;
-    case Texture::Format::BGRA_5551: return FormatA1R5G5B5;
-    case Texture::Format::BGRX_5551: return FormatX1R5G5B5;
-    case Texture::Format::RGB_332: return FormatR3G3B2;
-    case Texture::Format::LA88: return FormatA8L8;
-    case Texture::Format::A8: return FormatA8;
-    case Texture::Format::L8: return FormatL8;
-    case Texture::Format::RGBA_10101002_Rev: return FormatA2B10G10R10;
-    case Texture::Format::BGRA_10101002_Rev: return FormatA2R10G10B10;
-    case Texture::Format::DXT1: return FormatDXT1;
-    case Texture::Format::DXT3: return FormatDXT3;
-    case Texture::Format::DXT5: return FormatDXT5;
-    case Texture::Format::RXGB: return FormatRXGB;
-    case Texture::Format::RG_ATI2N_UNorm: return FormatATI2;
-    case Texture::Format::RGBA_16161616F: return FormatA16B16G16R16F;
-    default: return FormatUnknown;
+    case Texture::Format::BGR_888: return DDSFormat::R8G8B8;
+    case Texture::Format::BGRA_8888: return DDSFormat::A8R8G8B8;
+    case Texture::Format::RGBX_8888: return DDSFormat::X8B8G8R8;
+    case Texture::Format::BGRX_8888: return DDSFormat::X8R8G8B8;
+    case Texture::Format::BGR_565: return DDSFormat::R5G6B5;
+    case Texture::Format::BGRA_4444: return DDSFormat::A4R4G4B4;
+    case Texture::Format::BGRX_4444: return DDSFormat::X4R4G4B4;
+    case Texture::Format::BGRA_5551: return DDSFormat::A1R5G5B5;
+    case Texture::Format::BGRX_5551: return DDSFormat::X1R5G5B5;
+    case Texture::Format::RGB_332: return DDSFormat::R3G3B2;
+    case Texture::Format::LA88: return DDSFormat::A8L8;
+    case Texture::Format::A8: return DDSFormat::A8;
+    case Texture::Format::L8: return DDSFormat::L8;
+    case Texture::Format::RGBA_10101002_Rev: return DDSFormat::A2B10G10R10;
+    case Texture::Format::BGRA_10101002_Rev: return DDSFormat::A2R10G10B10;
+    case Texture::Format::DXT1: return DDSFormat::DXT1;
+    case Texture::Format::DXT3: return DDSFormat::DXT3;
+    case Texture::Format::DXT5: return DDSFormat::DXT5;
+    case Texture::Format::RXGB: return DDSFormat::RXGB;
+    case Texture::Format::RG_ATI2N_UNorm: return DDSFormat::ATI2;
+    case Texture::Format::RGBA_16161616F: return DDSFormat::A16B16G16R16F;
+    default: return DDSFormat::Unknown;
     }
 }
 
@@ -297,9 +297,9 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    const auto textureFormat = convertFormat(Format(m_format));
+    const auto textureFormat = convertFormat(DDSFormat(m_format));
     if (textureFormat == Texture::Format::Invalid) {
-        qCWarning(ddshandler) << "Unsupported format" << m_format;
+        qCWarning(ddshandler) << "Unsupported format" << quint32(m_format);
         return false;
     }
 
@@ -383,7 +383,7 @@ bool DDSHandler::read(Texture &texture)
 bool DDSHandler::write(const Texture &texture)
 {
     const auto format = convertFormat(texture.format());
-    if (format == FormatUnknown) {
+    if (format == DDSFormat::Unknown) {
         qCWarning(ddshandler) << "unsupported format" << int(texture.format());
         return false;
     }
@@ -427,8 +427,8 @@ bool DDSHandler::write(const Texture &texture)
     dds.reserved2 = 0;
 
     const auto &info = getFormatInfo(format);
-    if (info.format == FormatUnknown) {
-        dds.pixelFormat.fourCC = format;
+    if (info.format == DDSFormat::Unknown) {
+        dds.pixelFormat.fourCC = quint32(format);
         // TODO: do we need flag RGB and aplha?
         dds.pixelFormat.flags = DDSPixelFormat::FlagFourCC;
     } else {
@@ -482,7 +482,7 @@ bool DDSHandler::canRead(QIODevicePointer device)
 
 bool DDSHandler::doScan()
 {
-    m_format = FormatUnknown;
+    m_format = DDSFormat::Unknown;
 
     qint64 oldPos = device()->pos();
     device()->seek(0);

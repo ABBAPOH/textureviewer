@@ -65,7 +65,7 @@ private:
 
 private:
     DDSHeader m_header;
-    int m_format;
+    DDSFormat m_format;
     DDSHeaderDX10 m_header10;
 };
 
