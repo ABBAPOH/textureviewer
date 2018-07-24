@@ -94,4 +94,23 @@ enum class DDSFormat : quint32 {
     Last                 = 0x7fffffff
 };
 
+enum class DDSPixelFormatFlag : quint32 {
+    AlphaPixels     = 0x00000001,
+    Alpha           = 0x00000002,
+    FourCC          = 0x00000004,
+    PaletteIndexed4 = 0x00000008,
+    PaletteIndexed8 = 0x00000020,
+    RGB             = 0x00000040,
+    YUV             = 0x00000200,
+    Luminance       = 0x00020000,
+    Normal          = 0x00080000,
+    RGBA = AlphaPixels | RGB,
+    LA = AlphaPixels | Luminance
+};
+Q_DECLARE_FLAGS(DDSPixelFormatFlags, DDSPixelFormatFlag)
+Q_DECLARE_OPERATORS_FOR_FLAGS(DDSPixelFormatFlags)
+
+static_assert(sizeof(DDSPixelFormatFlags) == sizeof(quint32),
+              "Flags size is not uint32, fix streaming operators");
+
 #endif // ENUMS_H

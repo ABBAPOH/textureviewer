@@ -48,22 +48,8 @@
 
 struct DDSPixelFormat
 {
-    enum DDSPixelFormatFlags {
-        FlagAlphaPixels     = 0x00000001,
-        FlagAlpha           = 0x00000002,
-        FlagFourCC          = 0x00000004,
-        FlagPaletteIndexed4 = 0x00000008,
-        FlagPaletteIndexed8 = 0x00000020,
-        FlagRGB             = 0x00000040,
-        FlagYUV             = 0x00000200,
-        FlagLuminance       = 0x00020000,
-        FlagNormal          = 0x00080000,
-        FlagRGBA = FlagAlphaPixels | FlagRGB,
-        FlagLA = FlagAlphaPixels | FlagLuminance
-    };
-
     quint32 size;
-    quint32 flags;
+    DDSPixelFormatFlags flags;
     quint32 fourCC;
     quint32 rgbBitCount;
     quint32 rBitMask;
