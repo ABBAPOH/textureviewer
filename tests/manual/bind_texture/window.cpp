@@ -60,7 +60,22 @@ void Window::resizeGL(int w, int h)
 
     m_funcs->glViewport(0, 0, w, h);
     m_projection = QMatrix4x4();
-    m_projection.perspective(45.0, 1.0 * width() / height(), 0.1, 100.0);
+
+    float ratio = 1.0f;
+    float left = -1.0f;
+    float right = 1.0f;
+    float bottom = -1.0f;
+    float top = 1.0f;
+    if (w > h) {
+        ratio = (float) w / h;
+        left *= ratio;
+        right *= ratio;
+    } else {
+        ratio = (float) h / w;
+        bottom *= ratio;
+        top *= ratio;
+    }
+    m_projection.ortho(left, right, bottom, top, 0.1, 100.0);
 
     m_view = QMatrix4x4();
     m_view.translate({0, 0, -3.0f});
