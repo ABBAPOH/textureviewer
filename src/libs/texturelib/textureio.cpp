@@ -6,9 +6,9 @@
 
 #include <OptionalType>
 
+#include <QtCore/QDebug>
 #include <QtCore/QFile>
 #include <QtCore/QMimeDatabase>
-#include <QDebug>
 
 using Capability = TextureIOHandlerPlugin::Capability;
 using Capabilities = TextureIOHandlerPlugin::Capabilities;
@@ -43,7 +43,7 @@ public:
     std::unique_ptr<QFile> file;
 
     QIODevicePointer device;
-    Optional<QMimeType> mimeType;
+    Optional<QMimeType> mimeType {};
 };
 
 TextureIOResult TextureIOPrivate::ensureDeviceOpened(Capabilities caps)

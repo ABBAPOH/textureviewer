@@ -1,7 +1,7 @@
 #include "textureiohandlerdatabase.h"
 
-#include <QtCore/QDebug>
 #include <QtCore/QCoreApplication>
+#include <QtCore/QDebug>
 #include <QtCore/QDir>
 #include <QtCore/QJsonArray>
 #include <QtCore/QMimeDatabase>
@@ -120,8 +120,8 @@ void TextureIOHandlerDatabase::registerPlugin(const QString &mimeType, TextureIO
     map.insert(mimeType, plugin);
 }
 
-Q_GLOBAL_STATIC(TextureIOHandlerDatabase, static_instance)
 TextureIOHandlerDatabase *TextureIOHandlerDatabase::instance()
 {
-    return static_instance();
+    static TextureIOHandlerDatabase staticInstance;
+    return &staticInstance;
 }

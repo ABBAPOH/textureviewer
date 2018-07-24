@@ -61,7 +61,7 @@ void Window::resizeGL(int w, int h)
     m_funcs->glViewport(0, 0, w, h);
     m_projection = QMatrix4x4();
 
-    float ratio = 1.0f;
+    float ratio = 0.5f;
     float left = -1.0f;
     float right = 1.0f;
     float bottom = -1.0f;
@@ -79,6 +79,10 @@ void Window::resizeGL(int w, int h)
 
     m_view = QMatrix4x4();
     m_view.translate({0, 0, -3.0f});
+
+    m_model = QMatrix4x4();
+    auto max = std::max(m_image.width(), m_image.height());
+    m_model.scale({float(max) / m_image.width(), float(max) / m_image.height(), 1});
 }
 
 void Window::paintGL()
@@ -95,6 +99,7 @@ void Window::paintGL()
     m_program->setUniformValue("ourTexture1", 0);
     m_program->setUniformValue("projection", m_projection);
     m_program->setUniformValue("view", m_view);
+    m_program->setUniformValue("model", m_model);
 
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
     m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

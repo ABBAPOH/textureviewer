@@ -40,6 +40,7 @@ private:
     std::unique_ptr<QOpenGLTexture> m_texture;
     QMatrix4x4 m_projection;
     QMatrix4x4 m_view;
+    QMatrix4x4 m_model;
 };
 
 #endif // WINDOW_H
