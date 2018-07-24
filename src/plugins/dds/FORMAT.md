@@ -31,7 +31,7 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | A8P8          |    no     |
 | P8            |    no     |
 | L8            |    yes    |
-| A8L8          |    no     |
+| A8L8          |    yes    |
 | A4L4          |    no     |
 | V8U8          |    no     |
 | L6V5U5        |    no     |
