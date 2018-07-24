@@ -47,11 +47,13 @@ public:
     static const TexelFormat &texelFormat(Texture::Format format) noexcept;
     static TexelFormats texelFormats() noexcept;
 
+#if defined(Q_OS_LINUX)
     // private method
     static TexelFormat findOGLFormatConst(
             QOpenGLTexture::TextureFormat textureFormat,
             QOpenGLTexture::PixelFormat pixelFormat,
             QOpenGLTexture::PixelType pixelType) noexcept;
+#endif // Q_OS_LINUX
 
     // private method
     static TexelFormat findOGLFormatLinear(
@@ -64,7 +66,11 @@ public:
             QOpenGLTexture::PixelFormat pixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
             QOpenGLTexture::PixelType pixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
     {
+#if defined(Q_OS_LINUX)
         return findOGLFormatConst(textureFormat, pixelFormat, pixelType);
+#else
+        return findOGLFormatLinear(textureFormat, pixelFormat, pixelType);
+#endif // Q_OS_LINUX
     }
 
 private:

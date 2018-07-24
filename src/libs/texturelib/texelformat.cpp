@@ -72,6 +72,7 @@ TexelFormat::TexelFormats TexelFormat::texelFormats() noexcept
     return {formats};
 }
 
+#if defined(Q_OS_LINUX)
 struct OGLMapping
 {
     using Format = Texture::Format;
@@ -124,6 +125,9 @@ TexelFormat TexelFormat::findOGLFormatConst(
         QOpenGLTexture::PixelFormat pixelFormat,
         QOpenGLTexture::PixelType pixelType) noexcept
 {
+    if (textureFormat == QOpenGLTexture::RGBA_DXT5) // special check for DXT5/RXGB formats
+        return formats[size_t(Texture::Format::DXT5)];
+
     const auto texelFormat = TexelFormat{
             Texture::Format::Invalid, 0, 0, textureFormat, pixelFormat, pixelType};
     auto index = OGLMapping::firstIndex(texelFormat);
@@ -138,6 +142,7 @@ TexelFormat TexelFormat::findOGLFormatConst(
     }
     return TexelFormat();
 }
+#endif // Q_OS_LINUX
 
 TexelFormat TexelFormat::findOGLFormatLinear(
         QOpenGLTexture::TextureFormat textureFormat,

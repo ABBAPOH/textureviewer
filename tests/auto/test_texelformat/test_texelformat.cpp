@@ -6,10 +6,13 @@ class TestTexelFormat : public QObject
 {
     Q_OBJECT
 private slots:
+#if defined(Q_OS_LINUX)
     void benchFindOGLFormatConst();
+#endif // Q_OS_LINUX
     void benchFindOGLFormatLinear();
 };
 
+#if defined(Q_OS_LINUX)
 void TestTexelFormat::benchFindOGLFormatConst()
 {
     const auto formats = TexelFormat::texelFormats();
@@ -19,6 +22,7 @@ void TestTexelFormat::benchFindOGLFormatConst()
         }
     }
 }
+#endif // Q_OS_LINUX
 
 void TestTexelFormat::benchFindOGLFormatLinear()
 {
