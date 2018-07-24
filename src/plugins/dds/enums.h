@@ -108,9 +108,6 @@ enum class DDSFlag : quint32 {
 Q_DECLARE_FLAGS(DDSFlags, DDSFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(DDSFlags)
 
-static_assert(sizeof(DDSFlags) == sizeof(quint32),
-              "Flags size is not uint32, fix streaming operators");
-
 enum class DDSPixelFormatFlag : quint32 {
     AlphaPixels     = 0x00000001,
     Alpha           = 0x00000002,
@@ -127,9 +124,6 @@ enum class DDSPixelFormatFlag : quint32 {
 Q_DECLARE_FLAGS(DDSPixelFormatFlags, DDSPixelFormatFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(DDSPixelFormatFlags)
 
-static_assert(sizeof(DDSPixelFormatFlags) == sizeof(quint32),
-              "Flags size is not uint32, fix streaming operators");
-
 enum class DDSCapsFlag : quint32 {
     Complex = 0x000008,
     Texture = 0x001000,
@@ -138,9 +132,6 @@ enum class DDSCapsFlag : quint32 {
 
 Q_DECLARE_FLAGS(DDSCapsFlags, DDSCapsFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(DDSCapsFlags)
-
-static_assert(sizeof(DDSCapsFlags) == sizeof(quint32),
-              "Flags size is not uint32, fix streaming operators");
 
 enum class DDSCaps2Flag : quint32 {
     CubeMap          = 0x0200,
@@ -155,8 +146,5 @@ enum class DDSCaps2Flag : quint32 {
 
 Q_DECLARE_FLAGS(DDSCaps2Flags, DDSCaps2Flag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(DDSCaps2Flags)
-
-static_assert(sizeof(DDSCaps2Flags) == sizeof(quint32),
-              "Flags size is not uint32, fix streaming operators");
 
 #endif // ENUMS_H

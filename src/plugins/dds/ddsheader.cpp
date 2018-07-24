@@ -44,8 +44,10 @@
 
 QDataStream &operator>>(QDataStream &s, DDSPixelFormat &pixelFormat)
 {
+    quint32 flags = 0;
     s >> pixelFormat.size;
-    s >> pixelFormat.flags;
+    s >> flags;
+    pixelFormat.flags |= DDSPixelFormatFlag(flags);
     s >> pixelFormat.fourCC;
     s >> pixelFormat.rgbBitCount;
     s >> pixelFormat.rBitMask;
@@ -58,7 +60,7 @@ QDataStream &operator>>(QDataStream &s, DDSPixelFormat &pixelFormat)
 QDataStream &operator<<(QDataStream &s, const DDSPixelFormat &pixelFormat)
 {
     s << pixelFormat.size;
-    s << pixelFormat.flags;
+    s << quint32(pixelFormat.flags);
     s << pixelFormat.fourCC;
     s << pixelFormat.rgbBitCount;
     s << pixelFormat.rBitMask;
@@ -70,9 +72,12 @@ QDataStream &operator<<(QDataStream &s, const DDSPixelFormat &pixelFormat)
 
 QDataStream &operator>>(QDataStream &s, DDSHeader &header)
 {
+    quint32 flags = 0;
+
     s >> header.magic;
     s >> header.size;
-    s >> header.flags;
+    s >> flags;
+    header.flags |= DDSFlag(flags);
     s >> header.height;
     s >> header.width;
     s >> header.pitchOrLinearSize;
@@ -81,8 +86,10 @@ QDataStream &operator>>(QDataStream &s, DDSHeader &header)
     for (int i = 0; i < DDSHeader::ReservedCount; i++)
         s >> header.reserved1[i];
     s >> header.pixelFormat;
-    s >> header.caps;
-    s >> header.caps2;
+    s >> flags;
+    header.caps |= DDSCapsFlags(flags);
+    s >> flags;
+    header.caps2 |= DDSCaps2Flags(flags);
     s >> header.caps3;
     s >> header.caps4;
     s >> header.reserved2;
@@ -93,7 +100,7 @@ QDataStream &operator<<(QDataStream &s, const DDSHeader &header)
 {
     s << header.magic;
     s << header.size;
-    s << header.flags;
+    s << quint32(header.flags);
     s << header.height;
     s << header.width;
     s << header.pitchOrLinearSize;
@@ -102,8 +109,8 @@ QDataStream &operator<<(QDataStream &s, const DDSHeader &header)
     for (int i = 0; i < DDSHeader::ReservedCount; i++)
         s << header.reserved1[i];
     s << header.pixelFormat;
-    s << header.caps;
-    s << header.caps2;
+    s << quint32(header.caps);
+    s << quint32(header.caps2);
     s << header.caps3;
     s << header.caps4;
     s << header.reserved2;
