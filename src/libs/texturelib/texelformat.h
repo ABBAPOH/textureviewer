@@ -1,6 +1,8 @@
 #ifndef TEXELFORMAT_H
 #define TEXELFORMAT_H
 
+#include "texturelib_global.h"
+
 #include <TextureLib/Texture>
 
 #include <QtGui/QOpenGLTexture>
@@ -44,8 +46,8 @@ public:
 
     using TexelFormats = gsl::span<const TexelFormat>;
 
-    static const TexelFormat &texelFormat(Texture::Format format) noexcept;
-    static TexelFormats texelFormats() noexcept;
+    static const TexelFormat TEXTURELIB_EXPORT & texelFormat(Texture::Format format) noexcept;
+    static TexelFormats TEXTURELIB_EXPORT texelFormats() noexcept;
 
 #if defined(Q_OS_LINUX)
     // private method
@@ -56,7 +58,7 @@ public:
 #endif // Q_OS_LINUX
 
     // private method
-    static TexelFormat findOGLFormatLinear(
+    static TexelFormat TEXTURELIB_EXPORT findOGLFormatLinear(
             QOpenGLTexture::TextureFormat textureFormat,
             QOpenGLTexture::PixelFormat pixelFormat,
             QOpenGLTexture::PixelType pixelType) noexcept;
