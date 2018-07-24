@@ -136,7 +136,7 @@ static const FormatInfo formatInfos[] = {
 };
 static const size_t formatInfosSize = sizeof(formatInfos)/sizeof(FormatInfo);
 
-static constexpr DDSFormat knownFourCCs[] = {
+static constexpr const DDSFormat knownFourCCs[] = {
     DDSFormat::A16B16G16R16,
     DDSFormat::V8U8,
     DDSFormat::UYVY,
