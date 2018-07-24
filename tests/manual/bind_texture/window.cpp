@@ -59,6 +59,11 @@ void Window::resizeGL(int w, int h)
         return;
 
     m_funcs->glViewport(0, 0, w, h);
+    m_projection = QMatrix4x4();
+    m_projection.perspective(45.0, 1.0 * width() / height(), 0.1, 100.0);
+
+    m_view = QMatrix4x4();
+    m_view.translate({0, 0, -3.0f});
 }
 
 void Window::paintGL()
@@ -73,6 +78,8 @@ void Window::paintGL()
 
     m_texture->bind();
     m_program->setUniformValue("ourTexture1", 0);
+    m_program->setUniformValue("projection", m_projection);
+    m_program->setUniformValue("view", m_view);
 
     QOpenGLVertexArrayObject::Binder vaoBinder(&m_vao);
     m_funcs->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);

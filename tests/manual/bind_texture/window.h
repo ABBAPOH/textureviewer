@@ -38,6 +38,8 @@ private:
     QOpenGLVertexArrayObject m_vao;
     std::unique_ptr<QOpenGLShaderProgram> m_program;
     std::unique_ptr<QOpenGLTexture> m_texture;
+    QMatrix4x4 m_projection;
+    QMatrix4x4 m_view;
 };
 
 #endif // WINDOW_H
