@@ -136,7 +136,7 @@ static const FormatInfo formatInfos[] = {
 };
 static const size_t formatInfosSize = sizeof(formatInfos)/sizeof(FormatInfo);
 
-static const DDSFormat knownFourCCs[] = {
+static constexpr DDSFormat knownFourCCs[] = {
     DDSFormat::A16B16G16R16,
     DDSFormat::V8U8,
     DDSFormat::UYVY,
@@ -159,7 +159,6 @@ static const DDSFormat knownFourCCs[] = {
     DDSFormat::A32B32G32R32F,
     DDSFormat::CxV8U8
 };
-static const size_t knownFourCCsSize = sizeof(knownFourCCs)/sizeof(DDSFormat);
 
 static inline bool isCubeMap(const DDSHeader &dds)
 {
@@ -179,9 +178,9 @@ static DDSFormat getFormat(const DDSHeader &dds)
     } else if (format.flags & DDSPixelFormatFlag::PaletteIndexed8) {
         return DDSFormat::P8;
     } else if (format.flags & DDSPixelFormatFlag::FourCC) {
-        for (size_t i = 0; i < knownFourCCsSize; ++i) {
-            if (DDSFormat(dds.pixelFormat.fourCC) == knownFourCCs[i])
-                return knownFourCCs[i];
+            for (const auto fourCC: gsl::span<const DDSFormat>(knownFourCCs)) {
+            if (DDSFormat(dds.pixelFormat.fourCC) == fourCC)
+                return fourCC;
         }
     } else {
         for (size_t i = 0; i < formatInfosSize; ++i) {
