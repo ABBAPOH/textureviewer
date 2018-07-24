@@ -80,7 +80,7 @@ struct FaceOffset
     int x, y;
 };
 
-static DDSCaps2Flag faceFlags[6] = {
+constexpr static const DDSCaps2Flag faceFlags[6] = {
     DDSCaps2Flag::CubeMapPositiveX,
     DDSCaps2Flag::CubeMapNegativeX,
     DDSCaps2Flag::CubeMapPositiveY,
