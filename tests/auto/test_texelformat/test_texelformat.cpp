@@ -105,7 +105,7 @@ void TestTexelFormat::compare()
         pixelType
     };
 
-    const TexelFormat texelFormat2 = {
+    TexelFormat texelFormat2 = {
         format,
         bitsPerTexel,
         blockSize,
@@ -119,6 +119,10 @@ void TestTexelFormat::compare()
     QVERIFY(texelFormat1 == texelFormat2);
     QVERIFY(texelFormat1 != texelFormat0);
     QVERIFY(texelFormat2 != texelFormat0);
+
+    texelFormat2 = texelFormat0;
+    QVERIFY(texelFormat2 == texelFormat0);
+    QVERIFY(texelFormat2 != texelFormat1);
 }
 
 void TestTexelFormat::testFindOGLFormat()
