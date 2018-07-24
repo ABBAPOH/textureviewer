@@ -6,12 +6,26 @@ class TestTexelFormat : public QObject
 {
     Q_OBJECT
 private slots:
+    void defaultConstructed();
     void testFindOGLFormat();
 #if defined(Q_OS_LINUX)
     void benchFindOGLFormatConst();
 #endif // Q_OS_LINUX
     void benchFindOGLFormatLinear();
 };
+
+void TestTexelFormat::defaultConstructed()
+{
+    TexelFormat format;
+
+    QCOMPARE(format.format(), Texture::Format::Invalid);
+    QCOMPARE(format.bitsPerTexel(), 0);
+    QCOMPARE(format.blockSize(), 0);
+    QCOMPARE(format.isCompressed(), false);
+    QCOMPARE(format.oglTextureFormat(), QOpenGLTexture::NoFormat);
+    QCOMPARE(format.oglPixelFormat(), QOpenGLTexture::NoSourceFormat);
+    QCOMPARE(format.oglPixelType(), QOpenGLTexture::NoPixelType);
+}
 
 void TestTexelFormat::testFindOGLFormat()
 {
