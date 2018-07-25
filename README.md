@@ -11,6 +11,7 @@ and no other formats other than textures (i.e. png, jpg are not supported for no
 This program is distributed under the [GNU LGPL](LICENSE)
 
 ## Formats
+Below is the list of formats supported by the API.
 * [DDS](src/plugins/dds/FORMAT.md) (Direct Draw Surface)
 * [PKM](src/plugins/pkm/FORMAT.md) (PKM Texture Format)
 * [KTX](src/plugins/ktx/FORMAT.md) (Khronos Texture)

@@ -84,6 +84,10 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 
 Not supported
 
+### Writing
+
+Writing DDS files **is supported**
+
 ### TODO List
 
 * Check textures with sizes not the power-of-two

@@ -22,6 +22,9 @@
 | R11_EAC_SNorm    |    yes    |
 | RG11_EAC_SNorm   |    yes    |
 
+### Writing
+
+Writing PKM files is **not** supported
 
 ### TODO List
 

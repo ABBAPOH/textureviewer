@@ -38,6 +38,10 @@
 
 * BlueScreen formats are converted to RGB_888 and BGR_888
 
+### Writing
+
+Writing VTF files is **not** supported
+
 ### TODO List
 
 * Check cubemaps
