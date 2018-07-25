@@ -61,20 +61,10 @@ void Window::resizeGL(int w, int h)
     m_funcs->glViewport(0, 0, w, h);
     m_projection = QMatrix4x4();
 
-    float ratio = 0.5f;
-    float left = -1.0f;
-    float right = 1.0f;
-    float bottom = -1.0f;
-    float top = 1.0f;
-    if (w > h) {
-        ratio = (float) w / h;
-        left *= ratio;
-        right *= ratio;
-    } else {
-        ratio = (float) h / w;
-        bottom *= ratio;
-        top *= ratio;
-    }
+    float left = -0.5f;
+    float right = 0.5f;
+    float bottom = -0.5f;
+    float top = 0.5f;
     m_projection.ortho(left, right, bottom, top, 0.1, 100.0);
 
     m_view = QMatrix4x4();
@@ -83,6 +73,7 @@ void Window::resizeGL(int w, int h)
     m_model = QMatrix4x4();
     auto max = std::max(m_image.width(), m_image.height());
     m_model.scale({float(max) / m_image.width(), float(max) / m_image.height(), 1});
+    m_model.scale({m_image.width() / float(w), m_image.height() / float(h), 1});
 }
 
 void Window::paintGL()
