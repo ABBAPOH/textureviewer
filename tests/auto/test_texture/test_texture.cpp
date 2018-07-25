@@ -191,84 +191,42 @@ void TestTexture::bytesPerLine_data()
 {
     QTest::addColumn<Texture::Format>("format");
     QTest::addColumn<int>("width");
-    QTest::addColumn<int>("height");
-    QTest::addColumn<int>("depth");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<int>("level");
-    QTest::addColumn<qsizetype>("bpt");
     QTest::addColumn<qsizetype>("bpl");
-    QTest::addColumn<qsizetype>("bpi");
 
-    QTest::newRow("RGBA_8888, 1x1x1, level 0/1")
-            << Texture::Format::RGBA_8888
-            << 1 << 1 << 1
-            << 1 << 0
-            << qsizetype(32) << qsizetype(4) << qsizetype(4);
-    QTest::newRow("RGBA_8888, 64x1x1, level 0/1")
-            << Texture::Format::RGBA_8888
-            << 64 << 1 << 1
-            << 1 << 0
-            << qsizetype(32) << qsizetype(256) << qsizetype(256);
-    QTest::newRow("RGBA_8888, 64x64x64, level 0/1")
-            << Texture::Format::RGBA_8888
-            << 64 << 64 << 64
-            << 1 << 0
-            << qsizetype(32) << qsizetype(256) << qsizetype(1048576);
-    QTest::newRow("RGBA_8888, 4x4x4, level 0/1")
-            << Texture::Format::RGBA_8888
-            << 4 << 4 << 4
-            << 1 << 0
-            << qsizetype(32) << qsizetype(16) << qsizetype(256);
-    QTest::newRow("RGBA_8888, 4x4x4, level 0/3")
-            << Texture::Format::RGBA_8888
-            << 4 << 4 << 4
-            << 3 << 0
-            << qsizetype(32) << qsizetype(16) << qsizetype(256);
-    QTest::newRow("RGBA_8888, 4x4x4, level 1/3")
-            << Texture::Format::RGBA_8888
-            << 4 << 4 << 4
-            << 3 << 1
-            << qsizetype(32) << qsizetype(8) << qsizetype(32);
-    QTest::newRow("RGBA_8888, 4x4x4, level 2/3")
-            << Texture::Format::RGBA_8888
-            << 4 << 4 << 4
-            << 3 << 2
-            << qsizetype(32) << qsizetype(4) << qsizetype(4);
-    QTest::newRow("RGBA_8888, 5x4x4, level 0/3")
-            << Texture::Format::RGBA_8888
-            << 5 << 4 << 4
-            << 3 << 0
-            << qsizetype(32) << qsizetype(20) << qsizetype(320);
-    QTest::newRow("RGBA_8888, 5x4x4, level 1/3")
-            << Texture::Format::RGBA_8888
-            << 5 << 4 << 4
-            << 3 << 1
-            << qsizetype(32) << qsizetype(8) << qsizetype(32);
-    QTest::newRow("RGBA_8888, 5x4x4, level 2/3")
-            << Texture::Format::RGBA_8888
-            << 4 << 4 << 4
-            << 3 << 2
-            << qsizetype(32) << qsizetype(4) << qsizetype(4);
+    QTest::newRow("RGBA_8888, w=1") << Texture::Format::RGBA_8888 << 1 << qsizetype(4);
+    QTest::newRow("RGBA_8888, w=2") << Texture::Format::RGBA_8888 << 2 << qsizetype(8);
+    QTest::newRow("RGBA_8888, w=5") << Texture::Format::RGBA_8888 << 5 << qsizetype(20);
+    QTest::newRow("RGBA_8888, w=8") << Texture::Format::RGBA_8888 << 8 << qsizetype(32);
+
+    QTest::newRow("RGB_888, w=1") << Texture::Format::RGB_888 << 1 << qsizetype(3);
+    QTest::newRow("RGB_888, w=5") << Texture::Format::RGB_888 << 5 << qsizetype(15);
+    QTest::newRow("RGB_888, w=8") << Texture::Format::RGB_888 << 8 << qsizetype(24);
+
+    QTest::newRow("BGR_565, w=1") << Texture::Format::BGR_565 << 1 << qsizetype(2);
+    QTest::newRow("BGR_565, w=5") << Texture::Format::BGR_565 << 5 << qsizetype(10);
+    QTest::newRow("BGR_565, w=8") << Texture::Format::BGR_565 << 8 << qsizetype(16);
+
+    QTest::newRow("L8, w=1") << Texture::Format::L8 << 1 << qsizetype(1);
+    QTest::newRow("L8, w=5") << Texture::Format::L8 << 5 << qsizetype(5);
+    QTest::newRow("L8, w=8") << Texture::Format::L8 << 8 << qsizetype(8);
+
+    QTest::newRow("DXT1, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8);
+    QTest::newRow("DXT1, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16);
+    QTest::newRow("DXT1, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16);
+
+    QTest::newRow("DXT5, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8);
+    QTest::newRow("DXT5, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16);
+    QTest::newRow("DXT5, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16);
 }
 
 void TestTexture::bytesPerLine()
 {
     QFETCH(Texture::Format, format);
     QFETCH(int, width);
-    QFETCH(int, height);
-    QFETCH(int, depth);
-    QFETCH(int, levels);
-    QFETCH(int, level);
-    QFETCH(qsizetype, bpt);
     QFETCH(qsizetype, bpl);
-    QFETCH(qsizetype, bpi);
 
-    const auto texture = Texture::create(format, {width, height, depth}, levels);
-
-    QVERIFY(!texture.isNull());
-    QCOMPARE(texture.bitsPerTexel(), bpt);
-    QCOMPARE(texture.bytesPerLine(level), bpl);
-    QCOMPARE(texture.bytesPerImage(level), bpi);
+    const auto result = Texture::calculateBytesPerLine(format, width);
+    QCOMPARE(result, bpl);
 }
 
 void TestTexture::offset_data()
