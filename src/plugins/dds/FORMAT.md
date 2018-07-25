@@ -90,7 +90,6 @@ Writing DDS files **is supported**
 
 ### TODO List
 
-* Check textures with sizes not the power-of-two
 * Cubemaps
 * Volumemaps
 * DX10 support
