@@ -15,7 +15,9 @@ public:
     using QIODevicePointer = TextureIOHandler::QIODevicePointer;
 
     TextureIOHandlerDatabase();
+    TextureIOHandlerDatabase(TextureIOHandlerDatabase &&) = delete;
     ~TextureIOHandlerDatabase();
+    TextureIOHandlerDatabase &operator =(TextureIOHandlerDatabase &&) = delete;
 
     using Capabilities = TextureIOHandlerPlugin::Capabilities;
 
