@@ -283,12 +283,10 @@ bool DDSHandler::read(Texture &texture)
 
     const auto ulayers = std::max(1u, m_header10.arraySize);
     const auto ulevels = std::max(1u, m_header.mipMapCount);
-    const auto faces = isCubeMap(m_header) ? 6 : 1;
+    const auto cubeMap = isCubeMap(m_header);
+    const auto faces = cubeMap ? 6 : 1;
 
-    if (isCubeMap(m_header)) {
-        qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
-        return false;
-    } else if (isVolumeMap(m_header)) {
+    if (isVolumeMap(m_header)) {
         qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
         return false;
     }
@@ -299,7 +297,11 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    auto result = Texture::create(textureFormat, {int(m_header.width), int(m_header.height)}, ulevels, ulayers);
+    auto result = Texture::create(
+                textureFormat,
+                {int(m_header.width), int(m_header.height)},
+                cubeMap ? Texture::IsCubemap::Yes : Texture::IsCubemap::No,
+                ulevels, ulayers);
 
     if (result.isNull()) {
         qCWarning(ddshandler) << "Can't create texture";
@@ -327,8 +329,7 @@ bool DDSHandler::read(Texture &texture)
 
     for (int layer = 0; layer < int(ulayers); ++layer) {
         for (int face = 0; face < faces; ++face) {
-            if (isCubeMap(m_header)
-                    && !(m_header.caps2 & (faceFlags[face]))) {
+            if (cubeMap && !(m_header.caps2 & (faceFlags[face]))) {
                 continue;
             }
 
