@@ -94,4 +94,3 @@ Writing DDS files **is supported**
 * Cubemaps
 * Volumemaps
 * DX10 support
-* Check Luminance with GLES
