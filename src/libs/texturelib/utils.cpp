@@ -1,6 +1,8 @@
 #include "utils.h"
 #include "texelformat.h"
 
+#include <QtGui/QOpenGLPixelTransferOptions>
+
 QOpenGLTexture::Target getTarget(const Texture &texture)
 {
     if (texture.layers() > 1) {
@@ -54,6 +56,8 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
     const auto textureFormat = texelFormat.oglTextureFormat();
     const auto pixelFormat = texelFormat.oglPixelFormat();
     const auto pixelType = texelFormat.oglPixelType();
+    const auto options = std::make_unique<QOpenGLPixelTransferOptions>();
+    options->setAlignment(1);
 
     auto result = std::make_unique<QOpenGLTexture>(target);
     result->setFormat(textureFormat);
@@ -73,7 +77,8 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
                                     getFace(Texture::Side(face)),
                                     pixelFormat,
                                     pixelType,
-                                    texture.imageData({Texture::Side(face), level, layer}).data());
+                                    texture.imageData({Texture::Side(face), level, layer}).data(),
+                                    options.get());
                     }
                 }
             }
@@ -85,7 +90,8 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
                                 layer,
                                 pixelFormat,
                                 pixelType,
-                                texture.imageData({level, layer}).data());
+                                texture.imageData({level, layer}).data(),
+                                options.get());
                 }
             }
         }
