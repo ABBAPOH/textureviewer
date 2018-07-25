@@ -1,8 +1,10 @@
-#pragma once
+#ifndef TEXTUREMODEL_H
+#define TEXTUREMODEL_H
 
 #include "texturelib_global.h"
 
 #include <TextureLib/Texture>
+
 #include <QtCore/QAbstractTableModel>
 
 class TEXTURELIB_EXPORT TextureModel : public QAbstractTableModel
@@ -39,3 +41,5 @@ public: // QAbstractItemModel interface
 private:
     Texture m_texture;
 };
+
+#endif // TEXTUREMODEL_H

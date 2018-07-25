@@ -114,6 +114,14 @@ TextureIO::TextureIO() :
 }
 
 /*!
+    Move-constructs a TextureIO object from the \a other object.
+*/
+TextureIO::TextureIO(TextureIO &&other) noexcept
+{
+    d_ptr.swap(other.d_ptr);
+}
+
+/*!
     Creates an TextureIO object with the given \a fileName and \a mimeType.
 */
 TextureIO::TextureIO(const QString &fileName, const QMimeType &mimeType) :
@@ -159,6 +167,17 @@ TextureIO::TextureIO(QIODevicePointer device, const QString &mimeType) :
     Destroys TextureIO object.
 */
 TextureIO::~TextureIO() = default;
+
+/*!
+    Move-assigns \a other to this TextureIO instance.
+*/
+TextureIO &TextureIO::operator=(TextureIO &&other) noexcept
+{
+    if (this == &other)
+        return *this;
+    d_ptr.swap(other.d_ptr);
+    return *this;
+}
 
 /*!
     \property TextureIO::fileName

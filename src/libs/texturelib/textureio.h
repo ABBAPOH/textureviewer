@@ -4,9 +4,10 @@
 
 #include <TextureLib/Texture>
 #include <TextureLib/TextureIOResult>
-#include <QtCore/QString>
-#include <QtCore/QScopedPointer>
+
 #include <QtCore/QMimeType>
+#include <QtCore/QScopedPointer>
+#include <QtCore/QString>
 
 #include <Expected>
 #include <ObserverPointer>
@@ -22,11 +23,14 @@ public:
     using QIODevicePointer = ObserverPointer<QIODevice>;
 
     TextureIO();
+    TextureIO(TextureIO &&other) noexcept;
     explicit TextureIO(const QString &fileName, const QMimeType &mimeType = QMimeType());
     explicit TextureIO(QIODevicePointer device, const QMimeType &mimeType = QMimeType());
     TextureIO(const QString &fileName, const QString &mimeType);
     TextureIO(QIODevicePointer device, const QString &mimeType);
     ~TextureIO();
+
+    TextureIO &operator=(TextureIO &&other) noexcept;
 
     using ReadResult = Expected<Texture, TextureIOError>;
     using WriteResult = TextureIOResult;

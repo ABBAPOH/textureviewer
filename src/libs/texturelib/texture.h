@@ -5,9 +5,10 @@
 
 #include <TextureLib/TextureIOResult>
 
+#include <QtCore/QDataStream>
 #include <QtCore/QLoggingCategory>
 #include <QtCore/QMetaEnum>
-#include <QtCore/QDataStream>
+
 #include <QtGui/QImage>
 
 #include <gsl/span>
@@ -20,7 +21,7 @@ class TEXTURELIB_EXPORT Texture
 {
     Q_GADGET
 public:
-    inline Texture() noexcept {}
+    inline Texture() noexcept = default;
     Texture(const Texture &other);
     explicit Texture(const QString &file);
     explicit Texture(QStringView file);

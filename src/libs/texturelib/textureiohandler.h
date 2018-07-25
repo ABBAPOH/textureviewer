@@ -3,6 +3,7 @@
 #include "texturelib_global.h"
 
 #include <TextureLib/Texture>
+
 #include <QtCore/QMimeType>
 
 #include <ObserverPointer>
@@ -14,7 +15,10 @@ public:
     using QIODevicePointer = ObserverPointer<QIODevice>;
 
     TextureIOHandler();
+    TextureIOHandler(TextureIOHandler &&) = default;
     virtual ~TextureIOHandler();
+
+    TextureIOHandler &operator=(TextureIOHandler &&) = default;
 
     inline QIODevicePointer device() const { return m_device; }
     inline void setDevice(QIODevicePointer device) { m_device = device; }
