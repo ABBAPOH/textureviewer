@@ -29,8 +29,12 @@
         <file>dds/225x225/BGR_888.dds</file>
         <file>dds/225x225/L8.dds</file>
 
-        <file>dds/dx10/BC1.dds</file>
-        <file>dds/dx10/BC7.dds</file>
+        <file>dds/dx10/BC1_UNORM_SRGB.dds</file>
+        <file>dds/dx10/BC2_UNORM_SRGB.dds</file>
+        <file>dds/dx10/BC3_UNORM_SRGB.dds</file>
+        <file>dds/dx10/BC6H_UF16.dds</file>
+        <file>dds/dx10/BC7_UNORM.dds</file>
+        <file>dds/dx10/BC7_UNORM_SRGB.dds</file>
 
         <file>ktx/R11_EAC_SNorm.ktx</file>
         <file>ktx/R11_EAC_UNorm.ktx</file>

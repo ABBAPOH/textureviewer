@@ -44,9 +44,12 @@ static constexpr const TexelFormat formats[] = {
     {Texture::Format::RG11_EAC_UNorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG11_EAC_UNorm},
     {Texture::Format::R11_EAC_SNorm, 0, 8, QOpenGLTexture::QOpenGLTexture::R11_EAC_SNorm},
     {Texture::Format::RG11_EAC_SNorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG11_EAC_SNorm},
-//    {Texture::Format::BC1_UNorm, 0, 8, QOpenGLTexture::QOpenGLTexture::RGBA_DXT1},
-    {Texture::Format::BC1_UNorm_SRGB, 0, 8, QOpenGLTexture::QOpenGLTexture::SRGB_DXT1},
-    {Texture::Format::BC7, 0, 16, QOpenGLTexture::QOpenGLTexture::SRGB_BP_UNorm},
+    {Texture::Format::BC1_UNorm_SRGB, 0, 8, QOpenGLTexture::QOpenGLTexture::SRGB_Alpha_DXT1},
+    {Texture::Format::BC2_UNorm_SRGB, 0, 8, QOpenGLTexture::QOpenGLTexture::SRGB_Alpha_DXT3},
+    {Texture::Format::BC3_UNorm_SRGB, 0, 8, QOpenGLTexture::QOpenGLTexture::SRGB_Alpha_DXT5},
+    {Texture::Format::BC6H_UF16, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_UNSIGNED_FLOAT},
+    {Texture::Format::BC7_UNORM, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_UNorm},
+    {Texture::Format::BC7_UNORM_SRGB, 0, 16, QOpenGLTexture::QOpenGLTexture::SRGB_BP_UNorm},
     // floating point
     {Texture::Format::RGBA_16161616F, 64, 0, QOpenGLTexture::RGBA16F, QOpenGLTexture::RGBA, QOpenGLTexture::Float16},
 };
