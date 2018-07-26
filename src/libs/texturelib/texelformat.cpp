@@ -171,5 +171,5 @@ TexelFormat TexelFormat::findOGLFormatLinear(
     const auto it = std::find_if(formats.begin(), formats.end(), compareFormats);
     if (it != formats.end())
         return *it;
-    return TexelFormat();
+    return {};
 }
