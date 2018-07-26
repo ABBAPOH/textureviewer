@@ -75,7 +75,7 @@ static_assert (checkFormatPositions(), "Incorrect format position in formats arr
 
 const TexelFormat &TexelFormat::texelFormat(Texture::Format format) noexcept
 {
-    return formats[int(format)];
+    return TexelFormats(formats).at(size_t(format));
 }
 
 TexelFormat::TexelFormats TexelFormat::texelFormats() noexcept
