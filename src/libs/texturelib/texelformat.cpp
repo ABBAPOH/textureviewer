@@ -57,16 +57,21 @@ static constexpr const TexelFormat formats[] = {
 static_assert (sizeof (formats) == sizeof(TexelFormat) * size_t(Texture::Format::FormatsCount),
                "Some Texture::Format eniumerations are not handled in an array");
 
-constexpr bool checkFormats()
+/*!
+  \internal
+    Formats in the table should be on the right position
+*/
+constexpr bool checkFormatPositions()
 {
-    for (int i = 0; i < int(Texture::Format::FormatsCount); ++i) {
-        if (formats[i].format() != Texture::Format(i))
+    int position = 0;
+    for (const auto &format: TexelFormat::TexelFormats(formats)) {
+        if (format.format() != Texture::Format(position++))
             return false;
     }
     return true;
 }
 
-static_assert (checkFormats(), "Corrupted formats array");
+static_assert (checkFormatPositions(), "Incorrect format position in formats array");
 
 const TexelFormat &TexelFormat::texelFormat(Texture::Format format) noexcept
 {
