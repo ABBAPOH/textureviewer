@@ -44,6 +44,9 @@ static constexpr const TexelFormat formats[] = {
     {Texture::Format::RG11_EAC_UNorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG11_EAC_UNorm},
     {Texture::Format::R11_EAC_SNorm, 0, 8, QOpenGLTexture::QOpenGLTexture::R11_EAC_SNorm},
     {Texture::Format::RG11_EAC_SNorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG11_EAC_SNorm},
+//    {Texture::Format::BC1_UNorm, 0, 8, QOpenGLTexture::QOpenGLTexture::RGBA_DXT1},
+    {Texture::Format::BC1_UNorm_SRGB, 0, 8, QOpenGLTexture::QOpenGLTexture::SRGB_DXT1},
+    {Texture::Format::BC7, 0, 16, QOpenGLTexture::QOpenGLTexture::SRGB_BP_UNorm},
     // floating point
     {Texture::Format::RGBA_16161616F, 64, 0, QOpenGLTexture::RGBA16F, QOpenGLTexture::RGBA, QOpenGLTexture::Float16},
 };

@@ -86,6 +86,10 @@ public:
         RG11_EAC_UNorm,
         R11_EAC_SNorm,
         RG11_EAC_SNorm,
+
+//        BC1_UNorm,
+        BC1_UNorm_SRGB,
+        BC7,
         // floating point
         RGBA_16161616F,
         FormatsCount // should be the last

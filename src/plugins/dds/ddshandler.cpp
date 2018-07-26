@@ -156,7 +156,8 @@ static constexpr const DDSFormat knownFourCCs[] = {
     DDSFormat::R32F,
     DDSFormat::G32R32F,
     DDSFormat::A32B32G32R32F,
-    DDSFormat::CxV8U8
+    DDSFormat::CxV8U8,
+    DDSFormat::DX10
 };
 
 static inline bool isCubeMap(const DDSHeader &dds)
@@ -216,8 +217,19 @@ QByteArray DDSHandler::name() const
     return QByteArrayLiteral("dds");
 }
 
-static Texture::Format convertFormat(DDSFormat format)
+static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
 {
+    if (format == DDSFormat::DX10) {
+        switch (format2) {
+//        case DXGIFormat::BC1_UNORM: return Texture::Format::BC1_UNorm;
+        case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::BC1_UNorm_SRGB;
+        case DXGIFormat::BC7_UNORM_SRGB: return Texture::Format::BC7;
+        default:
+            break;
+        }
+        return Texture::Format::Invalid;
+    }
+
     switch (format) {
     case DDSFormat::R8G8B8: return Texture::Format::BGR_888;
     case DDSFormat::A8R8G8B8: return Texture::Format::BGRA_8888;
@@ -291,7 +303,7 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    const auto textureFormat = convertFormat(DDSFormat(m_format));
+    const auto textureFormat = convertFormat(DDSFormat(m_format), DXGIFormat(m_header10.dxgiFormat));
     if (textureFormat == Texture::Format::Invalid) {
         qCWarning(ddshandler) << "Unsupported format" << quint32(m_format);
         return false;
@@ -481,8 +493,8 @@ bool DDSHandler::doScan()
 {
     m_format = DDSFormat::Unknown;
 
-    qint64 oldPos = device()->pos();
-    device()->seek(0);
+//    qint64 oldPos = device()->pos();
+//    device()->seek(0);
 
     QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
@@ -490,7 +502,7 @@ bool DDSHandler::doScan()
     if (m_header.pixelFormat.fourCC == dx10Magic)
         s >> m_header10;
 
-    device()->seek(oldPos);
+//    device()->seek(oldPos);
 
     if (s.status() != QDataStream::Ok)
         return false;
