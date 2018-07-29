@@ -95,6 +95,9 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
                 }
             }
         }
+        if (result->mipLevels() == 1) {
+            result->generateMipMaps();
+        }
     } else {
         if (texture.faces() > 1) {
             for (int level = 0; level < texture.levels(); ++level) {
