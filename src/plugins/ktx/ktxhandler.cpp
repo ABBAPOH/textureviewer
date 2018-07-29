@@ -38,9 +38,14 @@ bool KtxHandler::read(Texture& texture)
     readPadding(device(), 3 - ((device()->pos() + 3) % 4));
 
     TexelFormat texelFormat;
-    if (header.glFormat == 0) {
+    if (header.glFormat == 0 && header.glType == 0) {
         texelFormat = TexelFormat::findOGLFormat(
                     QOpenGLTexture::TextureFormat(header.glInternalFormat));
+    } else {
+        texelFormat = TexelFormat::findOGLFormat(
+                    QOpenGLTexture::TextureFormat(header.glInternalFormat),
+                    QOpenGLTexture::PixelFormat(header.glFormat),
+                    QOpenGLTexture::PixelType(header.glType));
     }
 
     if (texelFormat.format() == Texture::Format::Invalid) {
@@ -84,6 +89,8 @@ bool KtxHandler::read(Texture& texture)
         }
         readPadding(device(), 3 - ((device()->pos() + 3) % 4));
     }
+
+    qDebug() << device()->pos() << device()->size();
 
     texture = std::move(result);
 
