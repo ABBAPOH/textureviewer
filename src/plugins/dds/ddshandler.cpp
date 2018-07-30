@@ -418,6 +418,11 @@ bool DDSHandler::write(const Texture &texture)
         return false;
     }
 
+    if (texture.alignment() != Texture::Alignment::Byte) {
+        qCWarning(ddshandler) << "Only byte alignment is supported";
+        return false;
+    }
+
     QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
 
