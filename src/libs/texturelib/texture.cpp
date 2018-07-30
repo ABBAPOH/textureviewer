@@ -68,9 +68,10 @@ TextureData *TextureData::create(
     const auto texelFormat = TexelFormat::texelFormat(format);
 
     for (int level = 0; level < levels; ++level) {
-        auto w = std::max<uint>(uwidth >> level, 1);
-        auto h = std::max<uint>(uheight >> level, 1);
-        auto d = std::max<uint>(udepth >> level, 1);
+        auto ulevel = uint(level);
+        auto w = std::max<uint>(uwidth >> ulevel, 1);
+        auto h = std::max<uint>(uheight >> ulevel, 1);
+        auto d = std::max<uint>(udepth >> ulevel, 1);
 
         // calculateBytesPerLine already checks overflow
         const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w, align); // bytes per scanline
@@ -133,8 +134,8 @@ TextureData *TextureData::create(
 qsizetype TextureData::calculateBytesPerLine(
         const TexelFormat &format, quint32 width, Texture::Alignment align)
 {
-    const auto bitsPerTexel = qsizetype(format.bitsPerTexel());
-    const auto blockSize = qsizetype(format.blockSize());
+    const auto bitsPerTexel = size_t(format.bitsPerTexel());
+    const auto blockSize = size_t(format.blockSize());
 
     if (bitsPerTexel) {
         if (bitsPerTexel && std::numeric_limits<qsizetype>::max() / bitsPerTexel / width < 1) {
@@ -142,9 +143,9 @@ qsizetype TextureData::calculateBytesPerLine(
             return 0;
         }
         if (align == Texture::Alignment::Byte)
-            return (width * bitsPerTexel + 7) >> 3;
+            return (width * bitsPerTexel + 7u) >> 3u;
         if (align == Texture::Alignment::Word)
-            return ((width * bitsPerTexel + 31) >> 5) << 2;
+            return ((width * bitsPerTexel + 31u) >> 5u) << 2u;
     } else if (blockSize) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
