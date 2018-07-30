@@ -48,7 +48,8 @@ TextureData *TextureData::create(
         int depth,
         bool isCubemap,
         int levels,
-        int layers)
+        int layers,
+        Texture::Alignment align)
 {
     std::unique_ptr<TextureData> data;
 
@@ -72,12 +73,12 @@ TextureData *TextureData::create(
         auto d = std::max<uint>(udepth >> level, 1);
 
         // calculateBytesPerLine already checks overflow
-        const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w); // bytes per scanline
+        const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w, align); // bytes per scanline
         if (!bytesPerLine)
             return nullptr;
 
         // calculateBytesPerSlice already checks overflow
-        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(texelFormat, w, h);
+        const auto bytesPerSlice = TextureData::calculateBytesPerSlice(texelFormat, w, h, align);
 
         // check that single mipmap doesn't overflow
         if (std::numeric_limits<qsizetype>::max() / bytesPerSlice / d / ufaces / ulayers < 1
@@ -115,6 +116,7 @@ TextureData *TextureData::create(
     data->levels = levels;
     data->layers = layers;
     data->format = format;
+    data->align = align;
     data->compressed = texelFormat.isCompressed();
 
     data->levelInfos = std::move(levelInfos);
@@ -272,7 +274,7 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create(Format format, Size size, IsCubemap isCubemap, int levels, int layers)
+Texture Texture::create(Format format, Size size, IsCubemap isCubemap, int levels, int layers, Texture::Alignment align)
 {
     const auto width = size.width();
     const auto height = size.height();
@@ -285,12 +287,12 @@ Texture Texture::create(Format format, Size size, IsCubemap isCubemap, int level
         if (depth > 1 && layers > 1) // array of 3d texture are not supported
             return Texture();
     }
-    return Texture(TextureData::create(format, width, height, depth, bool(isCubemap), levels, layers));
+    return Texture(TextureData::create(format, width, height, depth, bool(isCubemap), levels, layers, align));
 }
 
-Texture Texture::create(Texture::Format format, Texture::Size size, int levels, int layers)
+Texture Texture::create(Texture::Format format, Texture::Size size, int levels, int layers, Texture::Alignment align)
 {
-    return create(format, size, IsCubemap::No, levels, layers);
+    return create(format, size, IsCubemap::No, levels, layers, align);
 }
 
 qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
@@ -313,6 +315,11 @@ bool Texture::isNull() const
 Texture::Format Texture::format() const
 {
     return d ? d->format : Format::Invalid;
+}
+
+Texture::Alignment Texture::alignment() const
+{
+    return d ? d->align : Alignment::Byte;
 }
 
 bool Texture::isCompressed() const
@@ -505,7 +512,7 @@ auto Texture::constLineData(const Texture::Position &p, const Texture::Index& in
 Texture Texture::copy() const
 {
     Texture result(TextureData::create(
-                       d->format, d->width, d->height, d->faces == 6, d->depth, d->layers, d->levels));
+                       d->format, d->width, d->height, d->faces == 6, d->depth, d->layers, d->levels, d->align));
     if (result.isNull())
         return result;
 
@@ -657,6 +664,7 @@ QDataStream &operator<<(QDataStream &stream, const Texture &texture)
            << quint32(texture.faces())
            << quint32(texture.layers())
            << quint32(texture.levels())
+           << quint8(texture.alignment())
            << QByteArray::fromRawData(
                   reinterpret_cast<const char *>(texture.data().data()), int(texture.data().size()));
     return stream;
@@ -672,6 +680,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
     quint32 faces;
     quint32 layers;
     quint32 levels;
+    quint8 align;
     QByteArray data;
     stream >> format
             >> width
@@ -680,6 +689,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
             >> faces
             >> layers
             >> levels
+            >> align
             >> data;
     if (stream.status() == QDataStream::Ok) {
         auto result = Texture(TextureData::create(
@@ -689,7 +699,8 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
                                   int(depth),
                                   faces > 1,
                                   int(layers),
-                                  int(levels)));
+                                  int(levels),
+                                  Texture::Alignment(align)));
         if (result.bytes() == data.size()) {
             memmove(result.data().data(), data.data(), size_t(data.size()));
             texture = result;

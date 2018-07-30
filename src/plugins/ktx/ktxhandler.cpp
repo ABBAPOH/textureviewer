@@ -61,7 +61,12 @@ bool KtxHandler::read(Texture& texture)
     const auto levels = std::max<int>(1, header.numberOfMipmapLevels);
     const auto layers = std::max<int>(1, header.numberOfArrayElements);
 
-    auto result = Texture::create(texelFormat.format(), size, levels, layers);
+    auto result = Texture::create(
+                texelFormat.format(),
+                size,
+                levels,
+                layers,
+                Texture::Alignment::Word);
     if (result.isNull()) {
         qCWarning(ktxhandler) << "Can't create texture";
         return false;

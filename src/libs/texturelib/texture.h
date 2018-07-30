@@ -109,8 +109,8 @@ public:
     };
 
     enum class Alignment {
-        Byte, // 1-byte alignment
-        Word, // 4-bytes alignment
+        Byte = 1, // 1-byte alignment
+        Word = 4, // 4-bytes alignment
     };
 
     class Size;
@@ -120,14 +120,16 @@ public:
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
 
-    static Texture create(Format format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1);
-    static Texture create(Format format, Size size, int levels = 1, int layers = 1);
+    static Texture create(Format format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
+    static Texture create(Format format, Size size, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
 
     static qsizetype calculateBytesPerLine(Format format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(Format format, int width, int height, Alignment align = Alignment::Byte);
 
     bool isNull() const;
     Format format() const;
+
+    Alignment alignment() const;
 
     bool isCompressed() const;
 

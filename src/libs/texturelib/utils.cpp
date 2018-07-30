@@ -57,7 +57,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
     const auto pixelFormat = texelFormat.oglPixelFormat();
     const auto pixelType = texelFormat.oglPixelType();
     const auto options = std::make_unique<QOpenGLPixelTransferOptions>();
-    options->setAlignment(1);
+    options->setAlignment(int(texture.alignment()));
 
     auto result = std::make_unique<QOpenGLTexture>(target);
     result->setFormat(textureFormat);

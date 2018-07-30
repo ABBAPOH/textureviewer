@@ -21,7 +21,8 @@ public:
             int depth,
             bool isCubemap,
             int levels,
-            int layers);
+            int layers,
+            Texture::Alignment align);
 
     static qsizetype calculateBytesPerLine(
             const TexelFormat &format,
@@ -48,6 +49,7 @@ public:
 
     QAtomicInt ref {0};
     Texture::Format format {Texture::Format::Invalid};
+    Texture::Alignment align {Texture::Alignment::Byte};
     bool compressed {false};
     int width {0};
     int height {0};
