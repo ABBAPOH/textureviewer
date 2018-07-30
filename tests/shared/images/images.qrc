@@ -39,6 +39,7 @@
         <file>ktx/RGBA_8888.ktx</file>
         <file>ktx/R11_EAC_SNorm.ktx</file>
         <file>ktx/R11_EAC_UNorm.ktx</file>
+        <file>ktx/R8.ktx</file>
         <file>ktx/RG11_EAC_SNorm.ktx</file>
         <file>ktx/RG11_EAC_UNorm.ktx</file>
         <file>ktx/RGB8_ETC2.ktx</file>
