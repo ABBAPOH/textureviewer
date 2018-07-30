@@ -56,11 +56,11 @@ TextureData *TextureData::create(
     if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == Texture::Format::Invalid)
         return nullptr; // invalid parameter(s)
 
-    auto uwidth = uint(width);
-    auto uheight = uint(height);
-    auto udepth = uint(depth);
-    auto ufaces = isCubemap ? uint(6) : uint(1);
-    auto ulayers = uint(layers);
+    const auto uwidth = uint(width);
+    const auto uheight = uint(height);
+    const auto udepth = uint(depth);
+    const auto ufaces = isCubemap ? uint(6) : uint(1);
+    const auto ulayers = uint(layers);
 
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
@@ -68,10 +68,10 @@ TextureData *TextureData::create(
     const auto texelFormat = TexelFormat::texelFormat(format);
 
     for (int level = 0; level < levels; ++level) {
-        auto ulevel = uint(level);
-        auto w = std::max<uint>(uwidth >> ulevel, 1);
-        auto h = std::max<uint>(uheight >> ulevel, 1);
-        auto d = std::max<uint>(udepth >> ulevel, 1);
+        const auto ulevel = uint(level);
+        const auto w = std::max<uint>(uwidth >> ulevel, 1);
+        const auto h = std::max<uint>(uheight >> ulevel, 1);
+        const auto d = std::max<uint>(udepth >> ulevel, 1);
 
         // calculateBytesPerLine already checks overflow
         const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w, align); // bytes per scanline
