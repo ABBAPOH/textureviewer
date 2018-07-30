@@ -20,7 +20,7 @@ static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 
 bool KtxHandler::read(Texture& texture)
 {
-    KtxHeader header;
+    KtxHeader header = {};
 
     QDataStream s(device().get());
     s >> header;
