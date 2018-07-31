@@ -18,6 +18,10 @@ class TestHandlerPlugin : public TextureIOHandlerPlugin
 
 public:
     TestHandlerPlugin() = default;
+    TestHandlerPlugin(TestHandlerPlugin &&) = delete;
+    ~TestHandlerPlugin() override = default;
+
+    TestHandlerPlugin& operator=(TestHandlerPlugin &&) = delete;
 
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
     Capabilities capabilities(const QMimeType &mimeType) const override;
