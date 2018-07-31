@@ -191,42 +191,47 @@ void TestTexture::bytesPerLine_data()
 {
     QTest::addColumn<Texture::Format>("format");
     QTest::addColumn<int>("width");
-    QTest::addColumn<qsizetype>("bpl");
+    QTest::addColumn<qsizetype>("bpl1");
+    QTest::addColumn<qsizetype>("bpl4");
 
-    QTest::newRow("RGBA_8888, w=1") << Texture::Format::RGBA_8888 << 1 << qsizetype(4);
-    QTest::newRow("RGBA_8888, w=2") << Texture::Format::RGBA_8888 << 2 << qsizetype(8);
-    QTest::newRow("RGBA_8888, w=5") << Texture::Format::RGBA_8888 << 5 << qsizetype(20);
-    QTest::newRow("RGBA_8888, w=8") << Texture::Format::RGBA_8888 << 8 << qsizetype(32);
+    QTest::newRow("RGBA_8888, w=1") << Texture::Format::RGBA_8888 << 1 << qsizetype(4) << qsizetype(4);
+    QTest::newRow("RGBA_8888, w=2") << Texture::Format::RGBA_8888 << 2 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("RGBA_8888, w=5") << Texture::Format::RGBA_8888 << 5 << qsizetype(20) << qsizetype(20);
+    QTest::newRow("RGBA_8888, w=8") << Texture::Format::RGBA_8888 << 8 << qsizetype(32) << qsizetype(32);
 
-    QTest::newRow("RGB_888, w=1") << Texture::Format::RGB_888 << 1 << qsizetype(3);
-    QTest::newRow("RGB_888, w=5") << Texture::Format::RGB_888 << 5 << qsizetype(15);
-    QTest::newRow("RGB_888, w=8") << Texture::Format::RGB_888 << 8 << qsizetype(24);
+    QTest::newRow("RGB_888, w=1") << Texture::Format::RGB_888 << 1 << qsizetype(3) << qsizetype(4);
+    QTest::newRow("RGB_888, w=5") << Texture::Format::RGB_888 << 5 << qsizetype(15) << qsizetype(16);
+    QTest::newRow("RGB_888, w=8") << Texture::Format::RGB_888 << 8 << qsizetype(24) << qsizetype(24);
 
-    QTest::newRow("BGR_565, w=1") << Texture::Format::BGR_565 << 1 << qsizetype(2);
-    QTest::newRow("BGR_565, w=5") << Texture::Format::BGR_565 << 5 << qsizetype(10);
-    QTest::newRow("BGR_565, w=8") << Texture::Format::BGR_565 << 8 << qsizetype(16);
+    QTest::newRow("BGR_565, w=1") << Texture::Format::BGR_565 << 1 << qsizetype(2) << qsizetype(4);
+    QTest::newRow("BGR_565, w=5") << Texture::Format::BGR_565 << 5 << qsizetype(10) << qsizetype(12);
+    QTest::newRow("BGR_565, w=8") << Texture::Format::BGR_565 << 8 << qsizetype(16) << qsizetype(16);
 
-    QTest::newRow("L8, w=1") << Texture::Format::L8 << 1 << qsizetype(1);
-    QTest::newRow("L8, w=5") << Texture::Format::L8 << 5 << qsizetype(5);
-    QTest::newRow("L8, w=8") << Texture::Format::L8 << 8 << qsizetype(8);
+    QTest::newRow("L8, w=1") << Texture::Format::L8 << 1 << qsizetype(1) << qsizetype(4);
+    QTest::newRow("L8, w=5") << Texture::Format::L8 << 5 << qsizetype(5) << qsizetype(8);
+    QTest::newRow("L8, w=8") << Texture::Format::L8 << 8 << qsizetype(8) << qsizetype(8);
 
-    QTest::newRow("DXT1, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8);
-    QTest::newRow("DXT1, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16);
-    QTest::newRow("DXT1, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16);
+    QTest::newRow("DXT1, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT1, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT1, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16) << qsizetype(16);
 
-    QTest::newRow("DXT5, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8);
-    QTest::newRow("DXT5, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16);
-    QTest::newRow("DXT5, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16);
+    QTest::newRow("DXT5, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT5, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT5, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16) << qsizetype(16);
 }
 
 void TestTexture::bytesPerLine()
 {
     QFETCH(Texture::Format, format);
     QFETCH(int, width);
-    QFETCH(qsizetype, bpl);
+    QFETCH(qsizetype, bpl1);
+    QFETCH(qsizetype, bpl4);
 
-    const auto result = Texture::calculateBytesPerLine(format, width);
-    QCOMPARE(result, bpl);
+    const auto result1 = Texture::calculateBytesPerLine(format, width, Texture::Alignment::Byte);
+    QCOMPARE(result1, bpl1);
+
+    const auto result4 = Texture::calculateBytesPerLine(format, width, Texture::Alignment::Word);
+    QCOMPARE(result4, bpl4);
 }
 
 void TestTexture::offset_data()
