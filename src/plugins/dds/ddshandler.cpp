@@ -352,39 +352,11 @@ bool DDSHandler::read(Texture &texture)
             }
 
             for (int level = 0; level < int(ulevels); ++level) {
-                auto uwidth = std::max<quint32>(1, m_header.width >> level);
-                auto uheight = std::max<quint32>(1, m_header.height >> level);
-//                auto depth = std::max<quint32>(1, m_header.depth >> level);
-                const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(uwidth));
-                if (result.isCompressed()) {
-                    qsizetype size = pitch * std::max<quint32>(1, (uheight + 3) / 4);
-                    if (size != result.bytesPerImage(level)) {
-                        qCWarning(ddshandler) << "Image size != texture size:"
-                                              << size << "!=" << result.bytesPerImage(level);
-                        return false;
-                    }
-                    const auto data = result.imageData({Texture::Side(face), level, layer});
-                    const auto read = device()->read(reinterpret_cast<char *>(data.data()), size);
-                    if (read != size) {
-                        qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
-                        return false;
-                    }
-                } else {
-                    if (pitch > result.bytesPerLine(level)) {
-                        qCWarning(ddshandler) << "Pitch is bigger than texture's bytesPerLine:"
-                                              << pitch << ">=" << result.bytesPerLine(level);
-                        return false;
-                    }
-
-                    for (quint32 y = 0; y < uheight; ++y) {
-                        const auto line = result.lineData(
-                                    {0, int(y)}, {Texture::Side(face), level, layer});
-                        auto read = device()->read(reinterpret_cast<char *>(line.data()), pitch);
-                        if (read != pitch) {
-                            qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
-                            return false;
-                        }
-                    }
+                const auto data = result.imageData({Texture::Side(face), level, layer});
+                const auto read = device()->read(reinterpret_cast<char *>(data.data()), data.size());
+                if (read != data.size()) {
+                    qCWarning(ddshandler) << "Can't read from file:" << device()->errorString();
+                    return false;
                 }
             }
         }
