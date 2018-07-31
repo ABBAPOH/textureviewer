@@ -477,55 +477,6 @@ auto Texture::constImageData(Index index) const -> ConstData
     return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
 }
 
-auto Texture::lineData(const Texture::Position &p, const Texture::Index& i) -> Data
-{
-    if (!d)
-        return Data();
-
-    auto data = dataImpl(i.face(), i.level(), i.layer()); // detach here
-    if (!data)
-        return Data();
-
-    CHECK_ZERO_X(p.x(), Data());
-    CHECK_POINT(p.x(), p.y(), p.z(), i.level(), Data());
-
-    const auto pointer = data
-            // actually, depth should be always 1 for cubemaps, but do the correct math here
-            + d->bytesPerLine(i.level()) * height(i.level()) * depth(i.level()) * i.face()
-            + d->bytesPerLine(i.level()) * height(i.level()) * p.z()
-            + d->bytesPerLine(i.level()) * p.y();
-    const auto size = d->bytesPerLine(i.level());
-
-    return Data(pointer, size);
-}
-
-auto Texture::lineData(const Texture::Position &p, const Texture::Index& i) const -> ConstData
-{
-    if (!d)
-        return ConstData();
-
-    auto data = dataImpl(i.face(), i.level(), i.layer());
-    if (!data)
-        return ConstData();
-
-    CHECK_ZERO_X(p.x(), Data());
-    CHECK_POINT(p.x(), p.y(), p.z(), i.level(), ConstData());
-
-    const auto pointer = data
-            // actually, depth should be always 1 for cubemaps, but do the correct math here
-            + d->bytesPerLine(i.level()) * height(i.level()) * depth(i.level()) * i.face()
-            + d->bytesPerLine(i.level()) * height(i.level()) * p.z()
-            + d->bytesPerLine(i.level()) * p.y();
-    const auto size = d->bytesPerLine(i.level());
-
-    return ConstData(pointer, size);
-}
-
-auto Texture::constLineData(const Texture::Position &p, const Texture::Index& index) const -> ConstData
-{
-    return lineData(p, index);
-}
-
 Texture Texture::convert(Texture::Alignment align) const
 {
     if (!d)
@@ -766,18 +717,6 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
         }
     }
     return stream;
-}
-
-
-
-QDebug operator<<(QDebug &d, const Texture::Position &position)
-{
-    auto s = QString("Texture::Position(x = %1, y = %2, z = %3)").arg(
-                QString::number(position.x()),
-                QString::number(position.y()),
-                QString::number(position.z()));
-    d << s;
-    return d;
 }
 
 QDebug operator<<(QDebug& d, const Texture::Index& index)

@@ -176,9 +176,10 @@ public:
     // lead to a bunch of a boilerplate code. A test need to be written (maybe convert(Alignment)?).
     // TODO: explore if we need this API or it's ok to use imageData instead
     // TODO: replace Position with z/y overloads?
-    Data lineData(const Position &p, const Index &index);
-    ConstData lineData(const Position &p, const Index &index) const;
-    ConstData constLineData(const Position &p, const Index &index) const;
+
+    // Data lineData(const Position &p, const Index &index);
+    // ConstData lineData(const Position &p, const Index &index) const;
+    // ConstData constLineData(const Position &p, const Index &index) const;
 
     Texture convert(Alignment align) const;
     Texture copy() const;
@@ -242,36 +243,6 @@ private:
     int m_height {0};
     int m_depth {0};
 };
-
-class Texture::Position
-{
-public:
-    using Side = Texture::Side;
-
-    inline constexpr Position() = default;
-    inline constexpr Position(int x) : m_x(x) {}
-    inline constexpr Position(int x, int y) : m_x(x), m_y(y) {}
-    inline constexpr Position(int x, int y, int z) : m_x(x), m_y(y), m_z(z) {}
-
-    inline constexpr int x() const { return m_x; }
-    inline constexpr Position &x(int x) { m_x = x; return *this; }
-    inline constexpr void setX(int x) { m_x = x; }
-
-    inline constexpr int y() const { return m_y; }
-    inline constexpr Position &y(int y) { m_y = y; return *this; }
-    inline constexpr void setY(int y) { m_y = y; }
-
-    inline constexpr int z() const { return m_z; }
-    inline constexpr Position &z(int z) { m_x = z; return *this; }
-    inline constexpr void setZ(int z) { m_z = z; }
-
-private:
-    int m_x {0};
-    int m_y {0};
-    int m_z {0};
-};
-
-QDebug operator<<(QDebug &d, const Texture::Position &position);
 
 class Texture::Index
 {
