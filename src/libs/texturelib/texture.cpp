@@ -246,16 +246,17 @@ Texture::Texture(const QImage& image)
     }
 
     auto result = Texture::create(format, {copy.width(), copy.height()});
-    if (result.bytesPerLine() < copy.bytesPerLine()) {
+    const auto bytesPerLine = result.bytesPerLine();
+    if (bytesPerLine < copy.bytesPerLine()) {
         qCWarning(texture) << Q_FUNC_INFO
                            << "texture line size is less than an image line size"
                            << result.bytesPerLine() << "<" << copy.bytesPerLine();
         return;
     }
 
-    // We use scanline here because QImage has different alignment
+    const auto data = imageData({});
     for (int y = 0; y < result.height(); ++y) {
-        const auto line = result.lineData({0, y}, {});
+        const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy(line, {copy.scanLine(y), copy.bytesPerLine()});
     }
 
@@ -582,9 +583,9 @@ QImage Texture::toImage() const
         return QImage();
     }
 
-    // We use scanline here because QImage has different alignment
+    const auto data = imageData({});
     for (int y = 0; y < height(); ++y) {
-        const auto line = lineData({0, y}, {});
+        const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy({result.scanLine(y), result.bytesPerLine()}, line);
     }
 
