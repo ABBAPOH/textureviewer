@@ -4,8 +4,6 @@
 
 #include <TextureLib/Texture>
 
-#include <QtCore/QMimeType>
-
 #include <ObserverPointer>
 
 class TEXTURELIB_EXPORT TextureIOHandler
