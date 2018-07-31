@@ -1,7 +1,12 @@
 #include "utils.h"
 #include "texelformat.h"
 
+#include <TextureLib/Texture>
+
 #include <QtGui/QOpenGLPixelTransferOptions>
+#include <QtGui/QOpenGLTexture>
+
+#include <QtCore/QDebug>
 
 QOpenGLTexture::Target getTarget(const Texture &texture)
 {

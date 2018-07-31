@@ -1,10 +1,17 @@
 #ifndef UTILS_H
 #define UTILS_H
 
-#include <TextureLib/Texture>
-#include <QDebug>
-#include <QtGui/QOpenGLTexture>
+#include "texturelib_global.h"
+
+#include <qglobal.h>
+
 #include <memory>
+
+QT_BEGIN_NAMESPACE
+class QOpenGLTexture;
+QT_END_NAMESPACE
+
+class Texture;
 
 namespace Utils {
 
