@@ -543,6 +543,9 @@ Texture Texture::convert(Texture::Alignment align) const
                 d->layers, d->levels,
                 align));
 
+    if (result.isNull())
+        return Texture();
+
     for (int level = 0; level < d->levels; ++level) {
         for (int layer = 0; layer < d->layers; ++layer) {
             for (int face = 0; face < d->faces; ++face) {
