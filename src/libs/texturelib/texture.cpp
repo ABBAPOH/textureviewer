@@ -36,6 +36,15 @@
         return (rv); \
     } \
 
+namespace {
+
+void memoryCopy(Texture::Data dst, Texture::ConstData src)
+{
+    memcpy(dst.data(), src.data(), std::min(dst.size_bytes(), src.size_bytes()));
+}
+
+} // namespace
+
 TextureData::~TextureData()
 {
     free(data);
@@ -238,7 +247,7 @@ Texture::Texture(const QImage& image)
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < result.height(); ++y) {
         const auto line = result.lineData({0, y}, {});
-        memcpy(line.data(), copy.scanLine(y), size_t(copy.bytesPerLine()));
+        memoryCopy(line, {copy.scanLine(y), copy.bytesPerLine()});
     }
 
     *this = std::move(result);
@@ -518,7 +527,7 @@ Texture Texture::copy() const
         return result;
 
     Q_ASSERT(result.d->nbytes == d->nbytes);
-    memcpy(result.data().data(), data().data(), size_t(d->nbytes));
+    memoryCopy(result.data(), data());
 
     return result;
 }
@@ -567,7 +576,7 @@ QImage Texture::toImage() const
     // We use scanline here because QImage has different alignment
     for (int y = 0; y < height(); ++y) {
         const auto line = lineData({0, y}, {});
-        memcpy(result.scanLine(y), line.data(), size_t(line.size()));
+        memoryCopy({result.scanLine(y), result.bytesPerLine()}, line);
     }
 
     return result;
@@ -703,7 +712,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
                                   int(levels),
                                   Texture::Alignment(align)));
         if (result.bytes() == data.size()) {
-            memmove(result.data().data(), data.data(), size_t(data.size()));
+            memoryCopy(result.data(), {reinterpret_cast<const uchar *>(data.constData()), data.size()});
             texture = result;
         }
     }
