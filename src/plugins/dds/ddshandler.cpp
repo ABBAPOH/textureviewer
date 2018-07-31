@@ -383,10 +383,7 @@ bool DDSHandler::write(const Texture &texture)
         return false;
     }
 
-    if (texture.alignment() != Texture::Alignment::Byte) {
-        qCWarning(ddshandler) << "Only byte alignment is supported";
-        return false;
-    }
+    const auto copy = texture.convert(Texture::Alignment::Byte);
 
     QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
@@ -397,14 +394,14 @@ bool DDSHandler::write(const Texture &texture)
     dds.size = 124;
     dds.flags = DDSFlag::Caps | DDSFlag::Height |
                 DDSFlag::Width | DDSFlag::PixelFormat;
-    dds.height = quint32(texture.height());
-    dds.width = quint32(texture.width());
+    dds.height = quint32(copy.height());
+    dds.width = quint32(copy.width());
     dds.depth = 0;
-    dds.mipMapCount = quint32(texture.levels() > 1 ? texture.levels() : 0);
+    dds.mipMapCount = quint32(copy.levels() > 1 ? copy.levels() : 0);
     for (int i = 0; i < DDSHeader::ReservedCount; i++)
         dds.reserved1[i] = 0;
     dds.caps = DDSCapsFlag::Texture;
-    if (texture.levels() > 1)
+    if (copy.levels() > 1)
         dds.caps |= DDSCapsFlag::Mipmap;
     dds.caps2 = 0;
     dds.caps3 = 0;
@@ -430,14 +427,14 @@ bool DDSHandler::write(const Texture &texture)
     dds.pixelFormat.bBitMask = info.bBitMask;
 
     dds.pitchOrLinearSize =
-            quint32(Texture::calculateBytesPerLine(texture.format(), texture.width()));
+            quint32(Texture::calculateBytesPerLine(copy.format(), copy.width()));
 
     s << dds;
 
-    for (int layer = 0; layer < texture.layers(); ++layer) {
-        for (int face = 0; face < texture.faces(); ++face) {
-            for (int level = 0; level < texture.levels(); ++level) {
-                const auto data = texture.imageData({Texture::Side(face), level, layer});
+    for (int layer = 0; layer < copy.layers(); ++layer) {
+        for (int face = 0; face < copy.faces(); ++face) {
+            for (int level = 0; level < copy.levels(); ++level) {
+                const auto data = copy.imageData({Texture::Side(face), level, layer});
                 const auto writen = device()->write(reinterpret_cast<const char *>(data.data()), data.size());
                 if (writen != data.size()) {
                     qCWarning(ddshandler) << "Can't write to device:" << device()->errorString();
