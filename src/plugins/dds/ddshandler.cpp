@@ -333,13 +333,6 @@ bool DDSHandler::read(Texture &texture)
                             << pitch << "!=" << m_header.pitchOrLinearSize;
     }
 
-//    qint64 pos = headerSize + mipmapOffset(m_header, m_format, 0);
-//    qint64 size = mipmapSize(m_header, m_format, 0);
-//    if (headerSize + size > device()->size()) {
-//        qCWarning(ddshandler) << "Texture file is too small";
-//        return false;
-//    }
-
     if (!device()->seek(headerSize)) {
         qCWarning(ddshandler) << "Can't seek to mipmap";
         return false;
