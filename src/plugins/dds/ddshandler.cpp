@@ -355,7 +355,7 @@ bool DDSHandler::read(Texture &texture)
         }
     }
 
-    qSwap(texture, result);
+    texture = std::move(result);
 
     return true;
 }
