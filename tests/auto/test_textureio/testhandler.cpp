@@ -31,10 +31,6 @@ bool TestHandler::write(const Texture &texture)
     return true;
 }
 
-TestHandlerPlugin::TestHandlerPlugin()
-{
-}
-
 std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(const QMimeType &mimeType)
 {
     Q_UNUSED(mimeType);

@@ -17,7 +17,8 @@ class TestHandlerPlugin : public TextureIOHandlerPlugin
     Q_PLUGIN_METADATA(IID "org.arch.ImageDocument.TestHandlerPlugin" FILE "test.json")
 
 public:
-    TestHandlerPlugin();
+    TestHandlerPlugin() = default;
+
     std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
     Capabilities capabilities(const QMimeType &mimeType) const override;
 };
