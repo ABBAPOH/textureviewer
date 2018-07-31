@@ -6,8 +6,8 @@
 class TestHandler : public TextureIOHandler
 {
 public:
-    virtual bool read(Texture &texture) override;
-    virtual bool write(const Texture &contents) override;
+    bool read(Texture &texture) override;
+    bool write(const Texture &contents) override;
 };
 
 class TestHandlerPlugin : public TextureIOHandlerPlugin
