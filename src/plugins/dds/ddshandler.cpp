@@ -91,13 +91,13 @@ constexpr static const DDSCaps2Flag faceFlags[6] = {
 
 struct FormatInfo
 {
-    DDSFormat format;
+    DDSFormat format {DDSFormat::Unknown};
     DDSPixelFormatFlags flags;
-    quint32 bitCount;
-    quint32 rBitMask;
-    quint32 gBitMask;
-    quint32 bBitMask;
-    quint32 aBitMask;
+    quint32 bitCount {0};
+    quint32 rBitMask {0};
+    quint32 gBitMask {0};
+    quint32 bBitMask {0};
+    quint32 aBitMask {0};
 };
 
 static constexpr const FormatInfo formatInfos[] = {
