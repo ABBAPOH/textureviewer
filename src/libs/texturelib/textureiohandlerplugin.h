@@ -22,7 +22,11 @@ public:
     using Capabilities = QFlags<Capability>;
     Q_FLAG(Capabilities)
 
-    explicit TextureIOHandlerPlugin() {}
+    TextureIOHandlerPlugin() = default;
+    TextureIOHandlerPlugin(TextureIOHandlerPlugin &&) = delete;
+    ~TextureIOHandlerPlugin() override = default;
+
+    TextureIOHandlerPlugin &operator =(TextureIOHandlerPlugin &&) = delete;
 
     virtual Capabilities capabilities(const QMimeType &mimeType) const = 0;
 
