@@ -134,40 +134,14 @@ static bool readTexture(
     }
 
     for (int level = header.mipmapCount - 1; level >= 0; --level) {
-        auto width = std::max<quint16>(1, header.width >> level);
-        auto height = std::max<quint16>(1, header.height >> level);
-        auto depth = std::max<quint16>(1, header.depth >> level);
-        auto pitch = Texture::calculateBytesPerLine(format, width);
-
         for (int layer = 0; layer < header.frames; ++layer) {
             for (int face = 0; face < 1; ++face) { // TODO: where do we get faces??
-                for (int z = 0; z < depth; ++z) {
-                    if (result.isCompressed()) {
-                        qsizetype size = pitch * std::max<quint32>(1, (height + 3) / 4);
-                        if (size != result.bytesPerImage(level)) {
-                            qCWarning(vtfhandler) << "Image size != texture size:"
-                                                  << size << "!=" << result.bytesPerImage(level);
-                            return false;
-                        }
-                        const auto data = result.imageData({Texture::Side(face), level, layer});
-                        const auto read = device->read(reinterpret_cast<char *>(data.data()), size);
-                        if (read != size) {
-                            qCWarning(vtfhandler) << "Can't read from device:"
-                                                  << device->errorString();
-                            return false;
-                        }
-                    } else {
-                        for (int y = 0; y < height; ++y) {
-                            const auto line = result.lineData(
-                            {0, y, z}, {(Texture::Side(face)), level, layer});
-                            auto read = device->read(reinterpret_cast<char *>(line.data()), pitch);
-                            if (read != pitch) {
-                                qCWarning(vtfhandler) << "Can't read from device:"
-                                                      << device->errorString();
-                                return false;
-                            }
-                        }
-                    }
+                const auto data = result.imageData({Texture::Side(face), level, layer});
+                const auto read = device->read(reinterpret_cast<char *>(data.data()), data.size());
+                if (read != data.size()) {
+                    qCWarning(vtfhandler) << "Can't read from device:"
+                                          << device->errorString();
+                    return false;
                 }
             }
         }
