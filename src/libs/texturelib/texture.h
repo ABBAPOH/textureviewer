@@ -170,13 +170,12 @@ public:
     // const T texelData(const Position &p) const;
     // const T constTexelData(const Position &p) const;
 
-    // The only reason for the scanLine API (aka lineData) is that textures *possibly* can
-    // have different alignments (in OGL, it is 1, 4, 8).
-    // TODO: need testing
-    // Ok, here's another usecase: converting to QImage, QImage has an alignment of 4,
-    // so we forced to fill it line by line even if format is the same
-    // TODO: replace Position with z/y overloads?
+    // Ok, KTX really have different alignment (4) rather than other (dds, vtf) formats (1).
+    // So, we can have a usage of a scanline API.
+    // However, the same can be achieved via manual iteration over imageData, hovewer that can
+    // lead to a bunch of a boilerplate code. A test need to be written (maybe convert(Alignment)?).
     // TODO: explore if we need this API or it's ok to use imageData instead
+    // TODO: replace Position with z/y overloads?
     Data lineData(const Position &p, const Index &index);
     ConstData lineData(const Position &p, const Index &index) const;
     ConstData constLineData(const Position &p, const Index &index) const;
