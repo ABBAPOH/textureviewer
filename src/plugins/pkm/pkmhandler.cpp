@@ -1,5 +1,9 @@
 #include "pkmhandler.h"
 
+#include <TextureLib/Texture>
+
+#include <QtCore/QDataStream>
+
 struct PkmHeader
 {
     quint8 magic[4];

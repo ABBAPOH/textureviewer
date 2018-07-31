@@ -42,12 +42,14 @@
 
 #include "ddshandler.h"
 
-#include <QtCore/qdebug.h>
-#include <QtCore/qmath.h>
-
-#include <QtGui/qimage.h>
-
 #include "ddsheader.h"
+
+#include <TextureLib/Texture>
+
+#include <QtCore/QDebug>
+#include <QtCore/QtMath>
+
+#include <gsl/span>
 
 enum Colors {
     Red = 0,

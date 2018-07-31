@@ -2,9 +2,13 @@
 
 #include "texturelib_global.h"
 
-#include <TextureLib/Texture>
-
 #include <ObserverPointer>
+
+QT_BEGIN_NAMESPACE
+class QIODevice;
+QT_END_NAMESPACE
+
+class Texture;
 
 class TEXTURELIB_EXPORT TextureIOHandler
 {

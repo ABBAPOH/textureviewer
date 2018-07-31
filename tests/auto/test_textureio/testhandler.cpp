@@ -1,7 +1,10 @@
 #include "testhandler.h"
 
-#include <QtPlugin>
-#include <QDebug>
+#include <TextureLib/Texture>
+
+#include <QtCore/QDataStream>
+#include <QtCore/QDebug>
+#include <QtCore/QtPlugin>
 
 bool TestHandler::read(Texture &texture)
 {

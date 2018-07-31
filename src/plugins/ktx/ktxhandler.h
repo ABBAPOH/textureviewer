@@ -3,6 +3,8 @@
 
 #include <TextureLib/TextureIOHandler>
 
+#include <QtCore/QLoggingCategory>
+
 class KtxHandler : public TextureIOHandler
 {
 public:

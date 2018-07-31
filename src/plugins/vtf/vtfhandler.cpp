@@ -1,6 +1,10 @@
 #include "vtfhandler.h"
 #include "vtfenums.h"
 
+#include <TextureLib/Texture>
+
+#include <QtCore/QDataStream>
+
 template<typename T>
 inline constexpr bool isPower2(T value) noexcept
 {
