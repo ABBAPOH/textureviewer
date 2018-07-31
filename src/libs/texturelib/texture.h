@@ -180,6 +180,7 @@ public:
     ConstData lineData(const Position &p, const Index &index) const;
     ConstData constLineData(const Position &p, const Index &index) const;
 
+    Texture convert(Alignment align) const;
     Texture copy() const;
 
     QImage toImage() const;

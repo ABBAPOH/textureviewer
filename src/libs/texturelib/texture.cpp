@@ -526,6 +526,46 @@ auto Texture::constLineData(const Texture::Position &p, const Texture::Index& in
     return lineData(p, index);
 }
 
+Texture Texture::convert(Texture::Alignment align) const
+{
+    if (!d)
+        return Texture();
+
+    if (isCompressed())
+        return *this;
+
+    if (align == alignment())
+        return *this;
+
+    auto result = Texture(TextureData::create(
+                d->format,
+                d->width, d->height, d->faces == 6, d->depth,
+                d->layers, d->levels,
+                align));
+
+    for (int level = 0; level < d->levels; ++level) {
+        for (int layer = 0; layer < d->layers; ++layer) {
+            for (int face = 0; face < d->faces; ++face) {
+                const auto srcData = imageData({Side(face), level, layer});
+                const auto dstData = result.imageData({Side(face), level, layer});
+                for (int z = 0; z < d->depth; ++z) {
+                    for (int y = 0; y < d->height; ++y) {
+                        const auto srcLine = srcData.subspan(
+                                    d->bytesPerSlice(level) * z + d->bytesPerLine(y),
+                                    d->bytesPerLine(y));
+                        const auto dstLine = dstData.subspan(
+                                    result.d->bytesPerSlice(level) * z + result.d->bytesPerLine(y),
+                                    result.d->bytesPerLine(y));
+                        memoryCopy(dstLine, srcLine);
+                    }
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
 /*!
     Performs a deep-copying of this texture
 */
