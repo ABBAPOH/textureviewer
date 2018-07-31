@@ -43,6 +43,15 @@ void memoryCopy(Texture::Data dst, Texture::ConstData src)
     memcpy(dst.data(), src.data(), std::min(dst.size_bytes(), src.size_bytes()));
 }
 
+int memoryCompare(Texture::ConstData lhs, Texture::ConstData rhs)
+{
+    if (lhs.size_bytes() != rhs.size_bytes()) {
+        return lhs.size_bytes() < rhs.size_bytes() ? -1 : 1;
+    }
+
+    return memcmp(lhs.data(), rhs.data(), lhs.size_bytes());
+}
+
 } // namespace
 
 TextureData::~TextureData()
@@ -653,11 +662,7 @@ bool operator==(const Texture &lhs, const Texture &rhs)
             || lhs.d->levels != rhs.d->levels)
         return false;
 
-    // sanity check for data sizes
-    if (lhs.d->nbytes != rhs.d->nbytes)
-        return false;
-
-    return memcmp(lhs.d->data, rhs.d->data, size_t(rhs.d->nbytes)) == 0;
+    return memoryCompare({lhs.d->data, lhs.d->nbytes}, {rhs.d->data, rhs.d->nbytes}) == 0;
 }
 
 bool operator!=(const Texture &lhs, const Texture &rhs)
