@@ -64,13 +64,7 @@ public: // ImageIOHandler interface
     bool write(const Texture &texture) override;
 
 private:
-    bool doScan();
     bool verifyHeader(const DDSHeader &dds) const;
-
-private:
-    DDSHeader m_header;
-    DDSFormat m_format {DDSFormat::A8R8G8B8};
-    DDSHeaderDX10 m_header10;
 };
 
 Q_DECLARE_LOGGING_CATEGORY(ddshandler)

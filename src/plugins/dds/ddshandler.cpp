@@ -288,28 +288,47 @@ bool DDSHandler::read(Texture &texture)
     if (device()->peek(4) != QByteArrayLiteral("DDS "))
         return false;
 
-    if (!doScan())
+    DDSHeader header;
+    DDSFormat format {DDSFormat::Unknown};
+    DDSHeaderDX10 header10;
+
+    {
+        QDataStream s(device().get());
+        s.setByteOrder(QDataStream::LittleEndian);
+        s >> header;
+        if (header.pixelFormat.fourCC == dx10Magic)
+            s >> header10;
+
+        if (s.status() != QDataStream::Ok) {
+            qCWarning(ddshandler) << "Can't read header: data stream status =" << s.status();
+            return false;
+        }
+    }
+
+    if (!verifyHeader(header))
         return false;
 
-    const auto ulayers = std::max(1u, m_header10.arraySize);
-    const auto ulevels = std::max(1u, m_header.mipMapCount);
-    const auto cubeMap = isCubeMap(m_header);
+    format = getFormat(header);
+
+    const auto ulayers = std::max(1u, header10.arraySize);
+    const auto ulevels = std::max(1u, header.mipMapCount);
+    const auto cubeMap = isCubeMap(header);
     const auto faces = cubeMap ? 6 : 1;
 
-    if (isVolumeMap(m_header)) {
+    if (isVolumeMap(header)) {
         qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
         return false;
     }
 
-    const auto textureFormat = convertFormat(DDSFormat(m_format), DXGIFormat(m_header10.dxgiFormat));
+    const auto textureFormat = convertFormat(DDSFormat(format), DXGIFormat(header10.dxgiFormat));
     if (textureFormat == Texture::Format::Invalid) {
-        qCWarning(ddshandler) << "Unsupported format" << quint32(m_format);
+        qCWarning(ddshandler) << "Unsupported format" << quint32(format);
         return false;
     }
 
     auto result = Texture::create(
                 textureFormat,
-                {int(m_header.width), int(m_header.height)},
+                {int(header.width), int(header.height)},
                 cubeMap ? Texture::IsCubemap::Yes : Texture::IsCubemap::No,
                 ulevels, ulayers);
 
@@ -318,11 +337,11 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(m_header.width));
+    const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(header.width));
 
-    if (pitch != m_header.pitchOrLinearSize) {
+    if (pitch != header.pitchOrLinearSize) {
         qCDebug(ddshandler) << "Computed pitch differs from the actual pitch"
-                            << pitch << "!=" << m_header.pitchOrLinearSize;
+                            << pitch << "!=" << header.pitchOrLinearSize;
     }
 
     if (!device()->seek(headerSize)) {
@@ -332,7 +351,7 @@ bool DDSHandler::read(Texture &texture)
 
     for (int layer = 0; layer < int(ulayers); ++layer) {
         for (int face = 0; face < faces; ++face) {
-            if (cubeMap && !(m_header.caps2 & (faceFlags[face]))) {
+            if (cubeMap && !(header.caps2 & (faceFlags[face]))) {
                 continue;
             }
 
@@ -435,27 +454,6 @@ bool DDSHandler::write(const Texture &texture)
             }
         }
     }
-
-    return true;
-}
-
-bool DDSHandler::doScan()
-{
-    m_format = DDSFormat::Unknown;
-
-    QDataStream s(device().get());
-    s.setByteOrder(QDataStream::LittleEndian);
-    s >> m_header;
-    if (m_header.pixelFormat.fourCC == dx10Magic)
-        s >> m_header10;
-
-    if (s.status() != QDataStream::Ok)
-        return false;
-
-    if (!verifyHeader(m_header))
-        return false;
-
-    this->m_format = getFormat(m_header);
 
     return true;
 }
