@@ -53,8 +53,6 @@ class DDSHandler : public TextureIOHandler
 public:
     DDSHandler();
 
-    QByteArray name() const;
-
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
     bool write(const Texture &texture) override;

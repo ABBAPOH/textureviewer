@@ -214,11 +214,6 @@ DDSHandler::DDSHandler() :
 {
 }
 
-QByteArray DDSHandler::name() const
-{
-    return QByteArrayLiteral("dds");
-}
-
 static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
 {
     if (format == DDSFormat::DX10) {
