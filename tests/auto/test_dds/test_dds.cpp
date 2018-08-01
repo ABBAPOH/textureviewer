@@ -117,10 +117,24 @@ void TestDds::benchRead_data()
 void TestDds::benchRead()
 {
     QFETCH(QString, fileName);
+
+    // preload QMimeDatabase
+    const auto mt = QMimeDatabase().mimeTypeForName(QStringLiteral("image/x-dds"));
+    QVERIFY(mt.isValid());
+
+    // preload file (qrc is compressed, so we will test zlib otherwise)
+    QFile source(fileName);
+    QVERIFY(source.open(QIODevice::ReadOnly));
+    QTemporaryFile file;
+    QVERIFY(file.open());
+    file.write(source.readAll());
+    file.close();
+
     QBENCHMARK {
-        TextureIO reader(fileName);
+        TextureIO reader(file.fileName(), QStringLiteral("image/x-dds"));
         auto result = reader.read();
         QVERIFY2(result, qPrintable(toUserString(result.error())));
+        QVERIFY(!result->isNull());
     }
 }
 
