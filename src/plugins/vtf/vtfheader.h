@@ -1,6 +1,8 @@
 #ifndef VTFHEADER_H
 #define VTFHEADER_H
 
+#include "vtfenums.h"
+
 #include <QtCore/QDataStream>
 #include <QtCore/QDebug>
 
@@ -11,7 +13,7 @@ struct VTFHeader
     quint32 headerSize;  // Size of the header struct  (16 byte aligned; currently 80 bytes) + size of the resources dictionary (7.3+).
     quint16 width; // Width of the largest mipmap in pixels. Must be a power of 2.
     quint16 height; // Height of the largest mipmap in pixels. Must be a power of 2.
-    quint32 flags; // VTF flags.
+    VTFFlags flags; // VTF flags.
     quint16 frames; // Number of frames, if animated (1 for no animation).
     quint16 firstFrame;  // First frame in animation (0 based).
     uchar padding0[4];  // reflectivity padding (16 byte alignment).

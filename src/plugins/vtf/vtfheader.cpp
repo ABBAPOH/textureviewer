@@ -2,6 +2,7 @@
 
 QDataStream &operator>>(QDataStream &s, VTFHeader &header)
 {
+    quint32 flags {0};
     s.setByteOrder(QDataStream::LittleEndian);
     s.setFloatingPointPrecision(QDataStream::SinglePrecision);
 
@@ -11,7 +12,8 @@ QDataStream &operator>>(QDataStream &s, VTFHeader &header)
     s >> header.headerSize;
     s >> header.width;
     s >> header.height;
-    s >> header.flags;
+    s >> flags;
+    header.flags = VTFFlag(flags);
     s >> header.frames;
     s >> header.firstFrame;
     for (int i = 0; i < 4; ++i)
@@ -56,7 +58,7 @@ QDataStream &operator<<(QDataStream &s, const VTFHeader &header)
     s << header.headerSize;
     s << header.width;
     s << header.height;
-    s << header.flags;
+    s << quint32(header.flags);
     s << header.frames;
     s << header.firstFrame;
     for (int i = 0; i < 4; ++i)
