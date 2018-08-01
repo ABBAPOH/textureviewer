@@ -209,11 +209,6 @@ static const FormatInfo &getFormatInfo(DDSFormat format)
     return formatInfos[0];
 }
 
-DDSHandler::DDSHandler() :
-    m_format(DDSFormat::A8R8G8B8)
-{
-}
-
 static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
 {
     if (format == DDSFormat::DX10) {

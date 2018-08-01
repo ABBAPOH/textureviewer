@@ -50,8 +50,14 @@
 
 class DDSHandler : public TextureIOHandler
 {
+    Q_DISABLE_COPY(DDSHandler)
+
 public:
-    DDSHandler();
+    DDSHandler() = default;
+    DDSHandler(DDSHandler &&) = default;
+    ~DDSHandler() override = default;
+
+    DDSHandler &operator=(DDSHandler &&) = default;
 
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
@@ -63,7 +69,7 @@ private:
 
 private:
     DDSHeader m_header;
-    DDSFormat m_format;
+    DDSFormat m_format {DDSFormat::A8R8G8B8};
     DDSHeaderDX10 m_header10;
 };
 
