@@ -471,17 +471,26 @@ qsizetype Texture::offset(Index index) const
 
 auto Texture::imageData(Index index) -> Data
 {
-    return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
+    const auto data = dataImpl(index.face(), index.level(), index.layer());
+    if (!data)
+        return {};
+    return {data, bytesPerImage(index.level())};
 }
 
 auto Texture::imageData(Index index) const -> ConstData
 {
-    return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
+    const auto data = dataImpl(index.face(), index.level(), index.layer());
+    if (!data)
+        return {};
+    return {data, bytesPerImage(index.level())};
 }
 
 auto Texture::constImageData(Index index) const -> ConstData
 {
-    return {dataImpl(index.face(), index.level(), index.layer()), bytesPerImage(index.level())};
+    const auto data = dataImpl(index.face(), index.level(), index.layer());
+    if (!data)
+        return {};
+    return {data, bytesPerImage(index.level())};
 }
 
 Texture Texture::convert(Texture::Alignment align) const
