@@ -443,16 +443,11 @@ bool DDSHandler::doScan()
 {
     m_format = DDSFormat::Unknown;
 
-//    qint64 oldPos = device()->pos();
-//    device()->seek(0);
-
     QDataStream s(device().get());
     s.setByteOrder(QDataStream::LittleEndian);
     s >> m_header;
     if (m_header.pixelFormat.fourCC == dx10Magic)
         s >> m_header10;
-
-//    device()->seek(oldPos);
 
     if (s.status() != QDataStream::Ok)
         return false;
