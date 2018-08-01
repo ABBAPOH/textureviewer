@@ -753,4 +753,12 @@ QString toQString(Texture::Format format)
     return en.valueToKey(int(format));
 }
 
+QString toQString(Texture::Side side)
+{
+    const auto &mo = Texture::staticMetaObject;
+    const auto index = mo.indexOfEnumerator("Side");
+    const auto en = mo.enumerator(index);
+    return en.valueToKey(int(side));
+}
+
 Q_LOGGING_CATEGORY(texture, "texturelib.texture")

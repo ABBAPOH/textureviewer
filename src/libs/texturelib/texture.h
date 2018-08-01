@@ -107,6 +107,7 @@ public:
         PositiveZ = 4,
         NegativeZ = 5,
     };
+    Q_ENUM(Side)
 
     enum class Alignment {
         Byte = 1, // 1-byte alignment
@@ -278,5 +279,6 @@ private:
 QDebug operator<<(QDebug &d, const Texture::Index &index);
 
 QString toQString(Texture::Format format);
+QString toQString(Texture::Side side);
 
 #endif // TEXTURE_H
