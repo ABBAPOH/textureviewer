@@ -76,7 +76,9 @@ TextureIOResult TextureIOPrivate::ensureHandlerCreated(Capabilities caps)
     auto mt = QMimeType();
     if (!mimeType) {
         // mimeType is not set, try to guess from file
-        if ((device->openMode() & QIODevice::ReadOnly))
+        if (file)
+            mt = QMimeDatabase().mimeTypeForFile(fileName);
+        else if ((device->openMode() & QIODevice::ReadOnly))
             mt = QMimeDatabase().mimeTypeForData(device->peek(256));
     } else {
         mt = *mimeType;
@@ -200,7 +202,6 @@ void TextureIO::setFileName(const QString &fileName)
 
     d->file = std::make_unique<QFile>(fileName);
     d->device.reset(d->file.get());
-    d->mimeType = QMimeDatabase().mimeTypeForFile(fileName);
     d->fileName = fileName;
     d->resetHandler();
 }
