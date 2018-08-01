@@ -114,7 +114,6 @@ public:
     };
 
     class Size;
-    class Position;
     class Index;
 
     using Data = gsl::span<uchar>;
