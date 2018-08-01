@@ -295,7 +295,7 @@ static DDSFormat convertFormat(Texture::Format format)
 
 bool DDSHandler::read(Texture &texture)
 {
-    if (!canRead(device()))
+    if (device()->peek(4) != QByteArrayLiteral("DDS "))
         return false;
 
     if (!doScan())
@@ -447,21 +447,6 @@ bool DDSHandler::write(const Texture &texture)
     }
 
     return true;
-}
-
-bool DDSHandler::canRead(QIODevicePointer device)
-{
-    if (!device) {
-        qCWarning(ddshandler) << "DDSHandler: canRead() called with no device";
-        return false;
-    }
-
-    if (device->isSequential()) {
-        qCWarning(ddshandler) << "DDSHandler: Sequential devices are not supported";
-        return false;
-    }
-
-    return device->peek(4) == QByteArrayLiteral("DDS ");
 }
 
 bool DDSHandler::doScan()
