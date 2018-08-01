@@ -88,12 +88,12 @@ std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevicePoin
     return result;
 }
 
-std::vector<QMimeType> TextureIOHandlerDatabase::availableMimeTypes(Capabilities caps) const
+std::vector<QStringView> TextureIOHandlerDatabase::availableMimeTypes(Capabilities caps) const
 {
-    std::vector<QMimeType> result;
+    std::vector<QStringView> result;
     for (auto it = map.begin(), end = map.end(); it != end; it++) {
-        auto mt = QMimeDatabase().mimeTypeForName(it.key());
-        if (it.value()->capabilities(mt.name()) & caps)
+        const auto mt = QStringView(it.key());
+        if (it.value()->capabilities(mt) & caps)
             result.push_back(mt);
     }
     return result;
