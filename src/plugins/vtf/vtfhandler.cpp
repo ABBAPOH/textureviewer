@@ -224,4 +224,4 @@ bool VTFHandler::read(Texture &texture)
     return false;
 }
 
-Q_LOGGING_CATEGORY(vtfhandler, "pluigns.textureformats.vtfhandler")
+Q_LOGGING_CATEGORY(vtfhandler, "plugins.textureformats.vtfhandler")
