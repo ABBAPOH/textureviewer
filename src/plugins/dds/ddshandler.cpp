@@ -489,4 +489,4 @@ bool DDSHandler::write(const Texture &texture)
     return true;
 }
 
-Q_LOGGING_CATEGORY(ddshandler, "pluigns.textureformats.ddshandler")
+Q_LOGGING_CATEGORY(ddshandler, "plugins.textureformats.ddshandler")

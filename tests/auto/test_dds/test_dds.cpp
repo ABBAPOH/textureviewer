@@ -67,11 +67,15 @@ private slots:
     void initTestCase();
     void testRead_data();
     void testRead();
+    void benchRead_data();
+    void benchRead();
 };
 
 void TestDds::initTestCase()
 {
     qApp->addLibraryPath(qApp->applicationDirPath() + TextureIO::pluginsDirPath());
+    Q_INIT_RESOURCE(images);
+    QLoggingCategory::setFilterRules(QStringLiteral("plugins.textureformats.ddshandler.debug=false"));
 }
 
 void TestDds::testRead_data()
@@ -98,6 +102,26 @@ void TestDds::testRead()
     QCOMPARE(result->width(), width);
     QCOMPARE(result->height(), height);
     QVERIFY(verifyTexture(*result, QImage(sourcePath)));
+}
+
+void TestDds::benchRead_data()
+{
+    QTest::addColumn<QString>("fileName");
+
+    QTest::newRow("RGBA_8888") << QStringLiteral(":/dds/RGBA_8888.dds");
+    QTest::newRow("L8") << QStringLiteral(":/dds/L8.dds");
+    QTest::newRow("DXT1") << QStringLiteral(":/dds/DXT1.dds");
+    QTest::newRow("DXT5") << QStringLiteral(":/dds/DXT5.dds");
+}
+
+void TestDds::benchRead()
+{
+    QFETCH(QString, fileName);
+    QBENCHMARK {
+        TextureIO reader(fileName);
+        auto result = reader.read();
+        QVERIFY2(result, qPrintable(toUserString(result.error())));
+    }
 }
 
 QTEST_MAIN(TestDds)
