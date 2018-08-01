@@ -37,7 +37,7 @@ void TestVTF::benchRead()
     QFETCH(QString, fileName);
 
     // preload QMimeDatabase
-    const auto mt = QMimeDatabase().mimeTypeForName("image/x-vtf");
+    const auto mt = QMimeDatabase().mimeTypeForName(QStringLiteral("image/x-vtf"));
     QVERIFY(mt.isValid());
 
     // preload file (qrc is compressed, so we will test zlib otherwise)
