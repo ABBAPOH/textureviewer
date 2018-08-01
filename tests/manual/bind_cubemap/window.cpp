@@ -165,7 +165,7 @@ void Window::initializeShaders()
 
 void Window::initializeTextures()
 {
-    m_texture1 = Utils::makeOpenGLTexture(Texture(QStringLiteral(":/dds/cubemap.dds")));
+    m_texture1 = Utils::makeOpenGLTexture(Texture(QStringLiteral(":/vtf/cubemap.vtf")));
 }
 
 void Window::updateMatrixes()
