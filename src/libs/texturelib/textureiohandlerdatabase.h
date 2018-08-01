@@ -4,6 +4,9 @@
 
 #include <TextureLib/TextureIOHandler>
 #include <TextureLib/TextureIOHandlerPlugin>
+
+#include <QtCore/QMimeType>
+
 #include <memory>
 
 class QPluginLoader;
@@ -21,7 +24,7 @@ public:
 
     using Capabilities = TextureIOHandlerPlugin::Capabilities;
 
-    std::unique_ptr<TextureIOHandler> create(QIODevicePointer device, const QMimeType &mimeType, Capabilities caps);
+    std::unique_ptr<TextureIOHandler> create(QIODevicePointer device, QStringView mimeType, Capabilities caps);
     std::vector<QMimeType> availableMimeTypes(Capabilities caps) const;
     TextureIOHandlerPlugin *plugin(const QString &mimeType) const;
     void registerPlugin(const QString &mimeType, TextureIOHandlerPlugin *plugin);

@@ -10,16 +10,16 @@ class VTFHandlerPlugin : public TextureIOHandlerPlugin
 public:
     VTFHandlerPlugin() = default;
 
-    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override
+    std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override
     {
-        if (mimeType.name() == u"image/x-vtf")
+        if (mimeType == u"image/x-vtf")
             return std::make_unique<VTFHandler>();
         return nullptr;
     }
 
-    Capabilities capabilities(const QMimeType &mimeType) const override
+    Capabilities capabilities(QStringView mimeType) const override
     {
-        if (mimeType.name() == u"image/x-vtf")
+        if (mimeType == u"image/x-vtf")
             return Capabilities(VTFHandlerPlugin::CanRead);
         return Capabilities();
     }

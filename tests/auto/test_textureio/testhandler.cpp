@@ -31,13 +31,13 @@ bool TestHandler::write(const Texture &texture)
     return true;
 }
 
-std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(const QMimeType &mimeType)
+std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(QStringView mimeType)
 {
     Q_UNUSED(mimeType);
     return std::make_unique<TestHandler>();
 }
 
-TestHandlerPlugin::Capabilities TestHandlerPlugin::capabilities(const QMimeType &mimeType) const
+TestHandlerPlugin::Capabilities TestHandlerPlugin::capabilities(QStringView mimeType) const
 {
     Q_UNUSED(mimeType);
     return Capabilities(Capability::CanRead | Capability::CanWrite);

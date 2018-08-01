@@ -11,16 +11,16 @@ class DdsHandlerPlugin : public TextureIOHandlerPlugin
 public:
     DdsHandlerPlugin() = default;
 
-    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override
+    std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override
     {
-        if (mimeType.name() == u"image/x-dds")
+        if (mimeType == u"image/x-dds")
             return std::make_unique<DDSHandler>();
         return nullptr;
     }
 
-    Capabilities capabilities(const QMimeType &mimeType) const override
+    Capabilities capabilities(QStringView mimeType) const override
     {
-        if (mimeType.name() == u"image/x-dds")
+        if (mimeType == u"image/x-dds")
             return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
         return Capabilities();
     }

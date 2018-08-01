@@ -23,6 +23,6 @@ public:
 
     TestHandlerPlugin& operator=(TestHandlerPlugin &&) = delete;
 
-    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override;
-    Capabilities capabilities(const QMimeType &mimeType) const override;
+    std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override;
+    Capabilities capabilities(QStringView mimeType) const override;
 };

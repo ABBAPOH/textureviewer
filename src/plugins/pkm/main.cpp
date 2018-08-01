@@ -11,16 +11,16 @@ class PkmHandlerPlugin : public TextureIOHandlerPlugin
 public:
     PkmHandlerPlugin() = default;
 
-    std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) override
+    std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override
     {
-        if (mimeType.name() == u"image/x-pkm")
+        if (mimeType == u"image/x-pkm")
             return std::make_unique<PkmHandler>();
         return nullptr;
     }
 
-    Capabilities capabilities(const QMimeType &mimeType) const override
+    Capabilities capabilities(QStringView mimeType) const override
     {
-        if (mimeType.name() == u"image/x-pkm")
+        if (mimeType == u"image/x-pkm")
             return CanRead;
         return Capabilities();
     }

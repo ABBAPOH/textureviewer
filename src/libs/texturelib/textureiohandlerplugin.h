@@ -2,8 +2,8 @@
 
 #include "texturelib_global.h"
 
-#include <QtCore/QMimeType>
 #include <QtCore/QObject>
+#include <QtCore/QStringView>
 
 #include <memory>
 
@@ -28,7 +28,7 @@ public:
 
     TextureIOHandlerPlugin &operator =(TextureIOHandlerPlugin &&) = delete;
 
-    virtual Capabilities capabilities(const QMimeType &mimeType) const = 0;
+    virtual Capabilities capabilities(QStringView mimeType) const = 0;
 
-    virtual std::unique_ptr<TextureIOHandler> create(const QMimeType &mimeType) = 0;
+    virtual std::unique_ptr<TextureIOHandler> create(QStringView mimeType) = 0;
 };

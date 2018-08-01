@@ -63,15 +63,15 @@ TextureIOHandlerDatabase::~TextureIOHandlerDatabase()
         loader->unload();
 }
 
-std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevicePointer device, const QMimeType &mimeType, Capabilities caps)
+std::unique_ptr<TextureIOHandler> TextureIOHandlerDatabase::create(QIODevicePointer device, QStringView mimeType, Capabilities caps)
 {
     std::unique_ptr<TextureIOHandler> result;
-    if (!device || !mimeType.isValid()) {
+    if (!device || mimeType.isEmpty()) {
         qWarning() << "TextureIOHandlerDatabase::create: called with incorrect parameters";
         return result;
     }
 
-    auto plugin = map.value(mimeType.name());
+    auto plugin = map.value(mimeType.toString());
     if (!plugin)
         return result;
 
@@ -93,7 +93,7 @@ std::vector<QMimeType> TextureIOHandlerDatabase::availableMimeTypes(Capabilities
     std::vector<QMimeType> result;
     for (auto it = map.begin(), end = map.end(); it != end; it++) {
         auto mt = QMimeDatabase().mimeTypeForName(it.key());
-        if (it.value()->capabilities(mt) & caps)
+        if (it.value()->capabilities(mt.name()) & caps)
             result.push_back(mt);
     }
     return result;
