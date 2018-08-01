@@ -53,12 +53,12 @@ TextureIOResult TextureIOPrivate::ensureDeviceOpened(Capabilities caps)
 
     const auto mode = caps2OpenMode(caps);
 
-    if ((mode & QIODevice::ReadOnly) && file && !file->exists())
-        return TextureIOError::FileNotFound;
-
     if (!(device->openMode() & mode)) {
-        if (!device->open(mode | device->openMode()))
+        if (!device->open(mode | device->openMode())) {
+            if ((mode & QIODevice::ReadOnly) && file && !file->exists())
+                return TextureIOError::FileNotFound;
             return TextureIOError::DeviceError;
+        }
     }
 
     return TextureIOResult();
