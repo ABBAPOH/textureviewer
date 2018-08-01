@@ -85,6 +85,7 @@ TextureData *TextureData::create(
 
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
+    levelInfos.reserve(levels);
 
     const auto texelFormat = TexelFormat::texelFormat(format);
 
