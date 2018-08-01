@@ -42,9 +42,11 @@
 
 #pragma once
 
-#include <QtCore/QLoggingCategory>
-#include <TextureLib/TextureIOHandler>
 #include "ddsheader.h"
+
+#include <TextureLib/TextureIOHandler>
+
+#include <QtCore/QLoggingCategory>
 
 class DDSHandler : public TextureIOHandler
 {
