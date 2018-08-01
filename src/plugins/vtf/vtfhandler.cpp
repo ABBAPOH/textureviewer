@@ -126,10 +126,12 @@ static bool readTexture(
         return false;
     }
 
+    const auto isCubemap = bool(header.flags & VTFFlag::EnvironmentMap);
     const auto depth = std::max<quint16>(1, header.depth);
     auto result = Texture::create(
                 format,
                 {header.width, header.height, depth},
+                Texture::IsCubemap(isCubemap),
                 header.mipmapCount,
                 header.frames);
     if (result.isNull()) {
@@ -139,7 +141,7 @@ static bool readTexture(
 
     for (int level = header.mipmapCount - 1; level >= 0; --level) {
         for (int layer = 0; layer < header.frames; ++layer) {
-            for (int face = 0; face < 1; ++face) { // TODO: where do we get faces??
+            for (int face = 0; face < (isCubemap ? 6 : 1); ++face) {
                 const auto data = result.imageData({Texture::Side(face), level, layer});
                 const auto read = device->read(reinterpret_cast<char *>(data.data()), data.size());
                 if (read != data.size()) {
