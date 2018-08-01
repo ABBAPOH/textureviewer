@@ -90,6 +90,5 @@ Writing DDS files **is supported**
 
 ### TODO List
 
-* Cubemaps
 * Volumemaps
 * DX10 support
