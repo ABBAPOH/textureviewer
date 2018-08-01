@@ -52,6 +52,9 @@ int memoryCompare(Texture::ConstData lhs, Texture::ConstData rhs)
     return memcmp(lhs.data(), rhs.data(), lhs.size_bytes());
 }
 
+// Whether to use malloc or calloc
+constexpr const bool safeAlloc = false;
+
 } // namespace
 
 TextureData::~TextureData()
@@ -141,7 +144,10 @@ TextureData *TextureData::create(
     data->levelInfos = std::move(levelInfos);
 
     data->nbytes = totalBytes;
-    data->data = static_cast<uchar *>(calloc(size_t(data->nbytes), 1));
+    if (safeAlloc)
+        data->data = static_cast<uchar *>(calloc(size_t(data->nbytes), 1));
+    else
+        data->data = static_cast<uchar *>(malloc(size_t(data->nbytes)));
 
     if (!data->data)
         return nullptr;
