@@ -15,8 +15,8 @@ class TEXTURELIB_EXPORT TextureIOHandlerPlugin : public QObject
     Q_DISABLE_COPY(TextureIOHandlerPlugin)
 public:
     enum Capability {
-        CanRead = 0x1,
-        CanWrite = 0x2,
+        CanRead = 0x1u,
+        CanWrite = 0x2u,
         ReadWrite = CanRead | CanWrite
     };
     using Capabilities = QFlags<Capability>;
