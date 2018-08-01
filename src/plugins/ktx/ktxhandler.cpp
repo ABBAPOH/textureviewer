@@ -95,11 +95,9 @@ bool KtxHandler::read(Texture& texture)
         readPadding(device(), 3 - ((device()->pos() + 3) % 4));
     }
 
-    qDebug() << device()->pos() << device()->size();
-
     texture = std::move(result);
 
     return true;
 }
 
-Q_LOGGING_CATEGORY(ktxhandler, "pluigns.textureformats.ktxhandler")
+Q_LOGGING_CATEGORY(ktxhandler, "plugins.textureformats.ktxhandler")
