@@ -12,7 +12,9 @@
 #include <Expected>
 #include <ObserverPointer>
 
+QT_BEGIN_NAMESPACE
 class QIODevice;
+QT_END_NAMESPACE
 
 class TextureIOPrivate;
 class TEXTURELIB_EXPORT TextureIO
