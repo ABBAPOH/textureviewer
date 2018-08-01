@@ -62,9 +62,6 @@ public:
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
     bool write(const Texture &texture) override;
-
-private:
-    bool verifyHeader(const DDSHeader &dds) const;
 };
 
 Q_DECLARE_LOGGING_CATEGORY(ddshandler)

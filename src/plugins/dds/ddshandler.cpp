@@ -283,6 +283,37 @@ static DDSFormat convertFormat(Texture::Format format)
     }
 }
 
+static bool verifyHeader(const DDSHeader &dds)
+{
+    const auto flags = dds.flags;
+    const auto requiredFlags = DDSFlag::Caps | DDSFlag::Height
+            | DDSFlag::Width | DDSFlag::PixelFormat;
+    if ((flags & requiredFlags) != requiredFlags) {
+        qCWarning(ddshandler) << "Wrong dds.flags - not all required flags present. "
+                                 "Actual flags :" << flags;
+        return false;
+    }
+
+    if (dds.size != ddsSize) {
+        qCWarning(ddshandler) << "Wrong dds.size: actual =" << dds.size
+                              << "expected =" << ddsSize;
+        return false;
+    }
+
+    if (dds.pixelFormat.size != pixelFormatSize) {
+        qCWarning(ddshandler) << "Wrong dds.pixelFormat.size: actual =" << dds.pixelFormat.size
+                              << "expected =" << pixelFormatSize;
+        return false;
+    }
+
+    if (dds.width > INT_MAX || dds.height > INT_MAX) {
+        qCWarning(ddshandler) << "Can't read image with w/h bigger than INT_MAX";
+        return false;
+    }
+
+    return true;
+}
+
 bool DDSHandler::read(Texture &texture)
 {
     if (device()->peek(4) != QByteArrayLiteral("DDS "))
@@ -453,37 +484,6 @@ bool DDSHandler::write(const Texture &texture)
                 }
             }
         }
-    }
-
-    return true;
-}
-
-bool DDSHandler::verifyHeader(const DDSHeader &dds) const
-{
-    const auto flags = dds.flags;
-    const auto requiredFlags = DDSFlag::Caps | DDSFlag::Height
-            | DDSFlag::Width | DDSFlag::PixelFormat;
-    if ((flags & requiredFlags) != requiredFlags) {
-        qCWarning(ddshandler) << "Wrong dds.flags - not all required flags present. "
-                                 "Actual flags :" << flags;
-        return false;
-    }
-
-    if (dds.size != ddsSize) {
-        qCWarning(ddshandler) << "Wrong dds.size: actual =" << dds.size
-                              << "expected =" << ddsSize;
-        return false;
-    }
-
-    if (dds.pixelFormat.size != pixelFormatSize) {
-        qCWarning(ddshandler) << "Wrong dds.pixelFormat.size: actual =" << dds.pixelFormat.size
-                              << "expected =" << pixelFormatSize;
-        return false;
-    }
-
-    if (dds.width > INT_MAX || dds.height > INT_MAX) {
-        qCWarning(ddshandler) << "Can't read image with w/h bigger than INT_MAX";
-        return false;
     }
 
     return true;
