@@ -1,6 +1,6 @@
 #include "texelformat.h"
 
-static constexpr const TexelFormat formats[] = {
+constexpr TexelFormat formats[] = {
     {},
     // unsigned 64bit
     {Texture::Format::RGBA_16161616, 64, 0, QOpenGLTexture::RGBA16_UNorm, QOpenGLTexture::RGBA, QOpenGLTexture::UInt16},
@@ -64,7 +64,9 @@ static_assert (sizeof (formats) == sizeof(TexelFormat) * size_t(Texture::Format:
 constexpr bool checkFormatPositions()
 {
     int position = 0;
-    for (const auto &format: TexelFormat::TexelFormats(formats)) {
+    // Use a variable to compile with msvc. It can't build because rvalue is not constexpr
+    const auto array = TexelFormat::TexelFormats(formats);
+    for (const auto &format: array) {
         if (format.format() != Texture::Format(position++))
             return false;
     }
