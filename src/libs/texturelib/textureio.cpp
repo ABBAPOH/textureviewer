@@ -147,7 +147,7 @@ TextureIO::TextureIO(QIODevicePointer device, const QMimeType &mimeType) :
 /*!
     Creates an TextureIO object with the given \a fileName and \a mimeType.
 */
-TextureIO::TextureIO(const QString &fileName, const QString &mimeType) :
+TextureIO::TextureIO(const QString &fileName, QStringView mimeType) :
     d_ptr(new TextureIOPrivate(this))
 {
     setFileName(fileName);
@@ -158,7 +158,7 @@ TextureIO::TextureIO(const QString &fileName, const QString &mimeType) :
 /*!
     Creates an TextureIO object with the given \a device and \a mimeType.
 */
-TextureIO::TextureIO(QIODevicePointer device, const QString &mimeType) :
+TextureIO::TextureIO(QIODevicePointer device, QStringView mimeType) :
     d_ptr(new TextureIOPrivate(this))
 {
     setDevice(device);
@@ -250,13 +250,13 @@ void TextureIO::setMimeType(const QMimeType &mimeType)
     d->resetHandler();
 }
 
-void TextureIO::setMimeType(const QString &mimeType)
+void TextureIO::setMimeType(QStringView mimeType)
 {
     Q_D(TextureIO);
     if (!mimeType.isEmpty())
         // here we can have optional pointing to an invalid QMimeType,
         // leads to error in ensureHandlerCreated
-        d->mimeType = QMimeDatabase().mimeTypeForName(mimeType);
+        d->mimeType = QMimeDatabase().mimeTypeForName(mimeType.toString()); // oops extra allocation
     else
         d->mimeType = nullOptional();
     d->resetHandler();

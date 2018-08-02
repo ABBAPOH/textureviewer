@@ -28,8 +28,8 @@ public:
     TextureIO(TextureIO &&other) noexcept;
     explicit TextureIO(const QString &fileName, const QMimeType &mimeType = QMimeType());
     explicit TextureIO(QIODevicePointer device, const QMimeType &mimeType = QMimeType());
-    TextureIO(const QString &fileName, const QString &mimeType);
-    TextureIO(QIODevicePointer device, const QString &mimeType);
+    TextureIO(const QString &fileName, QStringView mimeType);
+    TextureIO(QIODevicePointer device, QStringView mimeType);
     ~TextureIO();
 
     TextureIO &operator=(TextureIO &&other) noexcept;
@@ -45,7 +45,7 @@ public:
 
     QMimeType mimeType() const;
     void setMimeType(const QMimeType &mimeType);
-    void setMimeType(const QString &mimeType);
+    void setMimeType(QStringView mimeType);
 
     ReadResult read();
 

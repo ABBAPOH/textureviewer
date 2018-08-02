@@ -86,7 +86,7 @@ void TestTextureIO::read()
 
     TextureIO io;
     io.setDevice(TextureIO::QIODevicePointer(&buffer));
-    io.setMimeType("application/octet-stream");
+    io.setMimeType(u"application/octet-stream");
     const auto result = io.read();
     QVERIFY2(result, qPrintable(toUserString(result.error())));
     QCOMPARE(*result, expectedTexture);
@@ -117,7 +117,7 @@ void TestTextureIO::write()
 
     TextureIO io;
     io.setDevice(TextureIO::QIODevicePointer(&buffer));
-    io.setMimeType("application/octet-stream");
+    io.setMimeType(u"application/octet-stream");
 
     auto expectedTexture = Texture::create(format, {width, height, depth}, levels, layers);
 
