@@ -44,4 +44,5 @@ Writing VTF files is **not** supported
 
 ### TODO List
 
+* Check cubemap faces
 * Check volume textures
