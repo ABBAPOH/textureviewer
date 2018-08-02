@@ -375,11 +375,6 @@ bool DDSHandler::read(Texture &texture)
                             << pitch << "!=" << header.pitchOrLinearSize;
     }
 
-    if (!device()->seek(headerSize)) {
-        qCWarning(ddshandler) << "Can't seek to mipmap";
-        return false;
-    }
-
     for (int layer = 0; layer < int(ulayers); ++layer) {
         for (int face = 0; face < faces; ++face) {
             if (cubeMap && !(header.caps2 & (faceFlags[face]))) {
