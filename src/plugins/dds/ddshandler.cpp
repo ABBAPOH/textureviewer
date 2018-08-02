@@ -213,6 +213,7 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
 {
     if (format == DDSFormat::DX10) {
         switch (format2) {
+        case DXGIFormat::R8G8B8A8_UNORM: return Texture::Format::RGBA_8888;
         case DXGIFormat::BC1_UNORM: return Texture::Format::DXT1;
         case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::BC1_UNorm_SRGB;
         case DXGIFormat::BC2_UNORM: return Texture::Format::DXT3;
