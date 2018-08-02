@@ -151,7 +151,8 @@ static bool readTexture(
     for (int level = header.mipmapCount - 1; level >= 0; --level) {
         for (int layer = 0; layer < header.frames; ++layer) {
             for (int face = 0; face < (isCubemap ? 6 : 1); ++face) {
-                const auto data = result.imageData({sides[face], level, layer});
+                const auto side = isCubemap ? sides[face] : Texture::Side::PositiveX;
+                const auto data = result.imageData({side, level, layer});
                 const auto read = device->read(reinterpret_cast<char *>(data.data()), data.size());
                 if (read != data.size()) {
                     qCWarning(vtfhandler) << "Can't read from device:"
