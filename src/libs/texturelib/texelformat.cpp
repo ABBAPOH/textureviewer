@@ -47,6 +47,7 @@ constexpr TexelFormat formats[] = {
     {Texture::Format::BC1_UNorm_SRGB, 0, 8, QOpenGLTexture::QOpenGLTexture::SRGB_Alpha_DXT1},
     {Texture::Format::BC2_UNorm_SRGB, 0, 16, QOpenGLTexture::QOpenGLTexture::SRGB_Alpha_DXT3},
     {Texture::Format::BC3_UNorm_SRGB, 0, 16, QOpenGLTexture::QOpenGLTexture::SRGB_Alpha_DXT5},
+    {Texture::Format::BC4_SNORM, 0, 8, QOpenGLTexture::QOpenGLTexture::R_ATI1N_SNorm},
     {Texture::Format::BC4_UNORM, 0, 8, QOpenGLTexture::QOpenGLTexture::R_ATI1N_UNorm},
     {Texture::Format::BC6H_UF16, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_UNSIGNED_FLOAT},
     {Texture::Format::BC7_UNORM, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_UNorm},

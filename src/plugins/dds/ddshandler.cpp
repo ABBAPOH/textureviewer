@@ -220,6 +220,7 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
         case DXGIFormat::BC2_UNORM_SRGB: return Texture::Format::BC2_UNorm_SRGB;
         case DXGIFormat::BC3_UNORM: return Texture::Format::DXT5;
         case DXGIFormat::BC3_UNORM_SRGB: return Texture::Format::BC3_UNorm_SRGB;
+        case DXGIFormat::BC4_SNORM: return Texture::Format::BC4_SNORM;
         case DXGIFormat::BC4_UNORM: return Texture::Format::BC4_UNORM;
         case DXGIFormat::BC6H_UF16: return Texture::Format::BC6H_UF16;
         case DXGIFormat::BC7_UNORM: return Texture::Format::BC7_UNORM;
