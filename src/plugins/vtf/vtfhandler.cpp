@@ -105,10 +105,10 @@ static Texture::Format convertFormat(VTFImageFormat format)
     case VTFImageFormat::I8: return Texture::Format::L8;
     case VTFImageFormat::IA88: return Texture::Format::LA88;
     case VTFImageFormat::A8: return Texture::Format::A8;
-    case VTFImageFormat::DXT1: return Texture::Format::DXT1;
-    case VTFImageFormat::DXT1_ONEBITALPHA: return Texture::Format::DXT1a;
-    case VTFImageFormat::DXT3: return Texture::Format::DXT3;
-    case VTFImageFormat::DXT5: return Texture::Format::DXT5;
+    case VTFImageFormat::DXT1: return Texture::Format::BC1_RGB_UNorm;
+    case VTFImageFormat::DXT1_ONEBITALPHA: return Texture::Format::BC1_RGBA_Unorm;
+    case VTFImageFormat::DXT3: return Texture::Format::BC2_Unorm;
+    case VTFImageFormat::DXT5: return Texture::Format::BC3_Unorm;
     case VTFImageFormat::RGBA_16161616F: return Texture::Format::RGBA_16161616F;
     default: return Texture::Format::Invalid;
     }

@@ -214,11 +214,11 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
     if (format == DDSFormat::DX10) {
         switch (format2) {
         case DXGIFormat::R8G8B8A8_UNORM: return Texture::Format::RGBA_8888;
-        case DXGIFormat::BC1_UNORM: return Texture::Format::DXT1;
+        case DXGIFormat::BC1_UNORM: return Texture::Format::BC1_RGB_UNorm;
         case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::BC1_UNorm_SRGB;
-        case DXGIFormat::BC2_UNORM: return Texture::Format::DXT3;
+        case DXGIFormat::BC2_UNORM: return Texture::Format::BC2_Unorm;
         case DXGIFormat::BC2_UNORM_SRGB: return Texture::Format::BC2_UNorm_SRGB;
-        case DXGIFormat::BC3_UNORM: return Texture::Format::DXT5;
+        case DXGIFormat::BC3_UNORM: return Texture::Format::BC3_Unorm;
         case DXGIFormat::BC3_UNORM_SRGB: return Texture::Format::BC3_UNorm_SRGB;
         case DXGIFormat::BC4_SNORM: return Texture::Format::BC4_SNORM;
         case DXGIFormat::BC4_UNORM: return Texture::Format::BC4_UNORM;
@@ -248,9 +248,9 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
     case DDSFormat::L8: return Texture::Format::L8;
     case DDSFormat::A2B10G10R10: return Texture::Format::RGBA_10101002_Rev;
     case DDSFormat::A2R10G10B10: return Texture::Format::BGRA_10101002_Rev;
-    case DDSFormat::DXT1: return Texture::Format::DXT1;
-    case DDSFormat::DXT3: return Texture::Format::DXT3;
-    case DDSFormat::DXT5: return Texture::Format::DXT5;
+    case DDSFormat::DXT1: return Texture::Format::BC1_RGB_UNorm;
+    case DDSFormat::DXT3: return Texture::Format::BC2_Unorm;
+    case DDSFormat::DXT5: return Texture::Format::BC3_Unorm;
     case DDSFormat::RXGB: return Texture::Format::RXGB;
     case DDSFormat::ATI2: return Texture::Format::RG_ATI2N_UNorm;
     case DDSFormat::A16B16G16R16F: return Texture::Format::RGBA_16161616F;
@@ -276,9 +276,9 @@ static DDSFormat convertFormat(Texture::Format format)
     case Texture::Format::L8: return DDSFormat::L8;
     case Texture::Format::RGBA_10101002_Rev: return DDSFormat::A2B10G10R10;
     case Texture::Format::BGRA_10101002_Rev: return DDSFormat::A2R10G10B10;
-    case Texture::Format::DXT1: return DDSFormat::DXT1;
-    case Texture::Format::DXT3: return DDSFormat::DXT3;
-    case Texture::Format::DXT5: return DDSFormat::DXT5;
+    case Texture::Format::BC1_RGB_UNorm: return DDSFormat::DXT1;
+    case Texture::Format::BC2_Unorm: return DDSFormat::DXT3;
+    case Texture::Format::BC3_Unorm: return DDSFormat::DXT5;
     case Texture::Format::RXGB: return DDSFormat::RXGB;
     case Texture::Format::RG_ATI2N_UNorm: return DDSFormat::ATI2;
     case Texture::Format::RGBA_16161616F: return DDSFormat::A16B16G16R16F;

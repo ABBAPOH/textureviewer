@@ -30,10 +30,10 @@ constexpr TexelFormat formats[] = {
     {Texture::Format::A8, 8, 0, QOpenGLTexture::AlphaFormat, QOpenGLTexture::Alpha, QOpenGLTexture::UInt8},
     {Texture::Format::L8, 8, 0, QOpenGLTexture::LuminanceFormat, QOpenGLTexture::Luminance, QOpenGLTexture::UInt8},
     // compressed
-    {Texture::Format::DXT1, 0, 8, QOpenGLTexture::QOpenGLTexture::RGB_DXT1},
-    {Texture::Format::DXT1a, 0, 8, QOpenGLTexture::QOpenGLTexture::RGBA_DXT1},
-    {Texture::Format::DXT3, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT3},
-    {Texture::Format::DXT5, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT5},
+    {Texture::Format::BC1_RGB_UNorm, 0, 8, QOpenGLTexture::QOpenGLTexture::RGB_DXT1},
+    {Texture::Format::BC1_RGBA_Unorm, 0, 8, QOpenGLTexture::QOpenGLTexture::RGBA_DXT1},
+    {Texture::Format::BC2_Unorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT3},
+    {Texture::Format::BC3_Unorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT5},
     {Texture::Format::RXGB, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT5},
     {Texture::Format::RG_ATI2N_UNorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG_ATI2N_UNorm},
     {Texture::Format::RGB8_ETC1, 0, 8, QOpenGLTexture::QOpenGLTexture::RGB8_ETC1},
@@ -141,7 +141,7 @@ TexelFormat TexelFormat::findOGLFormatConst(
         QOpenGLTexture::PixelType pixelType) noexcept
 {
     if (textureFormat == QOpenGLTexture::RGBA_DXT5) // special check for DXT5/RXGB formats
-        return formats[size_t(Texture::Format::DXT5)];
+        return formats[size_t(Texture::Format::BC3_Unorm)];
 
     const auto texelFormat = TexelFormat{
             Texture::Format::Invalid, 0, 0, textureFormat, pixelFormat, pixelType};

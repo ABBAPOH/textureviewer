@@ -211,13 +211,13 @@ void TestTexture::bytesPerLine_data()
     QTest::newRow("L8, w=5") << Texture::Format::L8 << 5 << qsizetype(5) << qsizetype(8);
     QTest::newRow("L8, w=8") << Texture::Format::L8 << 8 << qsizetype(8) << qsizetype(8);
 
-    QTest::newRow("DXT1, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8) << qsizetype(8);
-    QTest::newRow("DXT1, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16) << qsizetype(16);
-    QTest::newRow("DXT1, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT1, w=1") << Texture::Format::BC1_RGB_UNorm << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT1, w=5") << Texture::Format::BC1_RGB_UNorm << 5 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT1, w=8") << Texture::Format::BC1_RGB_UNorm << 8 << qsizetype(16) << qsizetype(16);
 
-    QTest::newRow("DXT5, w=1") << Texture::Format::DXT1 << 1 << qsizetype(8) << qsizetype(8);
-    QTest::newRow("DXT5, w=5") << Texture::Format::DXT1 << 5 << qsizetype(16) << qsizetype(16);
-    QTest::newRow("DXT5, w=8") << Texture::Format::DXT1 << 8 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT5, w=1") << Texture::Format::BC1_RGB_UNorm << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT5, w=5") << Texture::Format::BC1_RGB_UNorm << 5 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT5, w=8") << Texture::Format::BC1_RGB_UNorm << 8 << qsizetype(16) << qsizetype(16);
 }
 
 void TestTexture::bytesPerLine()
