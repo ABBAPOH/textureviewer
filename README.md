@@ -19,6 +19,8 @@ Below is the list of formats supported by the API.
 
 ## Building from source
 
+### Build requirements
+
 Windows
 - Microsoft Visual Studio 17 or higher
 - Qt 5.11.0 (maybe earlier versions will work too)
@@ -37,5 +39,7 @@ Linux
 
 On debian-based systems below is the required packages
 apt-get install gcc-6 g++6 libgl1-mesa-dev
+
+### Building in Qt Creator
 
 Open the textureviewer.qbs file in a Qt Creator and press "Build"
