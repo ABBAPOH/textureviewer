@@ -1,29 +1,30 @@
 <RCC>
     <qresource prefix="/">
-        <file>dds/A8.dds</file>
+        <file>dds/A8Unorm.dds</file>
         <file>dds/ATI2.dds</file>
-        <file>dds/BGR_565.dds</file>
-        <file>dds/BGR_888.dds</file>
-        <file>dds/BGRA_4444.dds</file>
-        <file>dds/BGRA_5551.dds</file>
-        <file>dds/BGRA_8888.dds</file>
+        <file>dds/BGR565Unorm.dds</file>
+        <file>dds/BGR8Unorm.dds</file>
+        <file>dds/BGRA4Unorm.dds</file>
+        <file>dds/BGRA5551Unorm.dds</file>
+        <file>dds/BGRA8Unorm.dds</file>
         <file>dds/BGRA_10101002_Rev.dds</file>
-        <file>dds/BGRX_4444.dds</file>
-        <file>dds/BGRX_5551.dds</file>
-        <file>dds/BGRX_8888.dds</file>
-        <file>dds/cubemap.dds</file>
-        <file>dds/DXT1.dds</file>
-        <file>dds/DXT3.dds</file>
-        <file>dds/DXT5.dds</file>
-        <file>dds/L8.dds</file>
-        <file>dds/LA88.dds</file>
-        <file>dds/RGB_332.dds</file>
-        <file>dds/RGBA_8888.dds</file>
+        <file>dds/BGRX4Unorm.dds</file>
+        <file>dds/BGRX5551Unorm.dds</file>
+        <file>dds/BGRX8Unorm.dds</file>
+        <file>dds/Bc1RgbUnorm.dds</file>
+        <file>dds/Bc2Unorm.dds</file>
+        <file>dds/Bc3Unorm.dds</file>
+        <file>dds/L8Unorm.dds</file>
+        <file>dds/LA8Unorm.dds</file>
+        <file>dds/RGB332Unorm.dds</file>
+        <file>dds/RGBA16F.dds</file>
+        <file>dds/RGBA16Unorm.dds</file>
+        <file>dds/RGBA8Unorm.dds</file>
         <file>dds/RGBA_10101002_Rev.dds</file>
-        <file>dds/RGBA_16161616.dds</file>
-        <file>dds/RGBA_16161616F.dds</file>
-        <file>dds/RGBX_8888.dds</file>
+        <file>dds/RGBX8Unorm.dds</file>
         <file>dds/RXGB.dds</file>
+        <file>dds/cubemap.dds</file>
+
         <file>dds/225x225/BGRA_4444.dds</file>
         <file>dds/225x225/BGRA_8888.dds</file>
         <file>dds/225x225/BGR_888.dds</file>
