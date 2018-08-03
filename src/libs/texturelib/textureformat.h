@@ -50,7 +50,7 @@ enum class TextureFormat {
     Bc5Unorm,
     Bc5Snorm,
     Bc6HUF16,
-    // Bc6HSF16,
+    Bc6HSF16,
     Bc7Unorm,
     Bc7Srgb,
 

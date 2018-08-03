@@ -225,6 +225,7 @@ static TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
         case DXGIFormat::BC5_SNORM: return TextureFormat::Bc5Snorm;
         case DXGIFormat::BC5_UNORM: return TextureFormat::Bc5Unorm;
         case DXGIFormat::BC6H_UF16: return TextureFormat::Bc6HUF16;
+        case DXGIFormat::BC6H_SF16: return TextureFormat::Bc6HSF16;
         case DXGIFormat::BC7_UNORM: return TextureFormat::Bc7Unorm;
         case DXGIFormat::BC7_UNORM_SRGB: return TextureFormat::Bc7Srgb;
         default:

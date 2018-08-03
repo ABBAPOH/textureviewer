@@ -46,6 +46,7 @@ constexpr TextureFormatInfo formats[] = {
     {TextureFormat::Bc5Unorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG_ATI2N_UNorm},
     {TextureFormat::Bc5Snorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG_ATI2N_SNorm},
     {TextureFormat::Bc6HUF16, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_UNSIGNED_FLOAT},
+    {TextureFormat::Bc6HSF16, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_SIGNED_FLOAT},
     {TextureFormat::Bc7Unorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RGB_BP_UNorm},
     {TextureFormat::Bc7Srgb, 0, 16, QOpenGLTexture::QOpenGLTexture::SRGB_BP_UNorm},
     {TextureFormat::RXGB, 0, 16, QOpenGLTexture::QOpenGLTexture::RGBA_DXT5},
