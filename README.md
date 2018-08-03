@@ -37,9 +37,22 @@ Linux
 - Qt 5.11.0 (maybe earlier versions will work too)
 - Qbs 1.11.1
 
-On debian-based systems below is the required packages
+On debian-based systems the required packages can be installed using command
+
 apt-get install gcc-6 g++6 libgl1-mesa-dev
 
 ### Building in Qt Creator
 
 Open the textureviewer.qbs file in a Qt Creator and press "Build"
+
+### Building from command line
+
+First, see how to [configure qbs](http://doc.qt.io/qbs/configuring.html) and
+[configure a Qt version](http://doc.qt.io/qbs/qt-versions.html)
+
+```bash
+$ cd textureviwer
+$ mkdir build
+$ cd build
+$ qbs build -f ../textureviewer.qbs qbs.defaultBuildVariant:release
+```
