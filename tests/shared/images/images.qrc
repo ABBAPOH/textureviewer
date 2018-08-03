@@ -35,6 +35,7 @@
         <file>dds/dx10/BC2_UNORM_SRGB.dds</file>
         <file>dds/dx10/BC3_UNORM.dds</file>
         <file>dds/dx10/BC3_UNORM_SRGB.dds</file>
+        <file>dds/dx10/BC4_UNORM.dds</file>
         <file>dds/dx10/BC6H_UF16.dds</file>
         <file>dds/dx10/BC7_UNORM.dds</file>
         <file>dds/dx10/BC7_UNORM_SRGB.dds</file>

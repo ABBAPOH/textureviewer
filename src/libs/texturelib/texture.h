@@ -90,6 +90,7 @@ public:
         BC1_UNorm_SRGB,
         BC2_UNorm_SRGB,
         BC3_UNorm_SRGB,
+        BC4_UNORM,
         BC6H_UF16,
         BC7_UNORM,
         BC7_UNORM_SRGB,
