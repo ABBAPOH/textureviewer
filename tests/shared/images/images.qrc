@@ -30,18 +30,18 @@
         <file>dds/225x225/BGRA8Unorm.dds</file>
         <file>dds/225x225/L8Unorm.dds</file>
 
-        <file>dds/dx10/BC1_UNORM.dds</file>
-        <file>dds/dx10/BC1_UNORM_SRGB.dds</file>
-        <file>dds/dx10/BC2_UNORM.dds</file>
-        <file>dds/dx10/BC2_UNORM_SRGB.dds</file>
-        <file>dds/dx10/BC3_UNORM.dds</file>
-        <file>dds/dx10/BC3_UNORM_SRGB.dds</file>
-        <file>dds/dx10/BC4_SNORM.dds</file>
-        <file>dds/dx10/BC4_UNORM.dds</file>
-        <file>dds/dx10/BC6H_UF16.dds</file>
-        <file>dds/dx10/BC7_UNORM.dds</file>
-        <file>dds/dx10/BC7_UNORM_SRGB.dds</file>
-        <file>dds/dx10/RGBA_8888.dds</file>
+        <file>dds/dx10/Bc1RgbSrgb.dds</file>
+        <file>dds/dx10/Bc1RgbUnorm.dds</file>
+        <file>dds/dx10/Bc2Srgb.dds</file>
+        <file>dds/dx10/Bc2Unorm.dds</file>
+        <file>dds/dx10/Bc3Srgb.dds</file>
+        <file>dds/dx10/Bc3Unorm.dds</file>
+        <file>dds/dx10/Bc4Snorm.dds</file>
+        <file>dds/dx10/Bc4Unorm.dds</file>
+        <file>dds/dx10/Bc6HUF16.dds</file>
+        <file>dds/dx10/Bc7Srgb.dds</file>
+        <file>dds/dx10/Bc7Unorm.dds</file>
+        <file>dds/dx10/RGBA8Unorm.dds</file>
 
         <file>ktx/RGBA_8888.ktx</file>
         <file>ktx/R11_EAC_SNorm.ktx</file>
