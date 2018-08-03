@@ -217,6 +217,12 @@ static TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
         case DXGIFormat::R8_UNORM: return TextureFormat::R8Unorm;
         case DXGIFormat::R8_SINT: return TextureFormat::R8Sint;
         case DXGIFormat::R8_UINT: return TextureFormat::R8Uint;
+
+        case DXGIFormat::R16_SNORM: return TextureFormat::R16Snorm;
+        case DXGIFormat::R16_UNORM: return TextureFormat::R16Unorm;
+        case DXGIFormat::R16_SINT: return TextureFormat::R16Sint;
+        case DXGIFormat::R16_UINT: return TextureFormat::R16Uint;
+
         case DXGIFormat::R8G8B8A8_UNORM: return TextureFormat::RGBA8Unorm;
         case DXGIFormat::BC1_UNORM: return TextureFormat::Bc1RgbUnorm;
         case DXGIFormat::BC1_UNORM_SRGB: return TextureFormat::Bc1RgbSrgb;

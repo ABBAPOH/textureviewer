@@ -139,10 +139,10 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | R16_TYPELESS          |    no*    |
 | R16_FLOAT             |    no     |
 | D16_UNORM             |    no     |
-| R16_UNORM             |    no     |
-| R16_UINT              |    no     |
-| R16_SNORM             |    no     |
-| R16_SINT              |    no     |
+| R16_UNORM             |    yes    |
+| R16_UINT              |    yes    |
+| R16_SNORM             |    yes    |
+| R16_SINT              |    yes    |
 | R8_TYPELESS           |    no*    |
 | R8_UNORM              |    yes    |
 | R8_UINT               |    yes    |
