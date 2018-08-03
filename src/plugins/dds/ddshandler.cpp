@@ -213,18 +213,18 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
 {
     if (format == DDSFormat::DX10) {
         switch (format2) {
-        case DXGIFormat::R8G8B8A8_UNORM: return Texture::Format::RGBA_8888;
-        case DXGIFormat::BC1_UNORM: return Texture::Format::BC1_RGB_UNorm;
-        case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::BC1_RGB_SRGB;
-        case DXGIFormat::BC2_UNORM: return Texture::Format::BC2_Unorm;
-        case DXGIFormat::BC2_UNORM_SRGB: return Texture::Format::BC2_SRGB;
-        case DXGIFormat::BC3_UNORM: return Texture::Format::BC3_Unorm;
-        case DXGIFormat::BC3_UNORM_SRGB: return Texture::Format::BC3_SRGB;
-        case DXGIFormat::BC4_SNORM: return Texture::Format::BC4_SNORM;
-        case DXGIFormat::BC4_UNORM: return Texture::Format::BC4_UNORM;
-        case DXGIFormat::BC6H_UF16: return Texture::Format::BC6H_UF16;
-        case DXGIFormat::BC7_UNORM: return Texture::Format::BC7_UNORM;
-        case DXGIFormat::BC7_UNORM_SRGB: return Texture::Format::BC7_UNORM_SRGB;
+        case DXGIFormat::R8G8B8A8_UNORM: return Texture::Format::RGBA8Unorm;
+        case DXGIFormat::BC1_UNORM: return Texture::Format::Bc1RgbUnorm;
+        case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::Bc1RgbSrgb;
+        case DXGIFormat::BC2_UNORM: return Texture::Format::Bc2Unorm;
+        case DXGIFormat::BC2_UNORM_SRGB: return Texture::Format::Bc2Srgb;
+        case DXGIFormat::BC3_UNORM: return Texture::Format::Bc3Unorm;
+        case DXGIFormat::BC3_UNORM_SRGB: return Texture::Format::Bc3Srgb;
+        case DXGIFormat::BC4_SNORM: return Texture::Format::Bc4Snorm;
+        case DXGIFormat::BC4_UNORM: return Texture::Format::Bc4Unorm;
+        case DXGIFormat::BC6H_UF16: return Texture::Format::Bc6HUF16;
+        case DXGIFormat::BC7_UNORM: return Texture::Format::Bc7Unorm;
+        case DXGIFormat::BC7_UNORM_SRGB: return Texture::Format::Bc7Srgb;
         default:
             break;
         }
@@ -232,28 +232,28 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
     }
 
     switch (format) {
-    case DDSFormat::R8G8B8: return Texture::Format::BGR_888;
-    case DDSFormat::A8R8G8B8: return Texture::Format::BGRA_8888;
-    case DDSFormat::A8B8G8R8: return Texture::Format::RGBA_8888;
-    case DDSFormat::X8B8G8R8: return Texture::Format::RGBX_8888;
-    case DDSFormat::X8R8G8B8: return Texture::Format::BGRX_8888;
-    case DDSFormat::R5G6B5: return Texture::Format::BGR_565;
-    case DDSFormat::A4R4G4B4: return Texture::Format::BGRA_4444;
-    case DDSFormat::X4R4G4B4: return Texture::Format::BGRX_4444;
-    case DDSFormat::A1R5G5B5: return Texture::Format::BGRA_5551;
-    case DDSFormat::X1R5G5B5: return Texture::Format::BGRX_5551;
-    case DDSFormat::R3G3B2: return Texture::Format::RGB_332;
-    case DDSFormat::A8L8: return Texture::Format::LA88;
-    case DDSFormat::A8: return Texture::Format::A8;
-    case DDSFormat::L8: return Texture::Format::L8;
+    case DDSFormat::R8G8B8: return Texture::Format::BGR8Unorm;
+    case DDSFormat::A8R8G8B8: return Texture::Format::BGRA8Unorm;
+    case DDSFormat::A8B8G8R8: return Texture::Format::RGBA8Unorm;
+    case DDSFormat::X8B8G8R8: return Texture::Format::RGBX8Unorm;
+    case DDSFormat::X8R8G8B8: return Texture::Format::BGRX8Unorm;
+    case DDSFormat::R5G6B5: return Texture::Format::BGR565Unorm;
+    case DDSFormat::A4R4G4B4: return Texture::Format::BGRA4Unorm;
+    case DDSFormat::X4R4G4B4: return Texture::Format::BGRX4Unorm;
+    case DDSFormat::A1R5G5B5: return Texture::Format::BGRA5551Unorm;
+    case DDSFormat::X1R5G5B5: return Texture::Format::BGRX5551Unorm;
+    case DDSFormat::R3G3B2: return Texture::Format::RGB332Unorm;
+    case DDSFormat::A8L8: return Texture::Format::LA8Unorm;
+    case DDSFormat::A8: return Texture::Format::A8Unorm;
+    case DDSFormat::L8: return Texture::Format::L8Unorm;
     case DDSFormat::A2B10G10R10: return Texture::Format::RGBA_10101002_Rev;
     case DDSFormat::A2R10G10B10: return Texture::Format::BGRA_10101002_Rev;
-    case DDSFormat::DXT1: return Texture::Format::BC1_RGB_UNorm;
-    case DDSFormat::DXT3: return Texture::Format::BC2_Unorm;
-    case DDSFormat::DXT5: return Texture::Format::BC3_Unorm;
+    case DDSFormat::DXT1: return Texture::Format::Bc1RgbUnorm;
+    case DDSFormat::DXT3: return Texture::Format::Bc2Unorm;
+    case DDSFormat::DXT5: return Texture::Format::Bc3Unorm;
     case DDSFormat::RXGB: return Texture::Format::RXGB;
     case DDSFormat::ATI2: return Texture::Format::RG_ATI2N_UNorm;
-    case DDSFormat::A16B16G16R16F: return Texture::Format::RGBA_16161616F;
+    case DDSFormat::A16B16G16R16F: return Texture::Format::RGBA16F;
     default: return Texture::Format::Invalid;
     }
 }
@@ -261,27 +261,27 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
 static DDSFormat convertFormat(Texture::Format format)
 {
     switch (format) {
-    case Texture::Format::BGR_888: return DDSFormat::R8G8B8;
-    case Texture::Format::BGRA_8888: return DDSFormat::A8R8G8B8;
-    case Texture::Format::RGBX_8888: return DDSFormat::X8B8G8R8;
-    case Texture::Format::BGRX_8888: return DDSFormat::X8R8G8B8;
-    case Texture::Format::BGR_565: return DDSFormat::R5G6B5;
-    case Texture::Format::BGRA_4444: return DDSFormat::A4R4G4B4;
-    case Texture::Format::BGRX_4444: return DDSFormat::X4R4G4B4;
-    case Texture::Format::BGRA_5551: return DDSFormat::A1R5G5B5;
-    case Texture::Format::BGRX_5551: return DDSFormat::X1R5G5B5;
-    case Texture::Format::RGB_332: return DDSFormat::R3G3B2;
-    case Texture::Format::LA88: return DDSFormat::A8L8;
-    case Texture::Format::A8: return DDSFormat::A8;
-    case Texture::Format::L8: return DDSFormat::L8;
+    case Texture::Format::BGR8Unorm: return DDSFormat::R8G8B8;
+    case Texture::Format::BGRA8Unorm: return DDSFormat::A8R8G8B8;
+    case Texture::Format::RGBX8Unorm: return DDSFormat::X8B8G8R8;
+    case Texture::Format::BGRX8Unorm: return DDSFormat::X8R8G8B8;
+    case Texture::Format::BGR565Unorm: return DDSFormat::R5G6B5;
+    case Texture::Format::BGRA4Unorm: return DDSFormat::A4R4G4B4;
+    case Texture::Format::BGRX4Unorm: return DDSFormat::X4R4G4B4;
+    case Texture::Format::BGRA5551Unorm: return DDSFormat::A1R5G5B5;
+    case Texture::Format::BGRX5551Unorm: return DDSFormat::X1R5G5B5;
+    case Texture::Format::RGB332Unorm: return DDSFormat::R3G3B2;
+    case Texture::Format::LA8Unorm: return DDSFormat::A8L8;
+    case Texture::Format::A8Unorm: return DDSFormat::A8;
+    case Texture::Format::L8Unorm: return DDSFormat::L8;
     case Texture::Format::RGBA_10101002_Rev: return DDSFormat::A2B10G10R10;
     case Texture::Format::BGRA_10101002_Rev: return DDSFormat::A2R10G10B10;
-    case Texture::Format::BC1_RGB_UNorm: return DDSFormat::DXT1;
-    case Texture::Format::BC2_Unorm: return DDSFormat::DXT3;
-    case Texture::Format::BC3_Unorm: return DDSFormat::DXT5;
+    case Texture::Format::Bc1RgbUnorm: return DDSFormat::DXT1;
+    case Texture::Format::Bc2Unorm: return DDSFormat::DXT3;
+    case Texture::Format::Bc3Unorm: return DDSFormat::DXT5;
     case Texture::Format::RXGB: return DDSFormat::RXGB;
     case Texture::Format::RG_ATI2N_UNorm: return DDSFormat::ATI2;
-    case Texture::Format::RGBA_16161616F: return DDSFormat::A16B16G16R16F;
+    case Texture::Format::RGBA16F: return DDSFormat::A16B16G16R16F;
     default: return DDSFormat::Unknown;
     }
 }

@@ -240,11 +240,11 @@ Texture::Texture(const QImage& image)
     Texture::Format format = Texture::Format::Invalid;
     switch (image.format()) {
     case QImage::Format_ARGB32:
-        format = Texture::Format::RGBA_8888;
+        format = Texture::Format::RGBA8Unorm;
         copy = image.convertToFormat(QImage::Format_RGBA8888);
         break;
     case QImage::Format_RGB888:
-        format = Texture::Format::RGB_888;
+        format = Texture::Format::RGB8Unorm;
         copy = image;
         break;
     default:
@@ -564,10 +564,10 @@ QImage Texture::toImage() const
 
     QImage::Format imageFormat = QImage::Format_Invalid;
     switch (d->format) {
-    case Texture::Format::RGBA_8888:
+    case Texture::Format::RGBA8Unorm:
         imageFormat = QImage::Format_RGBA8888;
         break;
-    case Texture::Format::RGB_888:
+    case Texture::Format::RGB8Unorm:
         imageFormat = QImage::Format_RGB888;
         break;
     default:

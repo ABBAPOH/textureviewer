@@ -87,29 +87,29 @@ static bool readPadding(VTFHandler::QIODevicePointer device, qint64 size)
 static Texture::Format convertFormat(VTFImageFormat format)
 {
     switch (format) {
-    case VTFImageFormat::RGBA_16161616: return Texture::Format::RGBA_16161616;
-    case VTFImageFormat::RGBA_8888: return Texture::Format::RGBA_8888;
-    case VTFImageFormat::BGRA_8888: return Texture::Format::BGRA_8888;
-    case VTFImageFormat::ABGR_8888: return Texture::Format::ABGR_8888;
-    case VTFImageFormat::BGRX_8888: return Texture::Format::BGRX_8888;
-    case VTFImageFormat::BGRA_4444: return Texture::Format::BGRA_4444;
-    case VTFImageFormat::BGRX_5551: return Texture::Format::BGRX_5551;
-    case VTFImageFormat::BGRA_5551: return Texture::Format::BGRA_5551;
-    case VTFImageFormat::RGB_565: return Texture::Format::RGB_565;
-    case VTFImageFormat::BGR_565: return Texture::Format::BGR_565;
-    case VTFImageFormat::RGB_888: return Texture::Format::RGB_888;
-    case VTFImageFormat::BGR_888: return Texture::Format::BGR_888;
+    case VTFImageFormat::RGBA_16161616: return Texture::Format::RGBA16Unorm;
+    case VTFImageFormat::RGBA_8888: return Texture::Format::RGBA8Unorm;
+    case VTFImageFormat::BGRA_8888: return Texture::Format::BGRA8Unorm;
+    case VTFImageFormat::ABGR_8888: return Texture::Format::ABGR8Unorm;
+    case VTFImageFormat::BGRX_8888: return Texture::Format::BGRX8Unorm;
+    case VTFImageFormat::BGRA_4444: return Texture::Format::BGRA4Unorm;
+    case VTFImageFormat::BGRX_5551: return Texture::Format::BGRX5551Unorm;
+    case VTFImageFormat::BGRA_5551: return Texture::Format::BGRA5551Unorm;
+    case VTFImageFormat::RGB_565: return Texture::Format::RGB565Unorm;
+    case VTFImageFormat::BGR_565: return Texture::Format::BGR565Unorm;
+    case VTFImageFormat::RGB_888: return Texture::Format::RGB8Unorm;
+    case VTFImageFormat::BGR_888: return Texture::Format::BGR8Unorm;
         // TODO: find out if those formats differs from RGB_888 and BGR_888
-    case VTFImageFormat::RGB_888_BlueScreen: return Texture::Format::RGB_888;
-    case VTFImageFormat::BGR_888_BlueScreen: return Texture::Format::BGR_888;
-    case VTFImageFormat::I8: return Texture::Format::L8;
-    case VTFImageFormat::IA88: return Texture::Format::LA88;
-    case VTFImageFormat::A8: return Texture::Format::A8;
-    case VTFImageFormat::DXT1: return Texture::Format::BC1_RGB_UNorm;
-    case VTFImageFormat::DXT1_ONEBITALPHA: return Texture::Format::BC1_RGBA_Unorm;
-    case VTFImageFormat::DXT3: return Texture::Format::BC2_Unorm;
-    case VTFImageFormat::DXT5: return Texture::Format::BC3_Unorm;
-    case VTFImageFormat::RGBA_16161616F: return Texture::Format::RGBA_16161616F;
+    case VTFImageFormat::RGB_888_BlueScreen: return Texture::Format::RGB8Unorm;
+    case VTFImageFormat::BGR_888_BlueScreen: return Texture::Format::BGR8Unorm;
+    case VTFImageFormat::I8: return Texture::Format::L8Unorm;
+    case VTFImageFormat::IA88: return Texture::Format::LA8Unorm;
+    case VTFImageFormat::A8: return Texture::Format::A8Unorm;
+    case VTFImageFormat::DXT1: return Texture::Format::Bc1RgbUnorm;
+    case VTFImageFormat::DXT1_ONEBITALPHA: return Texture::Format::Bc1RgbaUnorm;
+    case VTFImageFormat::DXT3: return Texture::Format::Bc2Unorm;
+    case VTFImageFormat::DXT5: return Texture::Format::Bc3Unorm;
+    case VTFImageFormat::RGBA_16161616F: return Texture::Format::RGBA16F;
     default: return Texture::Format::Invalid;
     }
 }
