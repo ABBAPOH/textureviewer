@@ -47,6 +47,8 @@ enum class TextureFormat {
     Bc3Srgb,
     Bc4Snorm,
     Bc4Unorm,
+    Bc5Unorm,
+    Bc5Snorm,
     Bc6HUF16,
     // Bc6HSF16,
     Bc7Unorm,

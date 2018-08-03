@@ -38,6 +38,8 @@
         <file>dds/dx10/Bc3Unorm.dds</file>
         <file>dds/dx10/Bc4Snorm.dds</file>
         <file>dds/dx10/Bc4Unorm.dds</file>
+        <file>dds/dx10/Bc5Snorm.dds</file>
+        <file>dds/dx10/Bc5Unorm.dds</file>
         <file>dds/dx10/Bc6HUF16.dds</file>
         <file>dds/dx10/Bc7Srgb.dds</file>
         <file>dds/dx10/Bc7Unorm.dds</file>
