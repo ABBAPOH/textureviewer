@@ -9,8 +9,8 @@ constexpr TextureFormatInfo formats[] = {
     {TextureFormat::L8Unorm, 8, 0, QOpenGLTexture::LuminanceFormat, QOpenGLTexture::Luminance, QOpenGLTexture::UInt8},
     {TextureFormat::R8Snorm, 8, 0, QOpenGLTexture::R8_SNorm, QOpenGLTexture::Red, QOpenGLTexture::Int8},
     {TextureFormat::R8Unorm, 8, 0, QOpenGLTexture::R8_UNorm, QOpenGLTexture::Red, QOpenGLTexture::UInt8},
-    {TextureFormat::R8Sint, 8, 0, QOpenGLTexture::R8_UNorm, QOpenGLTexture::Red_Integer, QOpenGLTexture::Int8},
-    {TextureFormat::R8Uint, 8, 0, QOpenGLTexture::R8_UNorm, QOpenGLTexture::Red_Integer, QOpenGLTexture::UInt8},
+    {TextureFormat::R8Sint, 8, 0, QOpenGLTexture::R8I, QOpenGLTexture::Red_Integer, QOpenGLTexture::Int8},
+    {TextureFormat::R8Uint, 8, 0, QOpenGLTexture::R8U, QOpenGLTexture::Red_Integer, QOpenGLTexture::UInt8},
     // 16bit
     {TextureFormat::LA8Unorm, 16, 0, QOpenGLTexture::LuminanceAlphaFormat, QOpenGLTexture::LuminanceAlpha, QOpenGLTexture::UInt8},
     {TextureFormat::R16Snorm, 16, 0, QOpenGLTexture::R16_SNorm, QOpenGLTexture::Red, QOpenGLTexture::Int16},
