@@ -204,6 +204,7 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | V408                  |    no     |
 
 \* TYPELESS format support is not planned ever
+
 \*\* Needs testing on a machine that supports Bc6/Bc7 compression
 
 ### Writing
