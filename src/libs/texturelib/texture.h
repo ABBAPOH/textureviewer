@@ -73,9 +73,18 @@ public:
         L8,
         // compressed
         BC1_RGB_UNorm,
+        BC1_RGB_SRGB,
         BC1_RGBA_Unorm,
+        BC1_RGBA_SRGB,
         BC2_Unorm,
+        BC2_SRGB,
         BC3_Unorm,
+        BC3_SRGB,
+        BC4_SNORM,
+        BC4_UNORM,
+        BC6H_UF16,
+        BC7_UNORM,
+        BC7_UNORM_SRGB,
         RXGB,
         RG_ATI2N_UNorm,
         RGB8_ETC1,
@@ -87,14 +96,6 @@ public:
         R11_EAC_SNorm,
         RG11_EAC_SNorm,
 
-        BC1_UNorm_SRGB,
-        BC2_UNorm_SRGB,
-        BC3_UNorm_SRGB,
-        BC4_SNORM,
-        BC4_UNORM,
-        BC6H_UF16,
-        BC7_UNORM,
-        BC7_UNORM_SRGB,
         // floating point
         RGBA_16161616F,
         FormatsCount // should be the last

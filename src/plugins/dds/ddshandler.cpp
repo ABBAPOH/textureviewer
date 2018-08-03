@@ -215,11 +215,11 @@ static Texture::Format convertFormat(DDSFormat format, DXGIFormat format2)
         switch (format2) {
         case DXGIFormat::R8G8B8A8_UNORM: return Texture::Format::RGBA_8888;
         case DXGIFormat::BC1_UNORM: return Texture::Format::BC1_RGB_UNorm;
-        case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::BC1_UNorm_SRGB;
+        case DXGIFormat::BC1_UNORM_SRGB: return Texture::Format::BC1_RGB_SRGB;
         case DXGIFormat::BC2_UNORM: return Texture::Format::BC2_Unorm;
-        case DXGIFormat::BC2_UNORM_SRGB: return Texture::Format::BC2_UNorm_SRGB;
+        case DXGIFormat::BC2_UNORM_SRGB: return Texture::Format::BC2_SRGB;
         case DXGIFormat::BC3_UNORM: return Texture::Format::BC3_Unorm;
-        case DXGIFormat::BC3_UNORM_SRGB: return Texture::Format::BC3_UNorm_SRGB;
+        case DXGIFormat::BC3_UNORM_SRGB: return Texture::Format::BC3_SRGB;
         case DXGIFormat::BC4_SNORM: return Texture::Format::BC4_SNORM;
         case DXGIFormat::BC4_UNORM: return Texture::Format::BC4_UNORM;
         case DXGIFormat::BC6H_UF16: return Texture::Format::BC6H_UF16;
