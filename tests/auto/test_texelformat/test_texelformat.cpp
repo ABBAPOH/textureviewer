@@ -1,6 +1,6 @@
 #include <QtTest>
 
-#include <TextureLib/TexelFormat>
+#include <TextureLib/TextureFormatInfo>
 
 class TestTexelFormat : public QObject
 {
@@ -20,7 +20,7 @@ private slots:
 
 void TestTexelFormat::defaultConstructed()
 {
-    TexelFormat format;
+    TextureFormatInfo format;
 
     QCOMPARE(format.format(), TextureFormat::Invalid);
     QCOMPARE(format.bitsPerTexel(), 0);
@@ -54,7 +54,7 @@ void TestTexelFormat::constructed()
     QFETCH(QOpenGLTexture::PixelFormat, pixelFormat);
     QFETCH(QOpenGLTexture::PixelType, pixelType);
 
-    const TexelFormat texelFormat = {
+    const TextureFormatInfo texelFormat = {
         format,
         bitsPerTexel,
         blockSize,
@@ -95,8 +95,8 @@ void TestTexelFormat::compare()
     QFETCH(QOpenGLTexture::PixelFormat, pixelFormat);
     QFETCH(QOpenGLTexture::PixelType, pixelType);
 
-    const TexelFormat texelFormat0;
-    const TexelFormat texelFormat1 = {
+    const TextureFormatInfo texelFormat0;
+    const TextureFormatInfo texelFormat1 = {
         format,
         bitsPerTexel,
         blockSize,
@@ -105,7 +105,7 @@ void TestTexelFormat::compare()
         pixelType
     };
 
-    TexelFormat texelFormat2 = {
+    TextureFormatInfo texelFormat2 = {
         format,
         bitsPerTexel,
         blockSize,
@@ -127,11 +127,11 @@ void TestTexelFormat::compare()
 
 void TestTexelFormat::testFindOGLFormat()
 {
-    const auto formats = TexelFormat::texelFormats();
+    const auto formats = TextureFormatInfo::texelFormats();
     for (const auto &i: formats) {
         if (i.format() == TextureFormat::RXGB)
             continue; // Not supported in ktx
-        auto j = TexelFormat::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
+        auto j = TextureFormatInfo::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
         QCOMPARE(j, i);
     }
 }
@@ -150,10 +150,10 @@ void TestTexelFormat::benchFindOGLFormatConst()
 
 void TestTexelFormat::benchFindOGLFormatLinear()
 {
-    const auto formats = TexelFormat::texelFormats();
+    const auto formats = TextureFormatInfo::texelFormats();
     QBENCHMARK {
         for (const auto &i: formats) {
-            TexelFormat::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
+            TextureFormatInfo::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
         }
     }
 }

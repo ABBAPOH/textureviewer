@@ -159,8 +159,6 @@ bool TEXTURELIB_EXPORT operator!=(const Texture &lhs, const Texture &rhs);
 QDataStream TEXTURELIB_EXPORT &operator<<(QDataStream &stream, const Texture &texture);
 QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture);
 
-Q_DECLARE_METATYPE(TextureFormat)
-
 Q_DECLARE_LOGGING_CATEGORY(texture)
 
 class Texture::Size

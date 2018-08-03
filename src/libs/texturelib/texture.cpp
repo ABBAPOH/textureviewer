@@ -87,7 +87,7 @@ TextureData *TextureData::create(
     std::vector<LevelInfo> levelInfos;
     levelInfos.reserve(levels);
 
-    const auto texelFormat = TexelFormat::texelFormat(format);
+    const auto texelFormat = TextureFormatInfo::texelFormat(format);
 
     for (int level = 0; level < levels; ++level) {
         const auto ulevel = uint(level);
@@ -157,7 +157,7 @@ TextureData *TextureData::create(
 }
 
 qsizetype TextureData::calculateBytesPerLine(
-        const TexelFormat &format, quint32 width, Texture::Alignment align)
+        const TextureFormatInfo &format, quint32 width, Texture::Alignment align)
 {
     const auto bitsPerTexel = size_t(format.bitsPerTexel());
     const auto blockSize = size_t(format.blockSize());
@@ -184,7 +184,7 @@ qsizetype TextureData::calculateBytesPerLine(
 }
 
 qsizetype TextureData::calculateBytesPerSlice(
-        const TexelFormat &format, quint32 width, quint32 height, Texture::Alignment align)
+        const TextureFormatInfo &format, quint32 width, quint32 height, Texture::Alignment align)
 {
     const auto bytesPerLine = calculateBytesPerLine(format, width, align);
 
@@ -325,13 +325,13 @@ Texture Texture::create(TextureFormat format, Texture::Size size, int levels, in
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(
-                TexelFormat::texelFormat(format), quint32(width), align);
+                TextureFormatInfo::texelFormat(format), quint32(width), align);
 }
 
 qsizetype Texture::calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align)
 {
     return TextureData::calculateBytesPerSlice(
-                TexelFormat::texelFormat(format), quint32(width), quint32(height), align);
+                TextureFormatInfo::texelFormat(format), quint32(width), quint32(height), align);
 }
 
 bool Texture::isNull() const
@@ -421,7 +421,7 @@ qsizetype Texture::bytes() const
 
 qsizetype Texture::bitsPerTexel() const
 {
-    return d ? TexelFormat::texelFormat(d->format).bitsPerTexel() : 0;
+    return d ? TextureFormatInfo::texelFormat(d->format).bitsPerTexel() : 0;
 }
 
 qsizetype Texture::bytesPerLine(int level) const

@@ -1,6 +1,6 @@
-#include "texelformat.h"
+#include "textureformatinfo.h"
 
-constexpr TexelFormat formats[] = {
+constexpr TextureFormatInfo formats[] = {
     {},
     // 8bit
     {TextureFormat::A8Unorm, 8, 0, QOpenGLTexture::AlphaFormat, QOpenGLTexture::Alpha, QOpenGLTexture::UInt8},
@@ -56,7 +56,7 @@ constexpr TexelFormat formats[] = {
     {TextureFormat::RG11_EAC_SNorm, 0, 16, QOpenGLTexture::QOpenGLTexture::RG11_EAC_SNorm},
 };
 
-static_assert (sizeof (formats) == sizeof(TexelFormat) * size_t(TextureFormat::FormatsCount),
+static_assert (sizeof (formats) == sizeof(TextureFormatInfo) * size_t(TextureFormat::FormatsCount),
                "Some TextureFormat eniumerations are not handled in an array");
 
 /*!
@@ -67,7 +67,7 @@ constexpr bool checkFormatPositions()
 {
     int position = 0;
     // Use a variable to compile with msvc. It can't build because rvalue is not constexpr
-    const auto array = TexelFormat::TexelFormats(formats);
+    const auto array = TextureFormatInfo::TextureFormatInfos(formats);
     for (const auto &format: array) {
         if (format.format() != TextureFormat(position++))
             return false;
@@ -77,12 +77,12 @@ constexpr bool checkFormatPositions()
 
 static_assert (checkFormatPositions(), "Incorrect format position in formats array");
 
-const TexelFormat &TexelFormat::texelFormat(TextureFormat format) noexcept
+const TextureFormatInfo &TextureFormatInfo::texelFormat(TextureFormat format) noexcept
 {
-    return TexelFormats(formats).at(size_t(format));
+    return TextureFormatInfos(formats).at(size_t(format));
 }
 
-TexelFormat::TexelFormats TexelFormat::texelFormats() noexcept
+TextureFormatInfo::TextureFormatInfos TextureFormatInfo::texelFormats() noexcept
 {
     return {formats};
 }
@@ -159,19 +159,19 @@ TexelFormat TexelFormat::findOGLFormatConst(
 }
 #endif // Q_OS_LINUX
 
-TexelFormat TexelFormat::findOGLFormatLinear(
+TextureFormatInfo TextureFormatInfo::findOGLFormatLinear(
         QOpenGLTexture::TextureFormat textureFormat,
         QOpenGLTexture::PixelFormat pixelFormat,
         QOpenGLTexture::PixelType pixelType) noexcept
 {
-    const auto compareFormats = [=](const TexelFormat &other)
+    const auto compareFormats = [=](const TextureFormatInfo &other)
     {
         return other.oglTextureFormat() == textureFormat
                 && other.oglPixelFormat() == pixelFormat
                 && other.oglPixelType() == pixelType;
     };
 
-    const auto formats = TexelFormats(::formats);
+    const auto formats = TextureFormatInfos(::formats);
     const auto it = std::find_if(formats.begin(), formats.end(), compareFormats);
     if (it != formats.end())
         return *it;

@@ -2,7 +2,7 @@
 #define TEXTURE_P_H
 
 #include "texture.h"
-#include "texelformat.h"
+#include "textureformatinfo.h"
 
 class TextureData
 {
@@ -25,11 +25,11 @@ public:
             Texture::Alignment align);
 
     static qsizetype calculateBytesPerLine(
-            const TexelFormat &format,
+            const TextureFormatInfo &format,
             quint32 width,
             Texture::Alignment align = Texture::Alignment::Byte);
     static qsizetype calculateBytesPerSlice(
-            const TexelFormat &format,
+            const TextureFormatInfo &format,
             quint32 width,
             quint32 height,
             Texture::Alignment align = Texture::Alignment::Byte);

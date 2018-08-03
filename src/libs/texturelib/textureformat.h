@@ -1,6 +1,8 @@
 #ifndef TEXTUREFORMAT_H
 #define TEXTUREFORMAT_H
 
+#include <QtCore/QMetaType>
+
 enum class TextureFormat {
     Invalid = 0,
     // 8bit
@@ -63,5 +65,7 @@ enum class TextureFormat {
 
     FormatsCount // should be the last
 };
+
+Q_DECLARE_METATYPE(TextureFormat)
 
 #endif // TEXTUREFORMAT_H

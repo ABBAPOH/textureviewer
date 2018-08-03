@@ -1,7 +1,8 @@
 #include "ktxhandler.h"
 #include "ktxheader.h"
 
-#include <TextureLib/TexelFormat>
+#include <TextureLib/Texture>
+#include <TextureLib/TextureFormatInfo>
 
 static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 {
@@ -37,12 +38,12 @@ bool KtxHandler::read(Texture& texture)
 
     readPadding(device(), 3 - ((device()->pos() + 3) % 4));
 
-    TexelFormat texelFormat;
+    TextureFormatInfo texelFormat;
     if (header.glFormat == 0 && header.glType == 0) {
-        texelFormat = TexelFormat::findOGLFormat(
+        texelFormat = TextureFormatInfo::findOGLFormat(
                     QOpenGLTexture::TextureFormat(header.glInternalFormat));
     } else {
-        texelFormat = TexelFormat::findOGLFormat(
+        texelFormat = TextureFormatInfo::findOGLFormat(
                     QOpenGLTexture::TextureFormat(header.glInternalFormat),
                     QOpenGLTexture::PixelFormat(header.glFormat),
                     QOpenGLTexture::PixelType(header.glType));

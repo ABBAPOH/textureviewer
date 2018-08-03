@@ -3,15 +3,17 @@
 
 #include "texturelib_global.h"
 
-#include <TextureLib/Texture>
+#include <TextureLib/TextureFormat>
 
 #include <QtGui/QOpenGLTexture>
 
-class TexelFormat
+#include <gsl/span>
+
+class TextureFormatInfo
 {
 public:
-    constexpr inline TexelFormat() noexcept = default;
-    constexpr inline TexelFormat(
+    constexpr inline TextureFormatInfo() noexcept = default;
+    constexpr inline TextureFormatInfo(
             TextureFormat format,
             int bitsPerTexel,
             int blockSize,
@@ -44,10 +46,10 @@ public:
 
     constexpr inline bool isCompressed() const noexcept { return m_blockSize != 0; }
 
-    using TexelFormats = gsl::span<const TexelFormat>;
+    using TextureFormatInfos = gsl::span<const TextureFormatInfo>;
 
-    static const TexelFormat TEXTURELIB_EXPORT & texelFormat(TextureFormat format) noexcept;
-    static TexelFormats TEXTURELIB_EXPORT texelFormats() noexcept;
+    static const TextureFormatInfo TEXTURELIB_EXPORT & texelFormat(TextureFormat format) noexcept;
+    static TextureFormatInfos TEXTURELIB_EXPORT texelFormats() noexcept;
 
 #if defined(Q_OS_LINUX)
     // private method
@@ -58,12 +60,12 @@ public:
 #endif // Q_OS_LINUX
 
     // private method
-    static TexelFormat TEXTURELIB_EXPORT findOGLFormatLinear(
+    static TextureFormatInfo TEXTURELIB_EXPORT findOGLFormatLinear(
             QOpenGLTexture::TextureFormat textureFormat,
             QOpenGLTexture::PixelFormat pixelFormat,
             QOpenGLTexture::PixelType pixelType) noexcept;
 
-    static inline TexelFormat findOGLFormat(
+    static inline TextureFormatInfo findOGLFormat(
             QOpenGLTexture::TextureFormat textureFormat,
             QOpenGLTexture::PixelFormat pixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
             QOpenGLTexture::PixelType pixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
@@ -84,7 +86,7 @@ private:
     QOpenGLTexture::PixelType m_oglPixelType {QOpenGLTexture::PixelType::NoPixelType};
 };
 
-constexpr inline bool operator==(const TexelFormat &lhs, const TexelFormat &rhs)
+constexpr inline bool operator==(const TextureFormatInfo &lhs, const TextureFormatInfo &rhs)
 {
     return lhs.format() == rhs.format()
             && lhs.bitsPerTexel() == rhs.bitsPerTexel()
@@ -94,7 +96,7 @@ constexpr inline bool operator==(const TexelFormat &lhs, const TexelFormat &rhs)
             && lhs.oglPixelType() == rhs.oglPixelType();
 }
 
-constexpr inline bool operator!=(const TexelFormat &lhs, const TexelFormat &rhs)
+constexpr inline bool operator!=(const TextureFormatInfo &lhs, const TextureFormatInfo &rhs)
 {
     return !(lhs == rhs);
 }

@@ -1,5 +1,5 @@
 #include "utils.h"
-#include "texelformat.h"
+#include "textureformatinfo.h"
 
 #include <TextureLib/Texture>
 
@@ -57,7 +57,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
     }
 
     const auto target = getTarget(texture);
-    const auto &texelFormat = TexelFormat::texelFormat(texture.format());
+    const auto &texelFormat = TextureFormatInfo::texelFormat(texture.format());
     const auto textureFormat = texelFormat.oglTextureFormat();
     const auto pixelFormat = texelFormat.oglPixelFormat();
     const auto pixelType = texelFormat.oglPixelType();
