@@ -8,6 +8,10 @@ enum class TextureFormat {
     // 8bit
     A8Unorm,
     L8Unorm,
+    R8Snorm,
+    R8Unorm,
+    R8Sint,
+    R8Uint,
     // 16 bit
     LA8Unorm,
     // 24bit

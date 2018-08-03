@@ -44,6 +44,10 @@
         <file>dds/dx10/Bc6HUF16.dds</file>
         <file>dds/dx10/Bc7Srgb.dds</file>
         <file>dds/dx10/Bc7Unorm.dds</file>
+        <file>dds/dx10/R8Sint.dds</file>
+        <file>dds/dx10/R8Snorm.dds</file>
+        <file>dds/dx10/R8Uint.dds</file>
+        <file>dds/dx10/R8Unorm.dds</file>
         <file>dds/dx10/RGBA8Unorm.dds</file>
 
         <file>ktx/RGBA_8888.ktx</file>

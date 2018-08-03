@@ -213,6 +213,10 @@ static TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
 {
     if (format == DDSFormat::DX10) {
         switch (format2) {
+        case DXGIFormat::R8_SNORM: return TextureFormat::R8Snorm;
+        case DXGIFormat::R8_UNORM: return TextureFormat::R8Unorm;
+        case DXGIFormat::R8_SINT: return TextureFormat::R8Sint;
+        case DXGIFormat::R8_UINT: return TextureFormat::R8Uint;
         case DXGIFormat::R8G8B8A8_UNORM: return TextureFormat::RGBA8Unorm;
         case DXGIFormat::BC1_UNORM: return TextureFormat::Bc1RgbUnorm;
         case DXGIFormat::BC1_UNORM_SRGB: return TextureFormat::Bc1RgbSrgb;
