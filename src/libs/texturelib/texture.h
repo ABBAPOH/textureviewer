@@ -13,8 +13,6 @@
 
 #include <gsl/span>
 
-#include <tuple>
-
 class TextureData;
 
 class TEXTURELIB_EXPORT Texture
