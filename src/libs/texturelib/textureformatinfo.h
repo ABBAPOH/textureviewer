@@ -9,7 +9,7 @@
 
 #include <gsl/span>
 
-class TextureFormatInfo
+class TEXTURELIB_EXPORT TextureFormatInfo
 {
     Q_GADGET
 public:
@@ -51,8 +51,8 @@ public:
 
     using TextureFormatInfos = gsl::span<const TextureFormatInfo>;
 
-    static const TextureFormatInfo TEXTURELIB_EXPORT & texelFormat(TextureFormat format) noexcept;
-    static TextureFormatInfos TEXTURELIB_EXPORT texelFormats() noexcept;
+    static const TextureFormatInfo & texelFormat(TextureFormat format) noexcept;
+    static TextureFormatInfos texelFormats() noexcept;
 
 #if defined(Q_OS_LINUX)
     // private method
@@ -63,7 +63,7 @@ public:
 #endif // Q_OS_LINUX
 
     // private method
-    static TextureFormatInfo TEXTURELIB_EXPORT findOGLFormatLinear(
+    static TextureFormatInfo findOGLFormatLinear(
             QOpenGLTexture::TextureFormat textureFormat,
             QOpenGLTexture::PixelFormat pixelFormat,
             QOpenGLTexture::PixelType pixelType) noexcept;
