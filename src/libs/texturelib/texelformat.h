@@ -12,7 +12,7 @@ class TexelFormat
 public:
     constexpr inline TexelFormat() noexcept = default;
     constexpr inline TexelFormat(
-            Texture::Format format,
+            TextureFormat format,
             int bitsPerTexel,
             int blockSize,
             QOpenGLTexture::TextureFormat oglTextureFormat,
@@ -26,7 +26,7 @@ public:
         , m_oglPixelType(oglPixelType)
     {}
 
-    constexpr inline Texture::Format format() const noexcept { return m_format; }
+    constexpr inline TextureFormat format() const noexcept { return m_format; }
     constexpr inline int bitsPerTexel() const noexcept { return m_bitsPerTexel; }
     constexpr inline int blockSize() const noexcept { return m_blockSize; }
 
@@ -46,7 +46,7 @@ public:
 
     using TexelFormats = gsl::span<const TexelFormat>;
 
-    static const TexelFormat TEXTURELIB_EXPORT & texelFormat(Texture::Format format) noexcept;
+    static const TexelFormat TEXTURELIB_EXPORT & texelFormat(TextureFormat format) noexcept;
     static TexelFormats TEXTURELIB_EXPORT texelFormats() noexcept;
 
 #if defined(Q_OS_LINUX)
@@ -76,7 +76,7 @@ public:
     }
 
 private:
-    Texture::Format m_format {Texture::Format::Invalid};
+    TextureFormat m_format {TextureFormat::Invalid};
     int m_bitsPerTexel {0};
     int m_blockSize {0};
     QOpenGLTexture::TextureFormat m_oglTextureFormat {QOpenGLTexture::TextureFormat::NoFormat};

@@ -63,7 +63,7 @@ TextureData::~TextureData()
 }
 
 TextureData *TextureData::create(
-        Texture::Format format,
+        TextureFormat format,
         int width,
         int height,
         int depth,
@@ -74,7 +74,7 @@ TextureData *TextureData::create(
 {
     std::unique_ptr<TextureData> data;
 
-    if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == Texture::Format::Invalid)
+    if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == TextureFormat::Invalid)
         return nullptr; // invalid parameter(s)
 
     const auto uwidth = uint(width);
@@ -237,14 +237,14 @@ Texture::Texture(const QImage& image)
     : d(nullptr)
 {
     QImage copy;
-    Texture::Format format = Texture::Format::Invalid;
+    TextureFormat format = TextureFormat::Invalid;
     switch (image.format()) {
     case QImage::Format_ARGB32:
-        format = Texture::Format::RGBA8Unorm;
+        format = TextureFormat::RGBA8Unorm;
         copy = image.convertToFormat(QImage::Format_RGBA8888);
         break;
     case QImage::Format_RGB888:
-        format = Texture::Format::RGB8Unorm;
+        format = TextureFormat::RGB8Unorm;
         copy = image;
         break;
     default:
@@ -301,7 +301,7 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create(Format format, Size size, IsCubemap isCubemap, int levels, int layers, Texture::Alignment align)
+Texture Texture::create(TextureFormat format, Size size, IsCubemap isCubemap, int levels, int layers, Texture::Alignment align)
 {
     const auto width = size.width();
     const auto height = size.height();
@@ -317,18 +317,18 @@ Texture Texture::create(Format format, Size size, IsCubemap isCubemap, int level
     return Texture(TextureData::create(format, width, height, depth, bool(isCubemap), levels, layers, align));
 }
 
-Texture Texture::create(Texture::Format format, Texture::Size size, int levels, int layers, Texture::Alignment align)
+Texture Texture::create(TextureFormat format, Texture::Size size, int levels, int layers, Texture::Alignment align)
 {
     return create(format, size, IsCubemap::No, levels, layers, align);
 }
 
-qsizetype Texture::calculateBytesPerLine(Format format, int width, Alignment align)
+qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(
                 TexelFormat::texelFormat(format), quint32(width), align);
 }
 
-qsizetype Texture::calculateBytesPerSlice(Format format, int width, int height, Alignment align)
+qsizetype Texture::calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align)
 {
     return TextureData::calculateBytesPerSlice(
                 TexelFormat::texelFormat(format), quint32(width), quint32(height), align);
@@ -339,9 +339,9 @@ bool Texture::isNull() const
     return !d;
 }
 
-Texture::Format Texture::format() const
+TextureFormat Texture::format() const
 {
-    return d ? d->format : Format::Invalid;
+    return d ? d->format : TextureFormat::Invalid;
 }
 
 Texture::Alignment Texture::alignment() const
@@ -564,10 +564,10 @@ QImage Texture::toImage() const
 
     QImage::Format imageFormat = QImage::Format_Invalid;
     switch (d->format) {
-    case Texture::Format::RGBA8Unorm:
+    case TextureFormat::RGBA8Unorm:
         imageFormat = QImage::Format_RGBA8888;
         break;
-    case Texture::Format::RGB8Unorm:
+    case TextureFormat::RGB8Unorm:
         imageFormat = QImage::Format_RGB888;
         break;
     default:
@@ -719,7 +719,7 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
             >> data;
     if (stream.status() == QDataStream::Ok) {
         auto result = Texture(TextureData::create(
-                                  Texture::Format(format),
+                                  TextureFormat(format),
                                   int(width),
                                   int(height),
                                   int(depth),
@@ -745,7 +745,7 @@ QDebug operator<<(QDebug& d, const Texture::Index& index)
     return d;
 }
 
-QString toQString(Texture::Format format)
+QString toQString(TextureFormat format)
 {
     const auto &mo = Texture::staticMetaObject;
     const auto index = mo.indexOfEnumerator("Format");

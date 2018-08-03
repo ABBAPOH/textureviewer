@@ -3,6 +3,7 @@
 
 #include "texturelib_global.h"
 
+#include <TextureLib/TextureFormat>
 #include <TextureLib/TextureIOResult>
 
 #include <QtCore/QDataStream>
@@ -43,69 +44,7 @@ public:
         Yes
     };
 
-    enum class Format {
-        Invalid = 0,
-        // 8bit
-        A8Unorm,
-        L8Unorm,
-        // 16 bit
-        LA8Unorm,
-        // 24bit
-        RGB8Unorm,
-        BGR8Unorm,
-        // 32bit
-        RGBA8Unorm,
-        BGRA8Unorm,
-        ABGR8Unorm,
-        RGBX8Unorm,
-        BGRX8Unorm,
-        // 64bit
-        RGBA16Unorm,
-        RGBA16F,
-
-        // packed formats
-        RGBA_10101002_Rev,
-        BGRA_10101002_Rev,
-        BGR565Unorm,
-        RGB565Unorm,
-        // RGBA4Unorm,
-        BGRA4Unorm,
-        // RGBX4Unorm,
-        BGRX4Unorm,
-        BGRA5551Unorm,
-        BGRX5551Unorm,
-        RGB332Unorm,
-
-        // compressed
-        Bc1RgbUnorm,
-        Bc1RgbSrgb,
-        Bc1RgbaUnorm,
-        Bc1RgbaSrgb,
-        Bc2Unorm,
-        Bc2Srgb,
-        Bc3Unorm,
-        Bc3Srgb,
-        Bc4Snorm,
-        Bc4Unorm,
-        Bc6HUF16,
-        // Bc6HSF16,
-        Bc7Unorm,
-        Bc7Srgb,
-
-        RXGB,
-        RG_ATI2N_UNorm,
-        RGB8_ETC1,
-        RGB8_ETC2,
-        RGBA8_ETC2_EAC,
-        RGB8_PunchThrough_Alpha1_ETC2,
-        R11_EAC_UNorm,
-        RG11_EAC_UNorm,
-        R11_EAC_SNorm,
-        RG11_EAC_SNorm,
-
-        FormatsCount // should be the last
-    };
-    Q_ENUM(Format)
+    Q_ENUM(TextureFormat)
 
     enum class Side {
         PositiveX = 0,
@@ -128,14 +67,14 @@ public:
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
 
-    static Texture create(Format format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
-    static Texture create(Format format, Size size, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
+    static Texture create(TextureFormat format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
+    static Texture create(TextureFormat format, Size size, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
 
-    static qsizetype calculateBytesPerLine(Format format, int width, Alignment align = Alignment::Byte);
-    static qsizetype calculateBytesPerSlice(Format format, int width, int height, Alignment align = Alignment::Byte);
+    static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
+    static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);
 
     bool isNull() const;
-    Format format() const;
+    TextureFormat format() const;
 
     Alignment alignment() const;
 
@@ -220,7 +159,7 @@ bool TEXTURELIB_EXPORT operator!=(const Texture &lhs, const Texture &rhs);
 QDataStream TEXTURELIB_EXPORT &operator<<(QDataStream &stream, const Texture &texture);
 QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture);
 
-Q_DECLARE_METATYPE(Texture::Format)
+Q_DECLARE_METATYPE(TextureFormat)
 
 Q_DECLARE_LOGGING_CATEGORY(texture)
 
@@ -286,7 +225,7 @@ private:
 
 QDebug operator<<(QDebug &d, const Texture::Index &index);
 
-QString toQString(Texture::Format format);
+QString toQString(TextureFormat format);
 QString toQString(Texture::Side side);
 
 #endif // TEXTURE_H

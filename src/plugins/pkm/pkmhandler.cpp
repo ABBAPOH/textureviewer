@@ -58,19 +58,19 @@ QDebug &operator<<(QDebug &d, const PkmHeader &header)
     return d;
 }
 
-static Texture::Format convertFormat(quint16 format)
+static TextureFormat convertFormat(quint16 format)
 {
     switch (format) {
-    case 0: return Texture::Format::RGB8_ETC1;
-    case 1: return Texture::Format::RGB8_ETC2;
-    case 3: return Texture::Format::RGBA8_ETC2_EAC;
-    case 4: return Texture::Format::RGB8_PunchThrough_Alpha1_ETC2;
-    case 5: return Texture::Format::R11_EAC_UNorm;
-    case 6: return Texture::Format::RG11_EAC_UNorm;
-    case 7: return Texture::Format::R11_EAC_SNorm;
-    case 8: return Texture::Format::RG11_EAC_SNorm;
+    case 0: return TextureFormat::RGB8_ETC1;
+    case 1: return TextureFormat::RGB8_ETC2;
+    case 3: return TextureFormat::RGBA8_ETC2_EAC;
+    case 4: return TextureFormat::RGB8_PunchThrough_Alpha1_ETC2;
+    case 5: return TextureFormat::R11_EAC_UNorm;
+    case 6: return TextureFormat::RG11_EAC_UNorm;
+    case 7: return TextureFormat::R11_EAC_SNorm;
+    case 8: return TextureFormat::RG11_EAC_SNorm;
     }
-    return Texture::Format::Invalid;
+    return TextureFormat::Invalid;
 }
 
 bool PkmHandler::read(Texture& texture)
@@ -95,10 +95,10 @@ bool PkmHandler::read(Texture& texture)
         return false;
     }
 
-    Texture::Format format = Texture::Format::Invalid;
+    TextureFormat format = TextureFormat::Invalid;
 
     if (header.version[0] == '1' && header.version[1] == '0') {
-        format = Texture::Format::RGB8_ETC1;
+        format = TextureFormat::RGB8_ETC1;
     } else if (header.version[0] == '2' && header.version[1] == '0') {
         format = convertFormat(header.textureType);
     } else {
@@ -107,7 +107,7 @@ bool PkmHandler::read(Texture& texture)
         return false;
     }
 
-    if (format == Texture::Format::Invalid) {
+    if (format == TextureFormat::Invalid) {
         qCWarning(pkmhandler) << "Unsupported format" << header.textureType;
         return false;
     }

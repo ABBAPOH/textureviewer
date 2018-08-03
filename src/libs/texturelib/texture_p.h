@@ -15,7 +15,7 @@ public:
     TextureData &operator=(TextureData &&) = delete;
 
     static TextureData *create(
-            Texture::Format format,
+            TextureFormat format,
             int width,
             int height,
             int depth,
@@ -48,7 +48,7 @@ public:
     qsizetype offset(int side, int level, int layer) const;
 
     QAtomicInt ref {0};
-    Texture::Format format {Texture::Format::Invalid};
+    TextureFormat format {TextureFormat::Invalid};
     Texture::Alignment align {Texture::Alignment::Byte};
     bool compressed {false};
     int width {0};

@@ -60,16 +60,16 @@ void TestTextureIO::read_data()
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
     QTest::addColumn<int>("depth");
-    QTest::addColumn<Texture::Format>("format");
+    QTest::addColumn<TextureFormat>("format");
     QTest::addColumn<int>("layers");
     QTest::addColumn<int>("levels");
 
-    QTest::newRow("64x64, RGBA_8888, 1, 1") << 64 << 64 << 1 << Texture::Format::RGBA8Unorm << 1 << 1;
+    QTest::newRow("64x64, RGBA_8888, 1, 1") << 64 << 64 << 1 << TextureFormat::RGBA8Unorm << 1 << 1;
 }
 
 void TestTextureIO::read()
 {
-    QFETCH(Texture::Format, format);
+    QFETCH(TextureFormat, format);
     QFETCH(int, width);
     QFETCH(int, height);
     QFETCH(int, depth);
@@ -97,16 +97,16 @@ void TestTextureIO::write_data()
     QTest::addColumn<int>("width");
     QTest::addColumn<int>("height");
     QTest::addColumn<int>("depth");
-    QTest::addColumn<Texture::Format>("format");
+    QTest::addColumn<TextureFormat>("format");
     QTest::addColumn<int>("layers");
     QTest::addColumn<int>("levels");
 
-    QTest::newRow("64x64, RGBA_8888, 1, 1") << 64 << 64 << 1 << Texture::Format::RGBA8Unorm << 1 << 1;
+    QTest::newRow("64x64, RGBA_8888, 1, 1") << 64 << 64 << 1 << TextureFormat::RGBA8Unorm << 1 << 1;
 }
 
 void TestTextureIO::write()
 {
-    QFETCH(Texture::Format, format);
+    QFETCH(TextureFormat, format);
     QFETCH(int, width);
     QFETCH(int, height);
     QFETCH(int, depth);

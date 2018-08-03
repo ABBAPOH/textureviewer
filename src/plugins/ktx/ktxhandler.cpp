@@ -48,7 +48,7 @@ bool KtxHandler::read(Texture& texture)
                     QOpenGLTexture::PixelType(header.glType));
     }
 
-    if (texelFormat.format() == Texture::Format::Invalid) {
+    if (texelFormat.format() == TextureFormat::Invalid) {
         qCWarning(ktxhandler) << "Can't find appropriate format";
         return false;
     }
