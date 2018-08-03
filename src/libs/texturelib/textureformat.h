@@ -68,4 +68,6 @@ enum class TextureFormat {
 
 Q_DECLARE_METATYPE(TextureFormat)
 
+QString toQString(TextureFormat format);
+
 #endif // TEXTUREFORMAT_H

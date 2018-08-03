@@ -2,6 +2,8 @@
 #include "textureio.h"
 
 #include <QtCore/QDebug>
+#include <QtCore/QMetaEnum>
+
 #include <memory>
 
 #define CHECK_SIDE(side, rv) \
@@ -743,14 +745,6 @@ QDebug operator<<(QDebug& d, const Texture::Index& index)
                 QString::number(index.layer()));
     d << s;
     return d;
-}
-
-QString toQString(TextureFormat format)
-{
-    const auto &mo = Texture::staticMetaObject;
-    const auto index = mo.indexOfEnumerator("Format");
-    const auto en = mo.enumerator(index);
-    return en.valueToKey(int(format));
 }
 
 QString toQString(Texture::Side side)

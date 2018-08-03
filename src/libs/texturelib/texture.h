@@ -8,7 +8,6 @@
 
 #include <QtCore/QDataStream>
 #include <QtCore/QLoggingCategory>
-#include <QtCore/QMetaEnum>
 
 #include <QtGui/QImage>
 
@@ -43,8 +42,6 @@ public:
         No = 0,
         Yes
     };
-
-    Q_ENUM(TextureFormat)
 
     enum class Side {
         PositiveX = 0,
@@ -223,7 +220,6 @@ private:
 
 QDebug operator<<(QDebug &d, const Texture::Index &index);
 
-QString toQString(TextureFormat format);
 QString toQString(Texture::Side side);
 
 #endif // TEXTURE_H

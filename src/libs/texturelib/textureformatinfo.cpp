@@ -1,5 +1,7 @@
 #include "textureformatinfo.h"
 
+#include <QtCore/QMetaEnum>
+
 constexpr TextureFormatInfo formats[] = {
     {},
     // 8bit
@@ -176,4 +178,13 @@ TextureFormatInfo TextureFormatInfo::findOGLFormatLinear(
     if (it != formats.end())
         return *it;
     return {};
+}
+
+QString toQString(TextureFormat format)
+{
+    const auto &mo = TextureFormatInfo::staticMetaObject;
+    const auto index = mo.indexOfEnumerator("TextureFormat");
+    Q_ASSERT(index != -1);
+    const auto en = mo.enumerator(index);
+    return en.valueToKey(int(format));
 }
