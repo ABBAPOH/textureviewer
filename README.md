@@ -16,3 +16,26 @@ Below is the list of formats supported by the API.
 * [PKM](src/plugins/pkm/FORMAT.md) (PKM Texture Format)
 * [KTX](src/plugins/ktx/FORMAT.md) (Khronos Texture)
 * [VTF](src/plugins/vtf/FORMAT.md) (Valve Texture Format)
+
+## Building from source
+
+Windows
+- Microsoft Visual Studio 17 or higher
+- Qt 5.11.0 (maybe earlier versions will work too)
+- Qbs 1.11.1 (packed with Qt Creator)
+
+Mac OS
+- XCode 9.4.1 or higher
+- Qt 5.11.0 (maybe earlier versions will work too)
+- Qbs 1.11.1 (packed with Qt Creator)
+
+Linux
+- opengl headers
+- GCC-6/G++-6 or higher
+- Qt 5.11.0 (maybe earlier versions will work too)
+- Qbs 1.11.1
+
+On debian-based systems below is the required packages
+apt-get install gcc-6 g++6 libgl1-mesa-dev
+
+Open the textureviewer.qbs file in a Qt Creator and press "Build"
