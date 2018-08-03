@@ -28,8 +28,6 @@ enum class TextureFormat {
     RGBA16F,
 
     // packed formats
-    RGBA_10101002_Rev,
-    BGRA_10101002_Rev,
     BGR565Unorm,
     RGB565Unorm,
     // RGBA4Unorm,

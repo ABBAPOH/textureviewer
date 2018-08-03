@@ -253,8 +253,6 @@ static TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
     case DDSFormat::A8L8: return TextureFormat::LA8Unorm;
     case DDSFormat::A8: return TextureFormat::A8Unorm;
     case DDSFormat::L8: return TextureFormat::L8Unorm;
-    case DDSFormat::A2B10G10R10: return TextureFormat::RGBA_10101002_Rev;
-    case DDSFormat::A2R10G10B10: return TextureFormat::BGRA_10101002_Rev;
     case DDSFormat::DXT1: return TextureFormat::Bc1RgbUnorm;
     case DDSFormat::DXT3: return TextureFormat::Bc2Unorm;
     case DDSFormat::DXT5: return TextureFormat::Bc3Unorm;
@@ -281,8 +279,6 @@ static DDSFormat convertFormat(TextureFormat format)
     case TextureFormat::LA8Unorm: return DDSFormat::A8L8;
     case TextureFormat::A8Unorm: return DDSFormat::A8;
     case TextureFormat::L8Unorm: return DDSFormat::L8;
-    case TextureFormat::RGBA_10101002_Rev: return DDSFormat::A2B10G10R10;
-    case TextureFormat::BGRA_10101002_Rev: return DDSFormat::A2R10G10B10;
     case TextureFormat::Bc1RgbUnorm: return DDSFormat::DXT1;
     case TextureFormat::Bc2Unorm: return DDSFormat::DXT3;
     case TextureFormat::Bc3Unorm: return DDSFormat::DXT5;

@@ -26,8 +26,8 @@ B8G8R8A8 format. The same is true for all uncompressed formats.
 | A8B8G8R8      |    yes    |
 | X8B8G8R8      |    yes    |
 | G16R16        |    no     |
-| A2R10G10B10   |    yes    |
-| A16B16G16R16  |    yes    |
+| A2R10G10B10   |    no     |
+| A16B16G16R16  |    no     |
 | A8P8          |    no     |
 | P8            |    no     |
 | L8            |    yes    |
