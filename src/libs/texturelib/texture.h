@@ -45,19 +45,24 @@ public:
 
     enum class Format {
         Invalid = 0,
-        // unsigned 64bit
-        RGBA16Unorm,
-        // unsigned 32bit
+        // 8bit
+        A8Unorm,
+        L8Unorm,
+        // 16 bit
+        LA8Unorm,
+        // 24bit
+        RGB8Unorm,
+        BGR8Unorm,
+        // 32bit
         RGBA8Unorm,
         BGRA8Unorm,
         ABGR8Unorm,
         RGBX8Unorm,
         BGRX8Unorm,
-        // unsigned 24bit
-        RGB8Unorm,
-        BGR8Unorm,
-        // 16 bit
-        LA8Unorm,
+        // 64bit
+        RGBA16Unorm,
+        RGBA16F,
+
         // packed formats
         RGBA_10101002_Rev,
         BGRA_10101002_Rev,
@@ -70,9 +75,7 @@ public:
         BGRA5551Unorm,
         BGRX5551Unorm,
         RGB332Unorm,
-        // 8bit
-        A8Unorm,
-        L8Unorm,
+
         // compressed
         Bc1RgbUnorm,
         Bc1RgbSrgb,
@@ -100,8 +103,6 @@ public:
         R11_EAC_SNorm,
         RG11_EAC_SNorm,
 
-        // floating point
-        RGBA16F,
         FormatsCount // should be the last
     };
     Q_ENUM(Format)
