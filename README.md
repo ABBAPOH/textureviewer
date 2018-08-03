@@ -43,7 +43,7 @@ apt-get install gcc-6 g++6 libgl1-mesa-dev
 
 ### Building in Qt Creator
 
-Open the textureviewer.qbs file in a Qt Creator and press "Build"
+Open the [textureviewer.qbs](./textureviewer.qbs) file in a Qt Creator and press "Build"
 
 ### Building from command line
 
