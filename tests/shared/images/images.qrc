@@ -68,27 +68,27 @@
         <file>vtf/7.4.vtf</file>
         <file>vtf/7.5.vtf</file>
         <file>vtf/A8.vtf</file>
-        <file>vtf/ABGR_8888.vtf</file>
-        <file>vtf/BGR_565.vtf</file>
-        <file>vtf/BGR_888.vtf</file>
-        <file>vtf/BGR_888_Bluescreen.vtf</file>
-        <file>vtf/BGRA_4444.vtf</file>
-        <file>vtf/BGRA_5551.vtf</file>
-        <file>vtf/BGRA_8888.vtf</file>
-        <file>vtf/BGRX_5551.vtf</file>
-        <file>vtf/BGRX_8888.vtf</file>
-        <file>vtf/cubemap.vtf</file>
-        <file>vtf/DXT1.vtf</file>
-        <file>vtf/DXT1a.vtf</file>
-        <file>vtf/DXT3.vtf</file>
-        <file>vtf/DXT5.vtf</file>
+        <file>vtf/ABGR8.vtf</file>
+        <file>vtf/BGR565.vtf</file>
+        <file>vtf/BGR8.vtf</file>
+        <file>vtf/BGR8Bluescreen.vtf</file>
+        <file>vtf/BGRA4.vtf</file>
+        <file>vtf/BGRA5551.vtf</file>
+        <file>vtf/BGRA8.vtf</file>
+        <file>vtf/BGRX5551.vtf</file>
+        <file>vtf/BGRX8.vtf</file>
+        <file>vtf/Bc1RgbUnorm.vtf</file>
+        <file>vtf/Bc1RgbaUnorm.vtf</file>
+        <file>vtf/Bc2Unorm.vtf</file>
+        <file>vtf/Bc3Unorm.vtf</file>
         <file>vtf/L8.vtf</file>
-        <file>vtf/LA88.vtf</file>
-        <file>vtf/RGB_565.vtf</file>
-        <file>vtf/RGB_888.vtf</file>
-        <file>vtf/RGB_888_Bluescreen.vtf</file>
-        <file>vtf/RGBA_8888.vtf</file>
-        <file>vtf/RGBA_16161616.vtf</file>
-        <file>vtf/RGBA_16161616F.vtf</file>
+        <file>vtf/LA8.vtf</file>
+        <file>vtf/RGB565.vtf</file>
+        <file>vtf/RGB8.vtf</file>
+        <file>vtf/RGB8Bluescreen.vtf</file>
+        <file>vtf/RGBA8.vtf</file>
+        <file>vtf/RGBA16.vtf</file>
+        <file>vtf/RGBA16F.vtf</file>
+        <file>vtf/cubemap.vtf</file>
     </qresource>
 </RCC>
