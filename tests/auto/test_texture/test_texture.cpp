@@ -48,115 +48,115 @@ void TestTexture::construct_data()
 
     // 1D texture
     QTest::newRow("RGBA_8888, 1x1x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm // type / format
+            << TextureFormat::RGBA8_Unorm // type / format
             << 1 << 1 << 1 // width / height / depth
             << false // cubemap
             << 1 << 1 // levels / layers
             << qsizetype(4); // result
     QTest::newRow("RGBA_8888, 64x1x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 1 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(256);
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 1 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(400);
     // 1D texture array
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 1 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(400);
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=8")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 1 << 1
             << false // cubemap
             << 1 << 8
             << qsizetype(3200);
     QTest::newRow("RGBA_8888, 100x1x1, levels=1, layers=10")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 1 << 1
             << false // cubemap
             << 1 << 10
             << qsizetype(4000);
     // 2D texture
     QTest::newRow("RGBA_8888, 1x1x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 1 << 1 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(4);
     QTest::newRow("RGBA_8888, 64x64x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(16384);
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 100 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(40000);
     // 2D array
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 100 << 1
             << false // cubemap
             << 1 << 1
             << qsizetype(40000);
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=8")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 100 << 1
             << false // cubemap
             << 1 << 8
             << qsizetype(320000);
     QTest::newRow("RGBA_8888, 100x100x1, levels=1, layers=10")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 100 << 1
             << false // cubemap
             << 1 << 10
             << qsizetype(400000);
     // 3D texture
     QTest::newRow("RGBA_8888, 64x64x64, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 64
             << false // cubemap
             << 1 << 1
             << qsizetype(1048576);
     QTest::newRow("RGBA_8888, 100x100x100, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 100 << 100 << 100
             << false // cubemap
             << 1 << 1
             << qsizetype(4000000);
     // CubeMap
     QTest::newRow("RGBA_8888, size=1, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 1 << 1 << 1
             << true // cubemap
             << 1 << 1
             << qsizetype(24);
     QTest::newRow("RGBA_8888, size=64, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << true // cubemap
             << 1 << 1
             << qsizetype(98304);
     // CubeMap Array
     QTest::newRow("RGBA_8888, size=64, levels=1, layers=1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << true // cubemap
             << 1 << 1
             << qsizetype(98304);
     QTest::newRow("RGBA_8888, size=64, levels=1, layers=8")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << true // cubemap
             << 1 << 8
@@ -194,30 +194,30 @@ void TestTexture::bytesPerLine_data()
     QTest::addColumn<qsizetype>("bpl1");
     QTest::addColumn<qsizetype>("bpl4");
 
-    QTest::newRow("RGBA_8888, w=1") << TextureFormat::RGBA8Unorm << 1 << qsizetype(4) << qsizetype(4);
-    QTest::newRow("RGBA_8888, w=2") << TextureFormat::RGBA8Unorm << 2 << qsizetype(8) << qsizetype(8);
-    QTest::newRow("RGBA_8888, w=5") << TextureFormat::RGBA8Unorm << 5 << qsizetype(20) << qsizetype(20);
-    QTest::newRow("RGBA_8888, w=8") << TextureFormat::RGBA8Unorm << 8 << qsizetype(32) << qsizetype(32);
+    QTest::newRow("RGBA_8888, w=1") << TextureFormat::RGBA8_Unorm << 1 << qsizetype(4) << qsizetype(4);
+    QTest::newRow("RGBA_8888, w=2") << TextureFormat::RGBA8_Unorm << 2 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("RGBA_8888, w=5") << TextureFormat::RGBA8_Unorm << 5 << qsizetype(20) << qsizetype(20);
+    QTest::newRow("RGBA_8888, w=8") << TextureFormat::RGBA8_Unorm << 8 << qsizetype(32) << qsizetype(32);
 
-    QTest::newRow("RGB_888, w=1") << TextureFormat::RGB8Unorm << 1 << qsizetype(3) << qsizetype(4);
-    QTest::newRow("RGB_888, w=5") << TextureFormat::RGB8Unorm << 5 << qsizetype(15) << qsizetype(16);
-    QTest::newRow("RGB_888, w=8") << TextureFormat::RGB8Unorm << 8 << qsizetype(24) << qsizetype(24);
+    QTest::newRow("RGB_888, w=1") << TextureFormat::RGB8_Unorm << 1 << qsizetype(3) << qsizetype(4);
+    QTest::newRow("RGB_888, w=5") << TextureFormat::RGB8_Unorm << 5 << qsizetype(15) << qsizetype(16);
+    QTest::newRow("RGB_888, w=8") << TextureFormat::RGB8_Unorm << 8 << qsizetype(24) << qsizetype(24);
 
-    QTest::newRow("BGR_565, w=1") << TextureFormat::BGR565Unorm << 1 << qsizetype(2) << qsizetype(4);
-    QTest::newRow("BGR_565, w=5") << TextureFormat::BGR565Unorm << 5 << qsizetype(10) << qsizetype(12);
-    QTest::newRow("BGR_565, w=8") << TextureFormat::BGR565Unorm << 8 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("BGR_565, w=1") << TextureFormat::BGR565_Unorm << 1 << qsizetype(2) << qsizetype(4);
+    QTest::newRow("BGR_565, w=5") << TextureFormat::BGR565_Unorm << 5 << qsizetype(10) << qsizetype(12);
+    QTest::newRow("BGR_565, w=8") << TextureFormat::BGR565_Unorm << 8 << qsizetype(16) << qsizetype(16);
 
-    QTest::newRow("L8, w=1") << TextureFormat::L8Unorm << 1 << qsizetype(1) << qsizetype(4);
-    QTest::newRow("L8, w=5") << TextureFormat::L8Unorm << 5 << qsizetype(5) << qsizetype(8);
-    QTest::newRow("L8, w=8") << TextureFormat::L8Unorm << 8 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("L8, w=1") << TextureFormat::L8_Unorm << 1 << qsizetype(1) << qsizetype(4);
+    QTest::newRow("L8, w=5") << TextureFormat::L8_Unorm << 5 << qsizetype(5) << qsizetype(8);
+    QTest::newRow("L8, w=8") << TextureFormat::L8_Unorm << 8 << qsizetype(8) << qsizetype(8);
 
-    QTest::newRow("DXT1, w=1") << TextureFormat::Bc1RgbUnorm << 1 << qsizetype(8) << qsizetype(8);
-    QTest::newRow("DXT1, w=5") << TextureFormat::Bc1RgbUnorm << 5 << qsizetype(16) << qsizetype(16);
-    QTest::newRow("DXT1, w=8") << TextureFormat::Bc1RgbUnorm << 8 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT1, w=1") << TextureFormat::Bc1Rgb_Unorm << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT1, w=5") << TextureFormat::Bc1Rgb_Unorm << 5 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT1, w=8") << TextureFormat::Bc1Rgb_Unorm << 8 << qsizetype(16) << qsizetype(16);
 
-    QTest::newRow("DXT5, w=1") << TextureFormat::Bc1RgbUnorm << 1 << qsizetype(8) << qsizetype(8);
-    QTest::newRow("DXT5, w=5") << TextureFormat::Bc1RgbUnorm << 5 << qsizetype(16) << qsizetype(16);
-    QTest::newRow("DXT5, w=8") << TextureFormat::Bc1RgbUnorm << 8 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT5, w=1") << TextureFormat::Bc1Rgb_Unorm << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT5, w=5") << TextureFormat::Bc1Rgb_Unorm << 5 << qsizetype(16) << qsizetype(16);
+    QTest::newRow("DXT5, w=8") << TextureFormat::Bc1Rgb_Unorm << 8 << qsizetype(16) << qsizetype(16);
 }
 
 void TestTexture::bytesPerLine()
@@ -247,28 +247,28 @@ void TestTexture::offset_data()
     QTest::addColumn<qsizetype>("offset");
 
     QTest::newRow("RGBA_8888, 1x1x1, level 0/1, layer 0/1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 1 << 1 << 1
             << 1 << 1
             << 0 << 0
             << qsizetype(0);
 
     QTest::newRow("RGBA_8888, 64x64x1, level 0/1, layer 1/10")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << 1 << 10
             << 0 << 1
             << qsizetype(1 * 64*64*4);
 
     QTest::newRow("RGBA_8888, 64x64x1, level 1/2, layer 0/1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << 2 << 1
             << 1 << 0
             << qsizetype(64*64*4);
 
     QTest::newRow("RGBA_8888, 64x64x1, level 2/3, layer 0/1")
-            << TextureFormat::RGBA8Unorm
+            << TextureFormat::RGBA8_Unorm
             << 64 << 64 << 1
             << 3 << 1
             << 2 << 0

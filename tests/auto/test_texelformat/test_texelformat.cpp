@@ -41,7 +41,7 @@ void TestTexelFormat::constructed_data()
     QTest::addColumn<QOpenGLTexture::PixelType>("pixelType");
 
     QTest::newRow("RGBA_8888")
-            << TextureFormat::RGBA8Unorm << 32 << 0
+            << TextureFormat::RGBA8_Unorm << 32 << 0
             << QOpenGLTexture::RGBA8_UNorm << QOpenGLTexture::RGBA << QOpenGLTexture::UInt8;
 }
 
@@ -81,7 +81,7 @@ void TestTexelFormat::compare_data()
     QTest::addColumn<QOpenGLTexture::PixelType>("pixelType");
 
     QTest::newRow("RGBA_8888")
-            << TextureFormat::RGBA8Unorm << 32 << 0
+            << TextureFormat::RGBA8_Unorm << 32 << 0
             << QOpenGLTexture::RGBA8_UNorm << QOpenGLTexture::RGBA << QOpenGLTexture::UInt8;
 
 }
