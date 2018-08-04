@@ -89,7 +89,7 @@ TextureData *TextureData::create(
     std::vector<LevelInfo> levelInfos;
     levelInfos.reserve(levels);
 
-    const auto texelFormat = TextureFormatInfo::texelFormat(format);
+    const auto texelFormat = TextureFormatInfo::formatInfo(format);
 
     for (int level = 0; level < levels; ++level) {
         const auto ulevel = uint(level);
@@ -327,13 +327,13 @@ Texture Texture::create(TextureFormat format, Texture::Size size, int levels, in
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(
-                TextureFormatInfo::texelFormat(format), quint32(width), align);
+                TextureFormatInfo::formatInfo(format), quint32(width), align);
 }
 
 qsizetype Texture::calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align)
 {
     return TextureData::calculateBytesPerSlice(
-                TextureFormatInfo::texelFormat(format), quint32(width), quint32(height), align);
+                TextureFormatInfo::formatInfo(format), quint32(width), quint32(height), align);
 }
 
 bool Texture::isNull() const
@@ -423,7 +423,7 @@ qsizetype Texture::bytes() const
 
 qsizetype Texture::bitsPerTexel() const
 {
-    return d ? TextureFormatInfo::texelFormat(d->format).bitsPerTexel() : 0;
+    return d ? TextureFormatInfo::formatInfo(d->format).bitsPerTexel() : 0;
 }
 
 qsizetype Texture::bytesPerLine(int level) const

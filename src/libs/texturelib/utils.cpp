@@ -57,7 +57,7 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
     }
 
     const auto target = getTarget(texture);
-    const auto &texelFormat = TextureFormatInfo::texelFormat(texture.format());
+    const auto &texelFormat = TextureFormatInfo::formatInfo(texture.format());
     const auto textureFormat = texelFormat.oglTextureFormat();
     const auto pixelFormat = texelFormat.oglPixelFormat();
     const auto pixelType = texelFormat.oglPixelType();

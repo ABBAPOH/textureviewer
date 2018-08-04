@@ -51,8 +51,8 @@ public:
 
     using TextureFormatInfos = gsl::span<const TextureFormatInfo>;
 
-    static const TextureFormatInfo & texelFormat(TextureFormat format) noexcept;
-    static TextureFormatInfos texelFormats() noexcept;
+    static const TextureFormatInfo & formatInfo(TextureFormat format) noexcept;
+    static TextureFormatInfos allFormatInfos() noexcept;
 
     // private method
     static TextureFormatInfo findOGLFormatLinear(

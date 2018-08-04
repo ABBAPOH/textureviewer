@@ -134,12 +134,12 @@ constexpr bool checkFormatPositions()
 
 static_assert (checkFormatPositions(), "Incorrect format position in formats array");
 
-const TextureFormatInfo &TextureFormatInfo::texelFormat(TextureFormat format) noexcept
+const TextureFormatInfo &TextureFormatInfo::formatInfo(TextureFormat format) noexcept
 {
     return TextureFormatInfos(formats).at(size_t(format));
 }
 
-TextureFormatInfo::TextureFormatInfos TextureFormatInfo::texelFormats() noexcept
+TextureFormatInfo::TextureFormatInfos TextureFormatInfo::allFormatInfos() noexcept
 {
     return {formats};
 }
