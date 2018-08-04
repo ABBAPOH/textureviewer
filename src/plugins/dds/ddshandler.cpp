@@ -487,10 +487,11 @@ bool DDSHandler::read(Texture &texture)
     const auto textureFormat = convertFormat(DDSFormat(format), DXGIFormat(header10.dxgiFormat));
     if (textureFormat == TextureFormat::Invalid) {
         if (header.pixelFormat.fourCC == dx10Magic) {
-            qCWarning(ddshandler) << "Unsupported dxgi format"
-                                  << QString::number(quint32(format), 16);
+            qCWarning(ddshandler) << QStringLiteral("Unsupported dxgi format 0x%1")
+                                     .arg(quint32(format), 0, 16);
         } else {
-            qCWarning(ddshandler) << "Unsupported format" << QString::number(quint32(format), 16);
+            qCWarning(ddshandler) << QStringLiteral("Unsupported format")
+                                     .arg(quint32(format), 0, 16);
         }
         return false;
     }
