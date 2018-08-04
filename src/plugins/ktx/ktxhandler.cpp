@@ -4,6 +4,56 @@
 #include <TextureLib/Texture>
 #include <TextureLib/TextureFormatInfo>
 
+namespace {
+
+struct CompressedFormatInfo
+{
+    QOpenGLTexture::TextureFormat oglFormat {QOpenGLTexture::TextureFormat::NoFormat};
+    TextureFormat format {TextureFormat::Invalid};
+};
+
+constexpr CompressedFormatInfo compressedInfos[] = {
+    // BCn compressed
+    { QOpenGLTexture::TextureFormat::RGB_DXT1,              TextureFormat::Bc1Rgb_Unorm  },
+    { QOpenGLTexture::TextureFormat::SRGB_DXT1,             TextureFormat::Bc1Rgb_Srgb   },
+    { QOpenGLTexture::TextureFormat::RGBA_DXT1,             TextureFormat::Bc1Rgba_Unorm },
+    { QOpenGLTexture::TextureFormat::SRGB_Alpha_DXT1,       TextureFormat::Bc1Rgba_Srgb  },
+    { QOpenGLTexture::TextureFormat::RGBA_DXT3,             TextureFormat::Bc2_Unorm     },
+    { QOpenGLTexture::TextureFormat::SRGB_Alpha_DXT3,       TextureFormat::Bc2_Srgb      },
+    { QOpenGLTexture::TextureFormat::RGBA_DXT5,             TextureFormat::Bc3_Unorm     },
+    { QOpenGLTexture::TextureFormat::SRGB_Alpha_DXT5,       TextureFormat::Bc3_Srgb      },
+    { QOpenGLTexture::TextureFormat::SRGB_Alpha_DXT5,       TextureFormat::Bc4_Snorm     },
+    { QOpenGLTexture::TextureFormat::R_ATI1N_UNorm,         TextureFormat::Bc4_Unorm     },
+    { QOpenGLTexture::TextureFormat::RG_ATI2N_UNorm,        TextureFormat::Bc5_Unorm     },
+    { QOpenGLTexture::TextureFormat::RG_ATI2N_SNorm,        TextureFormat::Bc5_Snorm     },
+    { QOpenGLTexture::TextureFormat::RGB_BP_UNSIGNED_FLOAT, TextureFormat::Bc6HUF16      },
+    { QOpenGLTexture::TextureFormat::RGB_BP_SIGNED_FLOAT,   TextureFormat::Bc6HSF16      },
+    { QOpenGLTexture::TextureFormat::RGB_BP_UNorm,          TextureFormat::Bc7_Unorm     },
+    { QOpenGLTexture::TextureFormat::SRGB_BP_UNorm,         TextureFormat::Bc7_Srgb      },
+
+    // other
+    { QOpenGLTexture::TextureFormat::RGB8_ETC1,      TextureFormat::RGB8_ETC1      },
+    { QOpenGLTexture::TextureFormat::RGB8_ETC2,      TextureFormat::RGB8_ETC2      },
+    { QOpenGLTexture::TextureFormat::RGBA8_ETC2_EAC, TextureFormat::RGBA8_ETC2_EAC },
+    { QOpenGLTexture::TextureFormat::R11_EAC_UNorm,  TextureFormat::R11_EAC_UNorm  },
+    { QOpenGLTexture::TextureFormat::RG11_EAC_UNorm, TextureFormat::RG11_EAC_UNorm },
+    { QOpenGLTexture::TextureFormat::R11_EAC_SNorm,  TextureFormat::R11_EAC_SNorm  },
+    { QOpenGLTexture::TextureFormat::RG11_EAC_SNorm, TextureFormat::RG11_EAC_SNorm },
+    { QOpenGLTexture::TextureFormat::RGB8_PunchThrough_Alpha1_ETC2, TextureFormat::RGB8_PunchThrough_Alpha1_ETC2 },
+};
+
+constexpr TextureFormat findCompressedFormat(QOpenGLTexture::TextureFormat format)
+{
+    const auto infos = gsl::span<const CompressedFormatInfo>(compressedInfos);
+    for (const auto &info: infos) {
+        if (info.oglFormat == format)
+            return info.format;
+    }
+    return TextureFormat::Invalid;
+}
+
+} // namespace
+
 static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 {
     if (size == 0)
@@ -38,18 +88,15 @@ bool KtxHandler::read(Texture& texture)
 
     readPadding(device(), 3 - ((device()->pos() + 3) % 4));
 
-    TextureFormatInfo texelFormat;
+    TextureFormat textureFormat;
     if (header.glFormat == 0 && header.glType == 0) {
-        texelFormat = TextureFormatInfo::findOGLFormat(
-                    QOpenGLTexture::TextureFormat(header.glInternalFormat));
+        textureFormat = findCompressedFormat(QOpenGLTexture::TextureFormat(header.glInternalFormat));
     } else {
-        texelFormat = TextureFormatInfo::findOGLFormat(
-                    QOpenGLTexture::TextureFormat(header.glInternalFormat),
-                    QOpenGLTexture::PixelFormat(header.glFormat),
-                    QOpenGLTexture::PixelType(header.glType));
+        qCWarning(ktxhandler) << "Uncompressed formats are no supported yet";
+        return false;
     }
 
-    if (texelFormat.format() == TextureFormat::Invalid) {
+    if (textureFormat == TextureFormat::Invalid) {
         qCWarning(ktxhandler) << "Can't find appropriate format";
         return false;
     }
@@ -63,7 +110,7 @@ bool KtxHandler::read(Texture& texture)
     const auto layers = std::max<int>(1, header.numberOfArrayElements);
 
     auto result = Texture::create(
-                texelFormat.format(),
+                textureFormat,
                 size,
                 levels,
                 layers,
