@@ -71,6 +71,9 @@
         <file>dds/dx10/RGBA16Uint.dds</file>
         <file>dds/dx10/RGBA16Snorm.dds</file>
         <file>dds/dx10/RGBA16Unorm.dds</file>
+        <file>dds/dx10/RGBA32F.dds</file>
+        <file>dds/dx10/RGBA32Sint.dds</file>
+        <file>dds/dx10/RGBA32Uint.dds</file>
         <file>dds/dx10/RGBA8Sint.dds</file>
         <file>dds/dx10/RGBA8Snorm.dds</file>
         <file>dds/dx10/RGBA8Srgb.dds</file>

@@ -172,10 +172,12 @@ struct DXGIFormatInfo
 
 constexpr DXGIFormatInfo dxgiFormatInfos[size_t(DXGIFormat::FormatCount)] = {
     { DXGIFormat::UNKNOWN, TextureFormat::Invalid },
-    { DXGIFormat::R32G32B32A32_TYPELESS },
-    { DXGIFormat::R32G32B32A32_FLOAT },
-    { DXGIFormat::R32G32B32A32_UINT },
-    { DXGIFormat::R32G32B32A32_SINT },
+
+    { DXGIFormat::R32G32B32A32_TYPELESS, TextureFormat::Invalid    },
+    { DXGIFormat::R32G32B32A32_FLOAT,    TextureFormat::RGBA32F    },
+    { DXGIFormat::R32G32B32A32_UINT,     TextureFormat::RGBA32Uint },
+    { DXGIFormat::R32G32B32A32_SINT,     TextureFormat::RGBA32Uint },
+
     { DXGIFormat::R32G32B32_TYPELESS },
     { DXGIFormat::R32G32B32_FLOAT },
     { DXGIFormat::R32G32B32_UINT },
