@@ -5,15 +5,19 @@
 
 enum class TextureFormat {
     Invalid = 0,
+
     // 8bit
     A8Unorm,
     L8Unorm,
+
     R8Snorm,
     R8Unorm,
     R8Sint,
     R8Uint,
+
     // 16 bit
     LA8Unorm,
+
     R16Snorm,
     R16Unorm,
     R16Sint,
