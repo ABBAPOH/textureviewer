@@ -21,7 +21,7 @@ constexpr TextureFormatInfo formats[] = {
     { TextureFormat::R16_Unorm, 16, 0, QOpenGLTexture::R16_UNorm, QOpenGLTexture::Red,         QOpenGLTexture::UInt16  },
     { TextureFormat::R16_Sint,  16, 0, QOpenGLTexture::R16I,      QOpenGLTexture::Red_Integer, QOpenGLTexture::Int16   },
     { TextureFormat::R16_Uint,  16, 0, QOpenGLTexture::R16U,      QOpenGLTexture::Red_Integer, QOpenGLTexture::UInt16  },
-    { TextureFormat::R16_Float,     16, 0, QOpenGLTexture::R16F,      QOpenGLTexture::Red,         QOpenGLTexture::Float16 },
+    { TextureFormat::R16_Float, 16, 0, QOpenGLTexture::R16F,      QOpenGLTexture::Red,         QOpenGLTexture::Float16 },
 
     { TextureFormat::RG8_Snorm, 16, 0, QOpenGLTexture::RG8_SNorm, QOpenGLTexture::RG,         QOpenGLTexture::Int8  },
     { TextureFormat::RG8_Unorm, 16, 0, QOpenGLTexture::RG8_UNorm, QOpenGLTexture::RG,         QOpenGLTexture::UInt8 },
@@ -55,10 +55,10 @@ constexpr TextureFormatInfo formats[] = {
     { TextureFormat::BGRX8_Unorm, 32, 0, QOpenGLTexture::RGB8_UNorm,  QOpenGLTexture::BGRA, QOpenGLTexture::UInt8        },
 
     // 64bit
-    { TextureFormat::RGBA16_Snorm, 64, 0, QOpenGLTexture::RGBA16_SNorm, QOpenGLTexture::RGBA, QOpenGLTexture::Int16  },
-    { TextureFormat::RGBA16_Unorm, 64, 0, QOpenGLTexture::RGBA16_UNorm, QOpenGLTexture::RGBA, QOpenGLTexture::UInt16 },
-    { TextureFormat::RGBA16_Sint,  64, 0, QOpenGLTexture::RGBA16I,      QOpenGLTexture::RGBA, QOpenGLTexture::Int16  },
-    { TextureFormat::RGBA16_Uint,  64, 0, QOpenGLTexture::RGBA16U,      QOpenGLTexture::RGBA, QOpenGLTexture::UInt16 },
+    { TextureFormat::RGBA16_Snorm, 64, 0, QOpenGLTexture::RGBA16_SNorm, QOpenGLTexture::RGBA, QOpenGLTexture::Int16   },
+    { TextureFormat::RGBA16_Unorm, 64, 0, QOpenGLTexture::RGBA16_UNorm, QOpenGLTexture::RGBA, QOpenGLTexture::UInt16  },
+    { TextureFormat::RGBA16_Sint,  64, 0, QOpenGLTexture::RGBA16I,      QOpenGLTexture::RGBA, QOpenGLTexture::Int16   },
+    { TextureFormat::RGBA16_Uint,  64, 0, QOpenGLTexture::RGBA16U,      QOpenGLTexture::RGBA, QOpenGLTexture::UInt16  },
     { TextureFormat::RGBA16_Float, 64, 0, QOpenGLTexture::RGBA16F,      QOpenGLTexture::RGBA, QOpenGLTexture::Float16 },
 
     { TextureFormat::RG32_Sint,  64, 0, QOpenGLTexture::RG32I, QOpenGLTexture::RG_Integer, QOpenGLTexture::Int32   },
@@ -96,8 +96,8 @@ constexpr TextureFormatInfo formats[] = {
     { TextureFormat::Bc4_Unorm,     0,  8, QOpenGLTexture::R_ATI1N_UNorm         },
     { TextureFormat::Bc5_Unorm,     0, 16, QOpenGLTexture::RG_ATI2N_UNorm        },
     { TextureFormat::Bc5_Snorm,     0, 16, QOpenGLTexture::RG_ATI2N_SNorm        },
-    { TextureFormat::Bc6HUF16,     0, 16, QOpenGLTexture::RGB_BP_UNSIGNED_FLOAT },
-    { TextureFormat::Bc6HSF16,     0, 16, QOpenGLTexture::RGB_BP_SIGNED_FLOAT   },
+    { TextureFormat::Bc6HUF16,      0, 16, QOpenGLTexture::RGB_BP_UNSIGNED_FLOAT },
+    { TextureFormat::Bc6HSF16,      0, 16, QOpenGLTexture::RGB_BP_SIGNED_FLOAT   },
     { TextureFormat::Bc7_Unorm,     0, 16, QOpenGLTexture::RGB_BP_UNorm          },
     { TextureFormat::Bc7_Srgb,      0, 16, QOpenGLTexture::SRGB_BP_UNorm         },
 
