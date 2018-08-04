@@ -58,6 +58,9 @@
         <file>dds/dx10/RG8Snorm.dds</file>
         <file>dds/dx10/RG8Uint.dds</file>
         <file>dds/dx10/RG8Unorm.dds</file>
+        <file>dds/dx10/RGB32F.dds</file>
+        <file>dds/dx10/RGB32Sint.dds</file>
+        <file>dds/dx10/RGB32Uint.dds</file>
         <file>dds/dx10/RG16F.dds</file>
         <file>dds/dx10/RG16Snorm.dds</file>
         <file>dds/dx10/RG16Unorm.dds</file>

@@ -65,6 +65,11 @@ constexpr TextureFormatInfo formats[] = {
     { TextureFormat::RG32Uint,  64, 0, QOpenGLTexture::RG32U, QOpenGLTexture::RG_Integer, QOpenGLTexture::UInt32  },
     { TextureFormat::RG32F,     64, 0, QOpenGLTexture::RG32F, QOpenGLTexture::RG,         QOpenGLTexture::Float32 },
 
+    // 96bit
+    { TextureFormat::RGB32Sint, 96, 0, QOpenGLTexture::RGB32I, QOpenGLTexture::RGB_Integer, QOpenGLTexture::Int32   },
+    { TextureFormat::RGB32Uint, 96, 0, QOpenGLTexture::RGB32U, QOpenGLTexture::RGB_Integer, QOpenGLTexture::UInt32  },
+    { TextureFormat::RGB32F,    96, 0, QOpenGLTexture::RGB32F, QOpenGLTexture::RGB,         QOpenGLTexture::Float32 },
+
     // 128bit
     { TextureFormat::RGBA32Sint, 128, 0, QOpenGLTexture::RGBA32I, QOpenGLTexture::RGBA_Integer, QOpenGLTexture::Int32   },
     { TextureFormat::RGBA32Uint, 128, 0, QOpenGLTexture::RGBA32U, QOpenGLTexture::RGBA_Integer, QOpenGLTexture::UInt32  },
