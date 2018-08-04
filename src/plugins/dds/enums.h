@@ -110,6 +110,7 @@ Q_DECLARE_FLAGS(DDSFlags, DDSFlag)
 Q_DECLARE_OPERATORS_FOR_FLAGS(DDSFlags)
 
 enum class DDSPixelFormatFlag : quint32 {
+    None            = 0x00000000,
     AlphaPixels     = 0x00000001,
     Alpha           = 0x00000002,
     FourCC          = 0x00000004,

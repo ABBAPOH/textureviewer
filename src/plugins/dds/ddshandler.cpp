@@ -105,11 +105,11 @@ constexpr FormatInfo formatInfos[] = {
     { DDSFormat::R3G3B2,      DDSPixelFormatFlag::RGB,  8,  0x000000e0, 0x0000001c, 0x00000003, 0x00000000 },
     { DDSFormat::A8,        DDSPixelFormatFlag::Alpha,  8,  0x00000000, 0x00000000, 0x00000000, 0x000000ff },
     { DDSFormat::L8,    DDSPixelFormatFlag::Luminance,  8,  0x000000ff, 0x00000000, 0x00000000, 0x00000000 },
-    { DDSFormat::A4L4,        DDSPixelFormatFlag::LA,   8,  0x0000000f, 0x00000000, 0x00000000, 0x000000f0 },
+    { DDSFormat::A4L4,         DDSPixelFormatFlag::LA,  8,  0x0000000f, 0x00000000, 0x00000000, 0x000000f0 },
 
     { DDSFormat::V8U8,        DDSPixelFormatFlag::Normal, 16, 0x000000ff, 0x0000ff00, 0x00000000, 0x00000000 },
-    { DDSFormat::L6V5U5,                                0, 16, 0x0000001f, 0x000003e0, 0x0000fc00, 0x00000000 },
-    { DDSFormat::X8L8V8U8,                              0, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
+    { DDSFormat::L6V5U5,      DDSPixelFormatFlag::None,   16, 0x0000001f, 0x000003e0, 0x0000fc00, 0x00000000 },
+    { DDSFormat::X8L8V8U8,    DDSPixelFormatFlag::None,   32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
     { DDSFormat::Q8W8V8U8,    DDSPixelFormatFlag::Normal, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
     { DDSFormat::V16U16,      DDSPixelFormatFlag::Normal, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
     { DDSFormat::A2W10V10U10, DDSPixelFormatFlag::Normal, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 }
