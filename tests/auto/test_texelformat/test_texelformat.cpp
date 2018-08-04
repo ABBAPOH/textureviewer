@@ -11,11 +11,6 @@ private slots:
     void constructed();
     void compare_data();
     void compare();
-    void testFindOGLFormat();
-#if defined(Q_OS_LINUX)
-    void benchFindOGLFormatConst();
-#endif // Q_OS_LINUX
-    void benchFindOGLFormatLinear();
 };
 
 void TestTexelFormat::defaultConstructed()
@@ -123,39 +118,6 @@ void TestTexelFormat::compare()
     texelFormat2 = texelFormat0;
     QVERIFY(texelFormat2 == texelFormat0);
     QVERIFY(texelFormat2 != texelFormat1);
-}
-
-void TestTexelFormat::testFindOGLFormat()
-{
-    const auto formats = TextureFormatInfo::texelFormats();
-    for (const auto &i: formats) {
-        if (i.format() == TextureFormat::RXGB)
-            continue; // Not supported in ktx
-        auto j = TextureFormatInfo::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
-        QCOMPARE(j, i);
-    }
-}
-
-#if defined(Q_OS_LINUX)
-void TestTexelFormat::benchFindOGLFormatConst()
-{
-    const auto formats = TexelFormat::texelFormats();
-    QBENCHMARK {
-        for (const auto &i: formats) {
-            TexelFormat::findOGLFormatConst(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
-        }
-    }
-}
-#endif // Q_OS_LINUX
-
-void TestTexelFormat::benchFindOGLFormatLinear()
-{
-    const auto formats = TextureFormatInfo::texelFormats();
-    QBENCHMARK {
-        for (const auto &i: formats) {
-            TextureFormatInfo::findOGLFormatLinear(i.oglTextureFormat(), i.oglPixelFormat(), i.oglPixelType());
-        }
-    }
 }
 
 QTEST_APPLESS_MAIN(TestTexelFormat)
