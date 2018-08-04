@@ -268,7 +268,8 @@ enum class DXGIFormat : quint32 {
     P208                        ,
     V208                        ,
     V408                        ,
-    FORCE_UINT
+    FORCE_UINT                  ,
+    FormatCount // should be the last
 };
 
 #endif // ENUMS_H
