@@ -49,7 +49,7 @@ void TestTextureIO::setters()
     io.setFileName("file.txt");
     QCOMPARE(io.fileName(), QString("file.txt"));
     QVERIFY(qobject_cast<QFile *>(io.device().get()) != nullptr);
-    QCOMPARE(io.mimeType().name(), QString("text/plain"));
+    QVERIFY(!io.mimeType().isValid());
 
     io.setMimeType(QMimeDatabase().mimeTypeForName("text/html"));
     QCOMPARE(io.mimeType().name(), QString("text/html"));
