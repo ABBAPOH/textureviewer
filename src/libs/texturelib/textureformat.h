@@ -62,6 +62,10 @@ enum class TextureFormat {
     RGBA16Uint,
     RGBA16F,
 
+    RG32Sint,
+    RG32Uint,
+    RG32F,
+
     // packed formats
     BGR565Unorm,
     RGB565Unorm,

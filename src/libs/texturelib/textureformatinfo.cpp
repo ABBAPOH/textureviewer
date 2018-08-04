@@ -59,8 +59,12 @@ constexpr TextureFormatInfo formats[] = {
     { TextureFormat::RGBA16Unorm, 64, 0, QOpenGLTexture::RGBA16_UNorm, QOpenGLTexture::RGBA, QOpenGLTexture::UInt16 },
     { TextureFormat::RGBA16Sint,  64, 0, QOpenGLTexture::RGBA16I,      QOpenGLTexture::RGBA, QOpenGLTexture::Int16  },
     { TextureFormat::RGBA16Uint,  64, 0, QOpenGLTexture::RGBA16U,      QOpenGLTexture::RGBA, QOpenGLTexture::UInt16 },
-
     { TextureFormat::RGBA16F,     64, 0, QOpenGLTexture::RGBA16F,      QOpenGLTexture::RGBA, QOpenGLTexture::Float16 },
+
+    { TextureFormat::RG32Sint,  64, 0, QOpenGLTexture::RG32I, QOpenGLTexture::RG_Integer, QOpenGLTexture::Int32   },
+    { TextureFormat::RG32Uint,  64, 0, QOpenGLTexture::RG32U, QOpenGLTexture::RG_Integer, QOpenGLTexture::UInt32  },
+    { TextureFormat::RG32F,     64, 0, QOpenGLTexture::RG32F, QOpenGLTexture::RG,         QOpenGLTexture::Float32 },
+
     // packed formats
     { TextureFormat::BGR565Unorm,   16, 0, QOpenGLTexture::R5G6B5,     QOpenGLTexture::RGB,  QOpenGLTexture::UInt16_R5G6B5     },
     { TextureFormat::RGB565Unorm,   16, 0, QOpenGLTexture::R5G6B5,     QOpenGLTexture::RGB,  QOpenGLTexture::UInt16_R5G6B5_Rev },
