@@ -34,6 +34,10 @@ enum class TextureFormat {
     BGR8Unorm,
 
     // 32bit
+    R32Sint,
+    R32Uint,
+    R32F,
+
     RGBA8Snorm,
     RGBA8Unorm,
     RGBA8Sint,
