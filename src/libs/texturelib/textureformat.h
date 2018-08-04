@@ -56,7 +56,10 @@ enum class TextureFormat {
     BGRX8Unorm,
 
     // 64bit
+    RGBA16Snorm,
     RGBA16Unorm,
+    RGBA16Sint,
+    RGBA16Uint,
     RGBA16F,
 
     // packed formats
