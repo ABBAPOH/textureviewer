@@ -303,6 +303,19 @@ constexpr DXGIFormatInfo dxgiFormatInfos[size_t(DXGIFormat::FormatCount)] = {
     { DXGIFormat::FORCE_UINT },
 };
 
+constexpr bool checkFormatPositions()
+{
+    int position = 0;
+    // Use a variable to compile with msvc. It can't build because rvalue is not constexpr
+    const auto array = gsl::span<const DXGIFormatInfo>(dxgiFormatInfos);
+    for (const auto &format: array) {
+        if (format.dxgiFormat != DXGIFormat(position++))
+            return false;
+    }
+    return true;
+}
+static_assert (checkFormatPositions(), "Incorrect format position in dxgiFormatInfos array");
+
 bool isCubeMap(const DDSHeader &dds)
 {
     return (dds.caps2 & DDSCaps2Flag::CubeMap) != 0;
