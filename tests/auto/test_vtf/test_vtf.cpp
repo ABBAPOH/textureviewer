@@ -18,6 +18,7 @@ private slots:
 void TestVTF::initTestCase()
 {
     qApp->addLibraryPath(qApp->applicationDirPath() + TextureIO::pluginsDirPath());
+    Q_INIT_RESOURCE(extramimetypes);
     Q_INIT_RESOURCE(images);
     QLoggingCategory::setFilterRules(QStringLiteral("plugins.textureformats.vtfhandler.debug=false"));
 }
@@ -26,10 +27,10 @@ void TestVTF::benchRead_data()
 {
     QTest::addColumn<QString>("fileName");
 
-    QTest::newRow("RGBA_8888") << QStringLiteral(":/vtf/RGBA_8888.vtf");
+    QTest::newRow("RGBA8") << QStringLiteral(":/vtf/RGBA8.vtf");
     QTest::newRow("L8") << QStringLiteral(":/vtf/L8.vtf");
-    QTest::newRow("DXT1") << QStringLiteral(":/vtf/DXT1.vtf");
-    QTest::newRow("DXT5") << QStringLiteral(":/vtf/DXT5.vtf");
+    QTest::newRow("DXT1") << QStringLiteral(":/vtf/Bc1RgbUnorm.vtf");
+    QTest::newRow("DXT5") << QStringLiteral(":/vtf/Bc3Unorm.vtf");
 }
 
 void TestVTF::benchRead()
