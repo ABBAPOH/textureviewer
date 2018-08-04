@@ -22,6 +22,7 @@ enum class TextureFormat {
     R16Unorm,
     R16Sint,
     R16Uint,
+    R16F,
 
     RG8Snorm,
     RG8Unorm,

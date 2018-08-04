@@ -21,6 +21,7 @@ constexpr TextureFormatInfo formats[] = {
     {TextureFormat::R16Unorm, 16, 0, QOpenGLTexture::R16_UNorm, QOpenGLTexture::Red, QOpenGLTexture::UInt16},
     {TextureFormat::R16Sint, 16, 0, QOpenGLTexture::R16I, QOpenGLTexture::Red_Integer, QOpenGLTexture::Int16},
     {TextureFormat::R16Uint, 16, 0, QOpenGLTexture::R16U, QOpenGLTexture::Red_Integer, QOpenGLTexture::UInt16},
+    {TextureFormat::R16F, 16, 0, QOpenGLTexture::R16F, QOpenGLTexture::Red, QOpenGLTexture::Float16},
 
     {TextureFormat::RG8Snorm, 16, 0, QOpenGLTexture::RG8_SNorm, QOpenGLTexture::RG, QOpenGLTexture::Int8},
     {TextureFormat::RG8Unorm, 16, 0, QOpenGLTexture::RG8_UNorm, QOpenGLTexture::RG, QOpenGLTexture::UInt8},

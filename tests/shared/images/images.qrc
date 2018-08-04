@@ -46,6 +46,7 @@
         <file>dds/dx10/R8Snorm.dds</file>
         <file>dds/dx10/R8Uint.dds</file>
         <file>dds/dx10/R8Unorm.dds</file>
+        <file>dds/dx10/R16F.dds</file>
         <file>dds/dx10/R16Sint.dds</file>
         <file>dds/dx10/R16Snorm.dds</file>
         <file>dds/dx10/R16Uint.dds</file>
