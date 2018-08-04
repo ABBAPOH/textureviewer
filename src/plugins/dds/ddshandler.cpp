@@ -51,6 +51,8 @@
 
 #include <gsl/span>
 
+namespace {
+
 enum Colors {
     Red = 0,
     Green,
@@ -70,19 +72,19 @@ enum DXTVersions {
 
 // All magic numbers are little-endian as long as dds format has little
 // endian byte order
-static const quint32 ddsMagic = 0x20534444; // "DDS "
-static const quint32 dx10Magic = 0x30315844; // "DX10"
+constexpr quint32 ddsMagic = 0x20534444; // "DDS "
+constexpr quint32 dx10Magic = 0x30315844; // "DX10"
 
-static const qint64 headerSize = 128;
-static const quint32 ddsSize = 124; // headerSize without magic
-static const quint32 pixelFormatSize = 32;
+constexpr qint64 headerSize = 128;
+constexpr quint32 ddsSize = 124; // headerSize without magic
+constexpr quint32 pixelFormatSize = 32;
 
 struct FaceOffset
 {
     int x, y;
 };
 
-constexpr static const DDSCaps2Flag faceFlags[6] = {
+constexpr DDSCaps2Flag faceFlags[6] = {
     DDSCaps2Flag::CubeMapPositiveX,
     DDSCaps2Flag::CubeMapNegativeX,
     DDSCaps2Flag::CubeMapPositiveY,
@@ -102,7 +104,7 @@ struct FormatInfo
     quint32 aBitMask {0};
 };
 
-static constexpr const FormatInfo formatInfos[] = {
+constexpr FormatInfo formatInfos[] = {
     { DDSFormat::Unknown,                            {},  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
     { DDSFormat::A8R8G8B8,    DDSPixelFormatFlag::RGBA, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 },
     { DDSFormat::X8R8G8B8,    DDSPixelFormatFlag::RGB,  32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
@@ -137,7 +139,7 @@ static constexpr const FormatInfo formatInfos[] = {
     { DDSFormat::A2W10V10U10, DDSPixelFormatFlag::Normal, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 }
 };
 
-static constexpr const DDSFormat knownFourCCs[] = {
+constexpr DDSFormat knownFourCCs[] = {
     DDSFormat::A16B16G16R16,
     DDSFormat::V8U8,
     DDSFormat::UYVY,
@@ -338,7 +340,7 @@ static DDSFormat getFormat(const DDSHeader &dds)
     return DDSFormat::Unknown;
 }
 
-static const FormatInfo &getFormatInfo(DDSFormat format)
+const FormatInfo &getFormatInfo(DDSFormat format)
 {
     for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
         if (info.format == format)
@@ -354,7 +356,7 @@ constexpr TextureFormat convertFormat(DXGIFormat format)
     return gsl::at(dxgiFormatInfos, size_t(format)).textureFormat;
 }
 
-static TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
+constexpr TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
 {
     if (format == DDSFormat::DX10) {
         return convertFormat(format2);
@@ -385,7 +387,7 @@ static TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
     }
 }
 
-static DDSFormat convertFormat(TextureFormat format)
+constexpr DDSFormat convertFormat(TextureFormat format)
 {
     switch (format) {
     case TextureFormat::BGR8Unorm: return DDSFormat::R8G8B8;
@@ -411,7 +413,7 @@ static DDSFormat convertFormat(TextureFormat format)
     }
 }
 
-static bool verifyHeader(const DDSHeader &dds)
+bool verifyHeader(const DDSHeader &dds)
 {
     const auto flags = dds.flags;
     const auto requiredFlags = DDSFlag::Caps | DDSFlag::Height
@@ -441,6 +443,8 @@ static bool verifyHeader(const DDSHeader &dds)
 
     return true;
 }
+
+} // namespace
 
 bool DDSHandler::read(Texture &texture)
 {
