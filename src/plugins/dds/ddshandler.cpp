@@ -299,6 +299,11 @@ constexpr bool checkFormatPositions()
 }
 static_assert (checkFormatPositions(), "Incorrect format position in dxgiFormatInfos array");
 
+bool isDX10(const DDSHeader &header)
+{
+    return DDSFormat(header.pixelFormat.fourCC) == DDSFormat::DX10;
+}
+
 bool isCubeMap(const DDSHeader &dds)
 {
     return (dds.caps2 & DDSCaps2Flag::CubeMap) != 0;
@@ -456,7 +461,7 @@ bool DDSHandler::read(Texture &texture)
         QDataStream s(device().get());
         s.setByteOrder(QDataStream::LittleEndian);
         s >> header;
-        if (header.pixelFormat.fourCC == quint32(DDSFormat::DX10))
+        if (isDX10(header))
             s >> header10;
 
         if (s.status() != QDataStream::Ok) {
@@ -482,7 +487,7 @@ bool DDSHandler::read(Texture &texture)
 
     const auto textureFormat = convertFormat(DDSFormat(format), DXGIFormat(header10.dxgiFormat));
     if (textureFormat == TextureFormat::Invalid) {
-        if (header.pixelFormat.fourCC == quint32(DDSFormat::DX10)) {
+        if (isDX10(header)) {
             qCWarning(ddshandler) << QStringLiteral("Unsupported dxgi format 0x%1")
                                      .arg(quint32(format), 0, 16);
         } else {
