@@ -17,6 +17,7 @@ private slots:
 void TestKTX::initTestCase()
 {
     qApp->addLibraryPath(qApp->applicationDirPath() + TextureIO::pluginsDirPath());
+    Q_INIT_RESOURCE(extramimetypes);
     Q_INIT_RESOURCE(images);
     QLoggingCategory::setFilterRules(QStringLiteral("plugins.textureformats.ktxhandler.debug=false"));
 }
