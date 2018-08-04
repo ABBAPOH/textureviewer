@@ -108,10 +108,10 @@ void TestDds::benchRead_data()
 {
     QTest::addColumn<QString>("fileName");
 
-    QTest::newRow("RGBA_8888") << QStringLiteral(":/dds/RGBA_8888.dds");
-    QTest::newRow("L8") << QStringLiteral(":/dds/L8.dds");
-    QTest::newRow("DXT1") << QStringLiteral(":/dds/DXT1.dds");
-    QTest::newRow("DXT5") << QStringLiteral(":/dds/DXT5.dds");
+    QTest::newRow("RGBA8") << QStringLiteral(":/dds/RGBA8_Unorm.dds");
+    QTest::newRow("L8") << QStringLiteral(":/dds/L8_Unorm.dds");
+    QTest::newRow("DXT1") << QStringLiteral(":/dds/Bc1Rgb_Unorm.dds");
+    QTest::newRow("DXT5") << QStringLiteral(":/dds/Bc3_Unorm.dds");
 }
 
 void TestDds::benchRead()
