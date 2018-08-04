@@ -42,6 +42,8 @@
 
 #include "ddsheader.h"
 
+#include <gsl/span>
+
 QDataStream &operator>>(QDataStream &s, DDSPixelFormat &pixelFormat)
 {
     quint32 flags = 0;
@@ -83,8 +85,8 @@ QDataStream &operator>>(QDataStream &s, DDSHeader &header)
     s >> header.pitchOrLinearSize;
     s >> header.depth;
     s >> header.mipMapCount;
-    for (int i = 0; i < DDSHeader::ReservedCount; i++)
-        s >> header.reserved1[i];
+    for (auto &reserved: gsl::span<quint32>(header.reserved1))
+        s >> reserved;
     s >> header.pixelFormat;
     s >> flags;
     header.caps |= DDSCapsFlags(flags);
@@ -106,8 +108,8 @@ QDataStream &operator<<(QDataStream &s, const DDSHeader &header)
     s << header.pitchOrLinearSize;
     s << header.depth;
     s << header.mipMapCount;
-    for (int i = 0; i < DDSHeader::ReservedCount; i++)
-        s << header.reserved1[i];
+    for (const auto reserved: gsl::span<const quint32>(header.reserved1))
+        s << reserved;
     s << header.pixelFormat;
     s << quint32(header.caps);
     s << quint32(header.caps2);
