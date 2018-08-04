@@ -53,36 +53,13 @@
 
 namespace {
 
-enum Colors {
-    Red = 0,
-    Green,
-    Blue,
-    Alpha,
-    ColorCount
-};
-
-enum DXTVersions {
-    One = 1,
-    Two = 2,
-    Three = 3,
-    Four = 4,
-    Five = 5,
-    RXGB = 6
-};
-
 // All magic numbers are little-endian as long as dds format has little
 // endian byte order
 constexpr quint32 ddsMagic = 0x20534444; // "DDS "
 constexpr quint32 dx10Magic = 0x30315844; // "DX10"
 
-constexpr qint64 headerSize = 128;
 constexpr quint32 ddsSize = 124; // headerSize without magic
 constexpr quint32 pixelFormatSize = 32;
-
-struct FaceOffset
-{
-    int x, y;
-};
 
 constexpr DDSCaps2Flag faceFlags[6] = {
     DDSCaps2Flag::CubeMapPositiveX,
