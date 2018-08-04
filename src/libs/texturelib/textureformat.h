@@ -38,6 +38,12 @@ enum class TextureFormat {
     R32Uint,
     R32F,
 
+    RG16Snorm,
+    RG16Unorm,
+    RG16Sint,
+    RG16Uint,
+    RG16F,
+
     RGBA8Snorm,
     RGBA8Unorm,
     RGBA8Sint,

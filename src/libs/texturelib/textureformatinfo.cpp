@@ -37,6 +37,12 @@ constexpr TextureFormatInfo formats[] = {
     { TextureFormat::R32Uint, 32, 0, QOpenGLTexture::R32U, QOpenGLTexture::Red_Integer, QOpenGLTexture::UInt32  },
     { TextureFormat::R32F,    32, 0, QOpenGLTexture::R32F, QOpenGLTexture::Red,         QOpenGLTexture::Float32 },
 
+    { TextureFormat::RG16Snorm, 32, 0, QOpenGLTexture::RG16_SNorm, QOpenGLTexture::RG,         QOpenGLTexture::Int16   },
+    { TextureFormat::RG16Unorm, 32, 0, QOpenGLTexture::RG16_UNorm, QOpenGLTexture::RG,         QOpenGLTexture::UInt16  },
+    { TextureFormat::RG16Sint,  32, 0, QOpenGLTexture::RG16I,      QOpenGLTexture::RG_Integer, QOpenGLTexture::Int16   },
+    { TextureFormat::RG16Uint,  32, 0, QOpenGLTexture::RG16U,      QOpenGLTexture::RG_Integer, QOpenGLTexture::UInt16  },
+    { TextureFormat::RG16F,     32, 0, QOpenGLTexture::RG16F,      QOpenGLTexture::RG,         QOpenGLTexture::Float16 },
+
     { TextureFormat::RGBA8Snorm, 32, 0, QOpenGLTexture::RGBA8_SNorm,  QOpenGLTexture::RGBA, QOpenGLTexture::Int8  },
     { TextureFormat::RGBA8Unorm, 32, 0, QOpenGLTexture::RGBA8_UNorm,  QOpenGLTexture::RGBA, QOpenGLTexture::UInt8 },
     { TextureFormat::RGBA8Sint,  32, 0, QOpenGLTexture::RGBA8I,       QOpenGLTexture::RGBA, QOpenGLTexture::Int8  },
