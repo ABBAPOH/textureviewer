@@ -56,7 +56,6 @@ namespace {
 // All magic numbers are little-endian as long as dds format has little
 // endian byte order
 constexpr quint32 ddsMagic = 0x20534444; // "DDS "
-constexpr quint32 dx10Magic = 0x30315844; // "DX10"
 
 constexpr quint32 ddsSize = 124; // headerSize without magic
 constexpr quint32 pixelFormatSize = 32;
@@ -457,7 +456,7 @@ bool DDSHandler::read(Texture &texture)
         QDataStream s(device().get());
         s.setByteOrder(QDataStream::LittleEndian);
         s >> header;
-        if (header.pixelFormat.fourCC == dx10Magic)
+        if (header.pixelFormat.fourCC == quint32(DDSFormat::DX10))
             s >> header10;
 
         if (s.status() != QDataStream::Ok) {
@@ -483,7 +482,7 @@ bool DDSHandler::read(Texture &texture)
 
     const auto textureFormat = convertFormat(DDSFormat(format), DXGIFormat(header10.dxgiFormat));
     if (textureFormat == TextureFormat::Invalid) {
-        if (header.pixelFormat.fourCC == dx10Magic) {
+        if (header.pixelFormat.fourCC == quint32(DDSFormat::DX10)) {
             qCWarning(ddshandler) << QStringLiteral("Unsupported dxgi format 0x%1")
                                      .arg(quint32(format), 0, 16);
         } else {
