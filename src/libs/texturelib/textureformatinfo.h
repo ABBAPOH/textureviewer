@@ -54,14 +54,6 @@ public:
     static const TextureFormatInfo & texelFormat(TextureFormat format) noexcept;
     static TextureFormatInfos texelFormats() noexcept;
 
-#if defined(Q_OS_LINUX)
-    // private method
-    static TexelFormat findOGLFormatConst(
-            QOpenGLTexture::TextureFormat textureFormat,
-            QOpenGLTexture::PixelFormat pixelFormat,
-            QOpenGLTexture::PixelType pixelType) noexcept;
-#endif // Q_OS_LINUX
-
     // private method
     static TextureFormatInfo findOGLFormatLinear(
             QOpenGLTexture::TextureFormat textureFormat,
@@ -73,11 +65,7 @@ public:
             QOpenGLTexture::PixelFormat pixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
             QOpenGLTexture::PixelType pixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
     {
-#if defined(Q_OS_LINUX)
-        return findOGLFormatConst(textureFormat, pixelFormat, pixelType);
-#else
         return findOGLFormatLinear(textureFormat, pixelFormat, pixelType);
-#endif // Q_OS_LINUX
     }
 
 private:
