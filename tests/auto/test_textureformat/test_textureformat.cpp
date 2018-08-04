@@ -2,7 +2,7 @@
 
 #include <TextureLib/TextureFormatInfo>
 
-class TestTexelFormat : public QObject
+class TestTextureFormat : public QObject
 {
     Q_OBJECT
 private slots:
@@ -13,7 +13,7 @@ private slots:
     void compare();
 };
 
-void TestTexelFormat::defaultConstructed()
+void TestTextureFormat::defaultConstructed()
 {
     TextureFormatInfo format;
 
@@ -26,7 +26,7 @@ void TestTexelFormat::defaultConstructed()
     QCOMPARE(format.oglPixelType(), QOpenGLTexture::NoPixelType);
 }
 
-void TestTexelFormat::constructed_data()
+void TestTextureFormat::constructed_data()
 {
     QTest::addColumn<TextureFormat>("format");
     QTest::addColumn<int>("bitsPerTexel");
@@ -40,7 +40,7 @@ void TestTexelFormat::constructed_data()
             << QOpenGLTexture::RGBA8_UNorm << QOpenGLTexture::RGBA << QOpenGLTexture::UInt8;
 }
 
-void TestTexelFormat::constructed()
+void TestTextureFormat::constructed()
 {
     QFETCH(TextureFormat, format);
     QFETCH(int, bitsPerTexel);
@@ -66,7 +66,7 @@ void TestTexelFormat::constructed()
     QCOMPARE(texelFormat.oglPixelType(), pixelType);
 }
 
-void TestTexelFormat::compare_data()
+void TestTextureFormat::compare_data()
 {
     QTest::addColumn<TextureFormat>("format");
     QTest::addColumn<int>("bitsPerTexel");
@@ -81,7 +81,7 @@ void TestTexelFormat::compare_data()
 
 }
 
-void TestTexelFormat::compare()
+void TestTextureFormat::compare()
 {
     QFETCH(TextureFormat, format);
     QFETCH(int, bitsPerTexel);
@@ -120,6 +120,6 @@ void TestTexelFormat::compare()
     QVERIFY(texelFormat2 != texelFormat1);
 }
 
-QTEST_APPLESS_MAIN(TestTexelFormat)
+QTEST_APPLESS_MAIN(TestTextureFormat)
 
-#include "test_texelformat.moc"
+#include "test_textureformat.moc"
