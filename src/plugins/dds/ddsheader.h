@@ -48,14 +48,14 @@
 
 struct DDSPixelFormat
 {
-    quint32 size;
+    quint32 size {0};
     DDSPixelFormatFlags flags;
-    quint32 fourCC;
-    quint32 rgbBitCount;
-    quint32 rBitMask;
-    quint32 gBitMask;
-    quint32 bBitMask;
-    quint32 aBitMask;
+    quint32 fourCC {0};
+    quint32 rgbBitCount {0};
+    quint32 rBitMask {0};
+    quint32 gBitMask {0};
+    quint32 bBitMask {0};
+    quint32 aBitMask {0};
 };
 
 QDataStream &operator>>(QDataStream &s, DDSPixelFormat &pixelFormat);
@@ -65,21 +65,21 @@ struct DDSHeader
 {
     enum { ReservedCount = 11 };
 
-    quint32 magic;
-    quint32 size;
+    quint32 magic {0};
+    quint32 size {0};
     DDSFlags flags;
-    quint32 height;
-    quint32 width;
-    quint32 pitchOrLinearSize;
-    quint32 depth;
-    quint32 mipMapCount;
-    quint32 reserved1[ReservedCount];
+    quint32 height {0};
+    quint32 width {0};
+    quint32 pitchOrLinearSize {0};
+    quint32 depth {0};
+    quint32 mipMapCount {0};
+    quint32 reserved1[ReservedCount] {};
     DDSPixelFormat pixelFormat;
     DDSCapsFlags caps;
     DDSCaps2Flags caps2;
-    quint32 caps3;
-    quint32 caps4;
-    quint32 reserved2;
+    quint32 caps3 {0};
+    quint32 caps4 {0};
+    quint32 reserved2 {0};
 };
 
 QDataStream &operator>>(QDataStream &s, DDSHeader &header);
