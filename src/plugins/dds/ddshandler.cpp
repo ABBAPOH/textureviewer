@@ -302,17 +302,17 @@ constexpr DXGIFormatInfo dxgiFormatInfos[size_t(DXGIFormat::FormatCount)] = {
     { DXGIFormat::FORCE_UINT },
 };
 
-static inline bool isCubeMap(const DDSHeader &dds)
+bool isCubeMap(const DDSHeader &dds)
 {
     return (dds.caps2 & DDSCaps2Flag::CubeMap) != 0;
 }
 
-static inline bool isVolumeMap(const DDSHeader &dds)
+bool isVolumeMap(const DDSHeader &dds)
 {
     return (dds.caps2 & DDSCaps2Flag::Volume) != 0;
 }
 
-static DDSFormat getFormat(const DDSHeader &dds)
+DDSFormat getFormat(const DDSHeader &dds)
 {
     const DDSPixelFormat &format = dds.pixelFormat;
     if (format.flags & DDSPixelFormatFlag::PaletteIndexed4) {
