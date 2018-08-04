@@ -201,10 +201,10 @@ constexpr DXGIFormatInfo dxgiFormatInfos[size_t(DXGIFormat::FormatCount)] = {
 
     { DXGIFormat::R8G8B8A8_TYPELESS,   TextureFormat::Invalid    },
     { DXGIFormat::R8G8B8A8_UNORM,      TextureFormat::RGBA8Unorm },
-    { DXGIFormat::R8G8B8A8_UNORM_SRGB },
-    { DXGIFormat::R8G8B8A8_UINT },
-    { DXGIFormat::R8G8B8A8_SNORM },
-    { DXGIFormat::R8G8B8A8_SINT },
+    { DXGIFormat::R8G8B8A8_UNORM_SRGB, TextureFormat::RGBA8Srgb  },
+    { DXGIFormat::R8G8B8A8_UINT,       TextureFormat::RGBA8Uint  },
+    { DXGIFormat::R8G8B8A8_SNORM,      TextureFormat::RGBA8Snorm },
+    { DXGIFormat::R8G8B8A8_SINT,       TextureFormat::RGBA8Sint  },
 
     { DXGIFormat::R16G16_TYPELESS},
     { DXGIFormat::R16G16_FLOAT },

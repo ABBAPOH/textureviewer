@@ -55,6 +55,10 @@
         <file>dds/dx10/RG8Snorm.dds</file>
         <file>dds/dx10/RG8Uint.dds</file>
         <file>dds/dx10/RG8Unorm.dds</file>
+        <file>dds/dx10/RGBA8Sint.dds</file>
+        <file>dds/dx10/RGBA8Snorm.dds</file>
+        <file>dds/dx10/RGBA8Srgb.dds</file>
+        <file>dds/dx10/RGBA8Uint.dds</file>
         <file>dds/dx10/RGBA8Unorm.dds</file>
 
         <file>ktx/RGBA_8888.ktx</file>
