@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file>shaders/gl33/fragment.shader</file>
-        <file>shaders/gl33/vertex.shader</file>
-        <file>shaders/gles/fragment.shader</file>
-        <file>shaders/gles/vertex.shader</file>
+        <file>shaders/gl33/fragment.glsl</file>
+        <file>shaders/gl33/vertex.glsl</file>
+        <file>shaders/gles/fragment.glsl</file>
+        <file>shaders/gles/vertex.glsl</file>
     </qresource>
 </RCC>

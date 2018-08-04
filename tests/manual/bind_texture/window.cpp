@@ -140,15 +140,15 @@ bool Window::initializeShaders()
     m_program = std::make_unique<QOpenGLShaderProgram>();
     if (!m_program->addShaderFromSourceFile(QOpenGLShader::Vertex,
                                             m_coreProfile
-                                            ? QStringLiteral(":/shaders/gl33/vertex.shader")
-                                            : QStringLiteral(":/shaders/gles/vertex.shader"))) {
+                                            ? QStringLiteral(":/shaders/gl33/vertex.glsl")
+                                            : QStringLiteral(":/shaders/gles/vertex.glsl"))) {
         return false;
     }
 
     if (!m_program->addShaderFromSourceFile(QOpenGLShader::Fragment,
                                             m_coreProfile
-                                            ? QStringLiteral(":/shaders/gl33/fragment.shader")
-                                            : QStringLiteral(":/shaders/gles/fragment.shader"))) {
+                                            ? QStringLiteral(":/shaders/gl33/fragment.glsl")
+                                            : QStringLiteral(":/shaders/gles/fragment.glsl"))) {
         return false;
     }
 
