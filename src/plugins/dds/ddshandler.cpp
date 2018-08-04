@@ -322,7 +322,7 @@ DDSFormat getFormat(const DDSHeader &dds)
     } else if (format.flags & DDSPixelFormatFlag::PaletteIndexed8) {
         return DDSFormat::P8;
     } else if (format.flags & DDSPixelFormatFlag::FourCC) {
-            for (const auto fourCC: gsl::span<const DDSFormat>(knownFourCCs)) {
+        for (const auto fourCC: gsl::span<const DDSFormat>(knownFourCCs)) {
             if (DDSFormat(dds.pixelFormat.fourCC) == fourCC)
                 return fourCC;
         }
