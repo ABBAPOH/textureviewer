@@ -13,8 +13,6 @@ class TEXTURELIB_EXPORT TextureFormatInfo
 {
     Q_GADGET
 public:
-    Q_ENUM(TextureFormat)
-
     constexpr inline TextureFormatInfo() noexcept = default;
     constexpr inline TextureFormatInfo(
             TextureFormat format,

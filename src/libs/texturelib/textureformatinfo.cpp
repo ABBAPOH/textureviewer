@@ -148,9 +148,7 @@ TextureFormatInfo::TextureFormatInfos TextureFormatInfo::allFormatInfos() noexce
 
 QString toQString(TextureFormat format)
 {
-    const auto &mo = TextureFormatInfo::staticMetaObject;
-    const auto index = mo.indexOfEnumerator("TextureFormat");
-    Q_ASSERT(index != -1);
-    const auto en = mo.enumerator(index);
+    const auto en = QMetaEnum::fromType<Details::TextureFormat>();
+    Q_ASSERT(en.isValid());
     return en.valueToKey(int(format));
 }

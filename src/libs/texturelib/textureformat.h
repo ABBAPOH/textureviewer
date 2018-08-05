@@ -3,6 +3,10 @@
 
 #include <QtCore/QMetaType>
 
+namespace Details {
+
+Q_NAMESPACE
+
 enum class TextureFormat {
     Invalid = 0,
 
@@ -121,7 +125,11 @@ enum class TextureFormat {
     FormatsCount // should be the last
 };
 
-Q_DECLARE_METATYPE(TextureFormat)
+Q_ENUM_NS(TextureFormat)
+
+} // namespace Details
+
+using TextureFormat = Details::TextureFormat;
 
 QString toQString(TextureFormat format);
 
