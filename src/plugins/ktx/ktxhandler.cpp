@@ -4,6 +4,8 @@
 #include <TextureLib/Texture>
 #include <TextureLib/TextureFormatInfo>
 
+namespace {
+
 static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 {
     if (size == 0)
@@ -18,6 +20,8 @@ static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
     }
     return true;
 }
+
+} // namespace
 
 bool KtxHandler::read(Texture& texture)
 {
