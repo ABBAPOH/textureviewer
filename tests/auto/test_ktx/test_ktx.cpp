@@ -26,6 +26,7 @@ void TestKTX::benchRead_data()
 {
     QTest::addColumn<QString>("fileName");
 
+    QTest::newRow("RGBA8") << QStringLiteral(":/ktx/RGBA8_Unorm.ktx");
     QTest::newRow("RGB8_ETC2") << QStringLiteral(":/ktx/RGB8_ETC2.ktx");
 }
 
