@@ -97,6 +97,7 @@
         <file>ktx/RG11_EAC_UNorm.ktx</file>
         <file>ktx/RGB8_ETC2.ktx</file>
         <file>ktx/RGBA32_Float.ktx</file>
+        <file>ktx/RGBA8_Unorm.ktx</file>
         <file>ktx/RGB8_PunchThrough_Alpha1_ETC2.ktx</file>
         <file>ktx/RGBA8_ETC2_EAC.ktx</file>
 
