@@ -32,7 +32,7 @@ constexpr TextureFormat findFormat(quint32 textureFormat, quint32 pixelFormat, q
     return TextureFormat::Invalid;
 }
 
-static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
+bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 {
     if (size == 0)
         return true;
