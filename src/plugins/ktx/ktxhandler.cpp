@@ -42,9 +42,8 @@ bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
     if (read != size) {
         qCWarning(ktxhandler) << "Can't read padding of size" << size
                               << ":" << device->errorString();
-        return false;
     }
-    return true;
+    return read == size;
 }
 
 } // namespace
