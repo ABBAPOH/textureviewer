@@ -89,6 +89,7 @@
         <file>dds/dx10/RGBA32_Sint.dds</file>
         <file>dds/dx10/RGBA32_Uint.dds</file>
 
+        <file>ktx/L8_Unorm.ktx</file>
         <file>ktx/RGBA_8888.ktx</file>
         <file>ktx/R11_EAC_SNorm.ktx</file>
         <file>ktx/R11_EAC_UNorm.ktx</file>
