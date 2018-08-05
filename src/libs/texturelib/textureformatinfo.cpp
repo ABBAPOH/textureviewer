@@ -146,6 +146,25 @@ TextureFormatInfo::TextureFormatInfos TextureFormatInfo::allFormatInfos() noexce
     return {formats};
 }
 
+TextureFormatInfo TextureFormatInfo::findOGLFormatLinear(
+        QOpenGLTexture::TextureFormat textureFormat,
+        QOpenGLTexture::PixelFormat pixelFormat,
+        QOpenGLTexture::PixelType pixelType) noexcept
+{
+    const auto compareFormats = [=](const TextureFormatInfo &other)
+    {
+        return other.oglTextureFormat() == textureFormat
+                && other.oglPixelFormat() == pixelFormat
+                && other.oglPixelType() == pixelType;
+    };
+
+    const auto formats = TextureFormatInfos(::formats);
+    const auto it = std::find_if(formats.begin(), formats.end(), compareFormats);
+    if (it != formats.end())
+        return *it;
+    return {};
+}
+
 QString toQString(TextureFormat format)
 {
     const auto en = QMetaEnum::fromType<Details::TextureFormat>();
