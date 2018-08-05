@@ -146,7 +146,7 @@ TextureFormatInfo::TextureFormatInfos TextureFormatInfo::allFormatInfos() noexce
     return {formats};
 }
 
-TextureFormatInfo TextureFormatInfo::findOGLFormatLinear(
+const TextureFormatInfo &findOGLFormatLinear(
         QOpenGLTexture::TextureFormat textureFormat,
         QOpenGLTexture::PixelFormat pixelFormat,
         QOpenGLTexture::PixelType pixelType) noexcept
@@ -158,11 +158,19 @@ TextureFormatInfo TextureFormatInfo::findOGLFormatLinear(
                 && other.oglPixelType() == pixelType;
     };
 
-    const auto formats = TextureFormatInfos(::formats);
+    const auto formats = TextureFormatInfo::TextureFormatInfos(::formats);
     const auto it = std::find_if(formats.begin(), formats.end(), compareFormats);
     if (it != formats.end())
         return *it;
-    return {};
+    return formats[0];
+}
+
+const TextureFormatInfo &TextureFormatInfo::findOGLFormat(
+        QOpenGLTexture::TextureFormat textureFormat,
+        QOpenGLTexture::PixelFormat pixelFormat,
+        QOpenGLTexture::PixelType pixelType) noexcept
+{
+    return findOGLFormatLinear(textureFormat, pixelFormat, pixelType);
 }
 
 QString toQString(TextureFormat format)
