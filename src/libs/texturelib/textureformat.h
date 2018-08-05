@@ -51,9 +51,11 @@ enum class TextureFormat {
     RGBA8_Srgb,
 
     BGRA8_Unorm,
+    BGRA8_Srgb,
     ABGR8_Unorm,
     RGBX8_Unorm,
     BGRX8_Unorm,
+    BGRX8_Srgb,
 
     // 64bit
     RGBA16_Snorm,

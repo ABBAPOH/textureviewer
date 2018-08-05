@@ -247,15 +247,18 @@ constexpr DXGIFormatInfo dxgiFormatInfos[size_t(DXGIFormat::FormatCount)] = {
     { DXGIFormat::BC5_UNORM,      TextureFormat::Bc5_Unorm    },
     { DXGIFormat::BC5_SNORM,      TextureFormat::Bc5_Snorm    },
 
-    { DXGIFormat::B5G6R5_UNORM },
-    { DXGIFormat::B5G5R5A1_UNORM },
-    { DXGIFormat::B8G8R8A8_UNORM },
-    { DXGIFormat::B8G8R8X8_UNORM },
+    { DXGIFormat::B5G6R5_UNORM,   TextureFormat::BGR565_Unorm   },
+    { DXGIFormat::B5G5R5A1_UNORM, TextureFormat::BGRA5551_Unorm },
+
+    { DXGIFormat::B8G8R8A8_UNORM, TextureFormat::BGRA8_Unorm },
+    { DXGIFormat::B8G8R8X8_UNORM, TextureFormat::BGRX8_Unorm },
+
     { DXGIFormat::R10G10B10_XR_BIAS_A2_UNORM },
-    { DXGIFormat::B8G8R8A8_TYPELESS },
-    { DXGIFormat::B8G8R8A8_UNORM_SRGB },
-    { DXGIFormat::B8G8R8X8_TYPELESS },
-    { DXGIFormat::B8G8R8X8_UNORM_SRGB },
+
+    { DXGIFormat::B8G8R8A8_TYPELESS,   TextureFormat::Invalid    },
+    { DXGIFormat::B8G8R8A8_UNORM_SRGB, TextureFormat::BGRA8_Srgb },
+    { DXGIFormat::B8G8R8X8_TYPELESS,   TextureFormat::Invalid    },
+    { DXGIFormat::B8G8R8X8_UNORM_SRGB, TextureFormat::BGRX8_Srgb },
 
     { DXGIFormat::BC6H_TYPELESS,  TextureFormat::Invalid  },
     { DXGIFormat::BC6H_UF16,      TextureFormat::Bc6HUF16 },

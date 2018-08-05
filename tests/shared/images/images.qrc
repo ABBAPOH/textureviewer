@@ -28,6 +28,12 @@
         <file>dds/225x225/BGRA8Unorm.dds</file>
         <file>dds/225x225/L8Unorm.dds</file>
 
+        <file>dds/dx10/BGR565_Unorm.dds</file>
+        <file>dds/dx10/BGRA5551_Unorm.dds</file>
+        <file>dds/dx10/BGRA8_Srgb.dds</file>
+        <file>dds/dx10/BGRA8_Unorm.dds</file>
+        <file>dds/dx10/BGRX8_Srgb.dds</file>
+        <file>dds/dx10/BGRX8_Unorm.dds</file>
         <file>dds/dx10/Bc1Rgb_Srgb.dds</file>
         <file>dds/dx10/Bc1Rgb_Unorm.dds</file>
         <file>dds/dx10/Bc2_Srgb.dds</file>
