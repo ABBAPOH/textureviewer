@@ -6,6 +6,32 @@
 
 namespace {
 
+struct FormatInfo
+{
+    quint32 internalFormat {QOpenGLTexture::TextureFormat::NoFormat};
+    quint32 pixelFormat {QOpenGLTexture::PixelFormat::NoSourceFormat};
+    quint32 pixelType {QOpenGLTexture::PixelType::NoPixelType};
+    TextureFormat textureFormat {TextureFormat::Invalid};
+};
+
+using FormatInfos = gsl::span<const FormatInfo>;
+
+constexpr FormatInfo extraInfos[] = {
+    { 0x8040 /*GL_LUMINANCE8*/, QOpenGLTexture::Luminance, QOpenGLTexture::UInt8, TextureFormat::L8_Unorm },
+};
+
+constexpr TextureFormat findFormat(quint32 textureFormat, quint32 pixelFormat, quint32 pixelType)
+{
+    for (const auto &info: FormatInfos(extraInfos)) {
+        if (textureFormat == info.internalFormat
+                && pixelFormat == info.pixelFormat
+                && pixelType == info.pixelType) {
+            return info.textureFormat;
+        }
+    }
+    return TextureFormat::Invalid;
+}
+
 static bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 {
     if (size == 0)
@@ -51,6 +77,11 @@ bool KtxHandler::read(Texture& texture)
                     QOpenGLTexture::TextureFormat(header.glInternalFormat),
                     QOpenGLTexture::PixelFormat(header.glFormat),
                     QOpenGLTexture::PixelType(header.glType)).format();
+
+            // Ok, can't find in our formats, try to use extended table
+        if (textureFormat == TextureFormat::Invalid) {
+            textureFormat = findFormat(header.glInternalFormat, header.glFormat, header.glType);
+        }
     }
 
     if (textureFormat == TextureFormat::Invalid) {
