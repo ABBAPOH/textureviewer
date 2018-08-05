@@ -38,18 +38,18 @@ bool KtxHandler::read(Texture& texture)
 
     readPadding(device(), 3 - ((device()->pos() + 3) % 4));
 
-    TextureFormatInfo texelFormat;
+    TextureFormat textureFormat = TextureFormat::Invalid;
     if (header.glFormat == 0 && header.glType == 0) {
-        texelFormat = TextureFormatInfo::findOGLFormat(
-                    QOpenGLTexture::TextureFormat(header.glInternalFormat));
+        textureFormat = TextureFormatInfo::findOGLFormat(
+                    QOpenGLTexture::TextureFormat(header.glInternalFormat)).format();
     } else {
-        texelFormat = TextureFormatInfo::findOGLFormat(
+        textureFormat = TextureFormatInfo::findOGLFormat(
                     QOpenGLTexture::TextureFormat(header.glInternalFormat),
                     QOpenGLTexture::PixelFormat(header.glFormat),
-                    QOpenGLTexture::PixelType(header.glType));
+                    QOpenGLTexture::PixelType(header.glType)).format();
     }
 
-    if (texelFormat.format() == TextureFormat::Invalid) {
+    if (textureFormat == TextureFormat::Invalid) {
         qCWarning(ktxhandler) << "Can't find appropriate format";
         return false;
     }
@@ -63,7 +63,7 @@ bool KtxHandler::read(Texture& texture)
     const auto layers = std::max<int>(1, header.numberOfArrayElements);
 
     auto result = Texture::create(
-                texelFormat.format(),
+                textureFormat,
                 size,
                 levels,
                 layers,
