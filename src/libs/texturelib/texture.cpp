@@ -59,11 +59,6 @@ constexpr const bool safeAlloc = false;
 
 } // namespace
 
-TextureData::~TextureData()
-{
-    free(data);
-}
-
 TextureData *TextureData::create(
         TextureFormat format,
         int width,
@@ -147,10 +142,7 @@ TextureData *TextureData::create(
     data->levelInfos = std::move(levelInfos);
 
     data->nbytes = totalBytes;
-    if (safeAlloc)
-        data->data = static_cast<uchar *>(calloc(size_t(data->nbytes), 1));
-    else
-        data->data = static_cast<uchar *>(malloc(size_t(data->nbytes)));
+    data->data.reset(new (std::nothrow) uchar[size_t(data->nbytes)]);
 
     if (!data->data)
         return nullptr;
@@ -641,7 +633,7 @@ uchar *Texture::dataImpl(int side, int level, int layer)
     if (!d)
         return nullptr;
 
-    return d->data + d->offset(side, level, layer);
+    return d->data.get() + d->offset(side, level, layer);
 }
 
 const uchar* Texture::dataImpl(int side, int level, int layer) const
@@ -653,7 +645,7 @@ const uchar* Texture::dataImpl(int side, int level, int layer) const
     CHECK_LEVEL(level, nullptr);
     CHECK_LAYER(layer, nullptr);
 
-    return d->data + d->offset(side, level, layer);
+    return d->data.get() + d->offset(side, level, layer);
 }
 
 bool operator==(const Texture &lhs, const Texture &rhs)
@@ -675,7 +667,7 @@ bool operator==(const Texture &lhs, const Texture &rhs)
             || lhs.d->levels != rhs.d->levels)
         return false;
 
-    return memoryCompare({lhs.d->data, lhs.d->nbytes}, {rhs.d->data, rhs.d->nbytes}) == 0;
+    return memoryCompare({lhs.d->data.get(), lhs.d->nbytes}, {rhs.d->data.get(), rhs.d->nbytes}) == 0;
 }
 
 bool operator!=(const Texture &lhs, const Texture &rhs)

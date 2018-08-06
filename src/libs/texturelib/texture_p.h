@@ -4,13 +4,16 @@
 #include "texture.h"
 #include "textureformatinfo.h"
 
+#include <memory>
+
 class TextureData
 {
 public:
     TextureData() = default;
     TextureData(const TextureData &other) = delete;
     TextureData(TextureData &&) = delete;
-    ~TextureData();
+    ~TextureData() noexcept = default;
+
     TextureData &operator=(const TextureData &) = delete;
     TextureData &operator=(TextureData &&) = delete;
 
@@ -69,7 +72,7 @@ public:
     std::vector<LevelInfo> levelInfos;
 
     qsizetype nbytes {0};
-    uchar *data {nullptr};
+    std::unique_ptr<uchar[]> data;
 };
 
 #endif // TEXTURE_P_H
