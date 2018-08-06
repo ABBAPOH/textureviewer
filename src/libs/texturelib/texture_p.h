@@ -37,17 +37,17 @@ public:
             quint32 height,
             Texture::Alignment align = Texture::Alignment::Byte);
 
-    inline int levelWidth(int level) const { return int(std::max(uint(width) >> uint(level), 1u)); }
-    inline int levelHeight(int level) const { return int(std::max(uint(height) >> uint(level), 1u)); }
-    inline int levelDepth(int level) const { return int(std::max(uint(depth) >> uint(level), 1u)); }
+    int levelWidth(int level) const { return int(std::max(uint(width) >> uint(level), 1u)); }
+    int levelHeight(int level) const { return int(std::max(uint(height) >> uint(level), 1u)); }
+    int levelDepth(int level) const { return int(std::max(uint(depth) >> uint(level), 1u)); }
 
-    inline qsizetype bytesPerLine(int level) const { return levelInfos[uint(level)].bytesPerLine; }
-    inline qsizetype bytesPerSlice(int level) const { return levelInfos[uint(level)].bytesPerSlice; }
-    inline qsizetype bytesPerImage(int level) const
+    qsizetype bytesPerLine(int level) const { return levelInfos[uint(level)].bytesPerLine; }
+    qsizetype bytesPerSlice(int level) const { return levelInfos[uint(level)].bytesPerSlice; }
+    qsizetype bytesPerImage(int level) const
     {
         return levelInfos[uint(level)].bytesPerSlice * levelDepth(level);
     }
-    inline qsizetype levelOffset(int level) const { return levelInfos[uint(level)].offset; }
+    qsizetype levelOffset(int level) const { return levelInfos[uint(level)].offset; }
     qsizetype offset(int side, int level, int layer) const;
 
     QAtomicInt ref {0};
