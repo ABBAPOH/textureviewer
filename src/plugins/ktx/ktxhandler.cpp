@@ -70,6 +70,17 @@ bool verifyHeader(const KtxHeader &header)
         return false;
     }
 
+    if (header.numberOfArrayElements > maxInt) {
+        qCWarning(ktxhandler) << "Number of array elements is too big"
+                              << header.numberOfArrayElements;
+        return false;
+    }
+
+    if (header.numberOfFaces != 1 && header.numberOfFaces != 6) {
+        qCWarning(ktxhandler) << "Number of faces is invalid" << header.numberOfFaces;
+        return false;
+    }
+
     return true;
 }
 
