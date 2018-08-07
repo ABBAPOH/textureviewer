@@ -47,12 +47,58 @@ Open the [textureviewer.qbs](./textureviewer.qbs) file in a Qt Creator and press
 
 ### Building from command line
 
-First, see how to [configure qbs](http://doc.qt.io/qbs/configuring.html) and
-[configure a Qt version](http://doc.qt.io/qbs/qt-versions.html)
+#### Configuring QBS
+First, you need to configure QBS. Skip this step if you already did that for other project or you
+are using qbs and it is already configured.
+
+The first step is to setup the compilers.
+```bash
+$ qbs setup-toolchains --detect
+Trying to detect gcc...
+Profile 'gcc' created for '/usr/bin/gcc'.
+Trying to detect clang...
+Profile 'clang' created for '/usr/bin/clang'.
+...
+```
+
+Second step is to comfigure a Qt that you will use for building.
+```bash
+$ qbs setup-qt /usr/bin/qmake myqt
+Creating profile 'myqt'.
+WARNING: You need to set up toolchain information before you can use this Qt version for building.
+Consider setting one of these profiles as this profile's base profile: <list of your profiles>
+```
+
+I you get the warning above, you should manually setup the compiler that will be used (the warning
+is shown ifmultiple toolchains found)
+```bash
+$ qbs config profiles.myqt.baseProfile <profile name>
+```
+
+The profile name can be found by calling the following command:
+```bash
+$ qbs config --list profiles
+```
+
+Third step is to tell QBS which profile it should use by default
 
 ```bash
-$ cd textureviwer
+$ qbs config defaultProfile myqt
+```
+
+Otherwise, you will get strange warning during the compilation saying "Dependency 'Qt.core' not
+found  for product '<product name>'". You also can specify profile when building
+
+For more details see Qt documentation how to
+- [configure qbs](http://doc.qt.io/qbs/configuring.html) and
+- [configure a Qt version](http://doc.qt.io/qbs/qt-versions.html)
+
+#### Building project
+
+```bash
+$ cd textureviewer/
 $ mkdir build
-$ cd build
+$ cd build/
 $ qbs build -f ../textureviewer.qbs qbs.defaultBuildVariant:release
+$ qbs install -f ../textureviewer.qbs qbs.defaultBuildVariant:release --install-root <install path>
 ```
