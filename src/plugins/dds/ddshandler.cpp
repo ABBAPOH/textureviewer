@@ -60,6 +60,8 @@ constexpr quint32 ddsMagic = 0x20534444; // "DDS "
 constexpr quint32 ddsSize = 124; // headerSize without magic
 constexpr quint32 pixelFormatSize = 32;
 
+constexpr auto maxInt = std::numeric_limits<int>::max();
+
 constexpr DDSCaps2Flag faceFlags[6] = {
     DDSCaps2Flag::CubeMapPositiveX,
     DDSCaps2Flag::CubeMapNegativeX,
@@ -439,8 +441,8 @@ bool verifyHeader(const DDSHeader &dds)
         return false;
     }
 
-    if (dds.width > INT_MAX || dds.height > INT_MAX) {
-        qCWarning(ddshandler) << "Can't read image with w/h bigger than INT_MAX";
+    if (dds.width > maxInt || dds.height > maxInt) {
+        qCWarning(ddshandler) << "Can't read image with w/h bigger than maxInt";
         return false;
     }
 
