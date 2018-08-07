@@ -356,8 +356,6 @@ const FormatInfo &getFormatInfo(DDSFormat format)
 
 constexpr TextureFormat convertFormat(DXGIFormat format)
 {
-    if (size_t(format) >= size_t(DXGIFormat::FormatCount))
-        return TextureFormat::Invalid;
     return gsl::at(dxgiFormatInfos, qsizetype(format)).textureFormat;
 }
 
@@ -449,6 +447,17 @@ bool verifyHeader(const DDSHeader &dds)
     return true;
 }
 
+bool verifyHeaderDX10(const DDSHeaderDX10 &header)
+{
+    if (header.dxgiFormat >= quint32(DXGIFormat::FormatCount)) {
+        qCWarning(ddshandler) << QStringLiteral("Invalid dxgiFormat: 0x%1").
+                                 arg(quint32(header.dxgiFormat), 0, 16);
+        return false;
+    }
+
+    return true;
+}
+
 } // namespace
 
 bool DDSHandler::read(Texture &texture)
@@ -474,6 +483,9 @@ bool DDSHandler::read(Texture &texture)
     }
 
     if (!verifyHeader(header))
+        return false;
+
+    if (isDX10(header) && !verifyHeaderDX10(header10))
         return false;
 
     format = getFormat(header);
