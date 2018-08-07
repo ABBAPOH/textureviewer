@@ -11,6 +11,10 @@ QDataStream&operator>>(QDataStream& s, KtxHeader& header)
     s >> header.endianness;
     if (header.endianness == 0x01020304)
         s.setByteOrder(QDataStream::LittleEndian);
+    else if (header.endianness == 0x04030201)
+        s.setByteOrder(QDataStream::BigEndian);
+    else
+        return s;
 
     s >> header.glType;
     s >> header.glTypeSize;

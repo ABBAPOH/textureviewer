@@ -6,6 +6,8 @@
 
 namespace {
 
+constexpr auto maxInt = std::numeric_limits<int>::max();
+
 struct FormatInfo
 {
     quint32 internalFormat {QOpenGLTexture::TextureFormat::NoFormat};
@@ -46,6 +48,31 @@ bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
     return read == size;
 }
 
+bool verifyHeader(const KtxHeader &header)
+{
+    if (header.endianness != 0x01020304 && header.endianness != 0x04030201) {
+        qCWarning(ktxhandler) << "Invalid endianess value" << header.endianness;
+        return false;
+    }
+
+    if (header.pixelWidth > maxInt) {
+        qCWarning(ktxhandler) << "Pixel width is too big" << header.pixelWidth;
+        return false;
+    }
+
+    if (header.pixelHeight > maxInt) {
+        qCWarning(ktxhandler) << "Pixel height is too big" << header.pixelHeight;
+        return false;
+    }
+
+    if (header.pixelDepth > maxInt) {
+        qCWarning(ktxhandler) << "Pixel depth is too big" << header.pixelDepth;
+        return false;
+    }
+
+    return true;
+}
+
 } // namespace
 
 bool KtxHandler::read(Texture& texture)
@@ -61,6 +88,9 @@ bool KtxHandler::read(Texture& texture)
         qCWarning(ktxhandler) << "Can't read header: data stream status =" << s.status();
         return false;
     }
+
+    if (!verifyHeader(header))
+        return false;
 
     if (!readPadding(device(), header.bytesOfKeyValueData))
         return false;
