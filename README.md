@@ -109,3 +109,16 @@ $ cd build/
 $ qbs build -f ../textureviewer.qbs qbs.defaultBuildVariant:release
 $ qbs install -f ../textureviewer.qbs qbs.defaultBuildVariant:release --install-root <install path>
 ```
+
+### Installing mimetypes
+
+On Linux OS, QMimeDatabase uses system information about mimetypes, so additional mimetypes should
+be installed in the system. This is done using linux_mimetypes.sh script (run as root):
+
+```bash
+$ sudo ./linux_mimetypes.sh
+Unknown media type in type 'all/all'
+Unknown media type in type 'all/allfiles'
+$
+
+```
