@@ -90,10 +90,10 @@ Otherwise, you will get strange warning during the compilation saying "Dependenc
 found  for product '<product name>'". You also can specify profile when building
 
 For more details see Qt documentation how to
-- [configure qbs](http://doc.qt.io/qbs/configuring.html) and
+- [configure qbs](http://doc.qt.io/qbs/configuring.html)
 - [configure a Qt version](http://doc.qt.io/qbs/qt-versions.html)
 
-#### Building project
+#### Building TextureViewer
 
 ```bash
 $ cd textureviewer/
