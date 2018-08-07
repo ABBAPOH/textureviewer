@@ -1,9 +1,11 @@
 #include "ktxheader.h"
 
+#include <gsl/span>
+
 QDataStream&operator>>(QDataStream& s, KtxHeader& header)
 {
-    for (int i = 0; i < 12; ++i) {
-        s >> header.identifier[i];
+    for (auto &byte: gsl::span<quint8>(header.identifier)) {
+        s >> byte;
     }
 
     const auto bo = s.byteOrder();
