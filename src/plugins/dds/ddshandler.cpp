@@ -358,7 +358,7 @@ constexpr TextureFormat convertFormat(DXGIFormat format)
 {
     if (size_t(format) >= size_t(DXGIFormat::FormatCount))
         return TextureFormat::Invalid;
-    return gsl::at(dxgiFormatInfos, size_t(format)).textureFormat;
+    return gsl::at(dxgiFormatInfos, qsizetype(format)).textureFormat;
 }
 
 constexpr TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
