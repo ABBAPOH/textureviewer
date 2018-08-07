@@ -48,8 +48,8 @@ Open the [textureviewer.qbs](./textureviewer.qbs) file in a Qt Creator and press
 ### Building from command line
 
 #### Configuring QBS
-First, you need to configure QBS. Skip this step if you already did that for other project or you
-are using qbs and it is already configured.
+First, you need to configure QBS. Skip this step if you already did that for an other project or if
+you are already using qbs and it is properly configured.
 
 The first step is to setup the compilers.
 ```bash
@@ -61,7 +61,8 @@ Profile 'clang' created for '/usr/bin/clang'.
 ...
 ```
 
-Second step is to comfigure a Qt that you will use for building.
+Second step is to configure a Qt version that you will use for building. Specify the correct path
+to qmake if you have a Qt installed in a different location (i.e. on Mac and Windows)
 ```bash
 $ qbs setup-qt /usr/bin/qmake myqt
 Creating profile 'myqt'.
@@ -69,25 +70,31 @@ WARNING: You need to set up toolchain information before you can use this Qt ver
 Consider setting one of these profiles as this profile's base profile: <list of your profiles>
 ```
 
-I you get the warning above, you should manually setup the compiler that will be used (the warning
-is shown ifmultiple toolchains found)
+If you get the warning above, you should manually setup the compiler that will be used for this Qt
+version (the warning is shown if multiple toolchains found)
 ```bash
 $ qbs config profiles.myqt.baseProfile <profile name>
 ```
 
-The profile name can be found by calling the following command:
+The profile name can be chosen after calling the following command (choose one profile from the list
+without "profiles." prefix and the profile properties after the name, i.e. simply "clang" or "gcc"
+in the following example):
 ```bash
 $ qbs config --list profiles
+profiles.clang.cpp.toolchainInstallPath: "/usr/bin"
+profiles.clang.qbs.toolchain: ["clang", "llvm", "gcc"]
+profiles.gcc.cpp.toolchainInstallPath: "/usr/bin"
+profiles.gcc.qbs.toolchain: ["gcc"]
+...
 ```
 
-Third step is to tell QBS which profile it should use by default
-
+Third step is to tell QBS which profile it should use by default.
 ```bash
 $ qbs config defaultProfile myqt
 ```
 
 Otherwise, you will get strange warning during the compilation saying "Dependency 'Qt.core' not
-found  for product \'<product name>\'". You also can specify profile when building
+found for product \'<product name>\'". You also can manually specify profile when building.
 
 For more details see Qt documentation how to
 - [configure qbs](http://doc.qt.io/qbs/configuring.html)
