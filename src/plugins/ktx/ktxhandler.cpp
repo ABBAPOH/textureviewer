@@ -51,40 +51,40 @@ bool readPadding(KtxHandler::QIODevicePointer device, qint64 size)
 bool verifyHeader(const KtxHeader &header)
 {
     if (header.endianness != 0x01020304 && header.endianness != 0x04030201) {
-        qCWarning(ktxhandler) << "Invalid endianess value" << header.endianness;
+        qCWarning(ktxhandler) << "Invalid endianess value:" << header.endianness;
         return false;
     }
 
     if (header.pixelWidth > maxInt) {
-        qCWarning(ktxhandler) << "Pixel width is too big" << header.pixelWidth;
+        qCWarning(ktxhandler) << "Pixel width is too big:" << header.pixelWidth;
         return false;
     }
 
     if (header.pixelHeight > maxInt) {
-        qCWarning(ktxhandler) << "Pixel height is too big" << header.pixelHeight;
+        qCWarning(ktxhandler) << "Pixel height is too big:" << header.pixelHeight;
         return false;
     }
 
     if (header.pixelDepth > maxInt) {
-        qCWarning(ktxhandler) << "Pixel depth is too big" << header.pixelDepth;
+        qCWarning(ktxhandler) << "Pixel depth is too big:" << header.pixelDepth;
         return false;
     }
 
     if (header.numberOfArrayElements > maxInt) {
-        qCWarning(ktxhandler) << "Number of array elements is too big"
+        qCWarning(ktxhandler) << "Number of array elements is too big:"
                               << header.numberOfArrayElements;
         return false;
     }
 
     if (header.numberOfFaces != 1 && header.numberOfFaces != 6) {
-        qCWarning(ktxhandler) << "Number of faces is invalid" << header.numberOfFaces;
+        qCWarning(ktxhandler) << "Number of faces is invalid:" << header.numberOfFaces;
         return false;
     }
 
     const auto levels = header.numberOfMipmapLevels;
     const auto size = std::max(std::max(header.pixelWidth, header.pixelHeight), header.pixelDepth);
     if (header.numberOfMipmapLevels > maxInt || (levels && (size >> (levels - 1)) < 1)) {
-        qCWarning(ktxhandler) << "Number of mipmap levels is too big" << levels;
+        qCWarning(ktxhandler) << "Number of mipmap levels is too big:" << levels;
         return false;
     }
 
