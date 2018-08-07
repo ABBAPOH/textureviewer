@@ -441,8 +441,13 @@ bool verifyHeader(const DDSHeader &dds)
         return false;
     }
 
-    if (dds.width > maxInt || dds.height > maxInt) {
-        qCWarning(ddshandler) << "Can't read image with w/h bigger than maxInt";
+    if (dds.width > maxInt) {
+        qCWarning(ddshandler) << "Width is too big" << dds.width;
+        return false;
+    }
+
+    if (dds.height > maxInt) {
+        qCWarning(ddshandler) << "Height is too big" << dds.height;
         return false;
     }
 
