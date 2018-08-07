@@ -87,7 +87,7 @@ $ qbs config defaultProfile myqt
 ```
 
 Otherwise, you will get strange warning during the compilation saying "Dependency 'Qt.core' not
-found  for product '<product name>'". You also can specify profile when building
+found  for product \'<product name>\'". You also can specify profile when building
 
 For more details see Qt documentation how to
 - [configure qbs](http://doc.qt.io/qbs/configuring.html)
