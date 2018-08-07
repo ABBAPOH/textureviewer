@@ -457,6 +457,11 @@ bool verifyHeaderDX10(const DDSHeaderDX10 &header)
         return false;
     }
 
+    if (header.arraySize > maxInt) {
+        qCWarning(ddshandler) << "Can't read image with arraySize bigger than maxInt";
+        return false;
+    }
+
     return true;
 }
 
