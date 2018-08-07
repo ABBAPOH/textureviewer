@@ -82,8 +82,8 @@ bool verifyHeader(const KtxHeader &header)
     }
 
     const auto levels = header.numberOfMipmapLevels;
-    const auto dimension = std::max(std::max(header.pixelWidth, header.pixelHeight), header.pixelDepth);
-    if (header.numberOfMipmapLevels > maxInt || (levels && (dimension >> (levels - 1)) < 1)) {
+    const auto size = std::max(std::max(header.pixelWidth, header.pixelHeight), header.pixelDepth);
+    if (header.numberOfMipmapLevels > maxInt || (levels && (size >> (levels - 1)) < 1)) {
         qCWarning(ktxhandler) << "Number of mipmap levels is too big" << levels;
         return false;
     }
