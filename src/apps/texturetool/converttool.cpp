@@ -85,8 +85,8 @@ void convert(const Options &options)
             QImage image;
             if (reader.read(&image)) {
                 texture = Texture(image);
-            } else {
-                throw RuntimeError(ConvertTool::tr("Can't read image %1: %2").
+            } else if (reader.error() != QImageReader::UnsupportedFormatError) {
+                throw RuntimeError(ConvertTool::tr("Can't read \"%1\": %2").
                                    arg(options.inputFile).
                                    arg(reader.errorString()));
             }
@@ -94,7 +94,7 @@ void convert(const Options &options)
     }
 
     if (!texture) {
-        throw RuntimeError(ConvertTool::tr("Can't read texture %1: %2").
+        throw RuntimeError(ConvertTool::tr("Can't read \"%1\": %2").
                            arg(options.inputFile).
                            arg(toUserString(result.error())));
     }
