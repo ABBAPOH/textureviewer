@@ -21,7 +21,7 @@ public:
     Capabilities capabilities(QStringView mimeType) const override
     {
         if (mimeType == u"image/x-pkm")
-            return CanRead;
+            return CanRead | CanWrite;
         return Capabilities();
     }
 };
