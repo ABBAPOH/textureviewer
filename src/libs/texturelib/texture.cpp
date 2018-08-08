@@ -255,7 +255,7 @@ Texture::Texture(const QImage& image)
         return;
     }
 
-    const auto data = imageData({});
+    const auto data = result.imageData({});
     for (int y = 0; y < result.height(); ++y) {
         const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy(line, {copy.scanLine(y), copy.bytesPerLine()});
