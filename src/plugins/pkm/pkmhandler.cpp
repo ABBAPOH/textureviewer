@@ -81,6 +81,17 @@ constexpr TextureFormat convertFormat(quint16 format)
     return gsl::at(v2Formats, format);
 }
 
+constexpr TextureFormat getFormat(const PkmHeader &header)
+{
+    if (header.version[0] == '1') {
+        return TextureFormat::RGB8_ETC1;
+    } else if (header.version[0] == '2') {
+        return convertFormat(header.textureType);
+    }
+
+    return TextureFormat::Invalid;
+}
+
 bool verifyHeader(const PkmHeader &header)
 {
     if (QLatin1String(reinterpret_cast<const char *>(header.magic), 4) != "PKM ") {
@@ -120,13 +131,7 @@ bool PkmHandler::read(Texture& texture)
     if (!verifyHeader(header))
         return false;
 
-    TextureFormat format = TextureFormat::Invalid;
-
-    if (header.version[0] == '1') {
-        format = TextureFormat::RGB8_ETC1;
-    } else if (header.version[0] == '2') {
-        format = convertFormat(header.textureType);
-    }
+    const auto format = getFormat(header);
 
     if (format == TextureFormat::Invalid) {
         qCWarning(pkmhandler) << "Unsupported format" << header.textureType;
