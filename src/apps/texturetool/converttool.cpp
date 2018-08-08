@@ -64,7 +64,7 @@ QLatin1String mimeTypeToFormat(QStringView mimeType)
     if (mimeType == u"image/png")
         return QLatin1String("png");
 
-    return QLatin1String();
+    return {};
 }
 
 void convert(const Options &options)
