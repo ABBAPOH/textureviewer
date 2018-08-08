@@ -16,14 +16,14 @@ class TEXTURELIB_EXPORT TextureIOHandler
 public:
     using QIODevicePointer = ObserverPointer<QIODevice>;
 
-    TextureIOHandler();
-    TextureIOHandler(TextureIOHandler &&) = default;
-    virtual ~TextureIOHandler();
+    TextureIOHandler() noexcept = default;
+    TextureIOHandler(TextureIOHandler &&) noexcept = default;
+    virtual ~TextureIOHandler() noexcept;
 
-    TextureIOHandler &operator=(TextureIOHandler &&) = default;
+    TextureIOHandler &operator=(TextureIOHandler &&) noexcept = default;
 
-    inline QIODevicePointer device() const { return m_device; }
-    inline void setDevice(QIODevicePointer device) { m_device = device; }
+    QIODevicePointer device() const noexcept { return m_device; }
+    void setDevice(QIODevicePointer device) noexcept { m_device = device; }
 
     virtual bool read(Texture &texture) = 0;
     virtual bool write(const Texture &texture);

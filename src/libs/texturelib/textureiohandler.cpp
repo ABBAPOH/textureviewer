@@ -7,14 +7,15 @@
 */
 
 /*!
+    \fn TextureIOHandler::TextureIOHandler() noexcept
+
     Creates an TextureIOHandler object.
 */
-TextureIOHandler::TextureIOHandler() = default;
 
 /*!
     Destroys the TextureIOHandler object.
 */
-TextureIOHandler::~TextureIOHandler() = default;
+TextureIOHandler::~TextureIOHandler() noexcept = default;
 
 /*!
     \fn QIODevicePointer TextureIOHandler::device() const
