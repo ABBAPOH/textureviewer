@@ -8,7 +8,6 @@ QDataStream&operator>>(QDataStream& s, KtxHeader& header)
         s >> byte;
     }
 
-    const auto bo = s.byteOrder();
     s.setByteOrder(QDataStream::BigEndian);
     s >> header.endianness;
     if (header.endianness == 0x01020304)
@@ -31,7 +30,6 @@ QDataStream&operator>>(QDataStream& s, KtxHeader& header)
     s >> header.numberOfMipmapLevels;
     s >> header.bytesOfKeyValueData;
 
-    s.setByteOrder(bo);
     return s;
 }
 
