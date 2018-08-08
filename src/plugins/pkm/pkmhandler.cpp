@@ -81,6 +81,23 @@ constexpr TextureFormat convertFormat(quint16 format)
     return gsl::at(v2Formats, format);
 }
 
+bool verifyHeader(const PkmHeader &header)
+{
+    if (QLatin1String(reinterpret_cast<const char *>(header.magic), 4) != "PKM ") {
+        qCWarning(pkmhandler) << "Invalid magic number";
+        return false;
+    }
+
+    if (!((header.version[0] == '1' && header.version[1] == '0')
+          || (header.version[0] == '2' && header.version[1] == '0'))) {
+        qCWarning(pkmhandler) << "Unsupported version"
+                              << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
+        return false;
+    }
+
+    return true;
+}
+
 } // namespace
 
 bool PkmHandler::read(Texture& texture)
@@ -100,21 +117,15 @@ bool PkmHandler::read(Texture& texture)
         }
     }
 
-    if (QLatin1String(reinterpret_cast<const char *>(header.magic), 4) != "PKM ") {
-        qCWarning(pkmhandler) << "Invalid magic number";
+    if (!verifyHeader(header))
         return false;
-    }
 
     TextureFormat format = TextureFormat::Invalid;
 
-    if (header.version[0] == '1' && header.version[1] == '0') {
+    if (header.version[0] == '1') {
         format = TextureFormat::RGB8_ETC1;
-    } else if (header.version[0] == '2' && header.version[1] == '0') {
+    } else if (header.version[0] == '2') {
         format = convertFormat(header.textureType);
-    } else {
-        qCWarning(pkmhandler) << "Unsupported version"
-                              << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
-        return false;
     }
 
     if (format == TextureFormat::Invalid) {
