@@ -4,6 +4,8 @@
 
 #include <QtCore/QDataStream>
 
+namespace {
+
 struct PkmHeader
 {
     quint8 magic[4];
@@ -58,7 +60,7 @@ QDebug &operator<<(QDebug &d, const PkmHeader &header)
     return d;
 }
 
-static TextureFormat convertFormat(quint16 format)
+TextureFormat convertFormat(quint16 format)
 {
     switch (format) {
     case 0: return TextureFormat::RGB8_ETC1;
@@ -72,6 +74,8 @@ static TextureFormat convertFormat(quint16 format)
     }
     return TextureFormat::Invalid;
 }
+
+} // namespace
 
 bool PkmHandler::read(Texture& texture)
 {
