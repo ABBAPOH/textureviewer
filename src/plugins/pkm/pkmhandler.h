@@ -8,11 +8,10 @@ class PkmHandler : public TextureIOHandler
 {
     Q_DISABLE_COPY(PkmHandler)
 public:
-    PkmHandler() = default;
-    PkmHandler(PkmHandler &&) = default;
-    ~PkmHandler() override = default;
-
-    PkmHandler &operator=(PkmHandler &&) = default;
+    PkmHandler() noexcept = default;
+    PkmHandler(PkmHandler &&) noexcept = default;
+    ~PkmHandler() noexcept override = default;
+    PkmHandler &operator=(PkmHandler &&) noexcept = default;
 
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
