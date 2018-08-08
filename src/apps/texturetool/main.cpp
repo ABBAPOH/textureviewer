@@ -37,6 +37,7 @@ static MainParser::DescriptionMap getDescriptions(const ToolsMap &map)
 
 int main(int argc, char *argv[])
 {
+    Q_INIT_RESOURCE(extramimetypes);
     try {
         QCoreApplication app(argc, argv);
         QCoreApplication::setApplicationName("texturetool");
