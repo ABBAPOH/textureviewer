@@ -568,7 +568,7 @@ bool DDSHandler::write(const Texture &texture)
 {
     const auto format = convertFormat(texture.format());
     if (format == DDSFormat::Unknown) {
-        qCWarning(ddshandler) << "unsupported format" << int(texture.format());
+        qCWarning(ddshandler) << "unsupported format" << texture.format();
         return false;
     }
 
