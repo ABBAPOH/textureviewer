@@ -6,6 +6,20 @@
 
 namespace {
 
+constexpr TextureFormat v2Formats[] = {
+    TextureFormat::RGB8_ETC1,
+    TextureFormat::RGB8_ETC2,
+    TextureFormat::Invalid,
+    TextureFormat::RGBA8_ETC2_EAC,
+    TextureFormat::RGB8_PunchThrough_Alpha1_ETC2,
+    TextureFormat::R11_EAC_UNorm,
+    TextureFormat::RG11_EAC_UNorm,
+    TextureFormat::R11_EAC_SNorm,
+    TextureFormat::RG11_EAC_SNorm,
+};
+
+using V2Formats = gsl::span<const TextureFormat>;
+
 struct PkmHeader
 {
     quint8 magic[4];
@@ -60,19 +74,11 @@ QDebug &operator<<(QDebug &d, const PkmHeader &header)
     return d;
 }
 
-TextureFormat convertFormat(quint16 format)
+constexpr TextureFormat convertFormat(quint16 format)
 {
-    switch (format) {
-    case 0: return TextureFormat::RGB8_ETC1;
-    case 1: return TextureFormat::RGB8_ETC2;
-    case 3: return TextureFormat::RGBA8_ETC2_EAC;
-    case 4: return TextureFormat::RGB8_PunchThrough_Alpha1_ETC2;
-    case 5: return TextureFormat::R11_EAC_UNorm;
-    case 6: return TextureFormat::RG11_EAC_UNorm;
-    case 7: return TextureFormat::R11_EAC_SNorm;
-    case 8: return TextureFormat::RG11_EAC_SNorm;
-    }
-    return TextureFormat::Invalid;
+    if (format >= V2Formats(v2Formats).size())
+        return TextureFormat::Invalid;
+    return gsl::at(v2Formats, format);
 }
 
 } // namespace
