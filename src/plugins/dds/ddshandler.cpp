@@ -508,7 +508,7 @@ bool DDSHandler::read(Texture &texture)
     const auto faces = cubeMap ? 6 : 1;
 
     if (isVolumeMap(header)) {
-        qCWarning(ddshandler) << "Reading cubemaps is not supported (yet)";
+        qCWarning(ddshandler) << "Reading volumemaps is not supported (yet)";
         return false;
     }
 
