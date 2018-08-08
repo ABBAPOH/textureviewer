@@ -397,6 +397,7 @@ constexpr DDSFormat convertFormat(TextureFormat format)
     switch (format) {
     case TextureFormat::BGR8_Unorm: return DDSFormat::R8G8B8;
     case TextureFormat::BGRA8_Unorm: return DDSFormat::A8R8G8B8;
+    case TextureFormat::RGBA8_Unorm: return DDSFormat::A8B8G8R8;
     case TextureFormat::RGBX8_Unorm: return DDSFormat::X8B8G8R8;
     case TextureFormat::BGRX8_Unorm: return DDSFormat::X8R8G8B8;
     case TextureFormat::BGR565_Unorm: return DDSFormat::R5G6B5;
