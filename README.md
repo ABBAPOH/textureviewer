@@ -4,8 +4,8 @@ Currently, there is no viewer program itself, however, simple texture can be loa
 [bind_texture](tests/manual/bind_texture) test.
 
 Also, there is also a [texturetool](src/apps/texturetool) that can convert between texture
-formats. However, it's capabilities are too limited at the moment - only saving DDS is supported
-and no other formats other than textures (i.e. png, jpg are not supported for now).
+formats. However, it's capabilities are very limited at the moment - only saving DDS and PKM is
+supported and no other formats other than textures (i.e. png, jpg are not supported for now).
 
 ## License
 This program is distributed under the [GNU LGPL](LICENSE)
