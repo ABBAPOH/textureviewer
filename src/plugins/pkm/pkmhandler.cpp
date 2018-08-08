@@ -22,13 +22,13 @@ using V2Formats = gsl::span<const TextureFormat>;
 
 struct PkmHeader
 {
-    quint8 magic[4];
-    quint8 version[2];
-    quint16 textureType;
-    quint16 paddedWidth;
-    quint16 paddedHeight;
-    quint16 width;
-    quint16 height;
+    quint8 magic[4] {};
+    quint8 version[2] {};
+    quint16 textureType {};
+    quint16 paddedWidth {};
+    quint16 paddedHeight {};
+    quint16 width {};
+    quint16 height {};
 };
 
 QDataStream &operator>>(QDataStream &s, PkmHeader &header)
