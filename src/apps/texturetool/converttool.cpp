@@ -4,8 +4,12 @@
 
 #include <TextureLib/TextureIO>
 
+#include <QtGui/QImageReader>
+
 #include <QtCore/QCoreApplication>
 #include <QtCore/QDebug>
+
+#include <OptionalType>
 
 namespace TextureTool {
 
@@ -55,14 +59,42 @@ Options parseOptions(const QStringList &arguments)
     return options;
 }
 
+QLatin1String mimeTypeToFormat(QStringView mimeType)
+{
+    if (mimeType == u"image/png")
+        return QLatin1String("png");
+
+    return QLatin1String();
+}
+
 void convert(const Options &options)
 {
     TextureIO io(options.inputFile);
     if (!options.inputMimeType.isEmpty())
         io.setMimeType(options.inputMimeType);
     const auto result = io.read();
-    if (!result) {
-        throw RuntimeError(ConvertTool::tr("Can't read image %1: %2").
+
+    Optional<Texture> texture;
+    if (result) {
+        texture = *result;
+    } else {
+        if (result.error() == TextureIOError::UnsupportedMimeType) {
+            QImageReader reader(options.inputFile);
+            if (options.inputMimeType.isEmpty())
+                reader.setFormat(mimeTypeToFormat(options.inputMimeType).data());
+            QImage image;
+            if (reader.read(&image)) {
+                texture = Texture(image);
+            } else {
+                throw RuntimeError(ConvertTool::tr("Can't read image %1: %2").
+                                   arg(options.inputFile).
+                                   arg(reader.errorString()));
+            }
+        }
+    }
+
+    if (!texture) {
+        throw RuntimeError(ConvertTool::tr("Can't read texture %1: %2").
                            arg(options.inputFile).
                            arg(toUserString(result.error())));
     }
@@ -70,9 +102,9 @@ void convert(const Options &options)
     if (!options.outputMimeType.isEmpty())
         io.setMimeType(options.outputMimeType);
     io.setFileName(options.outputFile);
-    const auto ok = io.write(*result);
+    const auto ok = io.write(*texture);
     if (!ok) {
-        throw RuntimeError(ConvertTool::tr("Can't write image %1: %2").
+        throw RuntimeError(ConvertTool::tr("Can't write texture %1: %2").
                            arg(options.outputFile, toUserString(ok.error())));
     }
 }
