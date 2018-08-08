@@ -3,8 +3,9 @@
 #include "toolparser.h"
 
 #include <TextureLib/TextureIO>
+
 #include <QtCore/QCoreApplication>
-#include <QDebug>
+#include <QtCore/QDebug>
 
 namespace TextureTool {
 
