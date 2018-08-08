@@ -24,7 +24,7 @@
 
 ### Writing
 
-Writing PKM files is **not** supported
+Writing PKM files of version 2.0 is supported.
 
 ### TODO List
 

@@ -15,6 +15,7 @@ public:
 
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
+    bool write(const Texture &texture) override;
 };
 
 Q_DECLARE_LOGGING_CATEGORY(pkmhandler)

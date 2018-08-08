@@ -2,9 +2,13 @@
 
 #include <TextureLib/Texture>
 
+#include <OptionalType>
+
 #include <QtCore/QDataStream>
 
 namespace {
+
+constexpr auto maxSize = std::numeric_limits<quint16>::max();
 
 constexpr TextureFormat v2Formats[] = {
     TextureFormat::RGB8_ETC1,
@@ -22,8 +26,8 @@ using V2Formats = gsl::span<const TextureFormat>;
 
 struct PkmHeader
 {
-    quint8 magic[4] {};
-    quint8 version[2] {};
+    quint8 magic[4] { 'P', 'K', 'M', ' '};
+    quint8 version[2] { '2', '0' };
     quint16 textureType {};
     quint16 paddedWidth {};
     quint16 paddedHeight {};
@@ -74,11 +78,28 @@ QDebug &operator<<(QDebug &d, const PkmHeader &header)
     return d;
 }
 
+template<typename T>
+inline constexpr bool isPower2(T value) noexcept
+{
+    return (value - 1) ^ value;
+}
+
 constexpr TextureFormat convertFormat(quint16 format)
 {
     if (format >= V2Formats(v2Formats).size())
         return TextureFormat::Invalid;
     return gsl::at(v2Formats, format);
+}
+
+constexpr Optional<quint16> convertFormat(TextureFormat format)
+{
+    quint16 position = 0;
+    for (const auto fmt : V2Formats(v2Formats)) {
+        if (fmt == format)
+            return position;
+        position++;
+    }
+    return nullOptional();
 }
 
 constexpr TextureFormat getFormat(const PkmHeader &header)
@@ -103,6 +124,51 @@ bool verifyHeader(const PkmHeader &header)
           || (header.version[0] == '2' && header.version[1] == '0'))) {
         qCWarning(pkmhandler) << "Unsupported version"
                               << QString("%1.%2").arg(header.version[0]).arg(header.version[1]);
+        return false;
+    }
+
+    return true;
+}
+
+bool verifyTexture(const Texture &texture)
+{
+    if (!texture.isCompressed()) {
+        qCWarning(pkmhandler) << "Writing uncomressed textures is not supported";
+        return false;
+    }
+
+    if (!isPower2(texture.width())) {
+        qCWarning(pkmhandler) << "Width should be a power of two";
+        return false;
+    }
+
+    if (!isPower2(texture.height())) {
+        qCWarning(pkmhandler) << "Height should be a power of two";
+        return false;
+    }
+
+    if (texture.width() > maxSize) {
+        qCWarning(pkmhandler) << "Width is too big:" << texture.width();
+        return false;
+    }
+
+    if (texture.height() > maxSize) {
+        qCWarning(pkmhandler) << "Height is too big:" << texture.height();
+        return false;
+    }
+
+    if (texture.depth() > 1) {
+        qCWarning(pkmhandler) << "Writing volumemaps is not supported";
+        return false;
+    }
+
+    if (texture.faces() > 1) {
+        qCWarning(pkmhandler) << "Writing cubemaps is not supported";
+        return false;
+    }
+
+    if (texture.layers() > 1) {
+        qCWarning(pkmhandler) << "Writing texture arrays is not supported";
         return false;
     }
 
@@ -152,6 +218,45 @@ bool PkmHandler::read(Texture& texture)
     }
 
     texture = std::move(result);
+
+    return true;
+}
+
+bool PkmHandler::write(const Texture& texture)
+{
+    if (!verifyTexture(texture))
+        return false;
+
+    const auto format = convertFormat(texture.format());
+    if (!format) {
+        qCWarning(pkmhandler) << "Unsupported format" << texture.format();
+        return false;
+    }
+
+    PkmHeader header;
+    header.textureType = *format;
+    header.width = quint16(texture.width());
+    header.height = quint16(texture.width());
+    header.paddedWidth = header.width;
+    header.paddedHeight = header.height;
+
+    {
+        QDataStream s(device().get());
+        s.setByteOrder(QDataStream::BigEndian);
+        s << header;
+
+        if (s.status() != QDataStream::Ok) {
+            qCWarning(pkmhandler) << "Invalid data stream status:" << s.status();
+            return false;
+        }
+    }
+
+    const auto data = texture.imageData({});
+    const auto read = device()->write(reinterpret_cast<const char *>(data.data()), data.size());
+    if (read != data.size()) {
+        qCWarning(pkmhandler) << "Can't write to device:" << device()->errorString();
+        return false;
+    }
 
     return true;
 }
