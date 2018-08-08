@@ -32,3 +32,5 @@ public:
 
     virtual std::unique_ptr<TextureIOHandler> create(QStringView mimeType) = 0;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(TextureIOHandlerPlugin::Capabilities)
