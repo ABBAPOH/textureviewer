@@ -452,6 +452,11 @@ bool verifyHeader(const DDSHeader &dds)
         return false;
     }
 
+    if (dds.depth > maxInt) {
+        qCWarning(ddshandler) << "Depth is too big" << dds.depth;
+        return false;
+    }
+
     return true;
 }
 
