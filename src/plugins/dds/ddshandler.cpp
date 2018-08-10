@@ -318,8 +318,15 @@ TextureFormat getFormat(const DDSHeader &dds, const DDSHeaderDX10 &dds10)
         qCWarning(ddshandler()) << "PaletteIndexed8 format is not supported";
         return TextureFormat::Invalid;
     } else if (format.flags & DDSPixelFormatFlag::FourCC) {
-        if (isDX10(dds))
-            return convertFormat(DXGIFormat(dds10.dxgiFormat));
+        if (isDX10(dds)) {
+            auto result = convertFormat(DXGIFormat(dds10.dxgiFormat));
+            if (result == TextureFormat::Invalid) {
+                // ok, we know that format but don't support it
+                qCWarning(ddshandler()) << QStringLiteral("Unsupported dxgi format: %1")
+                                           .arg(dds10.dxgiFormat, 0, 16);
+            }
+            return result;
+        }
 
         for (const auto info: gsl::span<const FourCCInfo>(fourCCInfos)) {
             if (DDSFourCC(dds.pixelFormat.fourCC) == info.fourCC)
