@@ -1,13 +1,15 @@
 #ifndef TEXTUREFORMAT_H
 #define TEXTUREFORMAT_H
 
+#include "texturelib_global.h"
+
 #include <QtCore/QMetaType>
 
 namespace Details {
 
-Q_NAMESPACE
+TEXTURELIB_EXPORT Q_NAMESPACE
 
-enum class TextureFormat {
+enum class TEXTURELIB_EXPORT TextureFormat {
     Invalid = 0,
 
     // 8bit
