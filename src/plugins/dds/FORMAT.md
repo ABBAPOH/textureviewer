@@ -213,5 +213,5 @@ Writing DDS files **is supported**
 
 ### TODO List
 
+* Word/Byte alignment
 * Volumemaps
-* DX10 support
