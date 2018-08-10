@@ -484,7 +484,7 @@ bool DDSHandler::read(Texture &texture)
 
     const auto pitch = Texture::calculateBytesPerLine(textureFormat, int(header.width));
 
-    if (pitch != header.pitchOrLinearSize) {
+    if (header.pitchOrLinearSize && pitch != header.pitchOrLinearSize) {
         qCDebug(ddshandler) << "Computed pitch differs from the actual pitch"
                             << pitch << "!=" << header.pitchOrLinearSize;
     }
