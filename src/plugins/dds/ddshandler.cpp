@@ -73,7 +73,7 @@ constexpr DDSCaps2Flag faceFlags[6] = {
 
 struct FormatInfo
 {
-    DDSFormat format {DDSFormat::Unknown};
+    TextureFormat format {TextureFormat::Invalid};
     DDSPixelFormatFlags flags;
     quint32 bitCount {0};
     quint32 rBitMask {0};
@@ -83,63 +83,54 @@ struct FormatInfo
 };
 
 constexpr FormatInfo formatInfos[] = {
-    { DDSFormat::Unknown,                            {},  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
-    { DDSFormat::A8R8G8B8,    DDSPixelFormatFlag::RGBA, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 },
-    { DDSFormat::X8R8G8B8,    DDSPixelFormatFlag::RGB,  32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
-    { DDSFormat::A2B10G10R10, DDSPixelFormatFlag::RGBA, 32, 0x000003ff, 0x0000fc00, 0x3ff00000, 0xc0000000 },
-    { DDSFormat::A8B8G8R8,    DDSPixelFormatFlag::RGBA, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
-    { DDSFormat::X8B8G8R8,    DDSPixelFormatFlag::RGB,  32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
-    { DDSFormat::G16R16,      DDSPixelFormatFlag::RGBA, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
-    { DDSFormat::G16R16,      DDSPixelFormatFlag::RGB,  32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
-    { DDSFormat::A2R10G10B10, DDSPixelFormatFlag::RGBA, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 },
+    { TextureFormat::Invalid,                              {},  0, 0x00000000, 0x00000000, 0x00000000, 0x00000000 },
+    { TextureFormat::BGRA8_Unorm,    DDSPixelFormatFlag::RGBA, 32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0xff000000 },
+    { TextureFormat::BGRX8_Unorm,    DDSPixelFormatFlag::RGB,  32, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
+    { TextureFormat::RGBA8_Unorm,    DDSPixelFormatFlag::RGBA, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
+    { TextureFormat::RGBX8_Unorm,    DDSPixelFormatFlag::RGB,  32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
 
-    { DDSFormat::R8G8B8,      DDSPixelFormatFlag::RGB,  24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
+    { TextureFormat::BGR8_Unorm,     DDSPixelFormatFlag::RGB,  24, 0x00ff0000, 0x0000ff00, 0x000000ff, 0x00000000 },
 
-    { DDSFormat::R5G6B5,      DDSPixelFormatFlag::RGB,  16, 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000 },
-    { DDSFormat::X1R5G5B5,    DDSPixelFormatFlag::RGB,  16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00000000 },
-    { DDSFormat::A1R5G5B5,    DDSPixelFormatFlag::RGBA, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000 },
-    { DDSFormat::A4R4G4B4,    DDSPixelFormatFlag::RGBA, 16, 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000 },
-    { DDSFormat::A8R3G3B2,    DDSPixelFormatFlag::RGBA, 16, 0x000000e0, 0x0000001c, 0x00000003, 0x0000ff00 },
-    { DDSFormat::X4R4G4B4,    DDSPixelFormatFlag::RGB,  16, 0x00000f00, 0x000000f0, 0x0000000f, 0x00000000 },
-    { DDSFormat::A8L8,        DDSPixelFormatFlag::LA,   16, 0x000000ff, 0x00000000, 0x00000000, 0x0000ff00 },
-    { DDSFormat::L16,   DDSPixelFormatFlag::Luminance,  16, 0x0000ffff, 0x00000000, 0x00000000, 0x00000000 },
+    { TextureFormat::BGR565_Unorm,   DDSPixelFormatFlag::RGB,  16, 0x0000f800, 0x000007e0, 0x0000001f, 0x00000000 },
+    { TextureFormat::BGRX5551_Unorm, DDSPixelFormatFlag::RGB,  16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00000000 },
+    { TextureFormat::BGRA5551_Unorm, DDSPixelFormatFlag::RGBA, 16, 0x00007c00, 0x000003e0, 0x0000001f, 0x00008000 },
+    { TextureFormat::BGRA4_Unorm,    DDSPixelFormatFlag::RGBA, 16, 0x00000f00, 0x000000f0, 0x0000000f, 0x0000f000 },
+    { TextureFormat::BGRX4_Unorm,    DDSPixelFormatFlag::RGB,  16, 0x00000f00, 0x000000f0, 0x0000000f, 0x00000000 },
+    { TextureFormat::LA8_Unorm,      DDSPixelFormatFlag::LA,   16, 0x000000ff, 0x00000000, 0x00000000, 0x0000ff00 },
 
-    { DDSFormat::R3G3B2,      DDSPixelFormatFlag::RGB,  8,  0x000000e0, 0x0000001c, 0x00000003, 0x00000000 },
-    { DDSFormat::A8,        DDSPixelFormatFlag::Alpha,  8,  0x00000000, 0x00000000, 0x00000000, 0x000000ff },
-    { DDSFormat::L8,    DDSPixelFormatFlag::Luminance,  8,  0x000000ff, 0x00000000, 0x00000000, 0x00000000 },
-    { DDSFormat::A4L4,         DDSPixelFormatFlag::LA,  8,  0x0000000f, 0x00000000, 0x00000000, 0x000000f0 },
-
-    { DDSFormat::V8U8,        DDSPixelFormatFlag::Normal, 16, 0x000000ff, 0x0000ff00, 0x00000000, 0x00000000 },
-    { DDSFormat::L6V5U5,      DDSPixelFormatFlag::None,   16, 0x0000001f, 0x000003e0, 0x0000fc00, 0x00000000 },
-    { DDSFormat::X8L8V8U8,    DDSPixelFormatFlag::None,   32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0x00000000 },
-    { DDSFormat::Q8W8V8U8,    DDSPixelFormatFlag::Normal, 32, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000 },
-    { DDSFormat::V16U16,      DDSPixelFormatFlag::Normal, 32, 0x0000ffff, 0xffff0000, 0x00000000, 0x00000000 },
-    { DDSFormat::A2W10V10U10, DDSPixelFormatFlag::Normal, 32, 0x3ff00000, 0x000ffc00, 0x000003ff, 0xc0000000 }
+    { TextureFormat::RGB332_Unorm,   DDSPixelFormatFlag::RGB,   8, 0x000000e0, 0x0000001c, 0x00000003, 0x00000000 },
+    { TextureFormat::A8_Unorm,       DDSPixelFormatFlag::Alpha, 8, 0x00000000, 0x00000000, 0x00000000, 0x000000ff },
+    { TextureFormat::L8_Unorm,   DDSPixelFormatFlag::Luminance, 8, 0x000000ff, 0x00000000, 0x00000000, 0x00000000 },
 };
 
-constexpr DDSFormat knownFourCCs[] = {
-    DDSFormat::A16B16G16R16,
-    DDSFormat::V8U8,
-    DDSFormat::UYVY,
-    DDSFormat::R8G8B8G8,
-    DDSFormat::YUY2,
-    DDSFormat::G8R8G8B8,
-    DDSFormat::DXT1,
-    DDSFormat::DXT2,
-    DDSFormat::DXT3,
-    DDSFormat::DXT4,
-    DDSFormat::DXT5,
-    DDSFormat::RXGB,
-    DDSFormat::ATI2,
-    DDSFormat::Q16W16V16U16,
-    DDSFormat::R16F,
-    DDSFormat::G16R16F,
-    DDSFormat::A16B16G16R16F,
-    DDSFormat::R32F,
-    DDSFormat::G32R32F,
-    DDSFormat::A32B32G32R32F,
-    DDSFormat::CxV8U8,
-    DDSFormat::DX10
+struct FourCCInfo
+{
+    DDSFourCC fourCC {};
+    TextureFormat format {TextureFormat::Invalid};
+};
+
+constexpr FourCCInfo fourCCInfos[] = {
+    { DDSFourCC::A16B16G16R16, TextureFormat::RGBA16_Unorm },
+//    { DDSFourCC::V8U8, TextureFormat::Invalid },
+//    { DDSFourCC::Q16W16V16U16, TextureFormat::Invalid },
+    { DDSFourCC::R16F, TextureFormat::R16_Float },
+    { DDSFourCC::G16R16F, TextureFormat::RG16_Float },
+    { DDSFourCC::A16B16G16R16F, TextureFormat::RGBA16_Float },
+    { DDSFourCC::R32F, TextureFormat::R32_Float },
+    { DDSFourCC::G32R32F, TextureFormat::RG32_Float },
+    { DDSFourCC::A32B32G32R32F, TextureFormat::RGBA32_Float },
+//   { DDSFourCC::CxV8U8, TextureFormat::Invalid },
+//   { DDSFourCC::UYVY, TextureFormat::Invalid },
+//   { DDSFourCC::R8G8B8G8, TextureFormat::Invalid },
+//   { DDSFourCC::YUY2, TextureFormat::Invalid },
+//   { DDSFourCC::G8R8G8B8, TextureFormat::Invalid },
+    { DDSFourCC::DXT1, TextureFormat::Bc1Rgb_Unorm },
+//   { DDSFourCC::DXT2, TextureFormat::Invalid },
+    { DDSFourCC::DXT3, TextureFormat::Bc2_Unorm },
+//   { DDSFourCC::DXT4, TextureFormat::Invalid },
+    { DDSFourCC::DXT5, TextureFormat::Bc3_Unorm },
+    { DDSFourCC::RXGB, TextureFormat::RXGB },
+    { DDSFourCC::ATI2, TextureFormat::RXGB },
 };
 
 struct DXGIFormatInfo
@@ -306,7 +297,7 @@ static_assert (checkFormatPositions(), "Incorrect format position in dxgiFormatI
 
 bool isDX10(const DDSHeader &header)
 {
-    return DDSFormat(header.pixelFormat.fourCC) == DDSFormat::DX10;
+    return DDSFourCC(header.pixelFormat.fourCC) == DDSFourCC::DX10;
 }
 
 bool isCubeMap(const DDSHeader &dds)
@@ -319,18 +310,30 @@ bool isVolumeMap(const DDSHeader &dds)
     return (dds.caps2 & DDSCaps2Flag::Volume) != 0;
 }
 
-DDSFormat getFormat(const DDSHeader &dds)
+constexpr TextureFormat convertFormat(DXGIFormat format)
+{
+    return gsl::at(dxgiFormatInfos, qsizetype(format)).textureFormat;
+}
+
+TextureFormat getFormat(const DDSHeader &dds, const DDSHeaderDX10 &dds10)
 {
     const DDSPixelFormat &format = dds.pixelFormat;
     if (format.flags & DDSPixelFormatFlag::PaletteIndexed4) {
-        return DDSFormat::P4;
+        qCWarning(ddshandler()) << "PaletteIndexed4 format is not supported";
+        return TextureFormat::Invalid;
     } else if (format.flags & DDSPixelFormatFlag::PaletteIndexed8) {
-        return DDSFormat::P8;
+        qCWarning(ddshandler()) << "PaletteIndexed8 format is not supported";
+        return TextureFormat::Invalid;
     } else if (format.flags & DDSPixelFormatFlag::FourCC) {
-        for (const auto fourCC: gsl::span<const DDSFormat>(knownFourCCs)) {
-            if (DDSFormat(dds.pixelFormat.fourCC) == fourCC)
-                return fourCC;
+        if (isDX10(dds))
+            return convertFormat(DXGIFormat(dds10.dxgiFormat));
+
+        for (const auto info: gsl::span<const FourCCInfo>(fourCCInfos)) {
+            if (DDSFourCC(dds.pixelFormat.fourCC) == info.fourCC)
+                return info.format;
         }
+        qCWarning(ddshandler()) << QStringLiteral("Unknown fourCC: %1")
+                                   .arg(dds.pixelFormat.fourCC, 0, 16);
     } else {
         for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
             if ((format.flags & info.flags) == info.flags &&
@@ -342,81 +345,19 @@ DDSFormat getFormat(const DDSHeader &dds)
                 return info.format;
             }
         }
+        qCWarning(ddshandler()) << QStringLiteral("Unknown pixel format");
     }
 
-    return DDSFormat::Unknown;
+    return TextureFormat::Invalid;
 }
 
-const FormatInfo &getFormatInfo(DDSFormat format)
+const FormatInfo &getFormatInfo(TextureFormat format)
 {
     for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
         if (info.format == format)
             return info;
     }
     return formatInfos[0];
-}
-
-constexpr TextureFormat convertFormat(DXGIFormat format)
-{
-    return gsl::at(dxgiFormatInfos, qsizetype(format)).textureFormat;
-}
-
-constexpr TextureFormat convertFormat(DDSFormat format, DXGIFormat format2)
-{
-    if (format == DDSFormat::DX10) {
-        return convertFormat(format2);
-    }
-
-    switch (format) {
-    case DDSFormat::R8G8B8: return TextureFormat::BGR8_Unorm;
-    case DDSFormat::A8R8G8B8: return TextureFormat::BGRA8_Unorm;
-    case DDSFormat::A8B8G8R8: return TextureFormat::RGBA8_Unorm;
-    case DDSFormat::X8B8G8R8: return TextureFormat::RGBX8_Unorm;
-    case DDSFormat::X8R8G8B8: return TextureFormat::BGRX8_Unorm;
-    case DDSFormat::R5G6B5: return TextureFormat::BGR565_Unorm;
-    case DDSFormat::A4R4G4B4: return TextureFormat::BGRA4_Unorm;
-    case DDSFormat::X4R4G4B4: return TextureFormat::BGRX4_Unorm;
-    case DDSFormat::A1R5G5B5: return TextureFormat::BGRA5551_Unorm;
-    case DDSFormat::X1R5G5B5: return TextureFormat::BGRX5551_Unorm;
-    case DDSFormat::R3G3B2: return TextureFormat::RGB332_Unorm;
-    case DDSFormat::A8L8: return TextureFormat::LA8_Unorm;
-    case DDSFormat::A8: return TextureFormat::A8_Unorm;
-    case DDSFormat::L8: return TextureFormat::L8_Unorm;
-    case DDSFormat::DXT1: return TextureFormat::Bc1Rgb_Unorm;
-    case DDSFormat::DXT3: return TextureFormat::Bc2_Unorm;
-    case DDSFormat::DXT5: return TextureFormat::Bc3_Unorm;
-    case DDSFormat::RXGB: return TextureFormat::RXGB;
-    case DDSFormat::ATI2: return TextureFormat::RG_ATI2N_UNorm;
-    case DDSFormat::A16B16G16R16F: return TextureFormat::RGBA16_Float;
-    default: return TextureFormat::Invalid;
-    }
-}
-
-constexpr DDSFormat convertFormat(TextureFormat format)
-{
-    switch (format) {
-    case TextureFormat::BGR8_Unorm: return DDSFormat::R8G8B8;
-    case TextureFormat::BGRA8_Unorm: return DDSFormat::A8R8G8B8;
-    case TextureFormat::RGBA8_Unorm: return DDSFormat::A8B8G8R8;
-    case TextureFormat::RGBX8_Unorm: return DDSFormat::X8B8G8R8;
-    case TextureFormat::BGRX8_Unorm: return DDSFormat::X8R8G8B8;
-    case TextureFormat::BGR565_Unorm: return DDSFormat::R5G6B5;
-    case TextureFormat::BGRA4_Unorm: return DDSFormat::A4R4G4B4;
-    case TextureFormat::BGRX4_Unorm: return DDSFormat::X4R4G4B4;
-    case TextureFormat::BGRA5551_Unorm: return DDSFormat::A1R5G5B5;
-    case TextureFormat::BGRX5551_Unorm: return DDSFormat::X1R5G5B5;
-    case TextureFormat::RGB332_Unorm: return DDSFormat::R3G3B2;
-    case TextureFormat::LA8_Unorm: return DDSFormat::A8L8;
-    case TextureFormat::A8_Unorm: return DDSFormat::A8;
-    case TextureFormat::L8_Unorm: return DDSFormat::L8;
-    case TextureFormat::Bc1Rgb_Unorm: return DDSFormat::DXT1;
-    case TextureFormat::Bc2_Unorm: return DDSFormat::DXT3;
-    case TextureFormat::Bc3_Unorm: return DDSFormat::DXT5;
-    case TextureFormat::RXGB: return DDSFormat::RXGB;
-    case TextureFormat::RG_ATI2N_UNorm: return DDSFormat::ATI2;
-    case TextureFormat::RGBA16_Float: return DDSFormat::A16B16G16R16F;
-    default: return DDSFormat::Unknown;
-    }
 }
 
 bool verifyHeader(const DDSHeader &dds)
@@ -484,7 +425,6 @@ bool DDSHandler::read(Texture &texture)
         return false;
 
     DDSHeader header;
-    DDSFormat format {DDSFormat::Unknown};
     DDSHeaderDX10 header10;
 
     {
@@ -506,8 +446,6 @@ bool DDSHandler::read(Texture &texture)
     if (isDX10(header) && !verifyHeaderDX10(header10))
         return false;
 
-    format = getFormat(header);
-
     const auto ulayers = std::max(1u, header10.arraySize);
     const auto ulevels = std::max(1u, header.mipMapCount);
     const auto cubeMap = isCubeMap(header);
@@ -518,17 +456,9 @@ bool DDSHandler::read(Texture &texture)
         return false;
     }
 
-    const auto textureFormat = convertFormat(DDSFormat(format), DXGIFormat(header10.dxgiFormat));
-    if (textureFormat == TextureFormat::Invalid) {
-        if (isDX10(header)) {
-            qCWarning(ddshandler) << QStringLiteral("Unsupported dxgi format 0x%1")
-                                     .arg(quint32(format), 0, 16);
-        } else {
-            qCWarning(ddshandler) << QStringLiteral("Unsupported format")
-                                     .arg(quint32(format), 0, 16);
-        }
+    const auto textureFormat = getFormat(header, header10);
+    if (textureFormat == TextureFormat::Invalid)
         return false;
-    }
 
     auto result = Texture::create(
                 textureFormat,
@@ -572,12 +502,6 @@ bool DDSHandler::read(Texture &texture)
 
 bool DDSHandler::write(const Texture &texture)
 {
-    const auto format = convertFormat(texture.format());
-    if (format == DDSFormat::Unknown) {
-        qCWarning(ddshandler) << "unsupported format" << texture.format();
-        return false;
-    }
-
     if (texture.layers() > 1) {
         qCWarning(ddshandler) << "Writing layers are not supported";
         return false;
@@ -618,11 +542,13 @@ bool DDSHandler::write(const Texture &texture)
     dds.caps4 = 0;
     dds.reserved2 = 0;
 
-    const auto &info = getFormatInfo(format);
-    if (info.format == DDSFormat::Unknown) {
-        dds.pixelFormat.fourCC = quint32(format);
+    const auto &info = getFormatInfo(texture.format());
+    if (info.format == TextureFormat::Invalid) {
+//        dds.pixelFormat.fourCC = quint32(format);
         // TODO: do we need flag RGB and aplha?
         dds.pixelFormat.flags = DDSPixelFormatFlag::FourCC;
+        qCWarning(ddshandler()) << "Writing fourCC is not supported";
+        return false;
     } else {
         dds.pixelFormat.fourCC = 0;
         dds.pixelFormat.flags = info.flags;
