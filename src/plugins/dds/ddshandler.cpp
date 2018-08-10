@@ -308,6 +308,17 @@ constexpr TextureFormat convertFormat(DXGIFormat format)
     return gsl::at(dxgiFormatInfos, qsizetype(format)).textureFormat;
 }
 
+constexpr DXGIFormat convertFormat(TextureFormat format)
+{
+    // silence msvc
+    const auto infos = gsl::span<const DXGIFormatInfo>(dxgiFormatInfos);
+    for (const auto info: infos) {
+        if (info.textureFormat == format)
+            return info.dxgiFormat;
+    }
+    return DXGIFormat::UNKNOWN;
+}
+
 TextureFormat getFormat(const DDSHeader &dds, const DDSHeaderDX10 &dds10)
 {
     const DDSPixelFormat &format = dds.pixelFormat;
@@ -536,11 +547,14 @@ bool DDSHandler::write(const Texture &texture)
 
     const auto &info = getFormatInfo(texture.format());
     if (info.format == TextureFormat::Invalid) {
-//        dds.pixelFormat.fourCC = quint32(format);
+        const auto format = convertFormat(texture.format());
+        if (format == DXGIFormat::UNKNOWN) {
+            qCWarning(ddshandler()) << "Unsupported format" << texture.format();
+            return false;
+        }
+        dds.pixelFormat.fourCC = quint32(format);
         // TODO: do we need flag RGB and aplha?
         dds.pixelFormat.flags = DDSPixelFormatFlag::FourCC;
-        qCWarning(ddshandler()) << "Writing fourCC is not supported";
-        return false;
     } else {
         dds.pixelFormat.fourCC = 0;
         dds.pixelFormat.flags = info.flags;
