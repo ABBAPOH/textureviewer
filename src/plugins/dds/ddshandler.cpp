@@ -53,13 +53,6 @@
 
 namespace {
 
-// All magic numbers are little-endian as long as dds format has little
-// endian byte order
-constexpr quint32 ddsMagic = 0x20534444; // "DDS "
-
-constexpr quint32 ddsSize = 124; // headerSize without magic
-constexpr quint32 pixelFormatSize = 32;
-
 constexpr auto maxInt = std::numeric_limits<int>::max();
 
 constexpr DDSCaps2Flag faceFlags[6] = {
@@ -371,15 +364,15 @@ bool verifyHeader(const DDSHeader &dds)
         return false;
     }
 
-    if (dds.size != ddsSize) {
+    if (dds.size != DDSHeader::ddsSize) {
         qCWarning(ddshandler) << "Wrong dds.size: actual =" << dds.size
-                              << "expected =" << ddsSize;
+                              << "expected =" << DDSHeader::ddsSize;
         return false;
     }
 
-    if (dds.pixelFormat.size != pixelFormatSize) {
+    if (dds.pixelFormat.size != DDSPixelFormat::pixelFormatSize) {
         qCWarning(ddshandler) << "Wrong dds.pixelFormat.size: actual =" << dds.pixelFormat.size
-                              << "expected =" << pixelFormatSize;
+                              << "expected =" << DDSPixelFormat::pixelFormatSize;
         return false;
     }
 
@@ -524,23 +517,15 @@ bool DDSHandler::write(const Texture &texture)
 
     DDSHeader dds;
     // Filling header
-    dds.magic = ddsMagic;
-    dds.size = 124;
     dds.flags = DDSFlag::Caps | DDSFlag::Height |
                 DDSFlag::Width | DDSFlag::PixelFormat;
     dds.height = quint32(copy.height());
     dds.width = quint32(copy.width());
     dds.depth = 0;
     dds.mipMapCount = quint32(copy.levels() > 1 ? copy.levels() : 0);
-    for (int i = 0; i < DDSHeader::ReservedCount; i++)
-        dds.reserved1[i] = 0;
     dds.caps = DDSCapsFlag::Texture;
     if (copy.levels() > 1)
         dds.caps |= DDSCapsFlag::Mipmap;
-    dds.caps2 = 0;
-    dds.caps3 = 0;
-    dds.caps4 = 0;
-    dds.reserved2 = 0;
 
     const auto &info = getFormatInfo(texture.format());
     if (info.format == TextureFormat::Invalid) {
@@ -555,7 +540,6 @@ bool DDSHandler::write(const Texture &texture)
     }
 
     // Filling pixelformat
-    dds.pixelFormat.size = pixelFormatSize;
     dds.pixelFormat.rgbBitCount = info.bitCount;
     dds.pixelFormat.aBitMask = info.aBitMask;
     dds.pixelFormat.rBitMask = info.rBitMask;

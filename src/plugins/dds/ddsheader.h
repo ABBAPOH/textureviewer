@@ -48,7 +48,9 @@
 
 struct DDSPixelFormat
 {
-    quint32 size {0};
+    constexpr static quint32 pixelFormatSize = 32;
+
+    quint32 size {pixelFormatSize};
     DDSPixelFormatFlags flags;
     quint32 fourCC {0};
     quint32 rgbBitCount {0};
@@ -63,10 +65,16 @@ QDataStream &operator<<(QDataStream &s, const DDSPixelFormat &pixelFormat);
 
 struct DDSHeader
 {
+    // All magic numbers are little-endian as long as dds format has little
+    // endian byte order
+    constexpr static quint32 ddsMagic = 0x20534444; // "DDS "
+
+    constexpr static quint32 ddsSize = 124; // headerSize without magic
+
     enum { ReservedCount = 11 };
 
-    quint32 magic {0};
-    quint32 size {0};
+    quint32 magic {ddsMagic};
+    quint32 size {ddsSize};
     DDSFlags flags;
     quint32 height {0};
     quint32 width {0};
