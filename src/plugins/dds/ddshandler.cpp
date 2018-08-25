@@ -534,6 +534,7 @@ bool DDSHandler::write(const Texture &texture)
     s.setByteOrder(QDataStream::LittleEndian);
 
     DDSHeader dds;
+    DDSHeaderDX10 dds10;
     // Filling header
     dds.flags = DDSFlag::Caps | DDSFlag::Height |
                 DDSFlag::Width | DDSFlag::PixelFormat;
@@ -545,6 +546,7 @@ bool DDSHandler::write(const Texture &texture)
     if (copy.levels() > 1)
         dds.caps |= DDSCapsFlag::Mipmap;
 
+    // TODO (abbapoh): Invert priority to almost always write DX10 files
     const auto &info = getFormatInfo(texture.format());
     if (info.format == TextureFormat::Invalid) {
         const auto format = convertFormat(texture.format());
@@ -552,25 +554,30 @@ bool DDSHandler::write(const Texture &texture)
             qCWarning(ddshandler()) << "Unsupported format" << texture.format();
             return false;
         }
-        dds.pixelFormat.fourCC = quint32(format);
+        dds.pixelFormat.fourCC = quint32(DDSFourCC::DX10);
         // TODO: do we need flag RGB and aplha?
         dds.pixelFormat.flags = DDSPixelFormatFlag::FourCC;
+
+        dds10.dxgiFormat = quint32(format);
+        dds10.arraySize = texture.layers();
     } else {
         dds.pixelFormat.fourCC = 0;
         dds.pixelFormat.flags = info.flags;
+        // Filling pixelformat
+        dds.pixelFormat.rgbBitCount = info.bitCount;
+        dds.pixelFormat.aBitMask = info.aBitMask;
+        dds.pixelFormat.rBitMask = info.rBitMask;
+        dds.pixelFormat.gBitMask = info.gBitMask;
+        dds.pixelFormat.bBitMask = info.bBitMask;
     }
-
-    // Filling pixelformat
-    dds.pixelFormat.rgbBitCount = info.bitCount;
-    dds.pixelFormat.aBitMask = info.aBitMask;
-    dds.pixelFormat.rBitMask = info.rBitMask;
-    dds.pixelFormat.gBitMask = info.gBitMask;
-    dds.pixelFormat.bBitMask = info.bBitMask;
 
     dds.pitchOrLinearSize =
             quint32(Texture::calculateBytesPerLine(copy.format(), copy.width()));
 
     s << dds;
+
+    if (isDX10(dds))
+        s << dds10;
 
     for (int layer = 0; layer < copy.layers(); ++layer) {
         for (int face = 0; face < copy.faces(); ++face) {
