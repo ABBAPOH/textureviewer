@@ -124,6 +124,8 @@ public:
     // ConstData constLineData(const Position &p, const Index &index) const;
 
     Texture convert(Alignment align) const;
+    Texture convert(TextureFormat format) const;
+    Texture convert(TextureFormat format, Alignment align) const;
     Texture copy() const;
 
     QImage toImage() const;

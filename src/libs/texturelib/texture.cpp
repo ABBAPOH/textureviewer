@@ -486,23 +486,68 @@ auto Texture::constImageData(Index index) const -> ConstData
 
 Texture Texture::convert(Texture::Alignment align) const
 {
+    return convert(format(), align);
+}
+
+Texture Texture::convert(TextureFormat format) const
+{
+    return convert(format, alignment());
+}
+
+Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
+{
     if (!d)
         return Texture();
 
-    if (isCompressed())
-        return *this;
-
-    if (align == alignment())
+    if (format == d->format && align == d->align) // nothing changed
         return *this;
 
     auto result = Texture(TextureData::create(
-                d->format,
+                format,
                 d->width, d->height, d->faces == 6, d->depth,
                 d->layers, d->levels,
                 align));
 
-    if (result.isNull())
+    if (result.isNull()) // allocation failed
         return Texture();
+
+    decltype(TextureData::getFormatReader(d->format)) reader;
+    decltype(TextureData::getFormatWriter(format)) writer;
+
+    if (format != d->format) {
+        reader = TextureData::getFormatReader(d->format);
+        writer = TextureData::getFormatWriter(format);
+
+        if (!reader) {
+            qCWarning(texture) << "Converting is not supported for" << d->format;
+            return Texture();
+        }
+
+        if (!writer) {
+            qCWarning(texture) << "Converting is not supported for" << format;
+            return Texture();
+        }
+    } else {
+        if (isCompressed()) // changing alingment for compressed textures has no effect
+            return *this;
+    }
+
+    const auto srcBytesPerTexel = this->bitsPerTexel() >> 3u;
+    const auto dstBytesPerTexel = result.bitsPerTexel() >> 3u;
+
+    const auto convertLine = [&](ConstData srcLine, Data dstLine)
+    {
+        if (format != d->format) {
+            Q_ASSERT(srcBytesPerTexel && dstBytesPerTexel);
+            for (int x = 0; x < d->width; ++x) {
+                const auto src = srcLine.subspan(srcBytesPerTexel * x, srcBytesPerTexel);
+                const auto dst = dstLine.subspan(dstBytesPerTexel * x, dstBytesPerTexel);
+                writer(dst, reader(src));
+            }
+        } else { // ok, only alingment changed, fast copy
+            memoryCopy(dstLine, srcLine);
+        }
+    };
 
     for (int level = 0; level < d->levels; ++level) {
         for (int layer = 0; layer < d->layers; ++layer) {
@@ -517,7 +562,7 @@ Texture Texture::convert(Texture::Alignment align) const
                         const auto dstLine = dstData.subspan(
                                     result.d->bytesPerSlice(level) * z + result.d->bytesPerLine(y),
                                     result.d->bytesPerLine(y));
-                        memoryCopy(dstLine, srcLine);
+                        convertLine(srcLine, dstLine);
                     }
                 }
             }

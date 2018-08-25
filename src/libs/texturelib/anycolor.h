@@ -32,8 +32,8 @@ public:
 
     constexpr Type type() const noexcept { return m_type; }
 
-    constexpr QRgb toRgb32_Unorm() const noexcept;
-    constexpr QRgba64 toRgb64_Unorm() const noexcept;
+    constexpr QRgb toRgba8_Unorm() const noexcept;
+    constexpr QRgba64 toRgba16_Unorm() const noexcept;
 
 private:
     Type m_type {Type::Invalid};
@@ -47,7 +47,7 @@ private:
     };
 };
 
-constexpr QRgb AnyColor::toRgb32_Unorm() const noexcept
+constexpr QRgb AnyColor::toRgba8_Unorm() const noexcept
 {
     switch (m_type) {
     case Type::Invalid: return {};
@@ -57,7 +57,7 @@ constexpr QRgb AnyColor::toRgb32_Unorm() const noexcept
     }
 }
 
-constexpr QRgba64 AnyColor::toRgb64_Unorm() const noexcept
+constexpr QRgba64 AnyColor::toRgba16_Unorm() const noexcept
 {
     switch (m_type) {
     case Type::Invalid: return {};
