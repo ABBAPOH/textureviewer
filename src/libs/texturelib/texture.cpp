@@ -54,9 +54,6 @@ int memoryCompare(Texture::ConstData lhs, Texture::ConstData rhs)
     return memcmp(lhs.data(), rhs.data(), lhs.size_bytes());
 }
 
-// Whether to use malloc or calloc
-constexpr const bool safeAlloc = false;
-
 } // namespace
 
 TextureData *TextureData::create(
