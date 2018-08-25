@@ -502,11 +502,12 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
     if (format == d->format && align == d->align) // nothing changed
         return *this;
 
-    auto result = Texture(TextureData::create(
-                format,
-                d->width, d->height, d->faces == 6, d->depth,
-                d->layers, d->levels,
-                align));
+    auto result = Texture(
+            TextureData::create(
+                    format,
+                    d->width, d->height, d->depth,
+                    d->faces == 6, d->levels, d->layers,
+                    align));
 
     if (result.isNull()) // allocation failed
         return Texture();
@@ -535,11 +536,11 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
     const auto srcBytesPerTexel = this->bitsPerTexel() >> 3u;
     const auto dstBytesPerTexel = result.bitsPerTexel() >> 3u;
 
-    const auto convertLine = [&](ConstData srcLine, Data dstLine)
+    const auto convertLine = [&](int width, ConstData srcLine, Data dstLine)
     {
         if (format != d->format) {
             Q_ASSERT(srcBytesPerTexel && dstBytesPerTexel);
-            for (int x = 0; x < d->width; ++x) {
+            for (int x = 0; x < width; ++x) {
                 const auto src = srcLine.subspan(srcBytesPerTexel * x, srcBytesPerTexel);
                 const auto dst = dstLine.subspan(dstBytesPerTexel * x, dstBytesPerTexel);
                 writer(dst, reader(src));
@@ -550,19 +551,23 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
     };
 
     for (int level = 0; level < d->levels; ++level) {
+        const auto srcBytesPerSlice = d->bytesPerSlice(level);
+        const auto dstBytesPerSlice = result.d->bytesPerSlice(level);
+        const auto srcBytesPerLine = d->bytesPerLine(level);
+        const auto dstBytesPerLine = result.d->bytesPerLine(level);
         for (int layer = 0; layer < d->layers; ++layer) {
             for (int face = 0; face < d->faces; ++face) {
                 const auto srcData = imageData({Side(face), level, layer});
                 const auto dstData = result.imageData({Side(face), level, layer});
-                for (int z = 0; z < d->depth; ++z) {
-                    for (int y = 0; y < d->height; ++y) {
+                const auto width = d->levelWidth(level);
+                const auto height = d->levelHeight(level);
+                for (int z = 0; z < d->levelDepth(level); ++z) {
+                    for (int y = 0; y < height; ++y) {
                         const auto srcLine = srcData.subspan(
-                                    d->bytesPerSlice(level) * z + d->bytesPerLine(y),
-                                    d->bytesPerLine(y));
+                                    srcBytesPerSlice * z + srcBytesPerLine * y, srcBytesPerLine);
                         const auto dstLine = dstData.subspan(
-                                    result.d->bytesPerSlice(level) * z + result.d->bytesPerLine(y),
-                                    result.d->bytesPerLine(y));
-                        convertLine(srcLine, dstLine);
+                                    dstBytesPerSlice * z + dstBytesPerLine * y, dstBytesPerLine);
+                        convertLine(width, srcLine, dstLine);
                     }
                 }
             }
@@ -577,8 +582,12 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
 */
 Texture Texture::copy() const
 {
-    Texture result(TextureData::create(
-                       d->format, d->width, d->height, d->faces == 6, d->depth, d->layers, d->levels, d->align));
+    Texture result(
+            TextureData::create(
+                    d->format,
+                    d->width, d->height, d->depth,
+                    d->faces == 6, d->levels, d->layers,
+                    d->align));
     if (result.isNull())
         return result;
 
@@ -760,8 +769,8 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
                                   int(height),
                                   int(depth),
                                   faces > 1,
-                                  int(layers),
                                   int(levels),
+                                  int(layers),
                                   Texture::Alignment(align)));
         if (result.bytes() == data.size()) {
             memoryCopy(result.data(), {reinterpret_cast<const uchar *>(data.constData()), data.size()});
