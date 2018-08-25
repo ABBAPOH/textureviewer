@@ -179,3 +179,12 @@ QString toQString(TextureFormat format)
     Q_ASSERT(en.isValid());
     return en.valueToKey(int(format));
 }
+
+TextureFormat fromQString(QStringView input)
+{
+    const auto me = QMetaEnum::fromType<Details::TextureFormat>();
+    Q_ASSERT(me.isValid());
+    bool ok = false;
+    const auto result = me.keyToValue(input.toLatin1().data(), &ok);
+    return ok ? TextureFormat(result) : TextureFormat::Invalid;
+}

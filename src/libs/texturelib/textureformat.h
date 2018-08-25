@@ -4,6 +4,7 @@
 #include "texturelib_global.h"
 
 #include <QtCore/QMetaType>
+#include <QtCore/QStringView>
 
 namespace Details {
 
@@ -134,5 +135,6 @@ Q_ENUM_NS(TextureFormat)
 using TextureFormat = Details::TextureFormat;
 
 QString toQString(TextureFormat format);
+TextureFormat fromQString(QStringView input);
 
 #endif // TEXTUREFORMAT_H
