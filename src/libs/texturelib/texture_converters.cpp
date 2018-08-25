@@ -174,32 +174,45 @@ void writeRGBA8_Unorm(Texture::Data data, const AnyColor &color)
 
 TextureFormatConverters converters[] = {
     { TextureFormat::Invalid },
+
+    // 8bit
     { TextureFormat::A8_Unorm, readA8_Unorm, writeA8_Unorm },
     { TextureFormat::L8_Unorm, readL8_Unorm, writeL8_Unorm },
+
     { TextureFormat::R8_Snorm },
     { TextureFormat::R8_Unorm, readR8_Unorm, writeR8_Unorm },
     { TextureFormat::R8_Sint },
     { TextureFormat::R8_Uint },
+
+    // 16 bit
     { TextureFormat::LA8_Unorm, readLA8_Unorm, writeLA8_Unorm },
+
     { TextureFormat::R16_Snorm },
     { TextureFormat::R16_Unorm, readR16_Unorm, writeR16_Unorm },
     { TextureFormat::R16_Sint },
     { TextureFormat::R16_Uint },
     { TextureFormat::R16_Float },
+
     { TextureFormat::RG8_Snorm },
     { TextureFormat::RG8_Unorm, readRG8_Unorm, writeRG8_Unorm },
     { TextureFormat::RG8_Sint },
     { TextureFormat::RG8_Uint },
+
+    // 24bit
     { TextureFormat::RGB8_Unorm, readRGB8_Unorm, writeRGB8_Unorm },
     { TextureFormat::BGR8_Unorm, readBGR8_Unorm, writeBGR8_Unorm },
+
+    // 32bit
     { TextureFormat::R32_Sint },
     { TextureFormat::R32_Uint },
     { TextureFormat::R32_Float },
+
     { TextureFormat::RG16_Snorm },
     { TextureFormat::RG16_Unorm, readRG16_Unorm, writeRG16_Unorm },
     { TextureFormat::RG16_Sint },
     { TextureFormat::RG16_Uint },
     { TextureFormat::RG16_Float },
+
     { TextureFormat::RGBA8_Snorm },
     { TextureFormat::RGBA8_Unorm, readRGBA8_Unorm, writeRGBA8_Unorm },
     { TextureFormat::RGBA8_Sint },
