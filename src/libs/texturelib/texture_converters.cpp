@@ -27,36 +27,38 @@ void writeA8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 1);
     const auto rgba = color.toRgba8_Unorm();
-    *reinterpret_cast<quint8 *>(data.data()) = qAlpha(rgba);
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[0] = qAlpha(rgba);
 }
 
 AnyColor readL8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 1);
-    const auto l = *reinterpret_cast<const quint8 *>(data.data());
-    return {qRgb(l, l, l)};
+    const auto d = reinterpret_cast<const quint8 *>(data.data());
+    return {qRgb(d[0], d[0], d[0])};
 }
 
 void writeL8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 1);
     const auto rgba = color.toRgba8_Unorm();
-    const auto l = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
-    *reinterpret_cast<quint8 *>(data.data()) = l;
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[0] = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;;
 }
 
 AnyColor readR8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 1);
-    const auto red = *reinterpret_cast<const quint8 *>(data.data());
-    return {qRgb(red, 0, 0)};
+    const auto d = reinterpret_cast<const quint8 *>(data.data());
+    return {qRgb(d[0], 0, 0)};
 }
 
 void writeR8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 1);
     const auto rgba = color.toRgba8_Unorm();
-    *reinterpret_cast<quint8 *>(data.data()) = qRed(rgba);
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[0] = qRed(rgba);
 }
 
 AnyColor readLA8_Unorm(Texture::ConstData data)
@@ -70,24 +72,24 @@ void writeLA8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 2);
     const auto rgba = color.toRgba8_Unorm();
-    const auto l = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
-    auto d = reinterpret_cast<quint8 *>(data.data());
-    d[0] = l;
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[0] = (qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3;
     d[1] = qAlpha(rgba);
 }
 
 AnyColor readR16_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 2);
-    const auto red = *reinterpret_cast<const quint16 *>(data.data());
-    return {qRgba64(red, 0, 0, 0xffff)};
+    const auto d = reinterpret_cast<const quint16 *>(data.data());
+    return {qRgba64(d[0], 0, 0, 0xffff)};
 }
 
 void writeR16_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 2);
     const auto rgba = color.toRgba16_Unorm();
-    *reinterpret_cast<quint16 *>(data.data()) = qRed(rgba);
+    const auto d = reinterpret_cast<quint16 *>(data.data());
+    d[0] = qRed(rgba);
 }
 
 AnyColor readRG8_Unorm(Texture::ConstData data)
@@ -101,7 +103,7 @@ void writeRG8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 2);
     const auto rgba = color.toRgba8_Unorm();
-    auto d = reinterpret_cast<quint8 *>(data.data());
+    const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = qRed(rgba);
     d[1] = qGreen(rgba);
 }
@@ -117,7 +119,7 @@ void writeRGB8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 3);
     const auto rgba = color.toRgba8_Unorm();
-    auto d = reinterpret_cast<quint8 *>(data.data());
+    const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = qRed(rgba);
     d[1] = qGreen(rgba);
     d[2] = qBlue(rgba);
@@ -134,7 +136,7 @@ void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 3);
     const auto rgba = color.toRgba8_Unorm();
-    auto d = reinterpret_cast<quint8 *>(data.data());
+    const auto d = reinterpret_cast<quint8 *>(data.data());
     d[2] = qRed(rgba);
     d[1] = qGreen(rgba);
     d[0] = qBlue(rgba);
@@ -151,7 +153,7 @@ void writeRG16_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 4);
     const auto rgba = color.toRgba16_Unorm();
-    auto d = reinterpret_cast<quint16 *>(data.data());
+    const auto d = reinterpret_cast<quint16 *>(data.data());
     d[0] = qRed(rgba);
     d[1] = qGreen(rgba);
 }
@@ -167,10 +169,28 @@ void writeRGBA8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 3);
     const auto rgba = color.toRgba8_Unorm();
-    auto d = reinterpret_cast<quint8 *>(data.data());
+    const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = qRed(rgba);
     d[1] = qGreen(rgba);
     d[2] = qBlue(rgba);
+    d[3] = qAlpha(rgba);
+}
+
+AnyColor readBGRA8_Unorm(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto d = reinterpret_cast<const quint8 *>(data.data());
+    return {qRgba(d[2], d[1], d[0], d[3])};
+}
+
+void writeBGRA8_Unorm(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 3);
+    const auto rgba = color.toRgba8_Unorm();
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[2] = qRed(rgba);
+    d[1] = qGreen(rgba);
+    d[0] = qBlue(rgba);
     d[3] = qAlpha(rgba);
 }
 
@@ -221,7 +241,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::RGBA8_Uint },
     { TextureFormat::RGBA8_Srgb },
 
-    { TextureFormat::BGRA8_Unorm },
+    { TextureFormat::BGRA8_Unorm, readBGRA8_Unorm, writeBGRA8_Unorm},
     { TextureFormat::BGRA8_Srgb },
     { TextureFormat::ABGR8_Unorm },
     { TextureFormat::RGBX8_Unorm },
