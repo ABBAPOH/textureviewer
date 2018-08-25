@@ -8,12 +8,14 @@ namespace {
 using ReaderFunc = AnyColor(*)(Texture::ConstData);
 using WriterFunc = void(*)(Texture::Data, const AnyColor &);
 
-struct TextureFormatConverters
+struct TextureFormatConverter
 {
     TextureFormat format {TextureFormat::Invalid};
     ReaderFunc reader {nullptr};
     WriterFunc writer {nullptr};
 };
+
+using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 
 AnyColor readA8_Unorm(Texture::ConstData data)
 {
@@ -172,7 +174,7 @@ void writeRGBA8_Unorm(Texture::Data data, const AnyColor &color)
     d[3] = qAlpha(rgba);
 }
 
-TextureFormatConverters converters[] = {
+constexpr TextureFormatConverter converters[] = {
     { TextureFormat::Invalid },
 
     // 8bit
@@ -287,6 +289,27 @@ TextureFormatConverters converters[] = {
     { TextureFormat::R11_EAC_SNorm },
     { TextureFormat::RG11_EAC_SNorm }
 };
+
+static_assert(TextureFormatConverters(converters).size() == size_t(TextureFormat::FormatsCount),
+              "Incorrect size of the converters array");
+
+/*!
+  \internal
+    Formats in the table should be on the right position
+*/
+constexpr bool checkConvertersPositions()
+{
+    int position = 0;
+    // Use a variable to compile with msvc. It can't build because rvalue is not constexpr
+    const auto array = TextureFormatConverters(converters);
+    for (const auto &format: array) {
+        if (format.format != TextureFormat(position++))
+            return false;
+    }
+    return true;
+}
+
+static_assert(checkConvertersPositions(), "Incorrect format position in converters array");
 
 } // namespace
 
