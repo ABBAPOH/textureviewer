@@ -218,6 +218,74 @@ TextureFormatConverters converters[] = {
     { TextureFormat::RGBA8_Sint },
     { TextureFormat::RGBA8_Uint },
     { TextureFormat::RGBA8_Srgb },
+
+    { TextureFormat::BGRA8_Unorm },
+    { TextureFormat::BGRA8_Srgb },
+    { TextureFormat::ABGR8_Unorm },
+    { TextureFormat::RGBX8_Unorm },
+    { TextureFormat::BGRX8_Unorm },
+    { TextureFormat::BGRX8_Srgb },
+
+    // 64bit
+    { TextureFormat::RGBA16_Snorm },
+    { TextureFormat::RGBA16_Unorm },
+    { TextureFormat::RGBA16_Sint },
+    { TextureFormat::RGBA16_Uint },
+    { TextureFormat::RGBA16_Float },
+
+    { TextureFormat::RG32_Sint },
+    { TextureFormat::RG32_Uint },
+    { TextureFormat::RG32_Float },
+
+    // 96bit
+    { TextureFormat::RGB32_Sint },
+    { TextureFormat::RGB32_Uint },
+    { TextureFormat::RGB32_Float },
+
+    // 128bit
+    { TextureFormat::RGBA32_Sint },
+    { TextureFormat::RGBA32_Uint },
+    { TextureFormat::RGBA32_Float },
+
+    // packed formats
+    { TextureFormat::BGR565_Unorm },
+    { TextureFormat::RGB565_Unorm },
+    // { TextureFormat::RGBA4Unorm },
+    { TextureFormat::BGRA4_Unorm },
+    // { TextureFormat::RGBX4Unorm },
+    { TextureFormat::BGRX4_Unorm },
+    { TextureFormat::BGRA5551_Unorm },
+    { TextureFormat::BGRX5551_Unorm },
+    { TextureFormat::RGB332_Unorm },
+
+    // compressed
+    { TextureFormat::Bc1Rgb_Unorm },
+    { TextureFormat::Bc1Rgb_Srgb },
+    { TextureFormat::Bc1Rgba_Unorm },
+    { TextureFormat::Bc1Rgba_Srgb },
+    { TextureFormat::Bc2_Unorm },
+    { TextureFormat::Bc2_Srgb },
+    { TextureFormat::Bc3_Unorm },
+    { TextureFormat::Bc3_Srgb },
+    { TextureFormat::Bc4_Snorm },
+    { TextureFormat::Bc4_Unorm },
+    { TextureFormat::Bc5_Unorm },
+    { TextureFormat::Bc5_Snorm },
+    { TextureFormat::Bc6HUF16 },
+    { TextureFormat::Bc6HSF16 },
+    { TextureFormat::Bc7_Unorm },
+    { TextureFormat::Bc7_Srgb },
+
+    { TextureFormat::RXGB },
+    { TextureFormat::RG_ATI2N_UNorm },
+    { TextureFormat::RGB8_ETC1 },
+    { TextureFormat::RGB8_ETC2 },
+    { TextureFormat::RGBA8_ETC2_EAC },
+    { TextureFormat::RGB8_PunchThrough_Alpha1_ETC2 },
+    { TextureFormat::R11_EAC_UNorm },
+    { TextureFormat::RG11_EAC_UNorm },
+    { TextureFormat::R11_EAC_SNorm },
+    { TextureFormat::RG11_EAC_SNorm }
 };
 
 } // namespace
