@@ -167,7 +167,7 @@ AnyColor readRGBA8_Unorm(Texture::ConstData data)
 
 void writeRGBA8_Unorm(Texture::Data data, const AnyColor &color)
 {
-    Q_ASSERT(data.size() == 3);
+    Q_ASSERT(data.size() == 4);
     const auto rgba = color.toRgba8_Unorm();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = qRed(rgba);
@@ -185,12 +185,84 @@ AnyColor readBGRA8_Unorm(Texture::ConstData data)
 
 void writeBGRA8_Unorm(Texture::Data data, const AnyColor &color)
 {
-    Q_ASSERT(data.size() == 3);
+    Q_ASSERT(data.size() == 4);
     const auto rgba = color.toRgba8_Unorm();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[2] = qRed(rgba);
     d[1] = qGreen(rgba);
     d[0] = qBlue(rgba);
+    d[3] = qAlpha(rgba);
+}
+
+AnyColor readABGR8_Unorm(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto d = reinterpret_cast<const quint8 *>(data.data());
+    return {qRgba(d[3], d[2], d[1], d[0])};
+}
+
+void writeABGR8_Unorm(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto rgba = color.toRgba8_Unorm();
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[3] = qRed(rgba);
+    d[2] = qGreen(rgba);
+    d[1] = qBlue(rgba);
+    d[0] = qAlpha(rgba);
+}
+
+AnyColor readRGBX8_Unorm(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto d = reinterpret_cast<const quint8 *>(data.data());
+    return {qRgba(d[0], d[1], d[2], 0xff)};
+}
+
+void writeRGBX8_Unorm(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto rgba = color.toRgba8_Unorm();
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[0] = qRed(rgba);
+    d[1] = qGreen(rgba);
+    d[2] = qBlue(rgba);
+    d[3] = 0xff;
+}
+
+AnyColor readBGRX8_Unorm(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto d = reinterpret_cast<const quint8 *>(data.data());
+    return {qRgba(d[2], d[1], d[0], 0xff)};
+}
+
+void writeBGRX8_Unorm(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto rgba = color.toRgba8_Unorm();
+    const auto d = reinterpret_cast<quint8 *>(data.data());
+    d[2] = qRed(rgba);
+    d[1] = qGreen(rgba);
+    d[0] = qBlue(rgba);
+    d[3] = 0xff;
+}
+
+AnyColor readRGBA16_Unorm(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 8);
+    const auto d = reinterpret_cast<const quint16 *>(data.data());
+    return {qRgba64(d[0], d[1], d[2], d[3])};
+}
+
+void writeRGBA16_Unorm(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 8);
+    const auto rgba = color.toRgba16_Unorm();
+    const auto d = reinterpret_cast<quint16 *>(data.data());
+    d[0] = qRed(rgba);
+    d[1] = qGreen(rgba);
+    d[2] = qBlue(rgba);
     d[3] = qAlpha(rgba);
 }
 
@@ -241,16 +313,16 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::RGBA8_Uint },
     { TextureFormat::RGBA8_Srgb },
 
-    { TextureFormat::BGRA8_Unorm, readBGRA8_Unorm, writeBGRA8_Unorm},
+    { TextureFormat::BGRA8_Unorm, readBGRA8_Unorm, writeBGRA8_Unorm },
     { TextureFormat::BGRA8_Srgb },
-    { TextureFormat::ABGR8_Unorm },
-    { TextureFormat::RGBX8_Unorm },
-    { TextureFormat::BGRX8_Unorm },
+    { TextureFormat::ABGR8_Unorm, readABGR8_Unorm, writeABGR8_Unorm },
+    { TextureFormat::RGBX8_Unorm, readRGBX8_Unorm, writeRGBX8_Unorm },
+    { TextureFormat::BGRX8_Unorm, readBGRX8_Unorm, writeBGRX8_Unorm },
     { TextureFormat::BGRX8_Srgb },
 
     // 64bit
     { TextureFormat::RGBA16_Snorm },
-    { TextureFormat::RGBA16_Unorm },
+    { TextureFormat::RGBA16_Unorm, readRGBA16_Unorm, writeRGBA16_Unorm },
     { TextureFormat::RGBA16_Sint },
     { TextureFormat::RGBA16_Uint },
     { TextureFormat::RGBA16_Float },
