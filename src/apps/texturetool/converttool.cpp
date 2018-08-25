@@ -23,6 +23,7 @@ struct Options
     QString inputMimeType;
     QString outputFile;
     QString outputMimeType;
+    QString outputFormat;
 };
 
 Options parseOptions(const QStringList &arguments)
@@ -34,8 +35,12 @@ Options parseOptions(const QStringList &arguments)
     QCommandLineOption outputTypeOption(QLatin1String("output-type"),
                                         ConvertTool::tr("Output mime type (i.e. image/png)"),
                                         QStringLiteral("mime type"));
+    QCommandLineOption outputFormatOption(QStringLiteral("output-format"),
+                                        ConvertTool::tr("Output format (i.e. ARGB8_Unorm)"),
+                                        QStringLiteral("output format"));
     parser.addOption(inputTypeOption);
     parser.addOption(outputTypeOption);
+    parser.addOption(outputFormatOption);
     parser.addPositionalArgument(QStringLiteral("input"),
                                  ConvertTool::tr("Input filename"),
                                  QStringLiteral("input"));
@@ -56,6 +61,7 @@ Options parseOptions(const QStringList &arguments)
     options.outputFile = positional.at(1);
     options.inputMimeType = parser.value(inputTypeOption);
     options.outputMimeType = parser.value(outputTypeOption);
+    options.outputFormat = parser.value(outputFormatOption);
     return options;
 }
 
@@ -99,10 +105,26 @@ void convert(const Options &options)
                            arg(toUserString(result.error())));
     }
 
+    Texture copy;
+    if (!options.outputFormat.isEmpty()) {
+        const auto format = fromQString(options.outputFormat);
+        if (format == TextureFormat::Invalid) {
+            throw RuntimeError(ConvertTool::tr("Invalid output format: %1")
+                               .arg(options.outputFormat));
+        }
+        copy = result->convert(format);
+
+        if (copy.isNull()) {
+            throw RuntimeError(ConvertTool::tr("Convertion failed"));
+        }
+    } else {
+        copy = *texture;
+    }
+
     if (!options.outputMimeType.isEmpty())
         io.setMimeType(options.outputMimeType);
     io.setFileName(options.outputFile);
-    const auto ok = io.write(*texture);
+    const auto ok = io.write(copy);
     if (!ok) {
         throw RuntimeError(ConvertTool::tr("Can't write texture %1: %2").
                            arg(options.outputFile, toUserString(ok.error())));
