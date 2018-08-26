@@ -142,6 +142,21 @@ void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
     d[0] = qBlue(rgba);
 }
 
+AnyColor readR32_Float(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto d = reinterpret_cast<const float *>(data.data());
+    return {RgbaFloat32(d[0], 0.0f, 0.0f)};
+}
+
+void writeR32_Float(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 4);
+    const auto rgba = color.toRgbaFloat32();
+    const auto d = reinterpret_cast<float *>(data.data());
+    d[0] = rgba.red();
+}
+
 AnyColor readRG16_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 4);
@@ -266,6 +281,57 @@ void writeRGBA16_Unorm(Texture::Data data, const AnyColor &color)
     d[3] = qAlpha(rgba);
 }
 
+AnyColor readRG32_Float(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 8);
+    const auto d = reinterpret_cast<const float *>(data.data());
+    return {RgbaFloat32(d[0], d[1], 0.0f, 1.0f)};
+}
+
+void writeRG32_Float(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 8);
+    const auto rgba = color.toRgbaFloat32();
+    const auto d = reinterpret_cast<float *>(data.data());
+    d[0] = rgba.red();
+    d[1] = rgba.green();
+}
+
+AnyColor readRGB32_Float(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 12);
+    const auto d = reinterpret_cast<const float *>(data.data());
+    return {RgbaFloat32(d[0], d[1], d[2], 1.0f)};
+}
+
+void writeRGB32_Float(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 12);
+    const auto rgba = color.toRgbaFloat32();
+    const auto d = reinterpret_cast<float *>(data.data());
+    d[0] = rgba.red();
+    d[1] = rgba.green();
+    d[2] = rgba.blue();
+}
+
+AnyColor readRGBA32_Float(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 16);
+    const auto d = reinterpret_cast<const float *>(data.data());
+    return {RgbaFloat32(d[0], d[1], d[2], d[3])};
+}
+
+void writeRGBA32_Float(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 16);
+    const auto rgba = color.toRgbaFloat32();
+    const auto d = reinterpret_cast<float *>(data.data());
+    d[0] = rgba.red();
+    d[1] = rgba.green();
+    d[2] = rgba.blue();
+    d[3] = rgba.alpha();
+}
+
 constexpr TextureFormatConverter converters[] = {
     { TextureFormat::Invalid },
 
@@ -299,7 +365,7 @@ constexpr TextureFormatConverter converters[] = {
     // 32bit
     { TextureFormat::R32_Sint },
     { TextureFormat::R32_Uint },
-    { TextureFormat::R32_Float },
+    { TextureFormat::R32_Float, readR32_Float, writeR32_Float },
 
     { TextureFormat::RG16_Snorm },
     { TextureFormat::RG16_Unorm, readRG16_Unorm, writeRG16_Unorm },
@@ -329,17 +395,17 @@ constexpr TextureFormatConverter converters[] = {
 
     { TextureFormat::RG32_Sint },
     { TextureFormat::RG32_Uint },
-    { TextureFormat::RG32_Float },
+    { TextureFormat::RG32_Float, readRG32_Float, writeRG32_Float },
 
     // 96bit
     { TextureFormat::RGB32_Sint },
     { TextureFormat::RGB32_Uint },
-    { TextureFormat::RGB32_Float },
+    { TextureFormat::RGB32_Float, readRGB32_Float, writeRGB32_Float },
 
     // 128bit
     { TextureFormat::RGBA32_Sint },
     { TextureFormat::RGBA32_Uint },
-    { TextureFormat::RGBA32_Float },
+    { TextureFormat::RGBA32_Float, readRGBA32_Float, writeRGBA32_Float },
 
     // packed formats
     { TextureFormat::BGR565_Unorm },
