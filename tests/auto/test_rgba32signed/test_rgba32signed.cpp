@@ -11,6 +11,8 @@ private slots:
     void construction();
     void copy();
     void assign();
+    void setters_data();
+    void setters();
 };
 
 void TestRgba32Signed::defaultConstruction()
@@ -74,6 +76,41 @@ void TestRgba32Signed::assign()
     QCOMPARE(c2.green(), c1.green());
     QCOMPARE(c2.blue(), c1.blue());
     QCOMPARE(c2.alpha(), c1.alpha());
+}
+
+void TestRgba32Signed::setters_data()
+{
+    QTest::addColumn<qint8>("red");
+    QTest::addColumn<qint8>("green");
+    QTest::addColumn<qint8>("blue");
+    QTest::addColumn<qint8>("alpha");
+
+    QTest::newRow("black") << qint8(0) << qint8(0) << qint8(0) << qint8(0);
+    QTest::newRow("red") << qint8(127) << qint8(0) << qint8(0) << qint8(127);
+    QTest::newRow("red green") << qint8(127) << qint8(127) << qint8(0) << qint8(127);
+    QTest::newRow("white") << qint8(127) << qint8(127) << qint8(127) << qint8(127);
+    QTest::newRow("negative red") << qint8(-128) << qint8(0) << qint8(0) << qint8(-128);
+    QTest::newRow("negative white") << qint8(-128) << qint8(-128) << qint8(-128) << qint8(-128);
+}
+
+void TestRgba32Signed::setters()
+{
+    QFETCH(qint8, red);
+    QFETCH(qint8, green);
+    QFETCH(qint8, blue);
+    QFETCH(qint8, alpha);
+
+    Rgba32Signed c;
+
+    c.setRed(red);
+    c.setGreen(green);
+    c.setBlue(blue);
+    c.setAlpha(alpha);
+
+    QCOMPARE(c.red(), red);
+    QCOMPARE(c.green(), green);
+    QCOMPARE(c.blue(), blue);
+    QCOMPARE(c.alpha(), alpha);
 }
 
 QTEST_APPLESS_MAIN(TestRgba32Signed)

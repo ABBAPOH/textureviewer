@@ -45,6 +45,27 @@ public:
     constexpr qint8 green() const noexcept { return qint8(m_rgba >> GreenShift); }
     constexpr qint8 blue()  const noexcept { return qint8(m_rgba >> BlueShift);  }
     constexpr qint8 alpha() const noexcept { return qint8(m_rgba >> AlphaShift); }
+
+    constexpr void setRed(qint8 red)
+    {
+        m_rgba = (m_rgba & ~(0xffu << RedShift))   | (quint32(quint8(red))   << RedShift);
+    }
+
+    constexpr void setGreen(qint8 green)
+    {
+        m_rgba = (m_rgba & ~(0xffu << GreenShift)) | (quint32(quint8(green)) << GreenShift);
+
+    }
+
+    constexpr void setBlue(qint8 blue)
+    {
+        m_rgba = (m_rgba & ~(0xffu << BlueShift))  | (quint32(quint8(blue))  << BlueShift);
+    }
+
+    constexpr void setAlpha(qint8 alpha)
+    {
+        m_rgba = (m_rgba & ~(0xffu << AlphaShift)) | (quint32(quint8(alpha)) << AlphaShift);
+    }
 };
 
 #endif // RGBA32SIGNED_H
