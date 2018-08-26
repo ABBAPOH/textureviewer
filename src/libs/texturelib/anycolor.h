@@ -60,7 +60,7 @@ constexpr QRgb AnyColor::toRgba8_Unorm() const noexcept
     case Type::Invalid: return {};
     case Type::RGBA8_Unorm: return m_rgba8_Unorm;
     case Type::RGBA16_Unorm: return m_rgba16_Unorm.toArgb32();
-    case Type::RGBA32_Float: return m_rgbaFloat32.toRgba32();
+    case Type::RGBA32_Float: return qRgba(m_rgbaFloat32);
     default: return {};
     }
 }
@@ -71,7 +71,7 @@ constexpr QRgba64 AnyColor::toRgba16_Unorm() const noexcept
     case Type::Invalid: return {};
     case Type::RGBA8_Unorm: return QRgba64::fromArgb32(m_rgba8_Unorm);
     case Type::RGBA16_Unorm: return m_rgba16_Unorm;
-    case Type::RGBA32_Float: return m_rgbaFloat32.toRgba64();
+    case Type::RGBA32_Float: return qRgba64(m_rgbaFloat32);
     default: return {};
     }
 }
@@ -80,8 +80,8 @@ constexpr RgbaFloat32 AnyColor::toRgbaFloat32() const noexcept
 {
     switch (m_type) {
     case Type::Invalid: return {};
-    case Type::RGBA8_Unorm: return RgbaFloat32::fromRgba32(m_rgba8_Unorm);
-    case Type::RGBA16_Unorm: return RgbaFloat32::fromRgba64(m_rgba16_Unorm);
+    case Type::RGBA8_Unorm: return rgbaFloat32(m_rgba8_Unorm);
+    case Type::RGBA16_Unorm: return rgbaFloat32(m_rgba16_Unorm);
     case Type::RGBA32_Float: return m_rgbaFloat32;
     default: return {};
     }
