@@ -1,3 +1,1 @@
 #include "anycolor.h"
-
-
