@@ -3,6 +3,7 @@
 
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
+#include <TextureLib/Rgba32Signed>
 
 class RgbaFloat32
 {
@@ -43,6 +44,25 @@ public:
                 normalize(quint8(qAlpha(rgba))));
     }
 
+    constexpr Rgba32Signed toRgba32Signed() const noexcept
+    {
+        // TODO (abbapoh): we do not cover -128 value for now, should be fixed
+        return Rgba32Signed(
+                0x7f * boundedSigned(red()),
+                0x7f * boundedSigned(green()),
+                0x7f * boundedSigned(blue()),
+                0x7f * boundedSigned(alpha()));
+    }
+
+    static constexpr RgbaFloat32 fromRgba32Signed(Rgba32Signed rgba) noexcept
+    {
+        return RgbaFloat32(
+                normalize(rgba.red()),
+                normalize(rgba.green()),
+                normalize(rgba.blue()),
+                normalize(rgba.alpha()));
+    }
+
     constexpr QRgba64 toRgba64() const noexcept
     {
         return qRgba64(0xffffu * red(), 0xffffu * green(), 0xffffu * blue(), 0xffffu * alpha());
@@ -58,9 +78,11 @@ public:
     }
 
 private:
+    static float constexpr normalize(qint8 value) noexcept { return 1.0f * value / 0x7f; }
     static float constexpr normalize(quint8 value) noexcept { return 1.0f * value / 0xffu; }
     static float constexpr normalize(quint16 value) noexcept { return 1.0f * value / 0xffffu; }
     static float constexpr bounded(float value) noexcept { return qBound(0.0f, value, 1.0f); }
+    static float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f, value, 1.0f); }
 
     float m_red {0.0};
     float m_green {0.0};
