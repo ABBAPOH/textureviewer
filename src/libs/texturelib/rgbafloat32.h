@@ -34,8 +34,8 @@ public:
     {
         return RgbaFloat32(
                 normalize(quint8(qRed(rgba))),
-                normalize(quint8(qBlue(rgba))),
                 normalize(quint8(qGreen(rgba))),
+                normalize(quint8(qBlue(rgba))),
                 normalize(quint8(qAlpha(rgba))));
     }
 
@@ -48,8 +48,8 @@ public:
     {
         return RgbaFloat32(
                 normalize(quint16(qRed(rgba))),
-                normalize(quint16(qBlue(rgba))),
                 normalize(quint16(qGreen(rgba))),
+                normalize(quint16(qBlue(rgba))),
                 normalize(quint16(qAlpha(rgba))));
     }
 
