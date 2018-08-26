@@ -108,9 +108,11 @@ public:
     // So, we should return a Color object
     // But QColor is too limited, we need a ColorVariant (AnyColor as proposed by Marc Mutz)
 
-    // T texelData(const Position &p);
-    // const T texelData(const Position &p) const;
-    // const T constTexelData(const Position &p) const;
+    // AnyColor texelColor(const Position &p, const Index &index);
+    // AnyColor texelColor(const Position &p, const Index &index) const;
+    // AnyColor constTexelColor(const Position &p, const Index &index) const;
+    // void setTexelColor(const Position &p, const AnyColor &color);
+    // void setTexelColor(const Position &p, const Index &index, const AnyColor &color);
 
     // Ok, KTX really have different alignment (4) rather than other (dds, vtf) formats (1).
     // So, we can have a usage of a scanline API.
