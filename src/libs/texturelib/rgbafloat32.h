@@ -20,10 +20,10 @@ public:
     constexpr float blue() const noexcept { return m_blue; }
     constexpr float alpha() const noexcept { return m_alpha; }
 
-    void setRed(float red) noexcept { m_red = red; }
-    void setGreen(float green) noexcept { m_green = green; }
-    void setBlue(float blue) noexcept { m_blue = blue; }
-    void setAlpha(float alpha) noexcept { m_alpha = alpha; }
+    constexpr void setRed(float red) noexcept { m_red = red; }
+    constexpr void setGreen(float green) noexcept { m_green = green; }
+    constexpr void setBlue(float blue) noexcept { m_blue = blue; }
+    constexpr void setAlpha(float alpha) noexcept { m_alpha = alpha; }
 
     constexpr QRgb toRgba32() const noexcept
     {
