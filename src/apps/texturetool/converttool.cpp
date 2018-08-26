@@ -69,6 +69,10 @@ QLatin1String mimeTypeToFormat(QStringView mimeType)
 {
     if (mimeType == u"image/png")
         return QLatin1String("png");
+    if (mimeType == u"image/jpeg")
+        return QLatin1String("jpg");
+    if (mimeType == u"image/bmp")
+        return QLatin1String("bmp");
 
     return {};
 }
