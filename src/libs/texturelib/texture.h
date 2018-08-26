@@ -115,9 +115,7 @@ public:
     // Ok, KTX really have different alignment (4) rather than other (dds, vtf) formats (1).
     // So, we can have a usage of a scanline API.
     // However, the same can be achieved via manual iteration over imageData, hovewer that can
-    // lead to a bunch of a boilerplate code. A test need to be written (maybe convert(Alignment)?).
-    // TODO: explore if we need this API or it's ok to use imageData instead
-    // TODO: replace Position with z/y overloads?
+    // lead to a bunch of a boilerplate code - see convert(TextureFormat, Alignment) function.
 
     // Data lineData(const Position &p, const Index &index);
     // ConstData lineData(const Position &p, const Index &index) const;
