@@ -27,7 +27,11 @@ public:
 
     constexpr QRgb toRgba32() const noexcept
     {
-        return qRgba(0xffu * red(), 0xffu * green(), 0xffu * blue(), 0xffu * alpha());
+        return qRgba(
+                0xffu * bounded(red()),
+                0xffu * bounded(green()),
+                0xffu * bounded(blue()),
+                0xffu * bounded(alpha()));
     }
 
     static constexpr RgbaFloat32 fromRgba32(QRgb rgba) noexcept
@@ -56,6 +60,7 @@ public:
 private:
     static float constexpr normalize(quint8 value) noexcept { return 1.0f * value / 0xffu; }
     static float constexpr normalize(quint16 value) noexcept { return 1.0f * value / 0xffffu; }
+    static float constexpr bounded(float value) noexcept { return qBound(0.0f, value, 1.0f); }
 
     float m_red {0.0};
     float m_green {0.0};
