@@ -607,13 +607,46 @@ QImage Texture::toImage() const
         return QImage();
     }
 
+    if (isCompressed()) {
+        qCWarning(texture) << "Compressed images are not supported";
+        return QImage();
+    }
+
+    Texture copy;
     QImage::Format imageFormat = QImage::Format_Invalid;
     switch (d->format) {
-    case TextureFormat::RGBA8_Unorm:
-        imageFormat = QImage::Format_RGBA8888;
+    case TextureFormat::A8_Unorm:
+        imageFormat = QImage::Format_Alpha8;
+        copy = convert(Alignment::Word);
         break;
+    case TextureFormat::L8_Unorm:
+        imageFormat = QImage::Format_Grayscale8;
+        copy = convert(Alignment::Word);
+        break;
+    case TextureFormat::R8_Unorm:
+    case TextureFormat::R16_Unorm:
+    case TextureFormat::R16_Float:
+    case TextureFormat::RG8_Unorm:
     case TextureFormat::RGB8_Unorm:
+    case TextureFormat::BGR8_Unorm:
+    case TextureFormat::R32_Float:
+    case TextureFormat::RG16_Unorm:
+    case TextureFormat::RG16_Float:
+    case TextureFormat::RGBX8_Unorm:
+    case TextureFormat::BGRX8_Unorm:
+    case TextureFormat::RG32_Float:
         imageFormat = QImage::Format_RGB888;
+        copy = convert(TextureFormat::RGB8_Unorm, Alignment::Word);
+        break;
+    case TextureFormat::LA8_Unorm:
+    case TextureFormat::RGBA8_Unorm:
+    case TextureFormat::BGRA8_Unorm:
+    case TextureFormat::ABGR8_Unorm:
+    case TextureFormat::RGBA16_Unorm:
+    case TextureFormat::RGBA16_Float:
+    case TextureFormat::RGBA32_Float:
+        imageFormat = QImage::Format_RGBA8888;
+        copy = convert(TextureFormat::RGBA8_Unorm, Alignment::Word);
         break;
     default:
         break;
@@ -638,8 +671,8 @@ QImage Texture::toImage() const
         return QImage();
     }
 
-    const auto data = imageData({});
-    for (int y = 0; y < height(); ++y) {
+    const auto data = copy.imageData({});
+    for (int y = 0; y < d->height; ++y) {
         const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy({result.scanLine(y), result.bytesPerLine()}, line);
     }
