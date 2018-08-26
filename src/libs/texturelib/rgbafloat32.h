@@ -30,7 +30,7 @@ public:
         return qRgba(0xffu * red(), 0xffu * green(), 0xffu * blue(), 0xffu * alpha());
     }
 
-    static constexpr RgbaFloat32 fromRgb32(QRgb rgba) noexcept
+    static constexpr RgbaFloat32 fromRgba32(QRgb rgba) noexcept
     {
         return RgbaFloat32(
                 normalize(quint8(qRed(rgba))),
@@ -39,12 +39,12 @@ public:
                 normalize(quint8(qAlpha(rgba))));
     }
 
-    constexpr QRgb toRgba64() const noexcept
+    constexpr QRgba64 toRgba64() const noexcept
     {
         return qRgba64(0xffffu * red(), 0xffffu * green(), 0xffffu * blue(), 0xffffu * alpha());
     }
 
-    static constexpr RgbaFloat32 fromRgb64(QRgba64 rgba) noexcept
+    static constexpr RgbaFloat32 fromRgba64(QRgba64 rgba) noexcept
     {
         return RgbaFloat32(
                 normalize(quint16(qRed(rgba))),
