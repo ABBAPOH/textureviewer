@@ -4,5 +4,6 @@ Project {
     references: [
         "texturelib/texturelib.qbs",
         "extramimetypes/extramimetypes.qbs",
+        "utils/utils.qbs",
     ]
 }
