@@ -341,6 +341,12 @@ Texture::Texture(
             deleter);
 }
 
+Texture::~Texture()
+{
+    if (d && !d->ref.deref())
+        delete d;
+}
+
 Texture &Texture::operator=(const Texture &other)
 {
     if (this != &other) {
@@ -351,12 +357,6 @@ Texture &Texture::operator=(const Texture &other)
         d = other.d;
     }
     return *this;
-}
-
-Texture::~Texture()
-{
-    if (d && !d->ref.deref())
-        delete d;
 }
 
 void Texture::detach()

@@ -136,11 +136,11 @@ public:
             TextureDimensions dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
+    ~Texture();
+
     Texture &operator=(const Texture &other);
     inline Texture &operator=(Texture &&other) noexcept
     { qSwap(d, other.d); return *this; }
-
-    ~Texture();
 
     void detach();
     bool isDetached() const;
