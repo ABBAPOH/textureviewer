@@ -120,20 +120,20 @@ public:
 
     Texture(TextureFormat format,
             TextureSize size,
-            TextureDimensions dimensions = TextureDimensions(),
+            TextureDimensions dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
     Texture(Data data,
             TextureFormat format,
             TextureSize size,
-            TextureDimensions dimensions = TextureDimensions(),
+            TextureDimensions dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
     Texture(Data data,
             DataDeleter deleter,
             TextureFormat format,
             TextureSize size,
-            TextureDimensions dimensions = TextureDimensions(),
+            TextureDimensions dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
     Texture &operator=(const Texture &other);
