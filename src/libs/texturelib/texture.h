@@ -63,10 +63,13 @@ public:
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
 
+    using DataDeleter = std::function<void(uchar[])>;
+
     static Texture create(TextureFormat format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
     static Texture create(TextureFormat format, Size size, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
 
     static Texture create(TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
+    static Texture create(Data data, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte, DataDeleter deleter = DataDeleter());
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);
@@ -192,7 +195,6 @@ private:
 class Texture::Dimentions
 {
 public:
-    inline constexpr Dimentions() noexcept = default;
     inline constexpr Dimentions(int levels = 1, int layers = 1) noexcept
         : m_levels(levels)
         , m_layers(layers)
@@ -206,10 +208,7 @@ public:
 
     inline constexpr int faces() const noexcept { return m_faces; }
 
-    inline constexpr Texture::IsCubemap isCubemap() const noexcept
-    {
-        return m_faces == 6 ? Texture::IsCubemap::Yes : Texture::IsCubemap::No;
-    }
+    inline constexpr bool isCubemap() const noexcept { return m_faces == 6; }
     inline constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
     inline constexpr void setIsCubemap(Texture::IsCubemap isCumemap) noexcept
     {

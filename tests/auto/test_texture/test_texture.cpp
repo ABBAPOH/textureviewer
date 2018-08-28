@@ -9,6 +9,8 @@ private slots:
 
     void construct_data();
     void construct();
+    void constructWithData();
+    void constructWithInvalidData();
     void bytesPerLine_data();
     void bytesPerLine();
     void offset_data();
@@ -185,6 +187,38 @@ void TestTexture::construct()
     QCOMPARE(texture.layers(), layers);
     QCOMPARE(texture.levels(), levels);
     QCOMPARE(texture.bytes(), bytes);
+}
+
+void TestTexture::constructWithData()
+{
+    int width = 256;
+    int height = 256;
+    qsizetype size = width * height * 4;
+    std::unique_ptr<uchar[]> data(new uchar[size]);
+
+    {
+        const auto deleter = [&data](uchar []) { data.reset(); };
+        auto texture = Texture::create({data.get(), size}, TextureFormat::RGBA8_Unorm, {width, height}, {}, Texture::Alignment::Word, deleter);
+        QVERIFY(!texture.isNull());
+    }
+
+    QVERIFY(!data);
+}
+
+void TestTexture::constructWithInvalidData()
+{
+    int width = 256;
+    int height = 256;
+    qsizetype size = width * height;
+    std::unique_ptr<uchar[]> data(new uchar[size]);
+
+    {
+        const auto deleter = [&data](uchar []) { data.reset(); };
+        auto texture = Texture::create({data.get(), size}, TextureFormat::RGBA8_Unorm, {width, height}, {}, Texture::Alignment::Word, deleter);
+        QVERIFY(texture.isNull());
+    }
+
+    QVERIFY(data);
 }
 
 void TestTexture::bytesPerLine_data()

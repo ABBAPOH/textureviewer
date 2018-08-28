@@ -64,9 +64,11 @@ TextureData *TextureData::create(
         bool isCubemap,
         int levels,
         int layers,
-        Texture::Alignment align)
+        Texture::Alignment align,
+        Texture::Data data,
+        Texture::DataDeleter deleter)
 {
-    std::unique_ptr<TextureData> data;
+    std::unique_ptr<TextureData> result;
 
     if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == TextureFormat::Invalid)
         return nullptr; // invalid parameter(s)
@@ -123,28 +125,40 @@ TextureData *TextureData::create(
         }
     }
 
-    data = std::make_unique<TextureData>();
+    result = std::make_unique<TextureData>();
 
-    data->ref.ref();
-    data->width = width;
-    data->height = height;
-    data->depth = depth;
-    data->faces = int(ufaces);
-    data->levels = levels;
-    data->layers = layers;
-    data->format = format;
-    data->align = align;
-    data->compressed = texelFormat.isCompressed();
+    result->ref.ref();
+    result->width = width;
+    result->height = height;
+    result->depth = depth;
+    result->faces = int(ufaces);
+    result->levels = levels;
+    result->layers = layers;
+    result->format = format;
+    result->align = align;
+    result->compressed = texelFormat.isCompressed();
 
-    data->levelInfos = std::move(levelInfos);
+    result->levelInfos = std::move(levelInfos);
 
-    data->nbytes = totalBytes;
-    data->data.reset(new (std::nothrow) uchar[size_t(data->nbytes)]);
+    result->nbytes = totalBytes;
+    if (data.empty()) {
+        result->data = DataPointer(
+                new (std::nothrow) uchar[size_t(result->nbytes)], [](uchar p[]){ delete [] p;});
+        if (!result->data)
+            return nullptr;
+    } else {
+        if (data.size_bytes() != result->nbytes) {
+            qCWarning(texture) << "Invalid data size:"
+                               << data.size_bytes() << "!=" << result->nbytes;
+            return nullptr;
+        }
+        if (deleter)
+            result->data = DataPointer(data.data(), deleter);
+        else
+            result->data = DataPointer(data.data());
+    }
 
-    if (!data->data)
-        return nullptr;
-
-    return data.release();
+    return result.release();
 }
 
 qsizetype TextureData::calculateBytesPerLine(
@@ -315,7 +329,33 @@ Texture Texture::create(TextureFormat format, Texture::Size size, int levels, in
 
 Texture Texture::create(TextureFormat format, Texture::Size size, Texture::Dimentions dimentions, Texture::Alignment align)
 {
-    return create(format, size, dimentions.isCubemap(), dimentions.levels(), dimentions.layers(), align);
+    return Texture(
+            TextureData::create(
+                    format,
+                    size.width(), size.height(), size.depth(),
+                    dimentions.isCubemap(), dimentions.levels(), dimentions.layers(),
+                    align));
+}
+
+Texture Texture::create(
+        Data data,
+        TextureFormat format,
+        Size size,
+        Dimentions dimentions,
+        Alignment align,
+        DataDeleter deleter)
+{
+    if (data.empty())
+        return Texture();
+
+    return Texture(
+            TextureData::create(
+                    format,
+                    size.width(), size.height(), size.depth(),
+                    dimentions.isCubemap(), dimentions.levels(), dimentions.layers(),
+                    align,
+                    data,
+                    deleter));
 }
 
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)

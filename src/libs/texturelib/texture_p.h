@@ -18,15 +18,16 @@ public:
     TextureData &operator=(const TextureData &) = delete;
     TextureData &operator=(TextureData &&) = delete;
 
-    static TextureData *create(
-            TextureFormat format,
+    static TextureData *create(TextureFormat format,
             int width,
             int height,
             int depth,
             bool isCubemap,
             int levels,
             int layers,
-            Texture::Alignment align);
+            Texture::Alignment align,
+            Texture::Data data = Texture::Data(),
+            Texture::DataDeleter deleter = Texture::DataDeleter());
 
     static qsizetype calculateBytesPerLine(
             const TextureFormatInfo &format,
@@ -76,7 +77,8 @@ public:
     std::vector<LevelInfo> levelInfos;
 
     qsizetype nbytes {0};
-    std::unique_ptr<uchar[]> data;
+    using DataPointer = std::unique_ptr<uchar[], Texture::DataDeleter>;
+    DataPointer data;
 };
 
 #endif // TEXTURE_P_H
