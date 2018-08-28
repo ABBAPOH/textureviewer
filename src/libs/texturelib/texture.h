@@ -202,9 +202,11 @@ public:
     int height(int level) const;
     int depth() const;
     int depth(int level) const;
+    Size size() const;
     int faces() const;
     int levels() const;
     int layers() const;
+    ArraySize arraySize() const;
 
     qsizetype bytes() const;
     qsizetype bitsPerTexel() const;

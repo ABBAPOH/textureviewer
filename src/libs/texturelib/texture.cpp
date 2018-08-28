@@ -404,6 +404,11 @@ bool Texture::isCompressed() const
     return d && d->compressed;
 }
 
+Texture::Size Texture::size() const
+{
+    return d ? Size(d->width, d->height, d->depth) : Size();
+}
+
 int Texture::width() const
 {
     return d ? d->width : 0;
@@ -462,6 +467,11 @@ int Texture::levels() const
 int Texture::layers() const
 {
     return d ? d->layers : 0;
+}
+
+Texture::ArraySize Texture::arraySize() const
+{
+    return d ? ArraySize(IsCubemap(d->faces == 6), d->levels, d->layers) : ArraySize();
 }
 
 qsizetype Texture::bytes() const
