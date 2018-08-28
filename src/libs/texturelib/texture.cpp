@@ -313,6 +313,11 @@ Texture Texture::create(TextureFormat format, Texture::Size size, int levels, in
     return create(format, size, IsCubemap::No, levels, layers, align);
 }
 
+Texture Texture::create(TextureFormat format, Texture::Size size, Texture::Dimentions dimentions, Texture::Alignment align)
+{
+    return create(format, size, dimentions.isCubemap(), dimentions.levels(), dimentions.layers(), align);
+}
+
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(

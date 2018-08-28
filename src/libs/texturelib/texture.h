@@ -57,6 +57,7 @@ public:
     };
 
     class Size;
+    class Dimentions;
     class Index;
 
     using Data = gsl::span<uchar>;
@@ -64,6 +65,8 @@ public:
 
     static Texture create(TextureFormat format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
     static Texture create(TextureFormat format, Size size, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
+
+    static Texture create(TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);
@@ -184,6 +187,45 @@ private:
     int m_width {0};
     int m_height {0};
     int m_depth {0};
+};
+
+class Texture::Dimentions
+{
+public:
+    inline constexpr Dimentions() noexcept = default;
+    inline constexpr Dimentions(int levels = 1, int layers = 1) noexcept
+        : m_levels(levels)
+        , m_layers(layers)
+    {}
+
+    inline constexpr Dimentions(Texture::IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+        : m_faces(isCumemap == Texture::IsCubemap::Yes ? 6 : 1)
+        , m_levels(levels)
+        , m_layers(layers)
+    {}
+
+    inline constexpr int faces() const noexcept { return m_faces; }
+
+    inline constexpr Texture::IsCubemap isCubemap() const noexcept
+    {
+        return m_faces == 6 ? Texture::IsCubemap::Yes : Texture::IsCubemap::No;
+    }
+    inline constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
+    inline constexpr void setIsCubemap(Texture::IsCubemap isCumemap) noexcept
+    {
+        m_faces = isCumemap == Texture::IsCubemap::Yes ? 6 : 1;
+    }
+
+    inline constexpr int levels() const noexcept { return m_levels; }
+    inline constexpr void setLevels(int levels) noexcept { m_levels = levels; }
+
+    inline constexpr int layers() const noexcept { return m_layers; }
+    inline constexpr void setLayers(int layers) noexcept { m_layers = layers; }
+
+private:
+    int m_faces {1};
+    int m_levels {1};
+    int m_layers {1};
 };
 
 class Texture::Index
