@@ -52,6 +52,9 @@ public:
         inline constexpr Size(int width, int height, int depth) noexcept
             : m_width(width), m_height(height), m_depth(depth) {}
 
+        constexpr bool isNull() const noexcept { return !m_width && !m_height && !m_depth; }
+        constexpr bool isValid() const noexcept { return m_width > 0 && m_height > 0 && m_depth > 0; }
+
         inline constexpr int width() const noexcept { return m_width; }
         inline constexpr void setWidth(int w) noexcept { m_width = w; }
 
@@ -81,6 +84,9 @@ public:
             , m_levels(levels)
             , m_layers(layers)
         {}
+
+        constexpr bool isNull() const noexcept { return !m_faces && !m_levels && !m_layers; }
+        constexpr bool isValid() const noexcept { return m_faces > 0 && m_levels > 0 && m_layers > 0; }
 
         inline constexpr int faces() const noexcept { return m_faces; }
 
@@ -117,6 +123,8 @@ public:
             , m_level(level)
             , m_layer(layer)
         {}
+
+        constexpr bool isNull() const noexcept { return !face() && !m_level && !m_layer; }
 
         inline constexpr Side side() const noexcept { return m_side; }
         inline constexpr void setSide(Side side) noexcept { m_side = side; }
