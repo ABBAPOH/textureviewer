@@ -46,15 +46,15 @@ private:
     int m_depth {0};
 };
 
-class TextureDimentions
+class TextureDimensions
 {
 public:
-    inline constexpr TextureDimentions(int levels = 1, int layers = 1) noexcept
+    inline constexpr TextureDimensions(int levels = 1, int layers = 1) noexcept
         : m_levels(levels)
         , m_layers(layers)
     {}
 
-    inline constexpr TextureDimentions(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+    inline constexpr TextureDimensions(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
         : m_faces(isCumemap == IsCubemap::Yes ? 6 : 1)
         , m_levels(levels)
         , m_layers(layers)
@@ -126,9 +126,9 @@ public:
 
     using DataDeleter = std::function<void(uchar[])>;
 
-    static Texture create(TextureFormat format, TextureSize size, TextureDimentions dimentions = TextureDimentions(), Alignment align = Alignment::Byte);
-    static Texture create(Data data, TextureFormat format, TextureSize size, TextureDimentions dimentions = TextureDimentions(), Alignment align = Alignment::Byte);
-    static Texture create(Data data, DataDeleter deleter, TextureFormat format, TextureSize size, TextureDimentions dimentions = TextureDimentions(), Alignment align = Alignment::Byte);
+    static Texture create(TextureFormat format, TextureSize size, TextureDimensions dimensions = TextureDimensions(), Alignment align = Alignment::Byte);
+    static Texture create(Data data, TextureFormat format, TextureSize size, TextureDimensions dimensions = TextureDimensions(), Alignment align = Alignment::Byte);
+    static Texture create(Data data, DataDeleter deleter, TextureFormat format, TextureSize size, TextureDimensions dimensions = TextureDimensions(), Alignment align = Alignment::Byte);
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);

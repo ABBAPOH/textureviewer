@@ -324,14 +324,14 @@ bool Texture::isDetached() const
 Texture Texture::create(
         TextureFormat format,
         TextureSize size,
-        TextureDimentions dimentions,
+        TextureDimensions dimensions,
         Texture::Alignment align)
 {
     return Texture(
             TextureData::create(
                     format,
                     size.width(), size.height(), size.depth(),
-                    dimentions.isCubemap(), dimentions.levels(), dimentions.layers(),
+                    dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
                     align));
 }
 
@@ -339,7 +339,7 @@ Texture Texture::create(
         Data data,
         TextureFormat format,
         TextureSize size,
-        TextureDimentions dimentions,
+        TextureDimensions dimensions,
         Alignment align)
 {
     if (data.empty())
@@ -349,7 +349,7 @@ Texture Texture::create(
             TextureData::create(
                     format,
                     size.width(), size.height(), size.depth(),
-                    dimentions.isCubemap(), dimentions.levels(), dimentions.layers(),
+                    dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
                     align,
                     data));
 }
@@ -359,7 +359,7 @@ Texture Texture::create(
         DataDeleter deleter,
         TextureFormat format,
         TextureSize size,
-        TextureDimentions dimentions,
+        TextureDimensions dimensions,
         Alignment align)
 {
     if (data.empty())
@@ -369,7 +369,7 @@ Texture Texture::create(
             TextureData::create(
                     format,
                     size.width(), size.height(), size.depth(),
-                    dimentions.isCubemap(), dimentions.levels(), dimentions.layers(),
+                    dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
                     align,
                     data,
                     deleter));
