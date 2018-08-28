@@ -404,21 +404,6 @@ bool Texture::isCompressed() const
     return d && d->compressed;
 }
 
-Texture::Size Texture::size() const
-{
-    return d ? Size(d->width, d->height, d->depth) : Size();
-}
-
-Texture::Size Texture::size(int level) const
-{
-    if (!d)
-        return Size();
-
-    CHECK_LEVEL(level, Size());
-
-    return Size(d->levelWidth(level), d->levelHeight(level), d->levelDepth(level));
-}
-
 int Texture::width() const
 {
     return d ? d->width : 0;
@@ -462,6 +447,21 @@ int Texture::depth(int level) const
     CHECK_LEVEL(level, 0);
 
     return d->levelDepth(level);
+}
+
+Texture::Size Texture::size() const
+{
+    return d ? Size(d->width, d->height, d->depth) : Size();
+}
+
+Texture::Size Texture::size(int level) const
+{
+    if (!d)
+        return Size();
+
+    CHECK_LEVEL(level, Size());
+
+    return Size(d->levelWidth(level), d->levelHeight(level), d->levelDepth(level));
 }
 
 int Texture::faces() const
