@@ -81,6 +81,8 @@ private:
     int m_layers {1};
 };
 
+class TextureIndex;
+
 class TextureData;
 
 class TEXTURELIB_EXPORT Texture
@@ -119,8 +121,6 @@ public:
         Word = 4, // 4-bytes alignment
     };
 
-    class Index;
-
     using Data = gsl::span<uchar>;
     using ConstData = gsl::span<const uchar>;
 
@@ -157,11 +157,11 @@ public:
     qsizetype bytesPerLine(int level = 0) const;
     qsizetype bytesPerSlice(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
-    qsizetype offset(Index index) const;
+    qsizetype offset(TextureIndex index) const;
 
-    Data imageData(Index index);
-    ConstData imageData(Index index) const;
-    ConstData constImageData(Index index) const;
+    Data imageData(TextureIndex index);
+    ConstData imageData(TextureIndex index) const;
+    ConstData constImageData(TextureIndex index) const;
 
     inline Data data() { return {dataImpl(0, 0, 0), bytes()}; }
     inline ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
@@ -223,16 +223,16 @@ QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture)
 
 Q_DECLARE_LOGGING_CATEGORY(texture)
 
-class Texture::Index
+class TextureIndex
 {
 public:
     using Side = Texture::Side;
 
-    inline constexpr Index(int level = 0, int layer = 0) noexcept
+    inline constexpr TextureIndex(int level = 0, int layer = 0) noexcept
         : m_level(level)
         , m_layer(layer)
     {}
-    inline constexpr Index(Texture::Side side, int level = 0, int layer = 0) noexcept
+    inline constexpr TextureIndex(Side side, int level = 0, int layer = 0) noexcept
         : m_side(side)
         , m_level(level)
         , m_layer(layer)
@@ -255,7 +255,7 @@ private:
     int m_layer {0};
 };
 
-QDebug operator<<(QDebug &d, const Texture::Index &index);
+QDebug operator<<(QDebug &d, const TextureIndex &index);
 
 QString toQString(Texture::Side side);
 
