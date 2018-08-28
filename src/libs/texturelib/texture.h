@@ -70,11 +70,12 @@ public:
     class ArraySize
     {
     public:
-        inline constexpr ArraySize(int levels = 1, int layers = 1) noexcept
-            : m_levels(levels)
+        inline constexpr ArraySize() noexcept {}
+        inline constexpr ArraySize(int levels, int layers = 1) noexcept
+            : m_faces(1)
+            , m_levels(levels)
             , m_layers(layers)
         {}
-
         inline constexpr ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
             : m_faces(isCumemap == IsCubemap::Yes ? 6 : 1)
             , m_levels(levels)
@@ -97,9 +98,9 @@ public:
         inline constexpr void setLayers(int layers) noexcept { m_layers = layers; }
 
     private:
-        int m_faces {1};
-        int m_levels {1};
-        int m_layers {1};
+        int m_faces {0};
+        int m_levels {0};
+        int m_layers {0};
     };
 
     class ArrayIndex
