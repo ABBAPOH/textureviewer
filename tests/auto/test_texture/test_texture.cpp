@@ -177,7 +177,7 @@ void TestTexture::construct()
     QFETCH(qsizetype, bytes);
 
     const auto texture = Texture(
-                format, {width, height, depth}, {IsCubemap(cubemap), levels, layers});
+                format, {width, height, depth}, {Texture::IsCubemap(cubemap), levels, layers});
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.format(), format);

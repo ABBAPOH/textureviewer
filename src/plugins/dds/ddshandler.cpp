@@ -474,7 +474,7 @@ bool DDSHandler::read(Texture &texture)
     auto result = Texture(
                 textureFormat,
                 {int(header.width), int(header.height)},
-                {cubeMap ? IsCubemap::Yes : IsCubemap::No, ulevels, ulayers});
+                {Texture::IsCubemap(cubeMap), int(ulevels), int(ulayers)});
 
     if (result.isNull()) {
         qCWarning(ddshandler) << "Can't create texture";
