@@ -176,7 +176,7 @@ void TestTexture::construct()
     QFETCH(int, levels);
     QFETCH(qsizetype, bytes);
 
-    const auto texture = Texture::create(
+    const auto texture = Texture(
                 format, {width, height, depth}, {IsCubemap(cubemap), levels, layers});
 
     QVERIFY(!texture.isNull());
@@ -198,7 +198,7 @@ void TestTexture::constructWithData()
 
     {
         const auto deleter = [&data](uchar []) { data.reset(); };
-        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height});
+        auto texture = Texture({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height});
         QVERIFY(!texture.isNull());
     }
 
@@ -214,7 +214,7 @@ void TestTexture::constructWithInvalidData()
 
     {
         const auto deleter = [&data](uchar []) { data.reset(); };
-        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height});
+        auto texture = Texture({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height});
         QVERIFY(texture.isNull());
     }
 
@@ -321,7 +321,7 @@ void TestTexture::offset()
     QFETCH(int, layer);
     QFETCH(qsizetype, offset);
 
-    const auto texture = Texture::create(format, {width, height, depth}, {levels, layers});
+    const auto texture = Texture(format, {width, height, depth}, {levels, layers});
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.offset({level, layer}), offset);

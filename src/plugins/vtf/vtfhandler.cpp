@@ -128,7 +128,7 @@ static bool readTexture(
 
     const auto isCubemap = bool(header.flags & VTFFlag::EnvironmentMap);
     const auto depth = std::max<quint16>(1, header.depth);
-    auto result = Texture::create(
+    auto result = Texture(
                 format,
                 {header.width, header.height, depth},
                 {IsCubemap(isCubemap), header.mipmapCount, header.frames});

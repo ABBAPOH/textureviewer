@@ -89,23 +89,6 @@ class TEXTURELIB_EXPORT Texture
 {
     Q_GADGET
 public:
-    inline Texture() noexcept = default;
-    Texture(const Texture &other);
-    explicit Texture(const QString &file);
-    explicit Texture(QStringView file);
-    explicit Texture(const QImage& image);
-    inline Texture(Texture &&other) noexcept
-    { qSwap(d, other.d); }
-
-    Texture &operator=(const Texture &other);
-    inline Texture &operator=(Texture &&other) noexcept
-    { qSwap(d, other.d); return *this; }
-
-    ~Texture();
-
-    void detach();
-    bool isDetached() const;
-
     enum class Side {
         PositiveX = 0,
         NegativeX = 1,
@@ -126,9 +109,41 @@ public:
 
     using DataDeleter = std::function<void(uchar[])>;
 
-    static Texture create(TextureFormat format, TextureSize size, TextureDimensions dimensions = TextureDimensions(), Alignment align = Alignment::Byte);
-    static Texture create(Data data, TextureFormat format, TextureSize size, TextureDimensions dimensions = TextureDimensions(), Alignment align = Alignment::Byte);
-    static Texture create(Data data, DataDeleter deleter, TextureFormat format, TextureSize size, TextureDimensions dimensions = TextureDimensions(), Alignment align = Alignment::Byte);
+    inline Texture() noexcept = default;
+    Texture(const Texture &other);
+    inline Texture(Texture &&other) noexcept
+    { qSwap(d, other.d); }
+
+    explicit Texture(const QString &file);
+    explicit Texture(QStringView file);
+    explicit Texture(const QImage& image);
+
+    Texture(TextureFormat format,
+            TextureSize size,
+            TextureDimensions dimensions = TextureDimensions(),
+            Alignment align = Alignment::Byte);
+
+    Texture(Data data,
+            TextureFormat format,
+            TextureSize size,
+            TextureDimensions dimensions = TextureDimensions(),
+            Alignment align = Alignment::Byte);
+
+    Texture(Data data,
+            DataDeleter deleter,
+            TextureFormat format,
+            TextureSize size,
+            TextureDimensions dimensions = TextureDimensions(),
+            Alignment align = Alignment::Byte);
+
+    Texture &operator=(const Texture &other);
+    inline Texture &operator=(Texture &&other) noexcept
+    { qSwap(d, other.d); return *this; }
+
+    ~Texture();
+
+    void detach();
+    bool isDetached() const;
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);

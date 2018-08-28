@@ -144,7 +144,7 @@ bool KtxHandler::read(Texture& texture)
     const auto levels = std::max<int>(1, header.numberOfMipmapLevels);
     const auto layers = std::max<int>(1, header.numberOfArrayElements);
 
-    auto result = Texture::create(
+    auto result = Texture(
                 textureFormat,
                 size,
                 {levels, layers},

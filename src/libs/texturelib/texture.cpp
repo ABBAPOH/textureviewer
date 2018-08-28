@@ -272,7 +272,7 @@ Texture::Texture(const QImage& image)
         return;
     }
 
-    auto result = Texture::create(format, {copy.width(), copy.height()});
+    auto result = Texture(format, {copy.width(), copy.height()});
     const auto bytesPerLine = result.bytesPerLine();
     if (bytesPerLine < copy.bytesPerLine()) {
         qCWarning(texture) << Q_FUNC_INFO
@@ -288,6 +288,57 @@ Texture::Texture(const QImage& image)
     }
 
     *this = std::move(result);
+}
+
+Texture::Texture(
+        TextureFormat format,
+        TextureSize size,
+        TextureDimensions dimensions,
+        Texture::Alignment align)
+{
+    d = TextureData::create(
+            format,
+            size.width(), size.height(), size.depth(),
+            dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
+            align);
+}
+
+Texture::Texture(
+        Data data,
+        TextureFormat format,
+        TextureSize size,
+        TextureDimensions dimensions,
+        Texture::Alignment align)
+{
+    if (data.empty())
+        return;
+
+    d = TextureData::create(
+            format,
+            size.width(), size.height(), size.depth(),
+            dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
+            align,
+            data);
+}
+
+Texture::Texture(
+        Data data,
+        Texture::DataDeleter deleter,
+        TextureFormat format,
+        TextureSize size,
+        TextureDimensions dimensions,
+        Texture::Alignment align)
+{
+    if (data.empty())
+        return;
+
+    d = TextureData::create(
+            format,
+            size.width(), size.height(), size.depth(),
+            dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
+            align,
+            data,
+            deleter);
 }
 
 Texture &Texture::operator=(const Texture &other)
@@ -319,60 +370,6 @@ void Texture::detach()
 bool Texture::isDetached() const
 {
     return d && d->ref.load() == 1;
-}
-
-Texture Texture::create(
-        TextureFormat format,
-        TextureSize size,
-        TextureDimensions dimensions,
-        Texture::Alignment align)
-{
-    return Texture(
-            TextureData::create(
-                    format,
-                    size.width(), size.height(), size.depth(),
-                    dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
-                    align));
-}
-
-Texture Texture::create(
-        Data data,
-        TextureFormat format,
-        TextureSize size,
-        TextureDimensions dimensions,
-        Alignment align)
-{
-    if (data.empty())
-        return Texture();
-
-    return Texture(
-            TextureData::create(
-                    format,
-                    size.width(), size.height(), size.depth(),
-                    dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
-                    align,
-                    data));
-}
-
-Texture Texture::create(
-        Data data,
-        DataDeleter deleter,
-        TextureFormat format,
-        TextureSize size,
-        TextureDimensions dimensions,
-        Alignment align)
-{
-    if (data.empty())
-        return Texture();
-
-    return Texture(
-            TextureData::create(
-                    format,
-                    size.width(), size.height(), size.depth(),
-                    dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
-                    align,
-                    data,
-                    deleter));
 }
 
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)

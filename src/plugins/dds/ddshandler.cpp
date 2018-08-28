@@ -471,7 +471,7 @@ bool DDSHandler::read(Texture &texture)
     if (textureFormat == TextureFormat::Invalid)
         return false;
 
-    auto result = Texture::create(
+    auto result = Texture(
                 textureFormat,
                 {int(header.width), int(header.height)},
                 {cubeMap ? IsCubemap::Yes : IsCubemap::No, ulevels, ulayers});
