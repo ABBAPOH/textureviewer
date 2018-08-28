@@ -198,7 +198,7 @@ void TestTexture::constructWithData()
 
     {
         const auto deleter = [&data](uchar []) { data.reset(); };
-        auto texture = Texture::create({data.get(), size}, TextureFormat::RGBA8_Unorm, {width, height}, {}, Texture::Alignment::Word, deleter);
+        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height}, {});
         QVERIFY(!texture.isNull());
     }
 
@@ -214,7 +214,7 @@ void TestTexture::constructWithInvalidData()
 
     {
         const auto deleter = [&data](uchar []) { data.reset(); };
-        auto texture = Texture::create({data.get(), size}, TextureFormat::RGBA8_Unorm, {width, height}, {}, Texture::Alignment::Word, deleter);
+        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height}, {});
         QVERIFY(texture.isNull());
     }
 

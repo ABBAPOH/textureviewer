@@ -66,7 +66,8 @@ public:
     using DataDeleter = std::function<void(uchar[])>;
 
     static Texture create(TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
-    static Texture create(Data data, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte, DataDeleter deleter = DataDeleter());
+    static Texture create(Data data, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
+    static Texture create(Data data, DataDeleter deleter, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);

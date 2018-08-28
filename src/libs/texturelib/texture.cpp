@@ -336,8 +336,27 @@ Texture Texture::create(
         TextureFormat format,
         Size size,
         Dimentions dimentions,
-        Alignment align,
-        DataDeleter deleter)
+        Alignment align)
+{
+    if (data.empty())
+        return Texture();
+
+    return Texture(
+            TextureData::create(
+                    format,
+                    size.width(), size.height(), size.depth(),
+                    dimentions.isCubemap(), dimentions.levels(), dimentions.layers(),
+                    align,
+                    data));
+}
+
+Texture Texture::create(
+        Data data,
+        DataDeleter deleter,
+        TextureFormat format,
+        Size size,
+        Dimentions dimentions,
+        Alignment align)
 {
     if (data.empty())
         return Texture();
