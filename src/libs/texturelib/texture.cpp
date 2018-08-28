@@ -70,15 +70,22 @@ TextureData *TextureData::create(
 {
     std::unique_ptr<TextureData> result;
 
-    if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == TextureFormat::Invalid)
-        return nullptr; // invalid parameter(s)
+    if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == TextureFormat::Invalid) {
+        qCWarning(texture) << "Invalid parameter(s) passed to Texture::create";
+        return nullptr;
+    }
 
     if (isCubemap) {
-        if (width != height || depth != 1)
+        if (width != height || depth != 1) {
+            qCWarning(texture)
+                    << "Width should be equal to height and depth should be 1 for a cuve texture";
             return nullptr;
+        }
     } else {
-        if (depth > 1 && layers > 1) // array of 3d texture are not supported
+        if (depth > 1 && layers > 1) {
+            qCWarning(texture) << "Arrays of 3d textures are not supported";
             return nullptr;
+        }
     }
 
     const auto uwidth = uint(width);
