@@ -272,7 +272,7 @@ Texture::Texture(const QImage& image)
         return;
     }
 
-    auto result = Texture::create(format, {copy.width(), copy.height()}, {});
+    auto result = Texture::create(format, {copy.width(), copy.height()});
     const auto bytesPerLine = result.bytesPerLine();
     if (bytesPerLine < copy.bytesPerLine()) {
         qCWarning(texture) << Q_FUNC_INFO
@@ -321,7 +321,11 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-Texture Texture::create(TextureFormat format, Texture::Size size, Texture::Dimentions dimentions, Texture::Alignment align)
+Texture Texture::create(
+        TextureFormat format,
+        TextureSize size,
+        TextureDimentions dimentions,
+        Texture::Alignment align)
 {
     return Texture(
             TextureData::create(
@@ -334,8 +338,8 @@ Texture Texture::create(TextureFormat format, Texture::Size size, Texture::Dimen
 Texture Texture::create(
         Data data,
         TextureFormat format,
-        Size size,
-        Dimentions dimentions,
+        TextureSize size,
+        TextureDimentions dimentions,
         Alignment align)
 {
     if (data.empty())
@@ -354,8 +358,8 @@ Texture Texture::create(
         Data data,
         DataDeleter deleter,
         TextureFormat format,
-        Size size,
-        Dimentions dimentions,
+        TextureSize size,
+        TextureDimentions dimentions,
         Alignment align)
 {
     if (data.empty())

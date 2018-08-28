@@ -204,7 +204,7 @@ bool PkmHandler::read(Texture& texture)
         return false;
     }
 
-    auto result = Texture::create(format, {header.width, header.height}, {});
+    auto result = Texture::create(format, {header.width, header.height});
     if (result.isNull()) {
         qCWarning(pkmhandler) << "Can't create texture";
         return false;

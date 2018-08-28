@@ -13,6 +13,74 @@
 
 #include <gsl/span>
 
+enum class IsCubemap {
+    No = 0,
+    Yes
+};
+
+class TextureSize
+{
+public:
+    inline constexpr TextureSize() noexcept = default;
+    inline constexpr TextureSize(int width) noexcept
+        : m_width(width), m_height(1), m_depth(1) {}
+    inline constexpr TextureSize(int width, int height) noexcept
+        : m_width(width), m_height(height), m_depth(1) {}
+    inline constexpr TextureSize(QSize size) noexcept
+        : m_width(size.width()), m_height(size.height()), m_depth(1) {}
+    inline constexpr TextureSize(int width, int height, int depth) noexcept
+        : m_width(width), m_height(height), m_depth(depth) {}
+
+    inline constexpr int width() const noexcept { return m_width; }
+    inline constexpr void setWidth(int w) noexcept { m_width = w; }
+
+    inline constexpr int height() const { return m_height; }
+    inline constexpr void setHeight(int h) noexcept { m_height = h; }
+
+    inline constexpr int depth() const { return m_depth; }
+    inline constexpr void setDepth(int d) noexcept { m_depth = d; }
+
+private:
+    int m_width {0};
+    int m_height {0};
+    int m_depth {0};
+};
+
+class TextureDimentions
+{
+public:
+    inline constexpr TextureDimentions(int levels = 1, int layers = 1) noexcept
+        : m_levels(levels)
+        , m_layers(layers)
+    {}
+
+    inline constexpr TextureDimentions(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+        : m_faces(isCumemap == IsCubemap::Yes ? 6 : 1)
+        , m_levels(levels)
+        , m_layers(layers)
+    {}
+
+    inline constexpr int faces() const noexcept { return m_faces; }
+
+    inline constexpr bool isCubemap() const noexcept { return m_faces == 6; }
+    inline constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
+    inline constexpr void setIsCubemap(IsCubemap isCumemap) noexcept
+    {
+        m_faces = isCumemap == IsCubemap::Yes ? 6 : 1;
+    }
+
+    inline constexpr int levels() const noexcept { return m_levels; }
+    inline constexpr void setLevels(int levels) noexcept { m_levels = levels; }
+
+    inline constexpr int layers() const noexcept { return m_layers; }
+    inline constexpr void setLayers(int layers) noexcept { m_layers = layers; }
+
+private:
+    int m_faces {1};
+    int m_levels {1};
+    int m_layers {1};
+};
+
 class TextureData;
 
 class TEXTURELIB_EXPORT Texture
@@ -36,11 +104,6 @@ public:
     void detach();
     bool isDetached() const;
 
-    enum class IsCubemap {
-        No = 0,
-        Yes
-    };
-
     enum class Side {
         PositiveX = 0,
         NegativeX = 1,
@@ -56,8 +119,6 @@ public:
         Word = 4, // 4-bytes alignment
     };
 
-    class Size;
-    class Dimentions;
     class Index;
 
     using Data = gsl::span<uchar>;
@@ -65,9 +126,9 @@ public:
 
     using DataDeleter = std::function<void(uchar[])>;
 
-    static Texture create(TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
-    static Texture create(Data data, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
-    static Texture create(Data data, DataDeleter deleter, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
+    static Texture create(TextureFormat format, TextureSize size, TextureDimentions dimentions = TextureDimentions(), Alignment align = Alignment::Byte);
+    static Texture create(Data data, TextureFormat format, TextureSize size, TextureDimentions dimentions = TextureDimentions(), Alignment align = Alignment::Byte);
+    static Texture create(Data data, DataDeleter deleter, TextureFormat format, TextureSize size, TextureDimentions dimentions = TextureDimentions(), Alignment align = Alignment::Byte);
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);
@@ -161,69 +222,6 @@ QDataStream TEXTURELIB_EXPORT &operator<<(QDataStream &stream, const Texture &te
 QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture);
 
 Q_DECLARE_LOGGING_CATEGORY(texture)
-
-class Texture::Size
-{
-public:
-    inline constexpr Size() noexcept = default;
-    inline constexpr Size(int width) noexcept
-        : m_width(width), m_height(1), m_depth(1) {}
-    inline constexpr Size(int width, int height) noexcept
-        : m_width(width), m_height(height), m_depth(1) {}
-    inline constexpr Size(QSize size) noexcept
-        : m_width(size.width()), m_height(size.height()), m_depth(1) {}
-    inline constexpr Size(int width, int height, int depth) noexcept
-        : m_width(width), m_height(height), m_depth(depth) {}
-
-    inline constexpr int width() const noexcept { return m_width; }
-    inline constexpr void setWidth(int w) noexcept { m_width = w; }
-
-    inline constexpr int height() const { return m_height; }
-    inline constexpr void setHeight(int h) noexcept { m_height = h; }
-
-    inline constexpr int depth() const { return m_depth; }
-    inline constexpr void setDepth(int d) noexcept { m_depth = d; }
-
-private:
-    int m_width {0};
-    int m_height {0};
-    int m_depth {0};
-};
-
-class Texture::Dimentions
-{
-public:
-    inline constexpr Dimentions(int levels = 1, int layers = 1) noexcept
-        : m_levels(levels)
-        , m_layers(layers)
-    {}
-
-    inline constexpr Dimentions(Texture::IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
-        : m_faces(isCumemap == Texture::IsCubemap::Yes ? 6 : 1)
-        , m_levels(levels)
-        , m_layers(layers)
-    {}
-
-    inline constexpr int faces() const noexcept { return m_faces; }
-
-    inline constexpr bool isCubemap() const noexcept { return m_faces == 6; }
-    inline constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
-    inline constexpr void setIsCubemap(Texture::IsCubemap isCumemap) noexcept
-    {
-        m_faces = isCumemap == Texture::IsCubemap::Yes ? 6 : 1;
-    }
-
-    inline constexpr int levels() const noexcept { return m_levels; }
-    inline constexpr void setLevels(int levels) noexcept { m_levels = levels; }
-
-    inline constexpr int layers() const noexcept { return m_layers; }
-    inline constexpr void setLayers(int layers) noexcept { m_layers = layers; }
-
-private:
-    int m_faces {1};
-    int m_levels {1};
-    int m_layers {1};
-};
 
 class Texture::Index
 {

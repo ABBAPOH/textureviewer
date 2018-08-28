@@ -136,7 +136,7 @@ bool KtxHandler::read(Texture& texture)
         return false;
     }
 
-    const auto size = Texture::Size(
+    const auto size = TextureSize(
                 header.pixelWidth,
                 std::max<int>(1, header.pixelHeight),
                 std::max<int>(1, header.pixelDepth));

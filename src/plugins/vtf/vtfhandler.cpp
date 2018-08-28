@@ -131,7 +131,7 @@ static bool readTexture(
     auto result = Texture::create(
                 format,
                 {header.width, header.height, depth},
-                {Texture::IsCubemap(isCubemap), header.mipmapCount, header.frames});
+                {IsCubemap(isCubemap), header.mipmapCount, header.frames});
     if (result.isNull()) {
         qCWarning(vtfhandler) << "Can't create resulting texture, file is too big or corrupted";
         return false;

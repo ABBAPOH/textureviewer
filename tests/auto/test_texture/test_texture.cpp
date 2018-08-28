@@ -177,7 +177,7 @@ void TestTexture::construct()
     QFETCH(qsizetype, bytes);
 
     const auto texture = Texture::create(
-                format, {width, height, depth}, {Texture::IsCubemap(cubemap), levels, layers});
+                format, {width, height, depth}, {IsCubemap(cubemap), levels, layers});
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.format(), format);
@@ -198,7 +198,7 @@ void TestTexture::constructWithData()
 
     {
         const auto deleter = [&data](uchar []) { data.reset(); };
-        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height}, {});
+        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height});
         QVERIFY(!texture.isNull());
     }
 
@@ -214,7 +214,7 @@ void TestTexture::constructWithInvalidData()
 
     {
         const auto deleter = [&data](uchar []) { data.reset(); };
-        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height}, {});
+        auto texture = Texture::create({data.get(), size}, deleter, TextureFormat::RGBA8_Unorm, {width, height});
         QVERIFY(texture.isNull());
     }
 
