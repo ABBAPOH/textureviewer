@@ -67,15 +67,15 @@ public:
         int m_depth {0};
     };
 
-    class Dimensions
+    class ArraySize
     {
     public:
-        inline constexpr Dimensions(int levels = 1, int layers = 1) noexcept
+        inline constexpr ArraySize(int levels = 1, int layers = 1) noexcept
             : m_levels(levels)
             , m_layers(layers)
         {}
 
-        inline constexpr Dimensions(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+        inline constexpr ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
             : m_faces(isCumemap == IsCubemap::Yes ? 6 : 1)
             , m_levels(levels)
             , m_layers(layers)
@@ -102,16 +102,16 @@ public:
         int m_layers {1};
     };
 
-    class Index
+    class ArrayIndex
     {
     public:
         using Side = Texture::Side;
 
-        inline constexpr Index(int level = 0, int layer = 0) noexcept
+        inline constexpr ArrayIndex(int level = 0, int layer = 0) noexcept
             : m_level(level)
             , m_layer(layer)
         {}
-        inline constexpr Index(Side side, int level = 0, int layer = 0) noexcept
+        inline constexpr ArrayIndex(Side side, int level = 0, int layer = 0) noexcept
             : m_side(side)
             , m_level(level)
             , m_layer(layer)
@@ -150,20 +150,20 @@ public:
 
     Texture(TextureFormat format,
             Size size,
-            Dimensions dimensions = {1, 1},
+            ArraySize dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
     Texture(Data data,
             TextureFormat format,
             Size size,
-            Dimensions dimensions = {1, 1},
+            ArraySize dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
     Texture(Data data,
             DataDeleter deleter,
             TextureFormat format,
             Size size,
-            Dimensions dimensions = {1, 1},
+            ArraySize dimensions = {1, 1},
             Alignment align = Alignment::Byte);
 
     ~Texture();
@@ -202,11 +202,11 @@ public:
     qsizetype bytesPerLine(int level = 0) const;
     qsizetype bytesPerSlice(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
-    qsizetype offset(Index index) const;
+    qsizetype offset(ArrayIndex index) const;
 
-    Data imageData(Index index);
-    ConstData imageData(Index index) const;
-    ConstData constImageData(Index index) const;
+    Data imageData(ArrayIndex index);
+    ConstData imageData(ArrayIndex index) const;
+    ConstData constImageData(ArrayIndex index) const;
 
     inline Data data() { return {dataImpl(0, 0, 0), bytes()}; }
     inline ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
@@ -268,7 +268,7 @@ QDataStream TEXTURELIB_EXPORT &operator>>(QDataStream &stream, Texture &texture)
 
 Q_DECLARE_LOGGING_CATEGORY(texture)
 
-QDebug operator<<(QDebug &d, const Texture::Index &index);
+QDebug operator<<(QDebug &d, const Texture::ArrayIndex &index);
 
 QString toQString(Texture::Side side);
 

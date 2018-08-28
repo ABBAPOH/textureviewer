@@ -293,7 +293,7 @@ Texture::Texture(const QImage& image)
 Texture::Texture(
         TextureFormat format,
         Size size,
-        Dimensions dimensions,
+        ArraySize dimensions,
         Texture::Alignment align)
 {
     d = TextureData::create(
@@ -307,7 +307,7 @@ Texture::Texture(
         Data data,
         TextureFormat format,
         Size size,
-        Dimensions dimensions,
+        ArraySize dimensions,
         Texture::Alignment align)
 {
     if (data.empty())
@@ -326,7 +326,7 @@ Texture::Texture(
         Texture::DataDeleter deleter,
         TextureFormat format,
         Size size,
-        Dimensions dimensions,
+        ArraySize dimensions,
         Texture::Alignment align)
 {
     if (data.empty())
@@ -507,7 +507,7 @@ qsizetype Texture::bytesPerImage(int level) const
 /*!
     Returns the offset in bytes for the given \a index from the beggining of the data.
 */
-qsizetype Texture::offset(Index index) const
+qsizetype Texture::offset(ArrayIndex index) const
 {
     if (!d)
         return 0;
@@ -519,7 +519,7 @@ qsizetype Texture::offset(Index index) const
     return d->offset(index.face(), index.level(), index.layer());
 }
 
-auto Texture::imageData(Index index) -> Data
+auto Texture::imageData(ArrayIndex index) -> Data
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());
     if (!data)
@@ -527,7 +527,7 @@ auto Texture::imageData(Index index) -> Data
     return {data, bytesPerImage(index.level())};
 }
 
-auto Texture::imageData(Index index) const -> ConstData
+auto Texture::imageData(ArrayIndex index) const -> ConstData
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());
     if (!data)
@@ -535,7 +535,7 @@ auto Texture::imageData(Index index) const -> ConstData
     return {data, bytesPerImage(index.level())};
 }
 
-auto Texture::constImageData(Index index) const -> ConstData
+auto Texture::constImageData(ArrayIndex index) const -> ConstData
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());
     if (!data)
@@ -872,9 +872,9 @@ QDataStream &operator>>(QDataStream &stream, Texture &texture)
     return stream;
 }
 
-QDebug operator<<(QDebug& d, const Texture::Index& index)
+QDebug operator<<(QDebug& d, const Texture::ArrayIndex& index)
 {
-    auto s = QString("Texture::Index(face = %1, level = %2, layer = %3)").arg(
+    auto s = QString("Texture::ArrayIndex(face = %1, level = %2, layer = %3)").arg(
                 QString::number(index.face()),
                 QString::number(index.level()),
                 QString::number(index.layer()));
