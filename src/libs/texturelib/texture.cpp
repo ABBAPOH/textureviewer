@@ -73,6 +73,14 @@ TextureData *TextureData::create(
     if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == TextureFormat::Invalid)
         return nullptr; // invalid parameter(s)
 
+    if (isCubemap) {
+        if (width != height || depth != 1)
+            return nullptr;
+    } else {
+        if (depth > 1 && layers > 1) // array of 3d texture are not supported
+            return nullptr;
+    }
+
     const auto uwidth = uint(width);
     const auto uheight = uint(height);
     const auto udepth = uint(depth);
@@ -312,13 +320,6 @@ Texture Texture::create(TextureFormat format, Size size, IsCubemap isCubemap, in
     const auto height = size.height();
     const auto depth = size.depth();
 
-    if (isCubemap == IsCubemap::Yes) {
-        if (width != height || depth != 1)
-            return Texture();
-    } else {
-        if (depth > 1 && layers > 1) // array of 3d texture are not supported
-            return Texture();
-    }
     return Texture(TextureData::create(format, width, height, depth, bool(isCubemap), levels, layers, align));
 }
 
