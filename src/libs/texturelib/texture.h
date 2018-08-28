@@ -119,17 +119,17 @@ public:
             , m_layer(layer)
         {}
         inline constexpr ArrayIndex(Side side, int level = 0, int layer = 0) noexcept
-            : m_side(side)
+            : m_face(int(side))
             , m_level(level)
             , m_layer(layer)
         {}
 
-        constexpr bool isNull() const noexcept { return !face() && !m_level && !m_layer; }
+        constexpr bool isNull() const noexcept { return !m_face && !m_level && !m_layer; }
 
-        inline constexpr Side side() const noexcept { return m_side; }
-        inline constexpr void setSide(Side side) noexcept { m_side = side; }
+        inline constexpr Side side() const noexcept { return Side(m_face); }
+        inline constexpr void setSide(Side side) noexcept { m_face = int(side); }
 
-        inline constexpr int face() const { return int(m_side); }
+        inline constexpr int face() const { return m_face; }
 
         inline constexpr int level() const noexcept { return m_level; }
         inline constexpr void setLevel(int level) noexcept { m_level = level; }
@@ -138,7 +138,7 @@ public:
         inline constexpr void setLayer(int layer) noexcept { m_layer = layer; }
 
     private:
-        Side m_side {Side(0)};
+        int m_face {0};
         int m_level {0};
         int m_layer {0};
     };
