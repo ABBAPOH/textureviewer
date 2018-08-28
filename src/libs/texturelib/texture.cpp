@@ -272,7 +272,7 @@ Texture::Texture(const QImage& image)
         return;
     }
 
-    auto result = Texture::create(format, {copy.width(), copy.height()});
+    auto result = Texture::create(format, {copy.width(), copy.height()}, {});
     const auto bytesPerLine = result.bytesPerLine();
     if (bytesPerLine < copy.bytesPerLine()) {
         qCWarning(texture) << Q_FUNC_INFO
@@ -319,20 +319,6 @@ void Texture::detach()
 bool Texture::isDetached() const
 {
     return d && d->ref.load() == 1;
-}
-
-Texture Texture::create(TextureFormat format, Size size, IsCubemap isCubemap, int levels, int layers, Texture::Alignment align)
-{
-    const auto width = size.width();
-    const auto height = size.height();
-    const auto depth = size.depth();
-
-    return Texture(TextureData::create(format, width, height, depth, bool(isCubemap), levels, layers, align));
-}
-
-Texture Texture::create(TextureFormat format, Texture::Size size, int levels, int layers, Texture::Alignment align)
-{
-    return create(format, size, IsCubemap::No, levels, layers, align);
 }
 
 Texture Texture::create(TextureFormat format, Texture::Size size, Texture::Dimentions dimentions, Texture::Alignment align)

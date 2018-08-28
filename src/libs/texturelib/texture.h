@@ -65,9 +65,6 @@ public:
 
     using DataDeleter = std::function<void(uchar[])>;
 
-    static Texture create(TextureFormat format, Size size, IsCubemap isCubemap, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
-    static Texture create(TextureFormat format, Size size, int levels = 1, int layers = 1, Alignment align = Alignment::Byte);
-
     static Texture create(TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte);
     static Texture create(Data data, TextureFormat format, Size size, Dimentions dimentions, Alignment align = Alignment::Byte, DataDeleter deleter = DataDeleter());
 

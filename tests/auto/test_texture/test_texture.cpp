@@ -177,7 +177,7 @@ void TestTexture::construct()
     QFETCH(qsizetype, bytes);
 
     const auto texture = Texture::create(
-                format, {width, height, depth}, Texture::IsCubemap(cubemap), levels, layers);
+                format, {width, height, depth}, {Texture::IsCubemap(cubemap), levels, layers});
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.format(), format);
@@ -321,7 +321,7 @@ void TestTexture::offset()
     QFETCH(int, layer);
     QFETCH(qsizetype, offset);
 
-    const auto texture = Texture::create(format, {width, height, depth}, levels, layers);
+    const auto texture = Texture::create(format, {width, height, depth}, {levels, layers});
 
     QVERIFY(!texture.isNull());
     QCOMPARE(texture.offset({level, layer}), offset);

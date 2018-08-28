@@ -147,8 +147,7 @@ bool KtxHandler::read(Texture& texture)
     auto result = Texture::create(
                 textureFormat,
                 size,
-                levels,
-                layers,
+                {levels, layers},
                 Texture::Alignment::Word);
     if (result.isNull()) {
         qCWarning(ktxhandler) << "Can't create texture";
