@@ -203,6 +203,7 @@ public:
     int depth() const;
     int depth(int level) const;
     Size size() const;
+    Size size(int level) const;
     int faces() const;
     int levels() const;
     int layers() const;
