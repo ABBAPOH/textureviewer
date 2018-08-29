@@ -1,6 +1,6 @@
 #pragma once
 
-#include "abstractdcument.h"
+#include "abstractdocument.h"
 
 class AbstractDocumentPrivate
 {

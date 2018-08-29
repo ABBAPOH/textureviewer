@@ -1,5 +1,5 @@
-#include "abstractdcument.h"
-#include "abstractdcument_p.h"
+#include "abstractdocument.h"
+#include "abstractdocument_p.h"
 
 #include <memory>
 
