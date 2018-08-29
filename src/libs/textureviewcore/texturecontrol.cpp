@@ -36,3 +36,23 @@ void TextureControl::setDocument(TextureControl::TextureDocumentPointer document
 
     emit documentChanged(document);
 }
+
+void TextureControl::resizeEvent(QResizeEvent* event)
+{
+    Q_UNUSED(event);
+}
+
+void TextureControl::mousePressEvent(QMouseEvent* event)
+{
+    Q_UNUSED(event);
+}
+
+void TextureControl::mouseMoveEvent(QMouseEvent* event)
+{
+    Q_UNUSED(event);
+}
+
+void TextureControl::mouseReleaseEvent(QMouseEvent* event)
+{
+    Q_UNUSED(event);
+}

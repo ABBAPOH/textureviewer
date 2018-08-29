@@ -5,6 +5,8 @@
 
 #include <ObserverPointer>
 
+class QResizeEvent;
+class QMouseEvent;
 class TextureDocument;
 
 class TextureControlPrivate;
@@ -22,6 +24,11 @@ public:
 
     TextureDocumentPointer document() const;
     void setDocument(TextureDocumentPointer document);
+
+    void resizeEvent(QResizeEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseMoveEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 
 signals:
     void documentChanged(TextureDocumentPointer document);
