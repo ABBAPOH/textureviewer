@@ -1,6 +1,8 @@
 #ifndef TEXTURECONTROL_H
 #define TEXTURECONTROL_H
 
+#include "textureviewcore_global.h"
+
 #include <QtCore/QObject>
 
 #include <ObserverPointer>
@@ -10,7 +12,7 @@ class QMouseEvent;
 class TextureDocument;
 
 class TextureControlPrivate;
-class TextureControl : public QObject
+class TEXTUREVIEWCORE_EXPORT TextureControl : public QObject
 {
     Q_OBJECT
     Q_DISABLE_COPY(TextureControl)

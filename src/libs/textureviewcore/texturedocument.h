@@ -1,6 +1,8 @@
 #ifndef TEXTUREDOCUMENT_H
 #define TEXTUREDOCUMENT_H
 
+#include "textureviewcore_global.h"
+
 #include <TextureLib/Texture>
 
 #include <UtilsLib/AbstractDocument>
@@ -8,7 +10,7 @@
 #include <memory>
 
 class TextureDocumentPrivate;
-class TextureDocument : public AbstractDocument
+class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(TextureDocument)
