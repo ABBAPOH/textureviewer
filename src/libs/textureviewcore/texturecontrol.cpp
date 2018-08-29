@@ -1,4 +1,5 @@
 #include "texturecontrol.h"
+#include "texturedocument.h"
 
 class TextureControlPrivate
 {
@@ -12,6 +13,8 @@ TextureControl::TextureControl(QObject* parent)
     : QObject(parent)
     , d_ptr(new TextureControlPrivate)
 {
+    Q_D(TextureControl);
+    d->document.reset(new TextureDocument(this));
 }
 
 TextureControl::~TextureControl()
