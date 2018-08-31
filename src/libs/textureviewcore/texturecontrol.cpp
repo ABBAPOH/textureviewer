@@ -1,7 +1,10 @@
 #include "texturecontrol.h"
 #include "texturedocument.h"
 
+#include <QtGui/QOpenGLBuffer>
 #include <QtGui/QOpenGLFunctions>
+#include <QtGui/QOpenGLTexture>
+#include <QtGui/QOpenGLVertexArrayObject>
 #include <QtGui/QMatrix4x4>
 
 class TextureControlPrivate
@@ -19,6 +22,12 @@ public:
         QMatrix4x4 projection;
         QMatrix4x4 view;
         QMatrix4x4 model;
+
+        QOpenGLBuffer vbo {QOpenGLBuffer::VertexBuffer};
+        QOpenGLBuffer ibo {QOpenGLBuffer::IndexBuffer};
+        QOpenGLVertexArrayObject vao;
+
+        void initializeGeometry();
     };
 
     TextureDocumentPointer document;
@@ -27,6 +36,43 @@ public:
     int level {0};
     OpenGLData glData;
 };
+
+void TextureControlPrivate::OpenGLData::initializeGeometry()
+{
+    GLfloat vertices[] = {
+         // Positions         // Texture coordinates
+         0.5f,  0.5f, 0.0f,   1.0f, 1.0f,   // Top right
+         0.5f, -0.5f, 0.0f,   1.0f, 0.0f,   // Bottom right
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f,   // Bottom left
+        -0.5f,  0.5f, 0.0f,   0.0f, 1.0f    // Top left
+    };
+
+    GLuint indices[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    vao.create();
+    QOpenGLVertexArrayObject::Binder vaoBinder(&vao);
+
+    vbo.create();
+    vbo.bind();
+    vbo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    vbo.allocate(vertices, sizeof(vertices));
+
+    ibo.create();
+    ibo.bind();
+    ibo.setUsagePattern(QOpenGLBuffer::StaticDraw);
+    ibo.allocate(indices, sizeof(indices));
+
+    // Coordinates attribute
+    functions->glEnableVertexAttribArray(0);
+    functions->glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), nullptr);
+
+    // Texture attribute
+    functions->glEnableVertexAttribArray(1);
+    functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
+}
 
 TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
 {
@@ -106,6 +152,8 @@ void TextureControl::initializeGL()
 
     d->glData.functions->glEnable(GL_BLEND);
     d->glData.functions->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    d->glData.initializeGeometry();
 }
 
 void TextureControl::resizeGL(int w, int h)
@@ -126,7 +174,7 @@ void TextureControl::resizeGL(int w, int h)
     d->glData.view.translate({0, 0, -3.0f});
 
     auto item = d->currentItem();
-    const auto &image = item->texture;
+    const auto &image = item ? item->texture : Texture();
 
     d->glData.model = QMatrix4x4();
     auto max = std::max(image.width(), image.height());
