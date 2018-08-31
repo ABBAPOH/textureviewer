@@ -1,6 +1,8 @@
 #include "texturecontrol.h"
 #include "texturedocument.h"
 
+#include <TextureLib/Utils>
+
 #include <QtGui/QOpenGLBuffer>
 #include <QtGui/QOpenGLFunctions>
 #include <QtGui/QOpenGLShaderProgram>
@@ -29,6 +31,7 @@ public:
         QOpenGLVertexArrayObject vao;
 
         std::unique_ptr<QOpenGLShaderProgram> program;
+        std::unique_ptr<QOpenGLTexture> texture;
 
         void initializeGeometry();
         bool initializeShaders();
@@ -38,6 +41,7 @@ public:
     int face {0};
     int layer {0};
     int level {0};
+    bool textureDirty {true};
     OpenGLData glData;
 };
 
@@ -109,6 +113,7 @@ void TextureControlPrivate::onTextureChanged(const Texture &texture)
     layer = 0;
     level = 0;
     face = 0;
+    textureDirty = false;
 }
 
 TextureControl::TextureControl(QObject* parent)
@@ -191,6 +196,7 @@ void TextureControl::resizeGL(int w, int h)
     if (!d->glData.functions)
         return;
 
+    d->glData.functions->glViewport(0, 0, w, h);
     d->glData.projection = QMatrix4x4();
 
     float left = -0.5f;
@@ -217,6 +223,29 @@ void TextureControl::paintGL()
     if (!d->glData.functions)
         return;
 
+    if (d->textureDirty) {
+        d->glData.texture.reset(); // delete tex here as we have a context
+        auto item = d->currentItem();
+        d->glData.texture = Utils::makeOpenGLTexture(item ? item->texture : Texture());
+        d->textureDirty = false;
+    }
+
     d->glData.functions->glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
     d->glData.functions->glClear(GL_COLOR_BUFFER_BIT);
+
+    if (!d->glData.texture)
+        return; // nothing to paint
+
+    d->glData.program->bind();
+    d->glData.texture->bind();
+
+    d->glData.program->setUniformValue("ourTexture1", 0);
+    d->glData.program->setUniformValue("projection", d->glData.projection);
+    d->glData.program->setUniformValue("view", d->glData.view);
+    d->glData.program->setUniformValue("model", d->glData.model);
+
+    QOpenGLVertexArrayObject::Binder vaoBinder(&d->glData.vao);
+    d->glData.functions->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+    d->glData.texture->release();
+    d->glData.program->release();
 }
