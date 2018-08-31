@@ -5,15 +5,27 @@ class TextureControlPrivate
 {
 public:
     using TextureDocumentPointer = TextureControl::TextureDocumentPointer;
+    using ItemPointer = TextureDocument::ItemPointer;
 
+    ItemPointer currentItem() const;
     void onTextureChanged(const Texture &texture);
 
     TextureDocumentPointer document;
+    int face {0};
+    int layer {0};
+    int level {0};
 };
+
+TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
+{
+    return document ? document->item(face, layer, level) : nullptr;
+}
 
 void TextureControlPrivate::onTextureChanged(const Texture &texture)
 {
-
+    layer = 0;
+    level = 0;
+    face = 0;
 }
 
 TextureControl::TextureControl(QObject* parent)

@@ -39,9 +39,9 @@ private:
 class TextureDocument::Item
 {
 public:
-    int face {0};
     int level {0};
     int layer {0};
+    int face {0};
     Texture texture;
 };
 

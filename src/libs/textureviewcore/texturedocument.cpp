@@ -38,9 +38,9 @@ void TextureDocument::setTexture(const Texture &texture)
         for (int layer = 0; layer < d->texture.layers(); ++layer) {
             for (int face = 0; face < d->texture.faces(); ++face) {
                 auto item = std::make_unique<Item>();
-                item->face = face;
-                item->layer = layer;
                 item->level = level;
+                item->layer = layer;
+                item->face = face;
                 auto slice = Texture(d->texture.format(), {d->texture.width(), d->texture.height()}, {1, 1}, d->texture.alignment());
                 const auto image = d->texture.imageData({Texture::Side(face), level, layer});
                 Q_ASSERT(image.size() == slice.imageData({}).size());
