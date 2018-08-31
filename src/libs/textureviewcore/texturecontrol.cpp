@@ -93,6 +93,8 @@ void TextureControl::initializeGL()
     d->glFunctions = std::make_unique<QOpenGLFunctions>();
     if (!d->glFunctions)
         return;
+
+    d->glFunctions->initializeOpenGLFunctions();
 }
 
 void TextureControl::resizeGL(int w, int h)

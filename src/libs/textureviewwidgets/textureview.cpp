@@ -7,6 +7,8 @@
 
 #include <QtGui/QResizeEvent>
 
+#include <QtCore/QCoreApplication>
+
 class OpenGLWidget : public QOpenGLWidget
 {
 public:
@@ -65,9 +67,12 @@ TextureView::TextureControlPointer TextureView::control() const
 bool TextureView::viewportEvent(QEvent* event)
 {
     switch (event->type()) {
+    case QEvent::Paint :
+        return false;
     case QEvent::Resize : {
         Q_D(TextureView);
         d->control->resizeEvent(static_cast<QResizeEvent *>(event));
+        return false;
     }
     default:
         break;
