@@ -18,6 +18,10 @@ class TEXTUREVIEWCORE_EXPORT TextureControl : public QObject
     Q_DISABLE_COPY(TextureControl)
     Q_DECLARE_PRIVATE(TextureControl)
 
+    Q_PROPERTY(int level READ level WRITE setLevel NOTIFY levelChanged)
+    Q_PROPERTY(int layer READ layer WRITE setLayer NOTIFY layerChanged)
+    Q_PROPERTY(int face READ face WRITE setFace NOTIFY faceChanged)
+
 public:
     using TextureDocumentPointer = ObserverPointer<TextureDocument>;
 
@@ -26,6 +30,15 @@ public:
 
     TextureDocumentPointer document() const;
     void setDocument(TextureDocumentPointer document);
+
+    int level() const;
+    void setLevel(int level);
+
+    int layer() const;
+    void setLayer(int layer);
+
+    int face() const;
+    void setFace(int face);
 
     void resizeEvent(QResizeEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -39,6 +52,9 @@ public:
 
 signals:
     void documentChanged(TextureDocumentPointer document);
+    void levelChanged(int level);
+    void layerChanged(int layer);
+    void faceChanged(int face);
 
 private:
     QScopedPointer<TextureControlPrivate> d_ptr;

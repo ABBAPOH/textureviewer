@@ -113,7 +113,7 @@ void TextureControlPrivate::onTextureChanged(const Texture &texture)
     layer = 0;
     level = 0;
     face = 0;
-    textureDirty = false;
+    textureDirty = true;
 }
 
 TextureControl::TextureControl(QObject* parent)
@@ -149,6 +149,54 @@ void TextureControl::setDocument(TextureControl::TextureDocumentPointer document
             this, [d](const Texture &texture) { d->onTextureChanged(texture); } );
 
     emit documentChanged(document);
+}
+
+int TextureControl::level() const
+{
+    Q_D(const TextureControl);
+    return d->level;
+}
+
+void TextureControl::setLevel(int level)
+{
+    Q_D(TextureControl);
+    if (d->level == level)
+        return;
+    d->level = level;
+    d->textureDirty = true;
+    emit levelChanged(d->level);
+}
+
+int TextureControl::layer() const
+{
+    Q_D(const TextureControl);
+    return d->layer;
+}
+
+void TextureControl::setLayer(int layer)
+{
+    Q_D(TextureControl);
+    if (d->layer == layer)
+        return;
+    d->layer = layer;
+    d->textureDirty = true;
+    emit layerChanged(d->layer);
+}
+
+int TextureControl::face() const
+{
+    Q_D(const TextureControl);
+    return d->face;
+}
+
+void TextureControl::setFace(int face)
+{
+    Q_D(TextureControl);
+    if (d->face == face)
+        return;
+    d->face = face;
+    d->textureDirty = true;
+    emit faceChanged(d->face);
 }
 
 void TextureControl::resizeEvent(QResizeEvent* event)
