@@ -303,12 +303,14 @@ void TextureControl::paintGL()
 
 void TextureControl::nextLevel()
 {
+    qDebug("nextLevel");
     Q_D(TextureControl);
     setLevel(std::min(d->level + 1, d->document->levels()));
 }
 
 void TextureControl::prevLevel()
 {
+    qDebug("prevLevel");
     Q_D(TextureControl);
     setLevel(std::max(0, d->level - 1));
 }

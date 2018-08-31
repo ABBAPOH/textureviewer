@@ -5,6 +5,8 @@
 
 #include <TextureViewCoreLib/TextureControl>
 
+#include <QtWidgets/QAction>
+
 class TextureViewPrivate
 {
     Q_DISABLE_COPY(TextureViewPrivate)
@@ -15,8 +17,10 @@ public:
     TextureViewPrivate(ObserverPointer<TextureView> qq) : q_ptr(qq) {}
 
     void init();
+    void initActions();
 
     TextureControlPointer control;
+    std::unique_ptr<QAction> actions[size_t(TextureView::Actions::Count)];
 
 private:
     ObserverPointer<TextureView> q_ptr;

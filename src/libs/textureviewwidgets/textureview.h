@@ -3,11 +3,12 @@
 
 #include "textureviewwidgets_global.h"
 
+#include <TextureViewCoreLib/TextureControl>
+
 #include <QtWidgets/QAbstractScrollArea>
 
 #include <ObserverPointer>
 
-class TextureControl;
 class TextureDocument;
 
 class TextureViewPrivate;
@@ -21,6 +22,12 @@ public:
     using TextureControlPointer = ObserverPointer<TextureControl>;
     using TextureDocumentPointer = ObserverPointer<TextureDocument>;
 
+    enum class Actions {
+        NextLevel,
+        PrevLevel,
+        Count,
+    };
+
     explicit TextureView(QWidget *parent = nullptr);
     ~TextureView() override;
 
@@ -28,6 +35,17 @@ public:
     void setDocument(TextureDocumentPointer document);
 
     TextureControlPointer control() const;
+
+public slots:
+    void nextLevel() { control()->nextLevel(); }
+    void prevLevel() { control()->prevLevel(); }
+
+    void nextLayer() { control()->nextLayer(); }
+    void prevLayer() { control()->prevLayer(); }
+
+    void nextFace() { control()->nextFace(); }
+    void prevFace() { control()->prevFace(); }
+
 
 signals:
     void documentChanged(TextureDocumentPointer document);
