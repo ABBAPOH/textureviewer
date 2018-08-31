@@ -2,6 +2,7 @@
 #include "texturedocument.h"
 
 #include <QtGui/QOpenGLFunctions>
+#include <QtGui/QMatrix4x4>
 
 class TextureControlPrivate
 {
@@ -12,12 +13,19 @@ public:
     ItemPointer currentItem() const;
     void onTextureChanged(const Texture &texture);
 
+    struct OpenGLData
+    {
+        std::unique_ptr<QOpenGLFunctions> functions;
+        QMatrix4x4 projection;
+        QMatrix4x4 view;
+        QMatrix4x4 model;
+    };
+
     TextureDocumentPointer document;
     int face {0};
     int layer {0};
     int level {0};
-
-    std::unique_ptr<QOpenGLFunctions> glFunctions;
+    OpenGLData glData;
 };
 
 TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
@@ -90,26 +98,48 @@ void TextureControl::mouseReleaseEvent(QMouseEvent* event)
 void TextureControl::initializeGL()
 {
     Q_D(TextureControl);
-    d->glFunctions = std::make_unique<QOpenGLFunctions>();
-    if (!d->glFunctions)
+    d->glData.functions = std::make_unique<QOpenGLFunctions>();
+    if (!d->glData.functions)
         return;
 
-    d->glFunctions->initializeOpenGLFunctions();
+    d->glData.functions->initializeOpenGLFunctions();
+
+    d->glData.functions->glEnable(GL_BLEND);
+    d->glData.functions->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void TextureControl::resizeGL(int w, int h)
 {
     Q_D(TextureControl);
-    if (!d->glFunctions)
+    if (!d->glData.functions)
         return;
+
+    d->glData.projection = QMatrix4x4();
+
+    float left = -0.5f;
+    float right = 0.5f;
+    float bottom = -0.5f;
+    float top = 0.5f;
+    d->glData.projection.ortho(left, right, bottom, top, 0.1, 100.0);
+
+    d->glData.view = QMatrix4x4();
+    d->glData.view.translate({0, 0, -3.0f});
+
+    auto item = d->currentItem();
+    const auto &image = item->texture;
+
+    d->glData.model = QMatrix4x4();
+    auto max = std::max(image.width(), image.height());
+    d->glData.model.scale({float(max) / image.width(), float(max) / image.height(), 1});
+    d->glData.model.scale({image.width() / float(w), image.height() / float(h), 1});
 }
 
 void TextureControl::paintGL()
 {
     Q_D(TextureControl);
-    if (!d->glFunctions)
+    if (!d->glData.functions)
         return;
 
-    d->glFunctions->glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-    d->glFunctions->glClear(GL_COLOR_BUFFER_BIT);
+    d->glData.functions->glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    d->glData.functions->glClear(GL_COLOR_BUFFER_BIT);
 }
