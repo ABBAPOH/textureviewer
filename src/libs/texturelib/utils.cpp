@@ -76,13 +76,14 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
                     for (int face = 0; face < 6; ++face) {
+                        const auto image = texture.imageData({Texture::Side(face), level, layer});
                         result->setData(
                                     level,
                                     layer,
                                     getFace(Texture::Side(face)),
                                     pixelFormat,
                                     pixelType,
-                                    texture.imageData({Texture::Side(face), level, layer}).data(),
+                                    image.data(),
                                     options.get());
                     }
                 }
@@ -90,12 +91,13 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
         } else {
             for (int level = 0; level < texture.levels(); ++level) {
                 for (int layer = 0; layer < texture.layers(); ++layer) {
+                    const auto image = texture.imageData({level, layer});
                     result->setData(
                                 level,
                                 layer,
                                 pixelFormat,
                                 pixelType,
-                                texture.imageData({level, layer}).data(),
+                                image.data(),
                                 options.get());
                 }
             }
