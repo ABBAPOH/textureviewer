@@ -1,6 +1,8 @@
 #include "texturecontrol.h"
 #include "texturedocument.h"
 
+#include <QtGui/QOpenGLFunctions>
+
 class TextureControlPrivate
 {
 public:
@@ -14,6 +16,8 @@ public:
     int face {0};
     int layer {0};
     int level {0};
+
+    std::unique_ptr<QOpenGLFunctions> glFunctions;
 };
 
 TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
@@ -81,4 +85,29 @@ void TextureControl::mouseMoveEvent(QMouseEvent* event)
 void TextureControl::mouseReleaseEvent(QMouseEvent* event)
 {
     Q_UNUSED(event);
+}
+
+void TextureControl::initializeGL()
+{
+    Q_D(TextureControl);
+    d->glFunctions = std::make_unique<QOpenGLFunctions>();
+    if (!d->glFunctions)
+        return;
+}
+
+void TextureControl::resizeGL(int w, int h)
+{
+    Q_D(TextureControl);
+    if (!d->glFunctions)
+        return;
+}
+
+void TextureControl::paintGL()
+{
+    Q_D(TextureControl);
+    if (!d->glFunctions)
+        return;
+
+    d->glFunctions->glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+    d->glFunctions->glClear(GL_COLOR_BUFFER_BIT);
 }

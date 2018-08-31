@@ -7,11 +7,27 @@
 
 #include <QtGui/QResizeEvent>
 
+class OpenGLWidget : public QOpenGLWidget
+{
+public:
+    explicit OpenGLWidget(ObserverPointer<TextureControl> control, QWidget *parent = nullptr)
+        : QOpenGLWidget(parent)
+        , m_control(control)
+    {}
+
+    void initializeGL() override { m_control->initializeGL(); }
+    void resizeGL(int w, int h) override { m_control->resizeGL(w, h); }
+    void paintGL() override { m_control->paintGL(); }
+
+private:
+    ObserverPointer<TextureControl> m_control;
+};
+
 void TextureViewPrivate::init()
 {
     Q_Q(TextureView);
     control.reset(new TextureControl);
-    q->setViewport(new QOpenGLWidget(q));
+    q->setViewport(new OpenGLWidget(control, q));
 
     q->connect(control.get(), &TextureControl::documentChanged, q, &TextureView::documentChanged);
 }

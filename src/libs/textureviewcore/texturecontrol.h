@@ -32,6 +32,11 @@ public:
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
 
+    // OpenGL API. TODO (abbapoh): move to a separate class aka QuickItem?
+    void initializeGL();
+    void resizeGL(int w, int h);
+    void paintGL();
+
 signals:
     void documentChanged(TextureDocumentPointer document);
 
