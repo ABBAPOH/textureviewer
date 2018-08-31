@@ -18,6 +18,8 @@ class TEXTUREVIEWCORE_EXPORT TextureControl : public QObject
     Q_DISABLE_COPY(TextureControl)
     Q_DECLARE_PRIVATE(TextureControl)
 
+    Q_PROPERTY(TextureDocumentPointer document READ document WRITE setDocument NOTIFY documentChanged)
+
     Q_PROPERTY(int level READ level WRITE setLevel NOTIFY levelChanged)
     Q_PROPERTY(int layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(int face READ face WRITE setFace NOTIFY faceChanged)
