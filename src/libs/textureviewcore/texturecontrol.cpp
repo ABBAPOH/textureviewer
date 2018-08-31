@@ -3,6 +3,7 @@
 
 #include <QtGui/QOpenGLBuffer>
 #include <QtGui/QOpenGLFunctions>
+#include <QtGui/QOpenGLShaderProgram>
 #include <QtGui/QOpenGLTexture>
 #include <QtGui/QOpenGLVertexArrayObject>
 #include <QtGui/QMatrix4x4>
@@ -27,7 +28,10 @@ public:
         QOpenGLBuffer ibo {QOpenGLBuffer::IndexBuffer};
         QOpenGLVertexArrayObject vao;
 
+        std::unique_ptr<QOpenGLShaderProgram> program;
+
         void initializeGeometry();
+        bool initializeShaders();
     };
 
     TextureDocumentPointer document;
@@ -72,6 +76,27 @@ void TextureControlPrivate::OpenGLData::initializeGeometry()
     // Texture attribute
     functions->glEnableVertexAttribArray(1);
     functions->glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(GLfloat), reinterpret_cast<GLvoid*>(3 * sizeof(GLfloat)));
+}
+
+bool TextureControlPrivate::OpenGLData::initializeShaders()
+{
+    program = std::make_unique<QOpenGLShaderProgram>();
+    if (!program->addShaderFromSourceFile(
+            QOpenGLShader::Vertex,
+            QStringLiteral(":/textureviewcore/shaders/gles/vertex.glsl"))) {
+        return false;
+    }
+
+    if (!program->addShaderFromSourceFile(
+            QOpenGLShader::Fragment,
+            QStringLiteral(":/textureviewcore/shaders/gles/fragment.glsl"))) {
+        return false;
+    }
+
+    program->bindAttributeLocation("position", 0);
+    program->bindAttributeLocation("texCoord", 1);
+
+    return program->link();
 }
 
 TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
@@ -154,6 +179,10 @@ void TextureControl::initializeGL()
     d->glData.functions->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     d->glData.initializeGeometry();
+
+    if (!d->glData.initializeShaders()) {
+        qWarning() << "Can't initialize shaders";
+    }
 }
 
 void TextureControl::resizeGL(int w, int h)

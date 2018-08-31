@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/textureviewcore">
+        <file>shaders/gles/fragment.glsl</file>
+        <file>shaders/gles/vertex.glsl</file>
+    </qresource>
+</RCC>

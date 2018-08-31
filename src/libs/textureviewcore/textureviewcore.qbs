@@ -7,5 +7,5 @@ Lib {
     Depends { name: "UtilsLib" }
     cpp.defines: base.concat(["TEXTUREVIEWCORE_LIBRARY"])
     name: "TextureViewCoreLib"
-    files: [ "*.cpp", "*.h" ]
+    files: [ "*.cpp", "*.h", "*.qrc" ]
 }
