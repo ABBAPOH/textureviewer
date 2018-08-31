@@ -142,6 +142,9 @@ void TextureControl::setDocument(TextureControl::TextureDocumentPointer document
     if (d->document == document)
         return;
 
+    if (!document)
+        document.reset(new TextureDocument(this));
+
     d->document = document;
     d->onTextureChanged(d->document->texture());
 
@@ -296,4 +299,40 @@ void TextureControl::paintGL()
     d->glData.functions->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     d->glData.texture->release();
     d->glData.program->release();
+}
+
+void TextureControl::nextLevel()
+{
+    Q_D(TextureControl);
+    setLevel(std::min(d->level + 1, d->document->levels()));
+}
+
+void TextureControl::prevLevel()
+{
+    Q_D(TextureControl);
+    setLevel(std::max(0, d->level - 1));
+}
+
+void TextureControl::nextLayer()
+{
+    Q_D(TextureControl);
+    setLayer(std::min(d->layer + 1, d->document->layers()));
+}
+
+void TextureControl::prevLayer()
+{
+    Q_D(TextureControl);
+    setLayer(std::max(0, d->layer - 1));
+}
+
+void TextureControl::nextFace()
+{
+    Q_D(TextureControl);
+    setFace(std::min(d->face + 1, d->document->faces()));
+}
+
+void TextureControl::prevFace()
+{
+    Q_D(TextureControl);
+    setFace(std::max(0, d->face - 1));
 }

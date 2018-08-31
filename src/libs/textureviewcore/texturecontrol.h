@@ -52,6 +52,16 @@ public:
     void resizeGL(int w, int h);
     void paintGL();
 
+public slots:
+    void nextLevel();
+    void prevLevel();
+
+    void nextLayer();
+    void prevLayer();
+
+    void nextFace();
+    void prevFace();
+
 signals:
     void documentChanged(TextureDocumentPointer document);
     void levelChanged(int level);
