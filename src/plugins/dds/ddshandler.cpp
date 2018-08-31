@@ -457,15 +457,11 @@ bool DDSHandler::read(Texture &texture)
     if (isDX10(header) && !verifyHeaderDX10(header10))
         return false;
 
+    const auto udepth = std::max(1u, header.depth);
     const auto ulayers = std::max(1u, header10.arraySize);
     const auto ulevels = std::max(1u, header.mipMapCount);
     const auto cubeMap = isCubeMap(header);
     const auto faces = cubeMap ? 6 : 1;
-
-    if (isVolumeMap(header)) {
-        qCWarning(ddshandler) << "Reading volumemaps is not supported (yet)";
-        return false;
-    }
 
     const auto textureFormat = getFormat(header, header10);
     if (textureFormat == TextureFormat::Invalid)
@@ -473,7 +469,7 @@ bool DDSHandler::read(Texture &texture)
 
     auto result = Texture(
                 textureFormat,
-                {int(header.width), int(header.height)},
+                {int(header.width), int(header.height), int(udepth)},
                 {Texture::IsCubemap(cubeMap), int(ulevels), int(ulayers)});
 
     if (result.isNull()) {
