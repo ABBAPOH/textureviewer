@@ -54,6 +54,7 @@ void TextureDocument::setTexture(const Texture &texture)
                 const auto image = d->texture.imageData({Texture::Side(face), level, layer});
                 Q_ASSERT(image.size() == slice.imageData({}).size());
                 memcpy(slice.imageData({}).data(), image.data(), image.size());
+                item->texture = slice;
                 d->items.push_back(std::move(item));
             }
         }
