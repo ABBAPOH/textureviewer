@@ -305,7 +305,9 @@ void TextureControl::nextLevel()
 {
     qDebug("nextLevel");
     Q_D(TextureControl);
-    setLevel(std::min(d->level + 1, d->document->levels()));
+    if (!d->document->levels())
+        return;
+    setLevel(std::min(d->level + 1, d->document->levels() - 1));
 }
 
 void TextureControl::prevLevel()
@@ -318,7 +320,9 @@ void TextureControl::prevLevel()
 void TextureControl::nextLayer()
 {
     Q_D(TextureControl);
-    setLayer(std::min(d->layer + 1, d->document->layers()));
+    if (!d->document->layers())
+        return;
+    setLayer(std::min(d->layer + 1, d->document->layers() - 1));
 }
 
 void TextureControl::prevLayer()
@@ -330,7 +334,9 @@ void TextureControl::prevLayer()
 void TextureControl::nextFace()
 {
     Q_D(TextureControl);
-    setFace(std::min(d->face + 1, d->document->faces()));
+    if (!d->document->faces())
+        return;
+    setFace(std::min(d->face + 1, d->document->faces() - 1));
 }
 
 void TextureControl::prevFace()
