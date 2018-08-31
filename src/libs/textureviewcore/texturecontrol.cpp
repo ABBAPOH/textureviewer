@@ -6,8 +6,15 @@ class TextureControlPrivate
 public:
     using TextureDocumentPointer = TextureControl::TextureDocumentPointer;
 
+    void onTextureChanged(const Texture &texture);
+
     TextureDocumentPointer document;
 };
+
+void TextureControlPrivate::onTextureChanged(const Texture &texture)
+{
+
+}
 
 TextureControl::TextureControl(QObject* parent)
     : QObject(parent)
@@ -36,6 +43,10 @@ void TextureControl::setDocument(TextureControl::TextureDocumentPointer document
         return;
 
     d->document = document;
+    d->onTextureChanged(d->document->texture());
+
+    connect(d->document.get(), &TextureDocument::textureChanged,
+            this, [d](const Texture &texture) { d->onTextureChanged(texture); } );
 
     emit documentChanged(document);
 }
