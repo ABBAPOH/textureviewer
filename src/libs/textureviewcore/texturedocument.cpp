@@ -59,7 +59,29 @@ void TextureDocument::setTexture(const Texture &texture)
             }
         }
     }
+
     emit textureChanged(texture);
+    emit levelsChanged(levels());
+    emit layersChanged(layers());
+    emit facesChanged(faces());
+}
+
+int TextureDocument::levels() const
+{
+    Q_D(const TextureDocument);
+    return !d->texture.isNull() ? d->texture.levels() : 0;
+}
+
+int TextureDocument::layers() const
+{
+    Q_D(const TextureDocument);
+    return !d->texture.isNull() ? d->texture.layers() : 0;
+}
+
+int TextureDocument::faces() const
+{
+    Q_D(const TextureDocument);
+    return !d->texture.isNull() ? d->texture.faces() : 0;
 }
 
 auto TextureDocument::item(int face, int level, int layer) const -> ItemPointer

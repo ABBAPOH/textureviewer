@@ -17,6 +17,11 @@ class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
     Q_OBJECT
     Q_DECLARE_PRIVATE(TextureDocument)
     Q_PROPERTY(Texture texture READ texture WRITE setTexture NOTIFY textureChanged)
+
+    Q_PROPERTY(int levels READ levels NOTIFY levelsChanged)
+    Q_PROPERTY(int layers READ layers NOTIFY layersChanged)
+    Q_PROPERTY(int faces READ faces NOTIFY facesChanged)
+
 public:
     class Item;
     using ItemPointer = ObserverPointer<Item>;
@@ -27,10 +32,18 @@ public:
     Texture texture() const;
     void setTexture(const Texture &texture);
 
+    int levels() const;
+    int layers() const;
+    int faces() const;
+
     ItemPointer item(int face, int level, int layer) const;
 
 signals:
     void textureChanged(const Texture &texture);
+
+    void levelsChanged(int levels);
+    void layersChanged(int layers);
+    void facesChanged(int faces);
 
 private:
     QScopedPointer<TextureDocumentPrivate> d_ptr;
