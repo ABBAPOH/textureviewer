@@ -3,12 +3,15 @@
 
 #include <TextureViewCoreLib/TextureControl>
 
+#include <QtWidgets/QOpenGLWidget>
+
 #include <QtGui/QResizeEvent>
 
 void TextureViewPrivate::init()
 {
     Q_Q(TextureView);
     control.reset(new TextureControl);
+    q->setViewport(new QOpenGLWidget(q));
 
     q->connect(control.get(), &TextureControl::documentChanged, q, &TextureView::documentChanged);
 }

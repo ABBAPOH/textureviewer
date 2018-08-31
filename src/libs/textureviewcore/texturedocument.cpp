@@ -41,7 +41,16 @@ void TextureDocument::setTexture(const Texture &texture)
                 item->level = level;
                 item->layer = layer;
                 item->face = face;
-                auto slice = Texture(d->texture.format(), {d->texture.width(), d->texture.height()}, {1, 1}, d->texture.alignment());
+                auto slice = Texture(
+                        d->texture.format(),
+                        {d->texture.width(level), d->texture.height(level)},
+                        {1, 1},
+                        d->texture.alignment());
+                if (slice.isNull()) {
+                    qWarning() << "Can't create slice";
+                    d->items.clear();
+                    break;
+                }
                 const auto image = d->texture.imageData({Texture::Side(face), level, layer});
                 Q_ASSERT(image.size() == slice.imageData({}).size());
                 memcpy(slice.imageData({}).data(), image.data(), image.size());
