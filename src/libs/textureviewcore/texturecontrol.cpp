@@ -3,18 +3,23 @@
 
 #include <TextureLib/Utils>
 
+#include <QtGui/QMatrix4x4>
 #include <QtGui/QOpenGLBuffer>
 #include <QtGui/QOpenGLFunctions>
 #include <QtGui/QOpenGLShaderProgram>
 #include <QtGui/QOpenGLTexture>
 #include <QtGui/QOpenGLVertexArrayObject>
-#include <QtGui/QMatrix4x4>
+#include <QtGui/QResizeEvent>
 
 class TextureControlPrivate
 {
+    Q_DECLARE_PUBLIC(TextureControl)
+
 public:
     using TextureDocumentPointer = TextureControl::TextureDocumentPointer;
     using ItemPointer = TextureDocument::ItemPointer;
+
+    explicit TextureControlPrivate(ObserverPointer<TextureControl> qq) noexcept : q_ptr(qq) {}
 
     ItemPointer currentItem() const;
     void onTextureChanged(const Texture &texture);
@@ -38,11 +43,15 @@ public:
     };
 
     TextureDocumentPointer document;
+    QSize size;
     int face {0};
     int layer {0};
     int level {0};
     bool textureDirty {true};
     OpenGLData glData;
+
+protected:
+    ObserverPointer<TextureControl> q_ptr;
 };
 
 void TextureControlPrivate::OpenGLData::initializeGeometry()
@@ -110,15 +119,18 @@ TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
 
 void TextureControlPrivate::onTextureChanged(const Texture &texture)
 {
+    Q_Q(TextureControl);
+
     layer = 0;
     level = 0;
     face = 0;
     textureDirty = true;
+    q->update();
 }
 
 TextureControl::TextureControl(QObject* parent)
     : QObject(parent)
-    , d_ptr(new TextureControlPrivate)
+    , d_ptr(new TextureControlPrivate(ObserverPointer<TextureControl>(this)))
 {
     Q_D(TextureControl);
     d->document.reset(new TextureDocument(this));
@@ -152,6 +164,25 @@ void TextureControl::setDocument(TextureControl::TextureDocumentPointer document
             this, [d](const Texture &texture) { d->onTextureChanged(texture); } );
 
     emit documentChanged(document);
+    update();
+}
+
+int TextureControl::width() const
+{
+    Q_D(const TextureControl);
+    return d->size.width();
+}
+
+int TextureControl::height() const
+{
+    Q_D(const TextureControl);
+    return d->size.height();
+}
+
+QSize TextureControl::size() const
+{
+    Q_D(const TextureControl);
+    return d->size;
 }
 
 int TextureControl::level() const
@@ -168,6 +199,7 @@ void TextureControl::setLevel(int level)
     d->level = level;
     d->textureDirty = true;
     emit levelChanged(d->level);
+    update();
 }
 
 int TextureControl::layer() const
@@ -184,6 +216,7 @@ void TextureControl::setLayer(int layer)
     d->layer = layer;
     d->textureDirty = true;
     emit layerChanged(d->layer);
+    update();
 }
 
 int TextureControl::face() const
@@ -200,11 +233,15 @@ void TextureControl::setFace(int face)
     d->face = face;
     d->textureDirty = true;
     emit faceChanged(d->face);
+    update();
 }
 
 void TextureControl::resizeEvent(QResizeEvent* event)
 {
-    Q_UNUSED(event);
+    Q_D(TextureControl);
+    d->size = event->size();
+    emit widthChanged(d->size.width());
+    emit heightChanged(d->size.height());
 }
 
 void TextureControl::mousePressEvent(QMouseEvent* event)
@@ -258,14 +295,6 @@ void TextureControl::resizeGL(int w, int h)
 
     d->glData.view = QMatrix4x4();
     d->glData.view.translate({0, 0, -3.0f});
-
-    auto item = d->currentItem();
-    const auto &image = item ? item->texture : Texture();
-
-    d->glData.model = QMatrix4x4();
-    auto max = std::max(image.width(), image.height());
-    d->glData.model.scale({float(max) / image.width(), float(max) / image.height(), 1});
-    d->glData.model.scale({image.width() / float(w), image.height() / float(h), 1});
 }
 
 void TextureControl::paintGL()
@@ -277,7 +306,19 @@ void TextureControl::paintGL()
     if (d->textureDirty) {
         d->glData.texture.reset(); // delete tex here as we have a context
         auto item = d->currentItem();
-        d->glData.texture = Utils::makeOpenGLTexture(item ? item->texture : Texture());
+        const auto &image = item ? item->texture : Texture();
+        if (!image.isNull()) {
+            d->glData.texture = Utils::makeOpenGLTexture(image);
+
+            const auto w = d->size.width();
+            const auto h = d->size.height();
+
+            d->glData.model = QMatrix4x4();
+            auto max = std::max(image.width(), image.height());
+            d->glData.model.scale({float(max) / image.width(), float(max) / image.height(), 1});
+            d->glData.model.scale({image.width() / float(w), image.height() / float(h), 1});
+        }
+
         d->textureDirty = false;
     }
 
@@ -299,6 +340,11 @@ void TextureControl::paintGL()
     d->glData.functions->glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
     d->glData.texture->release();
     d->glData.program->release();
+}
+
+void TextureControl::update()
+{
+    emit updateRequested();
 }
 
 void TextureControl::nextLevel()

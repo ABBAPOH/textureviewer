@@ -20,6 +20,9 @@ class TEXTUREVIEWCORE_EXPORT TextureControl : public QObject
 
     Q_PROPERTY(TextureDocumentPointer document READ document WRITE setDocument NOTIFY documentChanged)
 
+    Q_PROPERTY(int width READ width NOTIFY widthChanged)
+    Q_PROPERTY(int height READ height NOTIFY heightChanged)
+
     Q_PROPERTY(int level READ level WRITE setLevel NOTIFY levelChanged)
     Q_PROPERTY(int layer READ layer WRITE setLayer NOTIFY layerChanged)
     Q_PROPERTY(int face READ face WRITE setFace NOTIFY faceChanged)
@@ -32,6 +35,10 @@ public:
 
     TextureDocumentPointer document() const;
     void setDocument(TextureDocumentPointer document);
+
+    int width() const;
+    int height() const;
+    QSize size() const;
 
     int level() const;
     void setLevel(int level);
@@ -53,6 +60,8 @@ public:
     void paintGL();
 
 public slots:
+    void update();
+
     void nextLevel();
     void prevLevel();
 
@@ -63,6 +72,11 @@ public slots:
     void prevFace();
 
 signals:
+    void updateRequested();
+
+    void widthChanged(int width);
+    void heightChanged(int height);
+
     void documentChanged(TextureDocumentPointer document);
     void levelChanged(int level);
     void layerChanged(int layer);

@@ -33,6 +33,8 @@ void TextureViewPrivate::init()
     control.reset(new TextureControl);
     q->setViewport(new OpenGLWidget(control, q));
 
+    q->connect(control.get(), &TextureControl::updateRequested,
+               q->viewport(), static_cast<void (QWidget::*)()>(&QWidget::update));
     q->connect(control.get(), &TextureControl::documentChanged, q, &TextureView::documentChanged);
     initActions();
 }
