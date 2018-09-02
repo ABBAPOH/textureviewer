@@ -23,6 +23,7 @@ public:
 
     ItemPointer currentItem() const;
     void onTextureChanged(const Texture &texture);
+    void updateModel(const Texture &image);
 
     struct OpenGLData
     {
@@ -126,6 +127,26 @@ void TextureControlPrivate::onTextureChanged(const Texture &texture)
     face = 0;
     textureDirty = true;
     q->update();
+}
+
+void TextureControlPrivate::updateModel(const Texture &image)
+{
+    const auto w = size.width();
+    const auto h = size.height();
+
+    qDebug() << w << h;
+    qDebug() << image.width() << image.height();
+
+    glData.model = QMatrix4x4();
+    auto imageMax = std::max(image.width(), image.height());
+    auto winMin = std::min(w, h);
+    if (winMin >= imageMax) {
+        glData.model.scale({float(imageMax) / image.width(), float(imageMax) / image.height(), 1});
+        glData.model.scale({image.width() / float(w), image.height() / float(h), 1});
+    } else {
+        glData.model.scale({float(imageMax) / image.width(), float(imageMax) / image.height(), 1});
+        glData.model.scale({image.width() / float(w), image.height() / float(h), 1});
+    }
 }
 
 TextureControl::TextureControl(QObject* parent)
@@ -239,7 +260,9 @@ void TextureControl::setFace(int face)
 void TextureControl::resizeEvent(QResizeEvent* event)
 {
     Q_D(TextureControl);
+
     d->size = event->size();
+    qDebug() << "resizeEvent" << d->size;
     emit widthChanged(d->size.width());
     emit heightChanged(d->size.height());
 }
@@ -284,6 +307,8 @@ void TextureControl::resizeGL(int w, int h)
     if (!d->glData.functions)
         return;
 
+    qDebug() << "resizeGL";
+
     d->glData.functions->glViewport(0, 0, w, h);
     d->glData.projection = QMatrix4x4();
 
@@ -295,6 +320,12 @@ void TextureControl::resizeGL(int w, int h)
 
     d->glData.view = QMatrix4x4();
     d->glData.view.translate({0, 0, -3.0f});
+
+    auto item = d->currentItem();
+    const auto &image = item ? item->texture : Texture();
+    if (!image.isNull()) {
+        d->updateModel(image);
+    }
 }
 
 void TextureControl::paintGL()
@@ -303,20 +334,15 @@ void TextureControl::paintGL()
     if (!d->glData.functions)
         return;
 
+    qDebug() << "paintGL" << d->textureDirty;
+
     if (d->textureDirty) {
         d->glData.texture.reset(); // delete tex here as we have a context
         auto item = d->currentItem();
         const auto &image = item ? item->texture : Texture();
         if (!image.isNull()) {
             d->glData.texture = Utils::makeOpenGLTexture(image);
-
-            const auto w = d->size.width();
-            const auto h = d->size.height();
-
-            d->glData.model = QMatrix4x4();
-            auto max = std::max(image.width(), image.height());
-            d->glData.model.scale({float(max) / image.width(), float(max) / image.height(), 1});
-            d->glData.model.scale({image.width() / float(w), image.height() / float(h), 1});
+            d->updateModel(image);
         }
 
         d->textureDirty = false;
