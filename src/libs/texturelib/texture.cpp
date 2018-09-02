@@ -931,6 +931,9 @@ qsizetype Texture::bytesPerImage(int level) const
     return d->bytesPerImage(level);
 }
 
+/*!
+  \brief Returns the data of the image at the given \a index.
+*/
 auto Texture::imageData(ArrayIndex index) -> Data
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());
@@ -939,6 +942,9 @@ auto Texture::imageData(ArrayIndex index) -> Data
     return {data, bytesPerImage(index.level())};
 }
 
+/*!
+  \brief Returns the constant data of the image at the given \a index.
+*/
 auto Texture::imageData(ArrayIndex index) const -> ConstData
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());
@@ -947,6 +953,9 @@ auto Texture::imageData(ArrayIndex index) const -> ConstData
     return {data, bytesPerImage(index.level())};
 }
 
+/*!
+  \brief Returns the constant data of the image at the given \a index.
+*/
 auto Texture::constImageData(ArrayIndex index) const -> ConstData
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());
@@ -955,16 +964,29 @@ auto Texture::constImageData(ArrayIndex index) const -> ConstData
     return {data, bytesPerImage(index.level())};
 }
 
+/*!
+  \brief Converts this texture to a texture with the given \a alignment.
+
+  The format of the resulting texture is the same as the format of this texture.
+*/
 Texture Texture::convert(Texture::Alignment align) const
 {
     return convert(format(), align);
 }
 
+/*!
+  \brief Converts this texture to a texture with the given \a format.
+
+  The alignment of the resulting texture is the same as the alignment of this texture.
+*/
 Texture Texture::convert(TextureFormat format) const
 {
     return convert(format, alignment());
 }
 
+/*!
+  \brief Converts this texture to a texture with the given \a format and \a align.
+*/
 Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
 {
     if (!d)
@@ -1049,7 +1071,7 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
 }
 
 /*!
-    Performs a deep-copying of this texture
+  \brief Performs a deep-copying of this texture
 */
 Texture Texture::copy() const
 {
@@ -1068,6 +1090,9 @@ Texture Texture::copy() const
     return result;
 }
 
+/*!
+  \brief Converts this texture to a QImage.
+*/
 QImage Texture::toImage() const
 {
     if (!d)
@@ -1151,6 +1176,9 @@ QImage Texture::toImage() const
     return result;
 }
 
+/*!
+  \brief Loads a texture from the given \a file.
+*/
 TextureIOResult Texture::load(const QString &file)
 {
     TextureIO io(file);
@@ -1162,6 +1190,9 @@ TextureIOResult Texture::load(const QString &file)
     return result.error();
 }
 
+/*!
+  \brief Saves this texture to the given \a file.
+*/
 TextureIOResult Texture::save(const QString &file)
 {
     TextureIO io(file);
