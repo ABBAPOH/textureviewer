@@ -1,7 +1,26 @@
 #include "textureioresult.h"
 
 /*!
+    \enum TextureIOError
+    This enum descrives possible io errors that occur when reading and saving textures.
+
+    \var TextureIOError InvalidMimeType
+    Invalid mimetype is passed to the TextureIO
+    \var TextureIOError FileNotFound
+    TextureIO was used with a file name, but no file was found with that name.
+    \var TextureIOError DeviceError
+    TextureIO encountered a device error when performing an I/O operaton. You can consult your
+    particular device for more details on what went wrong.
+    \var TextureIOError UnsupportedMimeType
+    The requested mime type is not supported.
+    \var TextureIOError HandlerError
+    An error occured within a handler, which means that data is corrupted (when reading) or the
+    passed texture can't be saved (when writing). See stderr to see the details.
+*/
+
+/*!
     Returns the human-readable message describing the status.
+    \related TextureIOError
 */
 QString toUserString(TextureIOError status)
 {
@@ -22,34 +41,20 @@ QString toUserString(TextureIOError status)
 
 /*!
     \class TextureIOResult
-    This is a helper class that wraps status enum.
+
+    This class is an emulation of the std::excected<TextureIOError> typedef.
+
+    Such emulation is needed because it is not sure when and if we have the std::excected class.
 */
 
 /*!
-    \enum TextureIOStatus
-    This enum describes the different types of errors that can occur when
-    reading image files.
-
-    \var TextureIOResult::InvalidMimeType
-    ImageIO was used with an invalid mime type.
-
-    \var TextureIOResult::FileNotFound
-    ImageIO was used with a file name, but no file was found with that name.
-
-    \var TextureIOResult::DeviceError
-    ImageIO encountered a device error when reading the image.
-    You can consult your particular device for more details on what went wrong.
-
-    \var TextureIOResult::UnsupportedMimeType
-    ImageIO does not support the requested mime type.
-
-    \var TextureIOResult::HandlerError
-    Error occured within an undelying ImageIOHandler.
+    \fn TextureIOResult::TextureIOResult() noexcept
+    Constructs TextureIOResult instance with no error.
 */
 
 /*!
-    \fn TextureIOResult::TextureIOResult(Status status = Status::Ok)
-    Constructs TextureIOResult with the given \a status code.
+    \fn TextureIOResult::TextureIOResult(TextureIOError error) noexcept
+    Constructs TextureIOResult with the given \a error.
 */
 
 /*!
@@ -58,7 +63,7 @@ QString toUserString(TextureIOError status)
 */
 
 /*!
-    \fn TextureIOResult::~TextureIOResult
+    \fn TextureIOResult::~TextureIOResult() noexcept
     Destroys TextureIOResult object.
 */
 
@@ -74,20 +79,20 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 }
 
 /*!
-    \fn TextureIOStatus TextureIOStatus() const
-    Returns status code.
+    \fn TextureIOError TextureIOResult::error() const
+    Returns error code.
 */
 
 /*!
-    \fn TextureIOResult::operator bool() const
-    Returns true if errorCode is equal to TextureIOStatus::Ok.
+    \fn TextureIOResult::operator bool() const noexcept
+    Returns true if this instance contains no error.
 
     \sa toBool(), bool TextureIOResult::operator!()
 */
 
 /*!
-    \fn bool TextureIOResult::operator!() const
-    Returns true if errorCode is not equal to TextureIOStatus::Ok.
+    \fn bool TextureIOResult::operator!() const noexcept
+    Returns true if this instance has an error.
 
     \sa toBool(), TextureIOResult::operator bool()
 */
@@ -95,17 +100,18 @@ TextureIOResult &TextureIOResult::operator=(const TextureIOResult& other) noexce
 /*!
     \fn inline bool operator==(const TextureIOResult &lhs, const TextureIOResult &rhs)
     \related TextureIOResult
-    Returns true if \a lhs status() is equal to the \a rhs status().
+    Returns true if \a lhs is equal to the \a rhs.
 */
 
 /*!
     \fn inline bool operator!=(const TextureIOResult &lhs, const TextureIOResult &rhs)
     \related TextureIOResult
-    Returns true if \a lhs status() is not equal to the \a rhs status().
+    Returns true if \a lhs is not equal to the \a rhs.
 */
 
 /*!
     Returns the human-readable message describing the \a result.
+    \related TextureIOResult
 */
 QString toUserString(const TextureIOResult &result)
 {
