@@ -844,36 +844,57 @@ Texture::Size Texture::size(int level) const
     return Size(d->levelWidth(level), d->levelHeight(level), d->levelDepth(level));
 }
 
+/*!
+  \brief Returns the faces count.
+*/
 int Texture::faces() const
 {
     return d ? d->faces : 0;
 }
 
+/*!
+  \brief Returns the levels count.
+*/
 int Texture::levels() const
 {
     return d ? d->levels : 0;
 }
 
+/*!
+  \brief Returns the layers count.
+*/
 int Texture::layers() const
 {
     return d ? d->layers : 0;
 }
 
+/*!
+  \brief Returns the texture dimensions.
+*/
 Texture::ArraySize Texture::arraySize() const
 {
     return d ? ArraySize(IsCubemap(d->faces == 6), d->levels, d->layers) : ArraySize();
 }
 
+/*!
+  \brief Returns the total size of the texture data in bytes.
+*/
 qsizetype Texture::bytes() const
 {
     return d ? d->nbytes : 0;
 }
 
+/*!
+  \brief Returns the amount of bits per one texel (texture pixel).
+*/
 qsizetype Texture::bitsPerTexel() const
 {
     return d ? TextureFormatInfo::formatInfo(d->format).bitsPerTexel() : 0;
 }
 
+/*!
+  \brief Returns the amount of bytes per line of the mipmap at the given \a level.
+*/
 qsizetype Texture::bytesPerLine(int level) const
 {
     if (!d)
@@ -884,6 +905,9 @@ qsizetype Texture::bytesPerLine(int level) const
     return d->bytesPerLine(level);
 }
 
+/*!
+  \brief Returns the amount of bytes per slice of the mipmap at the given \a level.
+*/
 qsizetype Texture::bytesPerSlice(int level) const
 {
     if (!d)
@@ -894,6 +918,9 @@ qsizetype Texture::bytesPerSlice(int level) const
     return d->bytesPerSlice(level);
 }
 
+/*!
+  \brief Returns the amount of bytes used by the whole mipmap at the given \a level.
+*/
 qsizetype Texture::bytesPerImage(int level) const
 {
     if (!d)
