@@ -234,6 +234,98 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 }
 
 /*!
+  \class Texture::Size
+  \brief Helper class used in Texture constructors.
+
+  This class simplifies construction of the Texture instances by encapsulating 1D, 2D and 3D sizes
+  in a single parameter passed to a constructor.
+
+  So, the texture can be created as follows.
+  \snippet texture/texture.cpp 0
+
+  Or, in a more verbose way
+  \snippet texture/texture.cpp 1
+*/
+
+/*!
+  \fn Texture::Size::Size() noexcept
+  \brief Constructs a null size.
+
+  \sa isNull(), isValid()
+*/
+
+/*!
+  \fn Texture::Size::Size(int width) noexcept
+  \brief Constructs a Size instance with the given \a width.
+*/
+
+/*!
+  \fn Texture::Size::Size(int width, int height) noexcept
+  \brief Constructs a Size instance with the given \a width and \a height.
+*/
+
+/*!
+  \fn Texture::Size::Size(int width, int height, int depth) noexcept
+  \brief Constructs a Size instance with the given \a width, \a height and \a depth.
+*/
+
+/*!
+  \property bool Texture::Size::isNull
+  \brief This property holds if the Size instance is null.
+
+  A null instance has zero width, height and depth.
+*/
+
+/*!
+  \property bool Texture::Size::isValid
+  \brief This property holds if the Size instance is valid.
+
+  A valid instance has width, height and depth greater than zero.
+*/
+
+/*!
+  \fn bool Texture::Size::width() const noexcept
+  \brief Returns the width.
+
+  \sa Texture::Size::setWidth() Texture::Size::height, Texture::Size::depth
+*/
+
+/*!
+  \fn void Texture::Size::setWidth(int w) noexcept
+  \brief Sets the width.
+
+  \sa Texture::Size::width() Texture::Size::setHeight, Texture::Size::setDepth
+*/
+
+/*!
+  \property bool Texture::Size::height
+  \brief This property holds a height.
+
+  \sa Texture::Size::width, Texture::Size::depth
+*/
+
+/*!
+  \fn void Texture::Size::setHeight(int h) noexcept
+  \brief Sets the height.
+
+  \sa Texture::Size::height() Texture::Size::setWidth, Texture::Size::setDepth
+*/
+
+/*!
+  \property bool Texture::Size::depth
+  \brief This property holds a height.
+
+  \sa Texture::Size::width, Texture::Size::heigth
+*/
+
+/*!
+  \fn void Texture::Size::setDepth(int d) noexcept
+  \brief Sets the depth.
+
+  \sa Texture::Size::depth() Texture::Size::setWidth, Texture::Size::setHeight
+*/
+
+/*!
   \class Texture
   \brief Texture is a hardware-independent container for a pixel data.
 
