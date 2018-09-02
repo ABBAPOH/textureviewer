@@ -36,7 +36,7 @@ const char *Exception::what() const Q_DECL_NOEXCEPT
     Constructs ExitException with return code \a code.
 */
 ExitException::ExitException(int code) :
-    _code(code)
+    m_code(code)
 {
 }
 
@@ -67,7 +67,7 @@ const char *ExitException::what() const Q_DECL_NOEXCEPT
     Constructs RuntimeError with the message \a message.
 */
 RuntimeError::RuntimeError(const QString &message) :
-    _message(message)
+    m_message(message)
 {
 }
 
@@ -75,7 +75,7 @@ RuntimeError::RuntimeError(const QString &message) :
     Move-constructs RuntimeError with the message \a message.
 */
 RuntimeError::RuntimeError(QString &&message) Q_DECL_NOEXCEPT:
-    _message(std::move(message))
+    m_message(std::move(message))
 {
 }
 
@@ -89,7 +89,7 @@ RuntimeError::~RuntimeError() Q_DECL_NOEXCEPT = default;
 */
 const QString &RuntimeError::message() const Q_DECL_NOEXCEPT
 {
-    return _message;
+    return m_message;
 }
 
 /*!

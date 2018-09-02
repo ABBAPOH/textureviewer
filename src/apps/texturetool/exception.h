@@ -19,11 +19,11 @@ class ExitException: public Exception
 public:
     ExitException(int code = 0);
     ~ExitException() noexcept override;
-    inline int code() const noexcept { return _code; }
+    inline int code() const noexcept { return m_code; }
     const char *what() const noexcept override;
 
 private:
-    int _code {0};
+    int m_code {0};
 };
 
 class RuntimeError: public Exception
@@ -37,7 +37,7 @@ public:
     const char *what() const noexcept override;
 
 private:
-    QString _message;
+    QString m_message;
 };
 
 } // namespace TextureTool
