@@ -1,0 +1,12 @@
+/*!
+    \mainpage Texture Viewer
+
+    ## Overview
+    The Texture Viewer application consists of the three main parts.
+    The first one, is the libraries. This part implements the base API for texture loading and
+    representing a Texture in a Viewer program. The second part is the texture format plugins -
+    those plugins contain format-specific code. And the third part is the Texture Viewer program
+    itself.
+
+    Also, there is present a TextureTool - a console application for texture converting.
+*/
