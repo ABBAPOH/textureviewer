@@ -134,9 +134,6 @@ void TextureControlPrivate::updateModel(const Texture &image)
     const auto w = size.width();
     const auto h = size.height();
 
-    qDebug() << w << h;
-    qDebug() << image.width() << image.height();
-
     glData.model = QMatrix4x4();
     auto imageMax = std::max(image.width(), image.height());
     auto winMin = std::min(w, h);
@@ -262,7 +259,6 @@ void TextureControl::resizeEvent(QResizeEvent* event)
     Q_D(TextureControl);
 
     d->size = event->size();
-    qDebug() << "resizeEvent" << d->size;
     emit widthChanged(d->size.width());
     emit heightChanged(d->size.height());
 }
@@ -307,8 +303,6 @@ void TextureControl::resizeGL(int w, int h)
     if (!d->glData.functions)
         return;
 
-    qDebug() << "resizeGL";
-
     d->glData.functions->glViewport(0, 0, w, h);
     d->glData.projection = QMatrix4x4();
 
@@ -333,8 +327,6 @@ void TextureControl::paintGL()
     Q_D(TextureControl);
     if (!d->glData.functions)
         return;
-
-    qDebug() << "paintGL" << d->textureDirty;
 
     if (d->textureDirty) {
         d->glData.texture.reset(); // delete tex here as we have a context
@@ -375,7 +367,6 @@ void TextureControl::update()
 
 void TextureControl::nextLevel()
 {
-    qDebug("nextLevel");
     Q_D(TextureControl);
     if (!d->document->levels())
         return;
@@ -384,7 +375,6 @@ void TextureControl::nextLevel()
 
 void TextureControl::prevLevel()
 {
-    qDebug("prevLevel");
     Q_D(TextureControl);
     setLevel(std::max(0, d->level - 1));
 }
