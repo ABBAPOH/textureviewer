@@ -125,6 +125,7 @@ public:
         {}
 
         constexpr bool isNull() const noexcept { return !m_face && !m_level && !m_layer; }
+        constexpr bool isValid() const noexcept { return m_face >= 0 && m_level >= 0 && m_layer >= 0; }
 
         inline constexpr Side side() const noexcept { return Side(m_face); }
         inline constexpr void setSide(Side side) noexcept { m_face = int(side); }
