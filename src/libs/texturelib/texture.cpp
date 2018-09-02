@@ -703,43 +703,72 @@ Texture &Texture::operator=(const Texture &other)
   \brief Move-assigns \a other to this Texture instance.
 */
 
+/*!
+  \brief Calculates an amount of bytes required for the line of the \a given format, \a width and \a align.
+*/
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(
                 TextureFormatInfo::formatInfo(format), quint32(width), align);
 }
 
+/*!
+  \brief Calculates an amount of bytes required for the slice of the given \a format, \a width and \a align.
+*/
 qsizetype Texture::calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align)
 {
     return TextureData::calculateBytesPerSlice(
                 TextureFormatInfo::formatInfo(format), quint32(width), quint32(height), align);
 }
 
+/*!
+  \brief Returns true if this instance is a null texture.
+
+  Null texture has no allocated data and all properties are null
+*/
 bool Texture::isNull() const
 {
     return !d;
 }
 
+/*!
+  \brief Returns the format of the texture.
+*/
 TextureFormat Texture::format() const
 {
     return d ? d->format : TextureFormat::Invalid;
 }
 
+/*!
+  \brief Returns the alignment of the texture data.
+
+  The data can have different alignment meaning that each line of the data is aligned to a specific
+  boundary.
+*/
 Texture::Alignment Texture::alignment() const
 {
     return d ? d->align : Alignment::Byte;
 }
 
+/*!
+  \brief Returns true if the texture has one of the compressed formats.
+*/
 bool Texture::isCompressed() const
 {
     return d && d->compressed;
 }
 
+/*!
+  \brief Returns the width of the biggest mipmap.
+*/
 int Texture::width() const
 {
     return d ? d->width : 0;
 }
 
+/*!
+  \brief Returns the width of the mipmap at the given \a level.
+*/
 int Texture::width(int level) const
 {
     if (!d)
@@ -750,11 +779,17 @@ int Texture::width(int level) const
     return d->levelWidth(level);
 }
 
+/*!
+  \brief Returns the height of the biggest mipmap.
+*/
 int Texture::height() const
 {
     return d ? d->height : 0;
 }
 
+/*!
+  \brief Returns the height of the mipmap at the given \a level.
+*/
 int Texture::height(int level) const
 {
     if (!d)
@@ -765,11 +800,17 @@ int Texture::height(int level) const
     return d->levelHeight(level);
 }
 
+/*!
+  \brief Returns the depth of the biggest mipmap.
+*/
 int Texture::depth() const
 {
     return d ? d->depth : 0;
 }
 
+/*!
+  \brief Returns the depth of the mipmap at the given \a level.
+*/
 int Texture::depth(int level) const
 {
     if (!d)
@@ -780,11 +821,19 @@ int Texture::depth(int level) const
     return d->levelDepth(level);
 }
 
+/*!
+  \brief Returns the width, height and depth of the biggest mipmap packed in a Texture::Size
+  object.
+*/
 Texture::Size Texture::size() const
 {
     return d ? Size(d->width, d->height, d->depth) : Size();
 }
 
+/*!
+  \brief Returns the width, height and depth of the mipmap at the given \a level packed in a
+  Texture::Size object.
+*/
 Texture::Size Texture::size(int level) const
 {
     if (!d)
