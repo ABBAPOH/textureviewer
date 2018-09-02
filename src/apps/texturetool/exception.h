@@ -9,7 +9,7 @@ namespace TextureTool {
 class Exception: public std::exception
 {
 public:
-    Exception();
+    Exception() noexcept = default;
     ~Exception() noexcept override;
     const char *what() const noexcept override;
 };
@@ -17,9 +17,9 @@ public:
 class ExitException: public Exception
 {
 public:
-    ExitException(int code = 0);
+    explicit ExitException(int code = 0) noexcept : m_code(code) {}
     ~ExitException() noexcept override;
-    inline int code() const noexcept { return m_code; }
+    int code() const noexcept { return m_code; }
     const char *what() const noexcept override;
 
 private:
@@ -29,11 +29,11 @@ private:
 class RuntimeError: public Exception
 {
 public:
-    explicit RuntimeError(const QString &message);
-    explicit RuntimeError(QString &&message) noexcept;
+    explicit RuntimeError(const QString &message) noexcept : m_message(message) {}
+    explicit RuntimeError(QString &&message) noexcept : m_message(std::move(message)) {}
     ~RuntimeError() noexcept override;
 
-    const QString &message() const noexcept;
+    const QString &message() const noexcept { return m_message; }
     const char *what() const noexcept override;
 
 private:

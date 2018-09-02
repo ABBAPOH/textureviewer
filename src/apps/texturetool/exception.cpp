@@ -8,19 +8,20 @@ namespace TextureTool {
 */
 
 /*!
-    Constructs Exception.
+    \fn Exception::Exception()
+    Constructs an Exception object.
 */
-Exception::Exception() = default;
 
 /*!
-    Destroys the object.
+    Destroys the Exception object.
 */
-Exception::~Exception() Q_DECL_NOEXCEPT = default;
+Exception::~Exception() noexcept = default;
 
 /*!
-    \overload
+    \brief Returns the name of the class.
+    \reimp
 */
-const char *Exception::what() const Q_DECL_NOEXCEPT
+const char *Exception::what() const noexcept
 {
     return "Exception";
 }
@@ -33,69 +34,57 @@ const char *Exception::what() const Q_DECL_NOEXCEPT
 */
 
 /*!
-    Constructs ExitException with return code \a code.
+    \fn ExitException::ExitException(int code = 0);
+    Constructs ExitException object with the given \a code.
 */
-ExitException::ExitException(int code) :
-    m_code(code)
-{
-}
 
 /*!
-    Destroys the object.
+    Destroys the ExitException object.
 */
-ExitException::~ExitException() Q_DECL_NOEXCEPT = default;
+ExitException::~ExitException() noexcept = default;
 
 /*!
-    \fn int ExitException::code() const Q_DECL_NOEXCEPT;
+    \fn int ExitException::code() const noexcept;
     Returns the code that should be return from the program.
 */
 
 /*!
-    \overload
+    \reimp
 */
-const char *ExitException::what() const Q_DECL_NOEXCEPT
+const char *ExitException::what() const noexcept
 {
     return "ExitException";
 }
 
 /*!
     \class RuntimeError
-    Exception with localized string describing occured error.
+    Exception with a localized string describing occured error.
 */
 
 /*!
-    Constructs RuntimeError with the message \a message.
+    \fn RuntimeError::RuntimeError(const QString &message)
+    Constructs RuntimeError object with the given \a message.
 */
-RuntimeError::RuntimeError(const QString &message) :
-    m_message(message)
-{
-}
 
 /*!
-    Move-constructs RuntimeError with the message \a message.
+    \fn RuntimeError::RuntimeError(QString &&message)
+    Move-constructs RuntimeError object with the given \a message.
 */
-RuntimeError::RuntimeError(QString &&message) Q_DECL_NOEXCEPT:
-    m_message(std::move(message))
-{
-}
 
 /*!
-    Destroys the object.
+    Destroys the RuntimeError object.
 */
-RuntimeError::~RuntimeError() Q_DECL_NOEXCEPT = default;
+RuntimeError::~RuntimeError() noexcept = default;
 
 /*!
+    \fn const QString &RuntimeError::message() const noexcept
     Returns the message describing the error.
 */
-const QString &RuntimeError::message() const Q_DECL_NOEXCEPT
-{
-    return m_message;
-}
 
 /*!
-    \overload
+    \reimp
 */
-const char *RuntimeError::what() const Q_DECL_NOEXCEPT
+const char *RuntimeError::what() const noexcept
 {
     return "RuntimeError";
 }
