@@ -21,7 +21,7 @@ public:
     Capabilities capabilities(QStringView mimeType) const override
     {
         if (mimeType == u"image/x-ktx")
-            return Capabilities(KtxHandlerPlugin::CanRead);
+            return Capability::CanRead;
         return Capabilities();
     }
 };

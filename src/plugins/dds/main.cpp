@@ -21,7 +21,7 @@ public:
     Capabilities capabilities(QStringView mimeType) const override
     {
         if (mimeType == u"image/x-dds")
-            return Capabilities(DdsHandlerPlugin::CanRead | DdsHandlerPlugin::CanWrite);
+            return Capability::CanRead | Capability::CanWrite;
         return Capabilities();
     }
 };

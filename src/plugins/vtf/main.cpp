@@ -20,7 +20,7 @@ public:
     Capabilities capabilities(QStringView mimeType) const override
     {
         if (mimeType == u"image/x-vtf")
-            return Capabilities(VTFHandlerPlugin::CanRead);
+            return Capability::CanRead;
         return Capabilities();
     }
 };
