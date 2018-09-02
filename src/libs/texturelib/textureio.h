@@ -19,6 +19,7 @@ QT_END_NAMESPACE
 class TextureIOPrivate;
 class TEXTURELIB_EXPORT TextureIO
 {
+    Q_GADGET
     Q_DISABLE_COPY(TextureIO)
     Q_DECLARE_PRIVATE(TextureIO)
 public:
