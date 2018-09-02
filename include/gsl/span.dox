@@ -1,0 +1,14 @@
+/*!
+  \namespace gsl
+  A Core Guideline Library namespace
+*/
+
+/*!
+  \namespace gsl::details
+  Implementation details
+*/
+
+/*!
+  \class gsl::span
+  A span to an array.
+*/

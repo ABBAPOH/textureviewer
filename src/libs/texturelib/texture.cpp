@@ -463,6 +463,20 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
+  \typedef Texture::Data
+  A typedef for a gsl::span<uchar>
+
+  A view to a mutable data.
+*/
+
+/*!
+  \typedef Texture::ConstData
+  A typedef for a gsl::span<const uchar>
+
+  A view to a constant data.
+*/
+
+/*!
   \class Texture
   \brief Texture is a hardware-independent container for a pixel data.
 

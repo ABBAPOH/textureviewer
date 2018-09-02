@@ -71,6 +71,11 @@
 namespace gsl
 {
 
+/*!
+  \namespace gsl
+  A Core Guideline Library namespace
+*/
+
 // [views.constants], constants
 constexpr const std::ptrdiff_t dynamic_extent = -1;
 
