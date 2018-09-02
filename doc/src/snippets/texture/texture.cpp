@@ -18,3 +18,16 @@ size.setDepth(256);
 auto texture = Texture(TextureFormat::ARGB8_Unorm, size);
 
 //! [1]
+
+//! [2]
+
+auto format = TextureFormat::ARGB8_Unorm;
+auto size = Texture::Size(256, 256);
+auto levels = 8, layers = 10;
+
+auto mipmaps = Texture(format, size, {levels});
+auto array = Texture(format, size, {1, layers});
+auto mipmapsAndArray = Texture(format, size, {levels, layers});
+auto cubemap = Texture(format, size, {Texture::IsCubemap::Yes, levels, layers});
+
+//! [2]

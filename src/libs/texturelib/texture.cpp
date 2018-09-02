@@ -298,8 +298,8 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \property bool Texture::Size::height
-  \brief This property holds a height.
+  \fn bool Texture::Size::height() const noexcept
+  \brief Returns the height.
 
   \sa Texture::Size::width, Texture::Size::depth
 */
@@ -312,8 +312,8 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \property bool Texture::Size::depth
-  \brief This property holds a height.
+  \fn bool Texture::Size::depth() const noexcept
+  \brief Returns the height.
 
   \sa Texture::Size::width, Texture::Size::heigth
 */
@@ -323,6 +323,73 @@ qsizetype TextureData::offset(int side, int level, int layer) const
   \brief Sets the depth.
 
   \sa Texture::Size::depth() Texture::Size::setWidth, Texture::Size::setHeight
+*/
+
+/*!
+  \class Texture::ArraySize
+  \brief Helper class used in Texture constructors.
+
+  This class simplifies construction of the Texture instances by encapsulating levels, layers and
+  faces dimensions in a single parameter passed to a constructor.
+
+  So, the texture can be created as follows.
+  \snippet texture/texture.cpp 2
+*/
+
+/*!
+  \fn Texture::ArraySize::ArraySize() noexcept
+  \brief Constructs a null size.
+
+  \sa isNull(), isValid()
+*/
+
+/*!
+  \fn Texture::ArraySize::ArraySize(int levels, int layers = 1) noexcept
+  \brief Constructs an ArraySize instance with the given \a levels and \a layers.
+*/
+
+/*!
+  \fn Texture::ArraySize::ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+  \brief Constructs an ArraySize instance with the given \a isCumemap, \a levels and \a layers.
+*/
+
+/*!
+  \property bool Texture::ArraySize::isNull
+  \brief This property holds if the ArraySize instance is null.
+
+  A null instance has zero faces, levels and layers.
+*/
+
+/*!
+  \property bool Texture::ArraySize::isValid
+  \brief This property holds if the ArraySize instance is valid.
+
+  A valid instance has faces, levels and layers greater than zero.
+*/
+
+/*!
+  \fn bool Texture::ArraySize::faces() const noexcept
+  \brief Return the faces count.
+*/
+
+/*!
+  \fn bool Texture::ArraySize::levels() const noexcept
+  \brief Returns the levels count.
+*/
+
+/*!
+  \fn void Texture::ArraySize::setLevels(int levels) noexcept
+  \brief Sets the levels count.
+*/
+
+/*!
+  \fn bool Texture::ArraySize::layers() const noexcept
+  \brief Returns the layers count.
+*/
+
+/*!
+  \fn void Texture::ArraySize::setLayers(int layers) noexcept
+  \brief Sets the layers count.
 */
 
 /*!
