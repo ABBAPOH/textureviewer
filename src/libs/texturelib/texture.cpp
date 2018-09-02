@@ -234,6 +234,46 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 }
 
 /*!
+  \enum Texture::Side
+
+  This enum describes possible sides of a cubemap.
+  \var Texture::Side Texture::PositiveX
+  Positive X side
+  \var Texture::Side Texture::NegativeX
+  Negative X side
+  \var Texture::Side Texture::PositiveY
+  Positive Y side
+  \var Texture::Side Texture::NegativeY
+  Negative Y side
+  \var Texture::Side Texture::PositiveZ
+  Positive Z side
+  \var Texture::Side Texture::NegativeZ
+  Negative Z side
+*/
+
+/*!
+  \enum Texture::Alignment
+  This enum describes texture data alignment
+
+  \var Texture::Alignment Texture::Byte
+  One byte alignment
+
+  \var Texture::Alignment Texture::Word
+  Four byte alignment
+*/
+
+/*!
+  \enum Texture::IsCubemap
+  This enum is a simply strict bool used to prevent using unnamed bools
+
+  \var Texture::IsCubemap Texture::No
+  Aka false
+
+  \var Texture::IsCubemap Texture::Yes
+  Aka true
+*/
+
+/*!
   \class Texture::Size
   \brief Helper class used in Texture constructors.
 
@@ -499,7 +539,7 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 
 /*!
   \fn Texture::Texture() noexcept
-  \brief Constructs a Null texture
+  \brief Constructs a null texture
 
   \sa isNull()
 */
