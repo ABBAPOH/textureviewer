@@ -393,6 +393,76 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
+  \class Texture::ArrayIndex
+  \brief Helper class used in Texture::imageData() function.
+
+  This class simplifies access to the raw data of the texture by encapsulating level, layer and
+  face dimensions in a single parameter. This allows to have only 2 overloads of the
+  Texture::imageData() function.
+*/
+
+/*!
+  \fn Texture::ArrayIndex::ArrayIndex(int level = 0, int layer = 0) noexcept
+  \brief Constructs an ArrayIndex instance with the given \a level and \a layer.
+*/
+
+/*!
+  \fn Texture::ArrayIndex::ArrayIndex(Texture::Side side, int level = 0, int layer = 0) noexcept
+  \brief Constructs an ArrayIndex instance with the given \a side, \a level and \a layer.
+
+  Passing \a side that is out of Texture::Side enum results to undefined behavior.
+*/
+
+/*!
+  \fn bool Texture::ArrayIndex::isNull() const noexcept
+  \brief Returns true if the ArrayIndex instance is null.
+
+  A null instance has zero face, level and layer.
+*/
+
+/*!
+  \fn bool Texture::ArrayIndex::isValid() const noexcept
+  \brief Returns true if the ArrayIndex instance is valid.
+
+  A valid instance has face, level and layer greater than or equal to zero.
+*/
+
+/*!
+  \fn Texture::Side Texture::ArrayIndex::side() const noexcept
+  \brief Returns the side.
+*/
+
+/*!
+  \fn void Texture::ArrayIndex::setSide(Texure::Side side) noexcept
+  \brief Sets the side.
+*/
+
+/*!
+  \fn int Texture::ArrayIndex::face() const noexcept
+  \brief Returns the face.
+*/
+
+/*!
+  \fn int Texture::ArrayIndex::level() const noexcept
+  \brief Returns the level.
+*/
+
+/*!
+  \fn void Texture::ArrayIndex::setLevel(int level) noexcept
+  \brief Sets the level.
+*/
+
+/*!
+  \fn int Texture::ArrayIndex::layer() const noexcept
+  \brief Returns the layer.
+*/
+
+/*!
+  \fn void Texture::ArrayIndex::setLayer(int layer) noexcept
+  \brief Sets the layer.
+*/
+
+/*!
   \class Texture
   \brief Texture is a hardware-independent container for a pixel data.
 
