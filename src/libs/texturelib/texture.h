@@ -181,9 +181,6 @@ public:
     inline Texture &operator=(Texture &&other) noexcept
     { qSwap(d, other.d); return *this; }
 
-    void detach();
-    bool isDetached() const;
-
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
     static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);
 
@@ -259,6 +256,9 @@ public:
 
 private:
     explicit Texture(TextureData *dd);
+
+    void detach();
+    bool isDetached() const;
 
     uchar *dataImpl(int side, int level, int layer);
     const uchar *dataImpl(int side, int level, int layer) const;

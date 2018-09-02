@@ -474,19 +474,6 @@ Texture &Texture::operator=(const Texture &other)
   \brief Move-assigns \a other to this Texture instance.
 */
 
-void Texture::detach()
-{
-    if (d) {
-        if (d->ref.load() != 1 /*|| d->ro_data*/)
-            *this = copy();
-    }
-}
-
-bool Texture::isDetached() const
-{
-    return d && d->ref.load() == 1;
-}
-
 qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
 {
     return TextureData::calculateBytesPerLine(
@@ -894,6 +881,19 @@ TextureIOResult Texture::save(const QString &file)
 Texture::Texture(TextureData *dd):
     d(dd)
 {
+}
+
+void Texture::detach()
+{
+    if (d) {
+        if (d->ref.load() != 1 /*|| d->ro_data*/)
+            *this = copy();
+    }
+}
+
+bool Texture::isDetached() const
+{
+    return d && d->ref.load() == 1;
 }
 
 uchar *Texture::dataImpl(int side, int level, int layer)
