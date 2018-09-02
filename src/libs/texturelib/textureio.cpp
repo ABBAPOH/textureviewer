@@ -102,13 +102,11 @@ void TextureIOPrivate::resetHandler()
 
 /*!
     \class TextureIO
-    Basic Image unput/output.
-
-    This class is used for a customised image reading/writing.
+    \brief TextureIO implements Texture loading and saving.
 */
 
 /*!
-    Creates an TextureIO object.
+  \brief Constructs a TextureIO object.
 */
 TextureIO::TextureIO() :
     d_ptr(new TextureIOPrivate(this))
@@ -116,7 +114,7 @@ TextureIO::TextureIO() :
 }
 
 /*!
-    Move-constructs a TextureIO object from the \a other object.
+  \brief Move-constructs a TextureIO object from the \a other object.
 */
 TextureIO::TextureIO(TextureIO &&other) noexcept
 {
@@ -124,7 +122,7 @@ TextureIO::TextureIO(TextureIO &&other) noexcept
 }
 
 /*!
-    Creates an TextureIO object with the given \a fileName and \a mimeType.
+  \brief Constructs a TextureIO object with the given \a fileName and \a mimeType.
 */
 TextureIO::TextureIO(const QString &fileName, const QMimeType &mimeType) :
     d_ptr(new TextureIOPrivate(this))
@@ -135,7 +133,7 @@ TextureIO::TextureIO(const QString &fileName, const QMimeType &mimeType) :
 }
 
 /*!
-    Creates an TextureIO object with the given \a device and \a mimeType.
+  \brief Constructs a TextureIO object with the given \a device and \a mimeType.
 */
 TextureIO::TextureIO(QIODevicePointer device, const QMimeType &mimeType) :
     d_ptr(new TextureIOPrivate(this))
@@ -145,7 +143,7 @@ TextureIO::TextureIO(QIODevicePointer device, const QMimeType &mimeType) :
 }
 
 /*!
-    Creates an TextureIO object with the given \a fileName and \a mimeType.
+  \brief Constructs a TextureIO object with the given \a fileName and \a mimeType.
 */
 TextureIO::TextureIO(const QString &fileName, QStringView mimeType) :
     d_ptr(new TextureIOPrivate(this))
@@ -156,7 +154,7 @@ TextureIO::TextureIO(const QString &fileName, QStringView mimeType) :
 }
 
 /*!
-    Creates an TextureIO object with the given \a device and \a mimeType.
+  \brief Constructs a TextureIO object with the given \a device and \a mimeType.
 */
 TextureIO::TextureIO(QIODevicePointer device, QStringView mimeType) :
     d_ptr(new TextureIOPrivate(this))
@@ -166,12 +164,12 @@ TextureIO::TextureIO(QIODevicePointer device, QStringView mimeType) :
 }
 
 /*!
-    Destroys TextureIO object.
+  \brief Destroys the TextureIO object.
 */
 TextureIO::~TextureIO() = default;
 
 /*!
-    Move-assigns \a other to this TextureIO instance.
+  \brief Move-assigns \a other to this TextureIO instance.
 */
 TextureIO &TextureIO::operator=(TextureIO &&other) noexcept
 {
@@ -182,8 +180,8 @@ TextureIO &TextureIO::operator=(TextureIO &&other) noexcept
 }
 
 /*!
-    \property TextureIO::fileName
-    This property holds the filename that is set to this TextureIO object.
+  \property TextureIO::fileName
+  \brief This property holds the filename that is set to this TextureIO object.
 */
 
 QString TextureIO::fileName() const
@@ -207,8 +205,8 @@ void TextureIO::setFileName(const QString &fileName)
 }
 
 /*!
-    \property TextureIO::device
-    This property holds the device that is set to this TextureIO object.
+  \property TextureIO::device
+  \brief This property holds the device that is set to this TextureIO object.
 */
 
 TextureIO::QIODevicePointer TextureIO::device() const
@@ -228,10 +226,10 @@ void TextureIO::setDevice(QIODevicePointer device)
 }
 
 /*!
-    \property TextureIO::mimeType
-    This property holds the mime type that is set to this TextureIO object.
+  \property TextureIO::mimeType
+  \brief This property holds the mime type that is set to this TextureIO object.
 
-    If no mime type is set, it is automatically determined from the device contents before reading.
+  If no mime type is set, it is automatically determined from the device contents before reading.
 */
 
 QMimeType TextureIO::mimeType() const
@@ -263,7 +261,9 @@ void TextureIO::setMimeType(QStringView mimeType)
 }
 
 /*!
-    Reads the contents of an texture file.
+  \brief Reads the contents of an texture file.
+
+  Returns the status of the operation.
 */
 TextureIO::ReadResult TextureIO::read()
 {
@@ -284,9 +284,9 @@ TextureIO::ReadResult TextureIO::read()
 }
 
 /*!
-    Writes the given \a contents with the given \a options to the device.
+  \brief Writes the given \a contents with the given \a options to the device.
 
-    Returns the status of the operation.
+  Returns the status of the operation.
 */
 TextureIO::WriteResult TextureIO::write(const Texture &contents)
 {
