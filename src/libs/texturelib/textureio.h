@@ -22,6 +22,11 @@ class TEXTURELIB_EXPORT TextureIO
     Q_GADGET
     Q_DISABLE_COPY(TextureIO)
     Q_DECLARE_PRIVATE(TextureIO)
+
+    Q_PROPERTY(QString fileName READ fileName WRITE setFileName)
+    Q_PROPERTY(QIODevicePointer device READ device WRITE setDevice)
+    Q_PROPERTY(QMimeType mimeType READ mimeType WRITE setMimeType)
+
 public:
     using QIODevicePointer = ObserverPointer<QIODevice>;
 
