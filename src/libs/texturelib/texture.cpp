@@ -233,6 +233,37 @@ qsizetype TextureData::offset(int side, int level, int layer) const
     return levelInfos[level].offset + bytesPerImage(level) * (faces * layer + side);
 }
 
+/*!
+  \class Texture
+  \brief Texture is a hardware-independent container for a pixel data.
+
+  Unlike QOpenGLTexture, Texture is a simple storage (an array of bytes) and is not tied to any
+  specific API. However, it can be converted to QOpenGLTexture via Utils::makeOpenGLTexture() function.
+
+  Texture is a multi-dimentional array of "images" (which can be 1d, 2d or 3d). There are 3
+  dimentions - levels (for mimpamps), layers (for texture arrays) and faces (for faces of the cubemap).
+
+  Helper classes are used to simplify Texture construction - the sizes are packed in a Texture::Size
+  (so you can create 1d, 2d or 3d Texture instances without 3 overloads for each type) and texture
+  dimensions are packed in an Texture::ArraySize (so you can create mipmaped textures, texture array
+  and/or cubemaps).
+
+  Texture provides access to the internal data via data() and imageData() functions.
+
+  \note For cubemaps, width should be same as height and depth should be equal to 1.
+  \note For 3d textures, arrays are not supported as no format does so.
+*/
+
+/*!
+  \fn Texture::Texture() noexcept
+  \brief Constructs a Null texture
+
+  \sa isNull()
+*/
+
+/*!
+  \brief Constructs a shallow copy of the \a other texture.
+*/
 Texture::Texture(const Texture &other)
     : d(other.d)
 {
@@ -240,6 +271,18 @@ Texture::Texture(const Texture &other)
         d->ref.ref();
 }
 
+/*!
+  \fn Texture::Texture(Texture &&other) noexcept
+  \brief Move-constructs a Texture instance with the given \a other Texture.
+*/
+
+/*!
+  \brief Constructs a Texture instance with the contents of the \a file.
+
+  In case of an error, a null texture is constructed and error is logged to the stderr.
+
+  \sa isNull()
+*/
 Texture::Texture(const QString &file)
     : d(nullptr)
 {
@@ -248,10 +291,32 @@ Texture::Texture(const QString &file)
         qCWarning(texture) << "Can't load texture from file" << file << toUserString(ok);
 }
 
+/*!
+  \brief Constructs a Texture instance with the contents of the \a file.
+
+  In case of an error, a null texture is constructed and error is logged to the stderr.
+
+  \sa isNull()
+*/
 Texture::Texture(QStringView file) :
     Texture(file.toString())
 {
 }
+
+/*!
+  \brief Constructs a Texture instance with the contents of the \a image.
+
+  An image is converted to a single 2D texture with no mipmaps.
+
+  If image has aplha, the constucted texture will have TextureFormat::RGBA8_Unorm format.
+
+  If image has no aplha, the constucted texture will have TextureFormat::RGB8_Unorm format.
+
+  \note Currently, only images with QImage::Format_ARGB32 or QImage::Format_RGB888 are supported.
+  In other cases, null texture is constructed.
+
+  \sa isNull()
+*/
 
 Texture::Texture(const QImage& image)
     : d(nullptr)
@@ -290,6 +355,15 @@ Texture::Texture(const QImage& image)
     *this = std::move(result);
 }
 
+/*!
+  \brief Constructs a Texture instance with the given \a format, \a size, \a dimensions and \a align.
+
+  Passing invalid parameters leads to construction of a null texture; an exact error is logged to
+  stderr. Invalid parameters are sizes less than zero, or too big to fit whole texture in memory.
+
+  \sa isNull()
+*/
+
 Texture::Texture(
         TextureFormat format,
         Size size,
@@ -302,6 +376,20 @@ Texture::Texture(
             dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
             align);
 }
+
+/*!
+  \brief Constructs a Texture instance with the given \a data, \a format, \a size, \a dimensions and \a align.
+
+  Passing invalid parameters leads to construction of a null texture; an exact error is logged to
+  stderr. Invalid parameters are sizes less than zero, or too big to fit whole texture in memory.
+
+  This constructor doesn't allocate memory but instead uses the given \a data.
+  Data must have the size matching given parameters.
+
+  The default destructor (i.e. delete [] data) is used for cleaning the data.
+
+  \sa isNull()
+*/
 
 Texture::Texture(
         Data data,
@@ -320,6 +408,22 @@ Texture::Texture(
             align,
             data);
 }
+
+/*!
+  \brief Constructs a Texture instance with the given \a data, \a deleter, \a format, \a size, \a dimensions and \a align.
+
+  Passing invalid parameters leads to construction of a null texture; an exact error is logged to
+  stderr. Invalid parameters are sizes less than zero, or too big to fit whole texture in memory.
+
+  This constructor doesn't allocate memory but instead uses the given \a data.
+  Data must have the size matching given parameters.
+
+  The \a deleter is used for cleaning the data. You can pass an empty function to prevent data from
+  cleaning. This trick can be used to implement sharing of the data between different Texture
+  instances.
+
+  \sa isNull()
+*/
 
 Texture::Texture(
         Data data,
@@ -341,12 +445,18 @@ Texture::Texture(
             deleter);
 }
 
+/*!
+  \brief Destroys the Texture instance.
+*/
 Texture::~Texture()
 {
     if (d && !d->ref.deref())
         delete d;
 }
 
+/*!
+  \brief Assigns a shallow copy of the given \a other texture to this texture and returns a reference to this texture.
+*/
 Texture &Texture::operator=(const Texture &other)
 {
     if (this != &other) {
@@ -358,6 +468,11 @@ Texture &Texture::operator=(const Texture &other)
     }
     return *this;
 }
+
+/*!
+  \fn Texture &Texture::operator=(Texture &&other) noexcept
+  \brief Move-assigns \a other to this Texture instance.
+*/
 
 void Texture::detach()
 {
