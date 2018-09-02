@@ -10,7 +10,11 @@ namespace Details {
 
 TEXTURELIB_EXPORT Q_NAMESPACE
 
+#ifdef DOXY
+enum class TextureFormat {
+#else
 enum class TEXTURELIB_EXPORT TextureFormat {
+#endif
     Invalid = 0,
 
     // 8bit
