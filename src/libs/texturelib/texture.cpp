@@ -931,21 +931,6 @@ qsizetype Texture::bytesPerImage(int level) const
     return d->bytesPerImage(level);
 }
 
-/*!
-    Returns the offset in bytes for the given \a index from the beggining of the data.
-*/
-qsizetype Texture::offset(ArrayIndex index) const
-{
-    if (!d)
-        return 0;
-
-    CHECK_LEVEL(index.level(), 0);
-    CHECK_LAYER(index.layer(), 0);
-    CHECK_SIDE(index.face(), 0);
-
-    return d->offset(index.face(), index.level(), index.layer());
-}
-
 auto Texture::imageData(ArrayIndex index) -> Data
 {
     const auto data = dataImpl(index.face(), index.level(), index.layer());

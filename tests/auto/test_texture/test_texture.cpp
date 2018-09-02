@@ -13,8 +13,6 @@ private slots:
     void constructWithInvalidData();
     void bytesPerLine_data();
     void bytesPerLine();
-    void offset_data();
-    void offset();
 };
 
 void TestTexture::defaultConstructed()
@@ -266,65 +264,6 @@ void TestTexture::bytesPerLine()
 
     const auto result4 = Texture::calculateBytesPerLine(format, width, Texture::Alignment::Word);
     QCOMPARE(result4, bpl4);
-}
-
-void TestTexture::offset_data()
-{
-    QTest::addColumn<TextureFormat>("format");
-    QTest::addColumn<int>("width");
-    QTest::addColumn<int>("height");
-    QTest::addColumn<int>("depth");
-    QTest::addColumn<int>("levels");
-    QTest::addColumn<int>("layers");
-    QTest::addColumn<int>("level");
-    QTest::addColumn<int>("layer");
-    QTest::addColumn<qsizetype>("offset");
-
-    QTest::newRow("RGBA_8888, 1x1x1, level 0/1, layer 0/1")
-            << TextureFormat::RGBA8_Unorm
-            << 1 << 1 << 1
-            << 1 << 1
-            << 0 << 0
-            << qsizetype(0);
-
-    QTest::newRow("RGBA_8888, 64x64x1, level 0/1, layer 1/10")
-            << TextureFormat::RGBA8_Unorm
-            << 64 << 64 << 1
-            << 1 << 10
-            << 0 << 1
-            << qsizetype(1 * 64*64*4);
-
-    QTest::newRow("RGBA_8888, 64x64x1, level 1/2, layer 0/1")
-            << TextureFormat::RGBA8_Unorm
-            << 64 << 64 << 1
-            << 2 << 1
-            << 1 << 0
-            << qsizetype(64*64*4);
-
-    QTest::newRow("RGBA_8888, 64x64x1, level 2/3, layer 0/1")
-            << TextureFormat::RGBA8_Unorm
-            << 64 << 64 << 1
-            << 3 << 1
-            << 2 << 0
-            << qsizetype(64*64*4 + 32*32*4);
-}
-
-void TestTexture::offset()
-{
-    QFETCH(TextureFormat, format);
-    QFETCH(int, width);
-    QFETCH(int, height);
-    QFETCH(int, depth);
-    QFETCH(int, levels);
-    QFETCH(int, layers);
-    QFETCH(int, level);
-    QFETCH(int, layer);
-    QFETCH(qsizetype, offset);
-
-    const auto texture = Texture(format, {width, height, depth}, {levels, layers});
-
-    QVERIFY(!texture.isNull());
-    QCOMPARE(texture.offset({level, layer}), offset);
 }
 
 QTEST_MAIN(TestTexture)

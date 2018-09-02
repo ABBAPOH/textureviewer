@@ -212,7 +212,6 @@ public:
     qsizetype bytesPerLine(int level = 0) const;
     qsizetype bytesPerSlice(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
-    qsizetype offset(ArrayIndex index) const;
 
     Data imageData(ArrayIndex index);
     ConstData imageData(ArrayIndex index) const;
