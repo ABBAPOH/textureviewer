@@ -136,11 +136,80 @@ constexpr bool checkFormatPositions()
 
 static_assert (checkFormatPositions(), "Incorrect format position in formats array");
 
+/*!
+  \class TextureFormatInfo
+  This class describes the information about a TextureFormat
+*/
+
+/*!
+  \typedef TextureFormatInfo::TextureFormatInfos
+
+  Type alias for the gsl::span\<const TextureFormatInfo\>
+*/
+
+/*!
+  \fn TextureFormatInfo::TextureFormatInfo() noexcept
+
+  \brief Constructs a default TextureFormatInfo object.
+
+  All members are filled with zeros.
+*/
+
+/*!
+  \fn TextureFormatInfo::TextureFormatInfo(
+    TextureFormat format, int bitsPerTexel, int blockSize,
+    QOpenGLTexture::TextureFormat oglTextureFormat,
+    QOpenGLTexture::PixelFormat oglPixelFormat,
+    QOpenGLTexture::PixelType oglPixelType) noexcept
+
+  \brief Constructs a TextureFormatInfo object with the given paramters.
+*/
+
+/*!
+  \property TextureFormat TextureFormatInfo::format
+  \brief This property holds a texture format.
+*/
+
+/*!
+  \property int TextureFormatInfo::bitsPerTexel
+  \brief This property holds a nubmer of bits per texel.
+
+  For compressed textures, this property is always 0.
+*/
+
+/*!
+  \property int TextureFormatInfo::blockSize
+  \brief This property holds a block size.
+
+  For uncompressed textures, this property is always 0.
+*/
+
+/*!
+  \property QOpenGLTexture::PixelFormat TextureFormatInfo::oglTextureFormat
+  \brief This property holds an OpenGL texture format.
+*/
+
+/*!
+  \property QOpenGLTexture::TextureFormat TextureFormatInfo::oglPixelFormat
+  \brief This property holds an OpenGL pixel format.
+*/
+
+/*!
+  \property QOpenGLTexture::PixelType TextureFormatInfo::oglPixelType
+  \brief This property holds an OpenGL pixel type.
+*/
+
+/*!
+  \brief Returns a TextureFormatInfo for the given \a format.
+*/
 const TextureFormatInfo &TextureFormatInfo::formatInfo(TextureFormat format) noexcept
 {
     return TextureFormatInfos(formats).at(size_t(format));
 }
 
+/*!
+  \brief Returns a TextureFormatInfos for all formats.
+*/
 TextureFormatInfo::TextureFormatInfos TextureFormatInfo::allFormatInfos() noexcept
 {
     return {formats};
