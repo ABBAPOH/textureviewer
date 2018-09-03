@@ -148,6 +148,15 @@ void TextureControlPrivate::updateModel(const Texture &image)
     }
 }
 
+/*!
+  \class TextureControl
+  \brief A controller for the TextureView
+*/
+
+/*!
+  \brief Constructs a TextureControl object with the given \a parent.
+*/
+
 TextureControl::TextureControl(QObject* parent)
     : QObject(parent)
     , d_ptr(new TextureControlPrivate(ObserverPointer<TextureControl>(this)))
@@ -156,9 +165,17 @@ TextureControl::TextureControl(QObject* parent)
     d->document.reset(new TextureDocument(this));
 }
 
+/*!
+  \brief Destroys the TextureControl object.
+*/
 TextureControl::~TextureControl()
 {
 }
+
+/*!
+  \property TextureDocumentPointer TextureControl::document
+  \brief This property holds an assigned TextureDocument instance.
+*/
 
 auto TextureControl::document() const -> TextureDocumentPointer
 {
@@ -256,6 +273,9 @@ void TextureControl::setFace(int face)
     update();
 }
 
+/*!
+  \brief Handles a resize event.
+*/
 void TextureControl::resizeEvent(QResizeEvent* event)
 {
     Q_D(TextureControl);
@@ -265,22 +285,30 @@ void TextureControl::resizeEvent(QResizeEvent* event)
     emit heightChanged(d->size.height());
 }
 
+/*!
+  \brief Handles a mouse press event.
+*/
 void TextureControl::mousePressEvent(QMouseEvent* event)
 {
     Q_UNUSED(event);
 }
 
+/*!
+  \brief Handles a mouse move event.
+*/
 void TextureControl::mouseMoveEvent(QMouseEvent* event)
 {
     Q_UNUSED(event);
 }
 
+/*!
+  \brief Handles a mouse release event.
+*/
 void TextureControl::mouseReleaseEvent(QMouseEvent* event)
 {
     Q_UNUSED(event);
 }
 
-<<<<<<< 9d213817330c69b97266b90eba26637b7ce4249b
 void TextureControl::initializeGL()
 {
     Q_D(TextureControl);
@@ -409,6 +437,5 @@ void TextureControl::prevFace()
     Q_D(TextureControl);
     setFace(std::max(0, d->face - 1));
 }
-=======
+
 } // namespace TextureViewer
->>>>>>> Wrap TextureViewer classes into a namespace
