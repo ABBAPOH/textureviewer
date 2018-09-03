@@ -62,6 +62,14 @@ void TextureViewPrivate::initActions()
     actions[size_t(TextureView::Actions::PrevLevel)] = std::move(action);
 }
 
+/*!
+  \class TextureView
+  \brief A view that displays a TextureDocument.
+*/
+
+/*!
+  \brief Constructs a TextureView object with the given \a parent.
+*/
 TextureView::TextureView(QWidget *parent)
     : QAbstractScrollArea(parent)
     , d_ptr(new TextureViewPrivate(ObserverPointer<TextureView>(this)))
@@ -70,9 +78,17 @@ TextureView::TextureView(QWidget *parent)
     d->init();
 }
 
+/*!
+  \brief Destroys the TextureView object.
+*/
 TextureView::~TextureView()
 {
 }
+
+/*!
+  \property TextureView::TextureDocumentPointer TextureView::document
+  \brief This property holds an assigned TextureDocument instance.
+*/
 
 TextureView::TextureDocumentPointer TextureView::document() const
 {
@@ -85,6 +101,11 @@ void TextureView::setDocument(TextureDocumentPointer document)
     Q_D(TextureView);
     d->control->setDocument(document);
 }
+
+/*!
+  \property TextureView::TextureControlPointer TextureView::control
+  \brief This property holds an assigned TextureControl instance.
+*/
 
 TextureView::TextureControlPointer TextureView::control() const
 {
