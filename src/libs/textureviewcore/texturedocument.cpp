@@ -11,15 +11,33 @@ public:
     std::vector<std::unique_ptr<Item>> items;
 };
 
+/*!
+  \class TextureViewer::TextureDocument
+  \brief A document containing a Texture.
+*/
+
+/*!
+  Constructs a TextureDocument object with the given \a parent.
+*/
 TextureDocument::TextureDocument(QObject *parent)
     : AbstractDocument(parent)
     , d_ptr(new TextureDocumentPrivate())
 {
 }
 
+/*!
+  Destroys the TextureDocument object.
+*/
 TextureDocument::~TextureDocument()
 {
 }
+
+/*!
+  \property Texture TextureDocument::texture
+  \brief This property holds an assigned Texture instance.
+
+  Default value is null texture.
+*/
 
 Texture TextureDocument::texture() const
 {
