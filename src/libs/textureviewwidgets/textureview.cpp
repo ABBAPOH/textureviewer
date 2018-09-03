@@ -9,6 +9,8 @@
 
 #include <QtCore/QCoreApplication>
 
+namespace TextureViewer {
+
 class OpenGLWidget : public QOpenGLWidget
 {
 public:
@@ -107,3 +109,4 @@ bool TextureView::viewportEvent(QEvent* event)
     return QAbstractScrollArea::viewportEvent(event);
 }
 
+} // namespace TextureViewer

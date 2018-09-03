@@ -7,6 +7,8 @@
 
 #include <QtWidgets/QAction>
 
+namespace TextureViewer {
+
 class TextureViewPrivate
 {
     Q_DISABLE_COPY(TextureViewPrivate)
@@ -25,5 +27,7 @@ public:
 private:
     ObserverPointer<TextureView> q_ptr;
 };
+
+} // namespace TextureViewer
 
 #endif // TEXTUREVIEW_P_H

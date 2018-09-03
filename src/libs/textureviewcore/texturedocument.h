@@ -11,6 +11,8 @@
 
 #include <memory>
 
+namespace TextureViewer {
+
 class TextureDocumentPrivate;
 class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
 {
@@ -57,5 +59,7 @@ public:
     int face {0};
     Texture texture;
 };
+
+} // namespace TextureViewer
 
 #endif // TEXTUREDOCUMENT_H

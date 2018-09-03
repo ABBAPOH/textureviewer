@@ -9,6 +9,9 @@
 
 class QResizeEvent;
 class QMouseEvent;
+
+namespace TextureViewer {
+
 class TextureDocument;
 
 class TextureControlPrivate;
@@ -85,5 +88,7 @@ signals:
 private:
     QScopedPointer<TextureControlPrivate> d_ptr;
 };
+
+} // namespace TextureViewer
 
 #endif // TEXTURECONTROL_H

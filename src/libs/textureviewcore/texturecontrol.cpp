@@ -11,6 +11,8 @@
 #include <QtGui/QOpenGLVertexArrayObject>
 #include <QtGui/QResizeEvent>
 
+namespace TextureViewer {
+
 class TextureControlPrivate
 {
     Q_DECLARE_PUBLIC(TextureControl)
@@ -278,6 +280,7 @@ void TextureControl::mouseReleaseEvent(QMouseEvent* event)
     Q_UNUSED(event);
 }
 
+<<<<<<< 9d213817330c69b97266b90eba26637b7ce4249b
 void TextureControl::initializeGL()
 {
     Q_D(TextureControl);
@@ -406,3 +409,6 @@ void TextureControl::prevFace()
     Q_D(TextureControl);
     setFace(std::max(0, d->face - 1));
 }
+=======
+} // namespace TextureViewer
+>>>>>>> Wrap TextureViewer classes into a namespace

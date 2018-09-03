@@ -1,5 +1,7 @@
 #include "texturedocument.h"
 
+namespace TextureViewer {
+
 class TextureDocumentPrivate
 {
 public:
@@ -94,3 +96,5 @@ auto TextureDocument::item(int face, int level, int layer) const -> ItemPointer
     const auto index = d->texture.faces() * (d->texture.layers() * level + layer) + face;
     return ItemPointer(d->items.at(index).get());
 }
+
+} // namespace TextureViewer

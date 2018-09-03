@@ -9,6 +9,8 @@
 
 #include <ObserverPointer>
 
+namespace TextureViewer {
+
 class TextureDocument;
 
 class TextureViewPrivate;
@@ -56,5 +58,7 @@ protected:
 protected:
     QScopedPointer<TextureViewPrivate> d_ptr;
 };
+
+} // namespace TextureViewer
 
 #endif // TEXTUREVIEW_H
