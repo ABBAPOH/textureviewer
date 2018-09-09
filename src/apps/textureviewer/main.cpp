@@ -14,6 +14,9 @@ int main(int argc, char *argv[])
             QCoreApplication::applicationDirPath() + TextureIO::pluginsDirPath());
 
     TextureViewer::MainWindow w;
+    const auto arguments = QCoreApplication::arguments();
+    if (arguments.size() == 2)
+        w.openDocument(QUrl::fromLocalFile(arguments.at(1)));
     w.show();
 
     return app.exec();
