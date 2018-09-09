@@ -58,6 +58,7 @@ public:
     int layer {0};
     int face {0};
     Texture texture;
+    QImage thumbnail;
 };
 
 } // namespace TextureViewer
