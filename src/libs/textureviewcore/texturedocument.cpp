@@ -75,6 +75,7 @@ void TextureDocument::setTexture(const Texture &texture)
                 Q_ASSERT(image.size() == slice.imageData({}).size());
                 memcpy(slice.imageData({}).data(), image.data(), image.size());
                 item->texture = slice;
+                item->thumbnail = slice.toImage();
                 d->items.push_back(std::move(item));
             }
         }
