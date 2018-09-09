@@ -7,12 +7,28 @@ TextureLayersModel::TextureLayersModel(QObject *parent)
 {
 }
 
+TextureLayersModel::TextureLayersModel(Qt::Orientation orientation, QObject *parent)
+    : QAbstractListModel(parent)
+    , m_orientation(orientation)
+{
+}
+
 void TextureLayersModel::setDocument(TextureLayersModel::TextureDocumentPointer document)
 {
     if (m_document == document)
         return;
+
+    if (m_document) {
+        disconnect(m_document.get(), nullptr, this, nullptr);
+    }
+
     m_document = document;
     m_face = 0;
+
+    if (m_document) {
+        connect(m_document.get(), &TextureDocument::textureChanged, this, &TextureLayersModel::updateItems);
+    }
+
     updateItems();
     emit documentChanged(m_document);
     emit faceChanged(m_face);

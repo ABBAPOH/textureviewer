@@ -4,8 +4,10 @@
 #include <TextureLib/TextureIO>
 
 #include <TextureViewCoreLib/TextureDocument>
+#include <TextureViewCoreLib/TextureLayersModel>
 #include <TextureViewWidgetsLib/TextureView>
 
+#include <QtWidgets/QAbstractItemView>
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
@@ -13,10 +15,13 @@ namespace TextureViewer {
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    m_layersModel(new TextureLayersModel)
 {
     ui->setupUi(this);
     setCentralWidget(m_view = new TextureView);
+    m_layersModel->setDocument(m_view->document());
+    ui->layersView->setModel(m_layersModel.get());
     initConnections();
 }
 
@@ -65,6 +70,13 @@ void MainWindow::initConnections()
 {
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
+
+    const auto onLayerChanged = [this](QModelIndex current, QModelIndex)
+    {
+        m_view->control()->setLayer(current.row());
+    };
+    connect(ui->layersView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, onLayerChanged);
 }
 
 } // namespace TextureViewer

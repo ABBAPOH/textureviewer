@@ -19,6 +19,7 @@ public:
     using TextureDocumentPointer = ObserverPointer<TextureDocument>;
 
     explicit TextureLayersModel(QObject *parent = nullptr);
+    explicit TextureLayersModel(Qt::Orientation orientation, QObject *parent = nullptr);
     ~TextureLayersModel() override = default;
 
     TextureDocumentPointer document() const noexcept { return m_document; }
