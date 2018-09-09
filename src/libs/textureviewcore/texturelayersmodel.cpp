@@ -79,8 +79,10 @@ void TextureLayersModel::updateItems()
 {
     beginResetModel();
     m_items.clear();
-    for (int layer = 0; layer < m_document->layers(); ++layer) {
-        m_items.push_back(m_document->item(m_face, layer, 0));
+    if (m_document) {
+        for (int layer = 0; layer < m_document->layers(); ++layer) {
+            m_items.push_back(m_document->item(m_face, layer, 0));
+        }
     }
     endResetModel();
 }
