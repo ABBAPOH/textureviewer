@@ -1254,8 +1254,8 @@ TextureIOResult Texture::save(const QString &file)
     return io.write(*this);
 }
 
-Texture::Texture(TextureData *dd):
-    d(dd)
+Texture::Texture(TextureData *dd)
+    : d(dd)
 {
 }
 
