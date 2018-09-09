@@ -50,7 +50,7 @@ public:
     int face {0};
     int layer {0};
     int level {0};
-    bool textureDirty {true};
+    bool textureDirty {false};
     OpenGLData glData;
 
 protected:
@@ -162,7 +162,7 @@ TextureControl::TextureControl(QObject* parent)
     , d_ptr(new TextureControlPrivate(ObserverPointer<TextureControl>(this)))
 {
     Q_D(TextureControl);
-    d->document.reset(new TextureDocument(this));
+    setDocument(TextureDocumentPointer(new TextureDocument(this)));
 }
 
 /*!
