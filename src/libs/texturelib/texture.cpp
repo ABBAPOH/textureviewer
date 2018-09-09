@@ -1108,7 +1108,8 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
                 const auto dstData = result.imageData({Side(face), level, layer});
                 const auto width = d->levelWidth(level);
                 const auto height = d->levelHeight(level);
-                for (int z = 0; z < d->levelDepth(level); ++z) {
+                const auto depth = d->levelDepth(level);
+                for (int z = 0; z < depth; ++z) {
                     for (int y = 0; y < height; ++y) {
                         const auto srcLine = srcData.subspan(
                                     srcBytesPerSlice * z + srcBytesPerLine * y, srcBytesPerLine);
@@ -1213,7 +1214,7 @@ QImage Texture::toImage() const
         return QImage();
     }
 
-    const auto bytesPerLine = this->bytesPerLine();
+    const auto bytesPerLine = copy.bytesPerLine();
     if (result.bytesPerLine() < bytesPerLine) {
         qCWarning(texture) << Q_FUNC_INFO
                            << "image line size is less than texture line size"
