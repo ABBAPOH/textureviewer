@@ -1,0 +1,10 @@
+#ifndef HALF_FLOAT_H
+#define HALF_FLOAT_H
+
+#include "../src/3rdparty/half/include/half.hpp"
+
+using HalfFloat = half_float::half;
+
+static_assert(sizeof(HalfFloat) == 2, "Half float size should be 16 bits");
+
+#endif // HALF_FLOAT_H
