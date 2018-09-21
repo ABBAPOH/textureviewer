@@ -68,6 +68,13 @@ public:
     }
 };
 
+// qHelpers
+
+inline constexpr qint8 qRed  (Rgba32Signed color) noexcept { return color.red();   }
+inline constexpr qint8 qGreen(Rgba32Signed color) noexcept { return color.green(); }
+inline constexpr qint8 qBlue (Rgba32Signed color) noexcept { return color.blue();  }
+inline constexpr qint8 qAlpha(Rgba32Signed color) noexcept { return color.alpha(); }
+
 // TODO (abbapoh) : we can't enable this overload because QRgb is quint32 too (=
 // I hope this will be fixed in Qt6
 //inline constexpr Rgba32Signed rgba32Signed(quint32 value) noexcept
