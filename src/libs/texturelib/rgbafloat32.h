@@ -63,12 +63,12 @@ inline constexpr RgbaFloat32 rgbaFloat32(float red, float green, float blue, flo
 
 inline constexpr RgbaFloat32 rgbaFloat32(QRgb rgba) noexcept
 {
-    return {
+    return rgbaFloat32(
             Private::normalize(quint8(qRed(rgba))),
             Private::normalize(quint8(qGreen(rgba))),
             Private::normalize(quint8(qBlue(rgba))),
             Private::normalize(quint8(qAlpha(rgba)))
-    };
+    );
 }
 
 inline constexpr QRgb qRgba(RgbaFloat32 rgba) noexcept
@@ -95,12 +95,12 @@ inline constexpr RgbaFloat32 rgbaFloat32(Rgba32Signed rgba) noexcept
 inline constexpr Rgba32Signed rgba32Signed(RgbaFloat32 rgba) noexcept
 {
     // TODO (abbapoh): we do not cover -128 value for now, should be fixed
-    return {
-            qint8(0x7f * Private::boundedSigned(rgba.red())),
-            qint8(0x7f * Private::boundedSigned(rgba.green())),
-            qint8(0x7f * Private::boundedSigned(rgba.blue())),
-            qint8(0x7f * Private::boundedSigned(rgba.alpha()))
-    };
+    return rgba32Signed(
+            0x7f * Private::boundedSigned(rgba.red()),
+            0x7f * Private::boundedSigned(rgba.green()),
+            0x7f * Private::boundedSigned(rgba.blue()),
+            0x7f * Private::boundedSigned(rgba.alpha())
+    );
 }
 
 // QRgba64
