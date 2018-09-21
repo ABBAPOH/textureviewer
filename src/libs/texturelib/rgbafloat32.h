@@ -1,9 +1,11 @@
 #ifndef RGBAFLOAT32_H
 #define RGBAFLOAT32_H
 
+#include <TextureLib/Rgba32Signed>
+#include <TextureLib/RgbaFloat16>
+
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
-#include <TextureLib/Rgba32Signed>
 
 class RgbaFloat32
 {
@@ -43,7 +45,14 @@ inline float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f
 
 } // namespace Private
 
-// constructor
+// qHelpers
+
+inline constexpr float qRed(RgbaFloat32 color) noexcept { return color.red(); }
+inline constexpr float qGreen(RgbaFloat32 color) noexcept { return color.green(); }
+inline constexpr float qBlue(RgbaFloat32 color) noexcept { return color.blue(); }
+inline constexpr float qAlpha(RgbaFloat32 color) noexcept { return color.alpha(); }
+
+// constructors
 
 inline constexpr RgbaFloat32 rgbaFloat32(float red, float green, float blue, float alpha = 1.0f) noexcept
 {
@@ -109,6 +118,19 @@ inline constexpr QRgba64 qRgba64(RgbaFloat32 rgba) noexcept
             0xffffu * rgba.green(),
             0xffffu * rgba.blue(),
             0xffffu * rgba.alpha());
+}
+
+// RgbaFloat16
+
+inline constexpr RgbaFloat32 rgbaFloat32(RgbaFloat16 rgba) noexcept
+{
+    return { qRed(rgba), qGreen(rgba), qBlue(rgba), qAlpha(rgba) };
+}
+
+inline constexpr RgbaFloat16 rgbaFloat16(RgbaFloat32 rgba) noexcept
+{
+    using Float = HalfFloat;
+    return { Float(qRed(rgba)), Float(qGreen(rgba)), Float(qBlue(rgba)), Float(qAlpha(rgba)) };
 }
 
 #endif // RGBAFLOAT32_H
