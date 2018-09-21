@@ -146,7 +146,7 @@ AnyColor readR32_Float(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 4);
     const auto d = reinterpret_cast<const float *>(data.data());
-    return {RgbaFloat32(d[0], 0.0f, 0.0f)};
+    return {Rgba128Float(d[0], 0.0f, 0.0f)};
 }
 
 void writeR32_Float(Texture::Data data, const AnyColor &color)
@@ -285,7 +285,7 @@ AnyColor readRG32_Float(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 8);
     const auto d = reinterpret_cast<const float *>(data.data());
-    return {RgbaFloat32(d[0], d[1], 0.0f, 1.0f)};
+    return {Rgba128Float(d[0], d[1], 0.0f, 1.0f)};
 }
 
 void writeRG32_Float(Texture::Data data, const AnyColor &color)
@@ -301,7 +301,7 @@ AnyColor readRGB32_Float(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 12);
     const auto d = reinterpret_cast<const float *>(data.data());
-    return {RgbaFloat32(d[0], d[1], d[2], 1.0f)};
+    return {Rgba128Float(d[0], d[1], d[2], 1.0f)};
 }
 
 void writeRGB32_Float(Texture::Data data, const AnyColor &color)
@@ -318,7 +318,7 @@ AnyColor readRGBA32_Float(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 16);
     const auto d = reinterpret_cast<const float *>(data.data());
-    return {RgbaFloat32(d[0], d[1], d[2], d[3])};
+    return {Rgba128Float(d[0], d[1], d[2], d[3])};
 }
 
 void writeRGBA32_Float(Texture::Data data, const AnyColor &color)

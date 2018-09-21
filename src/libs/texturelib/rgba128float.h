@@ -1,5 +1,5 @@
-#ifndef RGBAFLOAT32_H
-#define RGBAFLOAT32_H
+#ifndef RGBA128FLOAT_H
+#define RGBA128FLOAT_H
 
 #include <TextureLib/Rgba32Signed>
 #include <TextureLib/Rgba64Float>
@@ -7,11 +7,11 @@
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
 
-class RgbaFloat32
+class Rgba128Float
 {
 public:
-    constexpr RgbaFloat32() noexcept = default;
-    constexpr RgbaFloat32(float red, float green, float blue, float alpha = 1.0f) noexcept
+    constexpr Rgba128Float() noexcept = default;
+    constexpr Rgba128Float(float red, float green, float blue, float alpha = 1.0f) noexcept
         : m_red(red)
         , m_green(green)
         , m_blue(blue)
@@ -47,23 +47,23 @@ inline float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f
 
 // qHelpers
 
-inline constexpr float qRed(RgbaFloat32 color) noexcept { return color.red(); }
-inline constexpr float qGreen(RgbaFloat32 color) noexcept { return color.green(); }
-inline constexpr float qBlue(RgbaFloat32 color) noexcept { return color.blue(); }
-inline constexpr float qAlpha(RgbaFloat32 color) noexcept { return color.alpha(); }
+inline constexpr float qRed(Rgba128Float color) noexcept { return color.red(); }
+inline constexpr float qGreen(Rgba128Float color) noexcept { return color.green(); }
+inline constexpr float qBlue(Rgba128Float color) noexcept { return color.blue(); }
+inline constexpr float qAlpha(Rgba128Float color) noexcept { return color.alpha(); }
 
 // constructors
 
-inline constexpr RgbaFloat32 rgbaFloat32(float red, float green, float blue, float alpha = 1.0f) noexcept
+inline constexpr Rgba128Float rgba128Float(float red, float green, float blue, float alpha = 1.0f) noexcept
 {
     return {red, green, blue, alpha};
 }
 
 // QRgba
 
-inline constexpr RgbaFloat32 rgbaFloat32(QRgb rgba) noexcept
+inline constexpr Rgba128Float rgba128Float(QRgb rgba) noexcept
 {
-    return rgbaFloat32(
+    return rgba128Float(
             Private::normalizeF32(quint8(qRed(rgba))),
             Private::normalizeF32(quint8(qGreen(rgba))),
             Private::normalizeF32(quint8(qBlue(rgba))),
@@ -71,7 +71,7 @@ inline constexpr RgbaFloat32 rgbaFloat32(QRgb rgba) noexcept
     );
 }
 
-inline constexpr QRgb qRgba(RgbaFloat32 rgba) noexcept
+inline constexpr QRgb qRgba(Rgba128Float rgba) noexcept
 {
     return qRgba(
             0xffu * Private::bounded(rgba.red()),
@@ -82,7 +82,7 @@ inline constexpr QRgb qRgba(RgbaFloat32 rgba) noexcept
 
 // Rgba32Signed
 
-inline constexpr RgbaFloat32 rgbaFloat32(Rgba32Signed rgba) noexcept
+inline constexpr Rgba128Float rgba128Float(Rgba32Signed rgba) noexcept
 {
     return {
             Private::normalizeF32(rgba.red()),
@@ -92,7 +92,7 @@ inline constexpr RgbaFloat32 rgbaFloat32(Rgba32Signed rgba) noexcept
     };
 }
 
-inline constexpr Rgba32Signed rgba32Signed(RgbaFloat32 rgba) noexcept
+inline constexpr Rgba32Signed rgba32Signed(Rgba128Float rgba) noexcept
 {
     // TODO (abbapoh): we do not cover -128 value for now, should be fixed
     return rgba32Signed(
@@ -105,7 +105,7 @@ inline constexpr Rgba32Signed rgba32Signed(RgbaFloat32 rgba) noexcept
 
 // QRgba64
 
-inline constexpr RgbaFloat32 rgbaFloat32(QRgba64 rgba) noexcept
+inline constexpr Rgba128Float rgba128Float(QRgba64 rgba) noexcept
 {
     return {
             Private::normalizeF32(quint16(qRed(rgba))),
@@ -115,7 +115,7 @@ inline constexpr RgbaFloat32 rgbaFloat32(QRgba64 rgba) noexcept
     };
 }
 
-inline constexpr QRgba64 qRgba64(RgbaFloat32 rgba) noexcept
+inline constexpr QRgba64 qRgba64(Rgba128Float rgba) noexcept
 {
     return qRgba64(
             0xffffu * rgba.red(),
@@ -126,15 +126,15 @@ inline constexpr QRgba64 qRgba64(RgbaFloat32 rgba) noexcept
 
 // RgbaFloat16
 
-inline constexpr RgbaFloat32 rgbaFloat32(Rgba64Float rgba) noexcept
+inline constexpr Rgba128Float rgba128Float(Rgba64Float rgba) noexcept
 {
     return { qRed(rgba), qGreen(rgba), qBlue(rgba), qAlpha(rgba) };
 }
 
-inline constexpr Rgba64Float rgbaFloat16(RgbaFloat32 rgba) noexcept
+inline constexpr Rgba64Float rgba64Float(Rgba128Float rgba) noexcept
 {
     using Float = HalfFloat;
     return { Float(qRed(rgba)), Float(qGreen(rgba)), Float(qBlue(rgba)), Float(qAlpha(rgba)) };
 }
 
-#endif // RGBAFLOAT32_H
+#endif // RGBA128FLOAT_H
