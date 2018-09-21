@@ -37,9 +37,9 @@ private:
 
 namespace Private {
 
-inline float constexpr normalize(qint8 value) noexcept { return 1.0f * value / 0x7f; }
-inline float constexpr normalize(quint8 value) noexcept { return 1.0f * value / 0xffu; }
-inline float constexpr normalize(quint16 value) noexcept { return 1.0f * value / 0xffffu; }
+inline float constexpr normalizeF32(qint8 value) noexcept { return 1.0f * value / 0x7f; }
+inline float constexpr normalizeF32(quint8 value) noexcept { return 1.0f * value / 0xffu; }
+inline float constexpr normalizeF32(quint16 value) noexcept { return 1.0f * value / 0xffffu; }
 inline float constexpr bounded(float value) noexcept { return qBound(0.0f, value, 1.0f); }
 inline float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f, value, 1.0f); }
 
@@ -64,10 +64,10 @@ inline constexpr RgbaFloat32 rgbaFloat32(float red, float green, float blue, flo
 inline constexpr RgbaFloat32 rgbaFloat32(QRgb rgba) noexcept
 {
     return rgbaFloat32(
-            Private::normalize(quint8(qRed(rgba))),
-            Private::normalize(quint8(qGreen(rgba))),
-            Private::normalize(quint8(qBlue(rgba))),
-            Private::normalize(quint8(qAlpha(rgba)))
+            Private::normalizeF32(quint8(qRed(rgba))),
+            Private::normalizeF32(quint8(qGreen(rgba))),
+            Private::normalizeF32(quint8(qBlue(rgba))),
+            Private::normalizeF32(quint8(qAlpha(rgba)))
     );
 }
 
@@ -85,10 +85,10 @@ inline constexpr QRgb qRgba(RgbaFloat32 rgba) noexcept
 inline constexpr RgbaFloat32 rgbaFloat32(Rgba32Signed rgba) noexcept
 {
     return {
-            Private::normalize(rgba.red()),
-            Private::normalize(rgba.green()),
-            Private::normalize(rgba.blue()),
-            Private::normalize(rgba.alpha())
+            Private::normalizeF32(rgba.red()),
+            Private::normalizeF32(rgba.green()),
+            Private::normalizeF32(rgba.blue()),
+            Private::normalizeF32(rgba.alpha())
     };
 }
 
@@ -108,10 +108,10 @@ inline constexpr Rgba32Signed rgba32Signed(RgbaFloat32 rgba) noexcept
 inline constexpr RgbaFloat32 rgbaFloat32(QRgba64 rgba) noexcept
 {
     return {
-            Private::normalize(quint16(qRed(rgba))),
-            Private::normalize(quint16(qGreen(rgba))),
-            Private::normalize(quint16(qBlue(rgba))),
-            Private::normalize(quint16(qAlpha(rgba)))
+            Private::normalizeF32(quint16(qRed(rgba))),
+            Private::normalizeF32(quint16(qGreen(rgba))),
+            Private::normalizeF32(quint16(qBlue(rgba))),
+            Private::normalizeF32(quint16(qAlpha(rgba)))
     };
 }
 
