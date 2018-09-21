@@ -1,6 +1,8 @@
 #include "texture.h"
 #include "texture_p.h"
 
+#include <HalfFloat>
+
 #include <gsl/gsl_util>
 
 namespace {
@@ -142,19 +144,21 @@ void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
     d[0] = qBlue(rgba);
 }
 
-AnyColor readR32_Float(Texture::ConstData data)
+template<typename Color, typename Float>
+AnyColor readRFloat(Texture::ConstData data)
 {
-    Q_ASSERT(data.size() == 4);
-    const auto d = reinterpret_cast<const float *>(data.data());
-    return {Rgba128Float(d[0], 0.0f, 0.0f)};
+    Q_ASSERT(data.size() == 1 * sizeof(Float));
+    const auto d = reinterpret_cast<const Float *>(data.data());
+    return {Color(d[0], 0.0f, 0.0f)};
 }
 
-void writeR32_Float(Texture::Data data, const AnyColor &color)
+template<typename Color, Color(*ColorFunc)(const AnyColor &color), typename Float>
+void writeRFloat(Texture::Data data, const AnyColor &color)
 {
-    Q_ASSERT(data.size() == 4);
-    const auto rgba = color.toRgbaFloat32();
-    const auto d = reinterpret_cast<float *>(data.data());
-    d[0] = rgba.red();
+    Q_ASSERT(data.size() == 1 * sizeof(Float));
+    const auto rgba = ColorFunc(color);
+    const auto d = reinterpret_cast<Float *>(data.data());
+    d[0] = qRed(rgba);
 }
 
 AnyColor readRG16_Unorm(Texture::ConstData data)
@@ -365,7 +369,7 @@ constexpr TextureFormatConverter converters[] = {
     // 32bit
     { TextureFormat::R32_Sint },
     { TextureFormat::R32_Uint },
-    { TextureFormat::R32_Float, readR32_Float, writeR32_Float },
+    { TextureFormat::R32_Float, readRFloat<Rgba128Float, float>, writeRFloat<Rgba128Float, rgba128Float, float> },
 
     { TextureFormat::RG16_Snorm },
     { TextureFormat::RG16_Unorm, readRG16_Unorm, writeRG16_Unorm },
