@@ -35,7 +35,7 @@ public:
                | quint32(quint8(alpha)) << AlphaShift;
     }
 
-    Rgba32Signed &operator=(quint32 rgba)
+    constexpr Rgba32Signed &operator=(quint32 rgba) noexcept
     {
         m_rgba = rgba;
         return *this;
