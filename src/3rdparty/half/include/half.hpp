@@ -33,7 +33,8 @@
 	#if __has_feature(cxx_constexpr) && !defined(HALF_ENABLE_CPP11_CONSTEXPR)
 		#define HALF_ENABLE_CPP11_CONSTEXPR 1
 	#endif
-	#if __has_feature(cxx_noexcept) && !defined(HALF_ENABLE_CPP11_NOEXCEPT)
+//	#if __has_feature(cxx_noexcept) && !defined(HALF_ENABLE_CPP11_NOEXCEPT)
+        #if !defined(HALF_ENABLE_CPP11_NOEXCEPT)
 		#define HALF_ENABLE_CPP11_NOEXCEPT 1
 	#endif
 	#if __has_feature(cxx_user_literals) && !defined(HALF_ENABLE_CPP11_USER_LITERALS)
@@ -677,7 +678,8 @@ namespace half_float
 		/// \tparam T source type (builtin floating point type)
 		/// \param value floating point value
 		/// \return binary representation of half-precision value
-		template<std::float_round_style R,typename T> uint16 float2half(T value)
+                template<std::float_round_style R,typename T>
+                HALF_CONSTEXPR uint16 float2half(T value)
 		{
 			return float2half_impl<R>(value, bool_type<std::numeric_limits<T>::is_iec559&&sizeof(typename bits<T>::type)==sizeof(T)>());
 		}
@@ -1089,7 +1091,7 @@ namespace half_float
 		/// Default constructor.
 		/// This initializes the half to 0. Although this does not match the builtin types' default-initialization semantics 
 		/// and may be less efficient than no initialization, it is needed to provide proper value-initialization semantics.
-		HALF_CONSTEXPR half() HALF_NOEXCEPT : data_() {}
+                HALF_CONSTEXPR half() HALF_NOEXCEPT : data_() {}
 
 		/// Copy constructor.
 		/// \tparam T type of concrete half expression
@@ -1098,7 +1100,7 @@ namespace half_float
 
 		/// Conversion constructor.
 		/// \param rhs float to convert
-		explicit half(float rhs) : data_(detail::float2half<round_style>(rhs)) {}
+                HALF_CONSTEXPR explicit half(float rhs) : data_(detail::float2half<round_style>(rhs)) {}
 	
 		/// Conversion to single-precision.
 		/// \return single precision value representing expression value
