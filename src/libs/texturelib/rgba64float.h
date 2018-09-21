@@ -1,5 +1,5 @@
-#ifndef RGBAFLOAT16_H
-#define RGBAFLOAT16_H
+#ifndef RGBA64FLOAT_H
+#define RGBA64FLOAT_H
 
 #include <TextureLib/Rgba32Signed>
 
@@ -8,11 +8,11 @@
 
 #include <HalfFloat>
 
-class RgbaFloat16
+class Rgba64Float
 {
 public:
-    constexpr RgbaFloat16() noexcept = default;
-    constexpr RgbaFloat16(HalfFloat red, HalfFloat green, HalfFloat blue, HalfFloat alpha = HalfFloat(1.0)) noexcept
+    constexpr Rgba64Float() noexcept = default;
+    constexpr Rgba64Float(HalfFloat red, HalfFloat green, HalfFloat blue, HalfFloat alpha = HalfFloat(1.0)) noexcept
         : m_red(red)
         , m_green(green)
         , m_blue(blue)
@@ -48,21 +48,21 @@ inline HalfFloat constexpr boundedSigned(HalfFloat value) noexcept { return qBou
 
 // qHelpers
 
-inline constexpr HalfFloat qRed(RgbaFloat16 color) noexcept { return color.red(); }
-inline constexpr HalfFloat qGreen(RgbaFloat16 color) noexcept { return color.green(); }
-inline constexpr HalfFloat qBlue(RgbaFloat16 color) noexcept { return color.blue(); }
-inline constexpr HalfFloat qAlpha(RgbaFloat16 color) noexcept { return color.alpha(); }
+inline constexpr HalfFloat qRed(Rgba64Float color) noexcept { return color.red(); }
+inline constexpr HalfFloat qGreen(Rgba64Float color) noexcept { return color.green(); }
+inline constexpr HalfFloat qBlue(Rgba64Float color) noexcept { return color.blue(); }
+inline constexpr HalfFloat qAlpha(Rgba64Float color) noexcept { return color.alpha(); }
 
 // constructors
 
-inline constexpr RgbaFloat16 rgbaFloat16(HalfFloat red, HalfFloat green, HalfFloat blue, HalfFloat alpha = HalfFloat(1.0)) noexcept
+inline constexpr Rgba64Float rgba64Float(HalfFloat red, HalfFloat green, HalfFloat blue, HalfFloat alpha = HalfFloat(1.0)) noexcept
 {
     return {red, green, blue, alpha};
 }
 
 // QRgba
 
-inline constexpr RgbaFloat16 rgbaFloat16(QRgb rgba) noexcept
+inline constexpr Rgba64Float rgba64Float(QRgb rgba) noexcept
 {
     return {
             Private::normalizeF16(quint8(qRed(rgba))),
@@ -72,7 +72,7 @@ inline constexpr RgbaFloat16 rgbaFloat16(QRgb rgba) noexcept
     };
 }
 
-inline constexpr QRgb qRgba(RgbaFloat16 rgba) noexcept
+inline constexpr QRgb qRgba(Rgba64Float rgba) noexcept
 {
     return qRgba(
             0xffu * Private::bounded(rgba.red()),
@@ -83,7 +83,7 @@ inline constexpr QRgb qRgba(RgbaFloat16 rgba) noexcept
 
 // Rgba32Signed
 
-inline constexpr RgbaFloat16 rgbaFloat16(Rgba32Signed rgba) noexcept
+inline constexpr Rgba64Float rgba64Float(Rgba32Signed rgba) noexcept
 {
     return {
             Private::normalizeF16(rgba.red()),
@@ -93,7 +93,7 @@ inline constexpr RgbaFloat16 rgbaFloat16(Rgba32Signed rgba) noexcept
     };
 }
 
-inline constexpr Rgba32Signed rgba32Signed(RgbaFloat16 rgba) noexcept
+inline constexpr Rgba32Signed rgba32Signed(Rgba64Float rgba) noexcept
 {
     // TODO (abbapoh): we do not cover -128 value for now, should be fixed
     return {
@@ -106,7 +106,7 @@ inline constexpr Rgba32Signed rgba32Signed(RgbaFloat16 rgba) noexcept
 
 // QRgba64
 
-inline constexpr RgbaFloat16 rgbaFloat16(QRgba64 rgba) noexcept
+inline constexpr Rgba64Float rgba64Float(QRgba64 rgba) noexcept
 {
     return {
             Private::normalizeF16(quint16(qRed(rgba))),
@@ -116,7 +116,7 @@ inline constexpr RgbaFloat16 rgbaFloat16(QRgba64 rgba) noexcept
     };
 }
 
-inline constexpr QRgba64 qRgba64(RgbaFloat16 rgba) noexcept
+inline constexpr QRgba64 qRgba64(Rgba64Float rgba) noexcept
 {
     return qRgba64(
             0xffffu * rgba.red(),
@@ -126,4 +126,4 @@ inline constexpr QRgba64 qRgba64(RgbaFloat16 rgba) noexcept
     );
 }
 
-#endif // RGBAFLOAT16_H
+#endif // RGBA64FLOAT_H

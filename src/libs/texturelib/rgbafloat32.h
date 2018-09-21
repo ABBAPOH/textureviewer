@@ -2,7 +2,7 @@
 #define RGBAFLOAT32_H
 
 #include <TextureLib/Rgba32Signed>
-#include <TextureLib/RgbaFloat16>
+#include <TextureLib/Rgba64Float>
 
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
@@ -126,12 +126,12 @@ inline constexpr QRgba64 qRgba64(RgbaFloat32 rgba) noexcept
 
 // RgbaFloat16
 
-inline constexpr RgbaFloat32 rgbaFloat32(RgbaFloat16 rgba) noexcept
+inline constexpr RgbaFloat32 rgbaFloat32(Rgba64Float rgba) noexcept
 {
     return { qRed(rgba), qGreen(rgba), qBlue(rgba), qAlpha(rgba) };
 }
 
-inline constexpr RgbaFloat16 rgbaFloat16(RgbaFloat32 rgba) noexcept
+inline constexpr Rgba64Float rgbaFloat16(RgbaFloat32 rgba) noexcept
 {
     using Float = HalfFloat;
     return { Float(qRed(rgba)), Float(qGreen(rgba)), Float(qBlue(rgba)), Float(qAlpha(rgba)) };
