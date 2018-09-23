@@ -1,9 +1,6 @@
 #ifndef RGBAGENERIC_H
 #define RGBAGENERIC_H
 
-#include <QtGui/QRgb>
-#include <QtGui/QRgba64>
-
 #include <HalfFloat>
 
 template<typename T>
@@ -36,7 +33,7 @@ class RgbaGeneric
 public:
     using DataType = T;
 
-    constexpr RgbaGeneric() noexcept = default;
+    constexpr RgbaGeneric() noexcept {}
     constexpr RgbaGeneric(
             DataType red,
             DataType green,
@@ -59,10 +56,17 @@ public:
     constexpr void setAlpha(DataType alpha) noexcept { m_alpha = alpha; }
 
 private:
-    DataType m_red;
-    DataType m_green;
-    DataType m_blue;
-    DataType m_alpha;
+    DataType m_red {0};
+    DataType m_green {0};
+    DataType m_blue {0};
+    DataType m_alpha {0};
 };
+
+// qHelpers
+
+template<typename T> constexpr T qRed  (RgbaGeneric<T> color) noexcept { return color.red();   }
+template<typename T> constexpr T qGreen(RgbaGeneric<T> color) noexcept { return color.green(); }
+template<typename T> constexpr T qBlue (RgbaGeneric<T> color) noexcept { return color.blue();  }
+template<typename T> constexpr T qAlpha(RgbaGeneric<T> color) noexcept { return color.alpha(); }
 
 #endif // RGBAGENERIC_H

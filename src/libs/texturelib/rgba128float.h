@@ -3,37 +3,12 @@
 
 #include <TextureLib/Rgba32Signed>
 #include <TextureLib/Rgba64Float>
+#include <TextureLib/RgbaGeneric>
 
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
 
-class Rgba128Float
-{
-public:
-    constexpr Rgba128Float() noexcept = default;
-    constexpr Rgba128Float(float red, float green, float blue, float alpha = 1.0f) noexcept
-        : m_red(red)
-        , m_green(green)
-        , m_blue(blue)
-        , m_alpha(alpha)
-    {}
-
-    constexpr float red()   const noexcept { return m_red;  }
-    constexpr float green() const noexcept { return m_green; }
-    constexpr float blue()  const noexcept { return m_blue;  }
-    constexpr float alpha() const noexcept { return m_alpha; }
-
-    constexpr void setRed  (float red)   noexcept { m_red   = red;   }
-    constexpr void setGreen(float green) noexcept { m_green = green; }
-    constexpr void setBlue (float blue)  noexcept { m_blue  = blue;  }
-    constexpr void setAlpha(float alpha) noexcept { m_alpha = alpha; }
-
-private:
-    float m_red {0.0};
-    float m_green {0.0};
-    float m_blue {0.0};
-    float m_alpha {0.0};
-};
+using Rgba128Float = RgbaGeneric<float>;
 
 namespace Private {
 
@@ -44,13 +19,6 @@ inline float constexpr bounded(float value) noexcept { return qBound(0.0f, value
 inline float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f, value, 1.0f); }
 
 } // namespace Private
-
-// qHelpers
-
-inline constexpr float qRed(Rgba128Float color) noexcept { return color.red(); }
-inline constexpr float qGreen(Rgba128Float color) noexcept { return color.green(); }
-inline constexpr float qBlue(Rgba128Float color) noexcept { return color.blue(); }
-inline constexpr float qAlpha(Rgba128Float color) noexcept { return color.alpha(); }
 
 // constructors
 

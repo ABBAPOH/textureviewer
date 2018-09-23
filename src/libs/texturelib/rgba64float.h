@@ -2,39 +2,12 @@
 #define RGBA64FLOAT_H
 
 #include <TextureLib/Rgba32Signed>
+#include <TextureLib/RgbaGeneric>
 
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
 
-#include <HalfFloat>
-
-class Rgba64Float
-{
-public:
-    constexpr Rgba64Float() noexcept = default;
-    constexpr Rgba64Float(HalfFloat red, HalfFloat green, HalfFloat blue, HalfFloat alpha = HalfFloat(1.0)) noexcept
-        : m_red(red)
-        , m_green(green)
-        , m_blue(blue)
-        , m_alpha(alpha)
-    {}
-
-    constexpr HalfFloat red()   const noexcept { return m_red;  }
-    constexpr HalfFloat green() const noexcept { return m_green; }
-    constexpr HalfFloat blue()  const noexcept { return m_blue;  }
-    constexpr HalfFloat alpha() const noexcept { return m_alpha; }
-
-    constexpr void setRed  (HalfFloat red)   noexcept { m_red   = red;   }
-    constexpr void setGreen(HalfFloat green) noexcept { m_green = green; }
-    constexpr void setBlue (HalfFloat blue)  noexcept { m_blue  = blue;  }
-    constexpr void setAlpha(HalfFloat alpha) noexcept { m_alpha = alpha; }
-
-private:
-    HalfFloat m_red;
-    HalfFloat m_green;
-    HalfFloat m_blue;
-    HalfFloat m_alpha;
-};
+using Rgba64Float = RgbaGeneric<HalfFloat>;
 
 namespace Private {
 
@@ -45,13 +18,6 @@ inline HalfFloat constexpr bounded(HalfFloat value) noexcept { return qBound(Hal
 inline HalfFloat constexpr boundedSigned(HalfFloat value) noexcept { return qBound(HalfFloat(-1.0f), value, HalfFloat(1.0f)); }
 
 } // namespace Private
-
-// qHelpers
-
-inline constexpr HalfFloat qRed(Rgba64Float color) noexcept { return color.red(); }
-inline constexpr HalfFloat qGreen(Rgba64Float color) noexcept { return color.green(); }
-inline constexpr HalfFloat qBlue(Rgba64Float color) noexcept { return color.blue(); }
-inline constexpr HalfFloat qAlpha(Rgba64Float color) noexcept { return color.alpha(); }
 
 // constructors
 
