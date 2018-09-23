@@ -13,6 +13,7 @@ private slots:
     void api();
     void copy();
     void assign();
+    void constructors();
 };
 
 void TestRgba64Float::defaultConstruction()
@@ -97,6 +98,21 @@ void TestRgba64Float::assign()
     QCOMPARE(c2.green(), c1.green());
     QCOMPARE(c2.blue(), c1.blue());
     QCOMPARE(c2.alpha(), c1.alpha());
+}
+
+void TestRgba64Float::constructors()
+{
+    const auto rgba1 = rgba64Float(qRgba(127, 100, 50, 255));
+    QCOMPARE(qRed(rgba1), HalfFloat(127.0f / 255.0f));
+    QCOMPARE(qGreen(rgba1), HalfFloat(100.0f / 255.0f));
+    QCOMPARE(qBlue(rgba1), HalfFloat(50.0f / 255.0f));
+    QCOMPARE(qAlpha(rgba1), 1.0f);
+
+    const auto rgba32 = qRgba(rgba1);
+    QCOMPARE(qRed(rgba32), 127);
+    QCOMPARE(qGreen(rgba32), 100);
+    QCOMPARE(qBlue(rgba32), 50);
+    QCOMPARE(qAlpha(rgba32), 255);
 }
 
 QTEST_APPLESS_MAIN(TestRgba64Float)

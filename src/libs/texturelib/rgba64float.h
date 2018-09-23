@@ -75,10 +75,10 @@ inline constexpr Rgba64Float rgba64Float(QRgb rgba) noexcept
 inline constexpr QRgb qRgba(Rgba64Float rgba) noexcept
 {
     return qRgba(
-            0xffu * Private::bounded(rgba.red()),
-            0xffu * Private::bounded(rgba.green()),
-            0xffu * Private::bounded(rgba.blue()),
-            0xffu * Private::bounded(rgba.alpha()));
+            quint8(0xffu * Private::bounded(rgba.red()) + 0.5f),
+            quint8(0xffu * Private::bounded(rgba.green()) + 0.5f),
+            quint8(0xffu * Private::bounded(rgba.blue()) + 0.5f),
+            quint8(0xffu * Private::bounded(rgba.alpha()) + 0.5f));
 }
 
 // Rgba32Signed
