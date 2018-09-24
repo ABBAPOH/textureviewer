@@ -46,29 +46,6 @@ inline constexpr QRgb qRgba(Rgba128Float rgba) noexcept
             0xffu * Private::bounded(rgba.alpha()));
 }
 
-// Rgba32Signed
-
-inline constexpr Rgba128Float rgba128Float(Rgba32Signed rgba) noexcept
-{
-    return {
-            Private::normalizeF32(rgba.red()),
-            Private::normalizeF32(rgba.green()),
-            Private::normalizeF32(rgba.blue()),
-            Private::normalizeF32(rgba.alpha())
-    };
-}
-
-inline constexpr Rgba32Signed rgba32Signed(Rgba128Float rgba) noexcept
-{
-    // TODO (abbapoh): we do not cover -128 value for now, should be fixed
-    return rgba32Signed(
-            0x7f * Private::boundedSigned(rgba.red()),
-            0x7f * Private::boundedSigned(rgba.green()),
-            0x7f * Private::boundedSigned(rgba.blue()),
-            0x7f * Private::boundedSigned(rgba.alpha())
-    );
-}
-
 // QRgba64
 
 inline constexpr QRgba64 qRgba64(Rgba128Float rgba) noexcept
