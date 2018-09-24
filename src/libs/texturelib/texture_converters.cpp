@@ -278,74 +278,36 @@ void writeRGBA16_Unorm(Texture::Data data, const AnyColor &color)
     d[3] = qAlpha(rgba);
 }
 
-AnyColor readRGB32_Float(Texture::ConstData data)
+template<typename Float, size_t components>
+AnyColor readRGBAFloat(Texture::ConstData data)
 {
-    Q_ASSERT(data.size() == 12);
-    const auto d = reinterpret_cast<const float *>(data.data());
-    return {Rgba128Float(d[0], d[1], d[2], 1.0f)};
-}
-
-void writeRGB32_Float(Texture::Data data, const AnyColor &color)
-{
-    Q_ASSERT(data.size() == 12);
-    const auto rgba = color.toRgbaFloat32();
-    const auto d = reinterpret_cast<float *>(data.data());
-    d[0] = rgba.red();
-    d[1] = rgba.green();
-    d[2] = rgba.blue();
-}
-
-AnyColor readRGBA32_Float(Texture::ConstData data)
-{
-    Q_ASSERT(data.size() == 16);
-    const auto d = reinterpret_cast<const float *>(data.data());
-    return {Rgba128Float(d[0], d[1], d[2], d[3])};
-}
-
-void writeRGBA32_Float(Texture::Data data, const AnyColor &color)
-{
-    Q_ASSERT(data.size() == 16);
-    const auto rgba = color.toRgbaFloat32();
-    const auto d = reinterpret_cast<float *>(data.data());
-    d[0] = rgba.red();
-    d[1] = rgba.green();
-    d[2] = rgba.blue();
-    d[3] = rgba.alpha();
-}
-
-template<typename Float>
-AnyColor readRFloat(Texture::ConstData data)
-{
-    Q_ASSERT(data.size() == 1 * sizeof(Float));
+    static_assert (components >= 1 && components <= 4, "Invalid components count");
+    Q_ASSERT(data.size() == components * sizeof(Float));
     const auto d = reinterpret_cast<const Float *>(data.data());
-    return {createRgba<Float>(d[0], Float(0.0f), Float(0.0f))};
+    if (components == 1)
+        return {RgbaGeneric<Float>(d[0], Float(0), Float(0))};
+    if (components == 2)
+        return {RgbaGeneric<Float>(d[0], d[1], Float(0))};
+    if (components == 3)
+        return {RgbaGeneric<Float>(d[0], d[1], d[2])};
+    if (components == 4)
+        return {RgbaGeneric<Float>(d[0], d[1], d[2], d[3])};
 }
 
-template<typename Float>
-void writeRFloat(Texture::Data data, const AnyColor &color)
+template<typename Float, size_t components>
+void writeRGBAFloat(Texture::Data data, const AnyColor &color)
 {
-    Q_ASSERT(data.size() == 1 * sizeof(Float));
+    Q_ASSERT(data.size() == 3 * sizeof(Float));
     const auto rgba = colorFunc<Float>(color);
     const auto d = reinterpret_cast<Float *>(data.data());
-    d[0] = qRed(rgba);
-}
-
-template<typename Float>
-AnyColor readRGFloat(Texture::ConstData data)
-{
-    Q_ASSERT(data.size() == 2 * sizeof(Float));
-    const auto d = reinterpret_cast<const Float *>(data.data());
-    return {RgbaGeneric<Float>(d[0], d[1], Float(0.0f))};
-}
-
-template<typename Float>
-void writeRGFloat(Texture::Data data, const AnyColor &color)
-{
-    Q_ASSERT(data.size() == 2 * sizeof(Float));
-    const auto rgba = colorFunc<Float>(color);
-    const auto d = reinterpret_cast<Float *>(data.data());
-    d[0] = qRed(rgba);
-    d[1] = qGreen(rgba);
+    if (components >= 1)
+        d[0] = qRed(rgba);
+    if (components >= 2)
+        d[1] = qGreen(rgba);
+    if (components >= 3)
+        d[2] = qGreen(rgba);
+    if (components >= 4)
+        d[2] = qAlpha(rgba);
 }
 
 constexpr TextureFormatConverter converters[] = {
@@ -367,7 +329,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::R16_Unorm, readR16_Unorm, writeR16_Unorm },
     { TextureFormat::R16_Sint },
     { TextureFormat::R16_Uint },
-    { TextureFormat::R16_Float, readRFloat<HalfFloat>, writeRFloat<HalfFloat> },
+    { TextureFormat::R16_Float, readRGBAFloat<HalfFloat, 1>, writeRGBAFloat<HalfFloat, 1> },
 
     { TextureFormat::RG8_Snorm },
     { TextureFormat::RG8_Unorm, readRG8_Unorm, writeRG8_Unorm },
@@ -381,13 +343,13 @@ constexpr TextureFormatConverter converters[] = {
     // 32bit
     { TextureFormat::R32_Sint },
     { TextureFormat::R32_Uint },
-    { TextureFormat::R32_Float, readRFloat<float>, writeRFloat<float> },
+    { TextureFormat::R32_Float, readRGBAFloat<float, 1>, writeRGBAFloat<float, 1> },
 
     { TextureFormat::RG16_Snorm },
     { TextureFormat::RG16_Unorm, readRG16_Unorm, writeRG16_Unorm },
     { TextureFormat::RG16_Sint },
     { TextureFormat::RG16_Uint },
-    { TextureFormat::RG16_Float, readRGFloat<HalfFloat>, writeRGFloat<HalfFloat> },
+    { TextureFormat::RG16_Float, readRGBAFloat<HalfFloat, 2>, writeRGBAFloat<HalfFloat, 2> },
 
     { TextureFormat::RGBA8_Snorm },
     { TextureFormat::RGBA8_Unorm, readRGBA8_Unorm, writeRGBA8_Unorm },
@@ -407,21 +369,21 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::RGBA16_Unorm, readRGBA16_Unorm, writeRGBA16_Unorm },
     { TextureFormat::RGBA16_Sint },
     { TextureFormat::RGBA16_Uint },
-    { TextureFormat::RGBA16_Float },
+    { TextureFormat::RGBA16_Float, readRGBAFloat<HalfFloat, 4>, writeRGBAFloat<HalfFloat, 4> },
 
     { TextureFormat::RG32_Sint },
     { TextureFormat::RG32_Uint },
-    { TextureFormat::RG32_Float, readRGFloat<float>, writeRGFloat<float> },
+    { TextureFormat::RG32_Float, readRGBAFloat<float, 2>, writeRGBAFloat<float, 2> },
 
     // 96bit
     { TextureFormat::RGB32_Sint },
     { TextureFormat::RGB32_Uint },
-    { TextureFormat::RGB32_Float, readRGB32_Float, writeRGB32_Float },
+    { TextureFormat::RGB32_Float, readRGBAFloat<float, 3>, writeRGBAFloat<float, 3> },
 
     // 128bit
     { TextureFormat::RGBA32_Sint },
     { TextureFormat::RGBA32_Uint },
-    { TextureFormat::RGBA32_Float, readRGBA32_Float, writeRGBA32_Float },
+    { TextureFormat::RGBA32_Float, readRGBAFloat<float, 4>, writeRGBAFloat<float, 4> },
 
     // packed formats
     { TextureFormat::BGR565_Unorm },
