@@ -26,9 +26,10 @@ typename Private::RgbaCreateHelper<T>::Dst colorFunc(const AnyColor &color)
 {
     Q_UNUSED(color);
     Q_UNIMPLEMENTED();
-};
+}
 
 template<> QRgb colorFunc<quint8>(const AnyColor &color) { return color.toRgba8_Unorm(); }
+template<> Rgba32Signed colorFunc<qint8>(const AnyColor &color) { return color.toRgba8_Snorm(); }
 template<> QRgba64 colorFunc<quint16>(const AnyColor &color) { return color.toRgba16_Unorm(); }
 template<> RgbaGeneric<HalfFloat> colorFunc<HalfFloat>(const AnyColor &color) { return color.toRgbaFloat16(); }
 template<> RgbaGeneric<float> colorFunc<float>(const AnyColor &color) { return color.toRgbaFloat32(); }
@@ -208,7 +209,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::A8_Unorm, readA8_Unorm, writeA8_Unorm },
     { TextureFormat::L8_Unorm, readL8_Unorm, writeL8_Unorm },
 
-    { TextureFormat::R8_Snorm },
+    { TextureFormat::R8_Snorm, readRGBA<qint8, 1>, writeRGBA<qint8, 1> },
     { TextureFormat::R8_Unorm, readRGBA<quint8, 1>, writeRGBA<quint8, 1> },
     { TextureFormat::R8_Sint },
     { TextureFormat::R8_Uint },
@@ -222,7 +223,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::R16_Uint },
     { TextureFormat::R16_Float, readRGBA<HalfFloat, 1>, writeRGBA<HalfFloat, 1> },
 
-    { TextureFormat::RG8_Snorm },
+    { TextureFormat::RG8_Snorm, readRGBA<qint8, 2>, writeRGBA<qint8, 2> },
     { TextureFormat::RG8_Unorm, readRGBA<quint8, 2>, writeRGBA<quint8, 2> },
     { TextureFormat::RG8_Sint },
     { TextureFormat::RG8_Uint },
@@ -242,7 +243,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::RG16_Uint },
     { TextureFormat::RG16_Float, readRGBA<HalfFloat, 2>, writeRGBA<HalfFloat, 2> },
 
-    { TextureFormat::RGBA8_Snorm },
+    { TextureFormat::RGBA8_Snorm, readRGBA<qint8, 4>, writeRGBA<qint8, 4> },
     { TextureFormat::RGBA8_Unorm, readRGBA<quint8, 4>, writeRGBA<quint8, 4> },
     { TextureFormat::RGBA8_Sint },
     { TextureFormat::RGBA8_Uint },
