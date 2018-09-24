@@ -19,6 +19,8 @@ struct TextureFormatConverter
 
 using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 
+// generic functions
+
 template<typename T>
 typename Private::RgbaCreateHelper<T>::Dst colorFunc(const AnyColor &color)
 {
@@ -30,6 +32,40 @@ template<> QRgb colorFunc<quint8>(const AnyColor &color) { return color.toRgba8_
 template<> QRgba64 colorFunc<quint16>(const AnyColor &color) { return color.toRgba16_Unorm(); }
 template<> RgbaGeneric<HalfFloat> colorFunc<HalfFloat>(const AnyColor &color) { return color.toRgbaFloat16(); }
 template<> RgbaGeneric<float> colorFunc<float>(const AnyColor &color) { return color.toRgbaFloat32(); }
+
+template<typename Type, size_t components>
+AnyColor readRGBA(Texture::ConstData data)
+{
+    static_assert (components >= 1 && components <= 4, "Invalid components count");
+    Q_ASSERT(data.size() == components * sizeof(Type));
+    const auto d = reinterpret_cast<const Type *>(data.data());
+    if (components == 1)
+        return {Private::createRgba<Type>(d[0], Type(0), Type(0))};
+    if (components == 2)
+        return {Private::createRgba<Type>(d[0], d[1], Type(0))};
+    if (components == 3)
+        return {Private::createRgba<Type>(d[0], d[1], d[2])};
+    if (components == 4)
+        return {Private::createRgba<Type>(d[0], d[1], d[2], d[3])};
+}
+
+template<typename Type, size_t components>
+void writeRGBA(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 3 * sizeof(Type));
+    const auto rgba = colorFunc<Type>(color);
+    const auto d = reinterpret_cast<Type *>(data.data());
+    if (components >= 1)
+        d[0] = Type(qRed(rgba));
+    if (components >= 2)
+        d[1] = Type(qGreen(rgba));
+    if (components >= 3)
+        d[2] = Type(qGreen(rgba));
+    if (components >= 4)
+        d[2] = Type(qAlpha(rgba));
+}
+
+// specialized functions
 
 AnyColor readA8_Unorm(Texture::ConstData data)
 {
@@ -163,38 +199,6 @@ void writeBGRX8_Unorm(Texture::Data data, const AnyColor &color)
     d[1] = quint8(qGreen(rgba));
     d[0] = quint8(qBlue(rgba));
     d[3] = 0xff;
-}
-
-template<typename Type, size_t components>
-AnyColor readRGBA(Texture::ConstData data)
-{
-    static_assert (components >= 1 && components <= 4, "Invalid components count");
-    Q_ASSERT(data.size() == components * sizeof(Type));
-    const auto d = reinterpret_cast<const Type *>(data.data());
-    if (components == 1)
-        return {Private::createRgba<Type>(d[0], Type(0), Type(0))};
-    if (components == 2)
-        return {Private::createRgba<Type>(d[0], d[1], Type(0))};
-    if (components == 3)
-        return {Private::createRgba<Type>(d[0], d[1], d[2])};
-    if (components == 4)
-        return {Private::createRgba<Type>(d[0], d[1], d[2], d[3])};
-}
-
-template<typename Type, size_t components>
-void writeRGBA(Texture::Data data, const AnyColor &color)
-{
-    Q_ASSERT(data.size() == 3 * sizeof(Type));
-    const auto rgba = colorFunc<Type>(color);
-    const auto d = reinterpret_cast<Type *>(data.data());
-    if (components >= 1)
-        d[0] = Type(qRed(rgba));
-    if (components >= 2)
-        d[1] = Type(qGreen(rgba));
-    if (components >= 3)
-        d[2] = Type(qGreen(rgba));
-    if (components >= 4)
-        d[2] = Type(qAlpha(rgba));
 }
 
 constexpr TextureFormatConverter converters[] = {
