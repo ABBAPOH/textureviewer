@@ -22,7 +22,8 @@ using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 template<typename T>
 RgbaGeneric<T> colorFunc(const AnyColor &color)
 {
-//    static_assert(false, "Not implemented");
+    Q_UNUSED(color);
+    Q_UNIMPLEMENTED();
 };
 
 template<> RgbaGeneric<HalfFloat> colorFunc<HalfFloat>(const AnyColor &color) { return color.toRgbaFloat16(); }
@@ -151,23 +152,6 @@ void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
     d[2] = qRed(rgba);
     d[1] = qGreen(rgba);
     d[0] = qBlue(rgba);
-}
-
-template<typename Color, typename Float>
-AnyColor readRFloat(Texture::ConstData data)
-{
-    Q_ASSERT(data.size() == 1 * sizeof(Float));
-    const auto d = reinterpret_cast<const Float *>(data.data());
-    return {Color(d[0], 0.0f, 0.0f)};
-}
-
-template<typename Color, typename Float>
-void writeRFloat(Texture::Data data, const AnyColor &color)
-{
-    Q_ASSERT(data.size() == 1 * sizeof(Float));
-    const auto rgba = colorFunc<Float>(color);
-    const auto d = reinterpret_cast<Float *>(data.data());
-    d[0] = qRed(rgba);
 }
 
 AnyColor readRG16_Unorm(Texture::ConstData data)
@@ -343,6 +327,23 @@ void writeRGBA32_Float(Texture::Data data, const AnyColor &color)
     d[1] = rgba.green();
     d[2] = rgba.blue();
     d[3] = rgba.alpha();
+}
+
+template<typename Color, typename Float>
+AnyColor readRFloat(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 1 * sizeof(Float));
+    const auto d = reinterpret_cast<const Float *>(data.data());
+    return {Color(d[0], 0.0f, 0.0f)};
+}
+
+template<typename Color, typename Float>
+void writeRFloat(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 1 * sizeof(Float));
+    const auto rgba = colorFunc<Float>(color);
+    const auto d = reinterpret_cast<Float *>(data.data());
+    d[0] = qRed(rgba);
 }
 
 constexpr TextureFormatConverter converters[] = {
