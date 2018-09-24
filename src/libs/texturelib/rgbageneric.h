@@ -45,7 +45,7 @@ public:
         , m_alpha(alpha)
     {}
 
-    constexpr DataType red()   const noexcept { return m_red;  }
+    constexpr DataType red()   const noexcept { return m_red;   }
     constexpr DataType green() const noexcept { return m_green; }
     constexpr DataType blue()  const noexcept { return m_blue;  }
     constexpr DataType alpha() const noexcept { return m_alpha; }
