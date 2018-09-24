@@ -365,7 +365,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::R16_Unorm, readR16_Unorm, writeR16_Unorm },
     { TextureFormat::R16_Sint },
     { TextureFormat::R16_Uint },
-    { TextureFormat::R16_Float },
+    { TextureFormat::R16_Float, readRFloat<Rgba128Float, HalfFloat>, writeRFloat<Rgba128Float, HalfFloat> },
 
     { TextureFormat::RG8_Snorm },
     { TextureFormat::RG8_Unorm, readRG8_Unorm, writeRG8_Unorm },
