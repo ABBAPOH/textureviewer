@@ -21,9 +21,9 @@ inline HalfFloat constexpr boundedSigned(HalfFloat value) noexcept { return qBou
 
 // constructors
 
-inline constexpr Rgba64Float rgba64Float(HalfFloat red, HalfFloat green, HalfFloat blue, HalfFloat alpha = HalfFloat(1.0)) noexcept
+inline constexpr Rgba64Float rgba64Float(HalfFloat r, HalfFloat g, HalfFloat b, HalfFloat a = HalfFloat(1.0)) noexcept
 {
-    return {red, green, blue, alpha};
+    return createRgba<HalfFloat>(r, g, b, a);
 }
 
 // QRgba

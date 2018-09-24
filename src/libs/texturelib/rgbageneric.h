@@ -69,4 +69,9 @@ template<typename T> constexpr T qGreen(RgbaGeneric<T> color) noexcept { return 
 template<typename T> constexpr T qBlue (RgbaGeneric<T> color) noexcept { return color.blue();  }
 template<typename T> constexpr T qAlpha(RgbaGeneric<T> color) noexcept { return color.alpha(); }
 
+template<typename T> constexpr RgbaGeneric<T> createRgba(T r, T g, T b, T a = RgbaLimits<T>::max()) noexcept
+{
+    return {r, g, b, a};
+}
+
 #endif // RGBAGENERIC_H

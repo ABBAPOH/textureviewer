@@ -22,9 +22,9 @@ inline float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f
 
 // constructors
 
-inline constexpr Rgba128Float rgba128Float(float red, float green, float blue, float alpha = 1.0f) noexcept
+inline constexpr Rgba128Float rgba128Float(float r, float g, float b, float a = 1.0f) noexcept
 {
-    return {red, green, blue, alpha};
+    return createRgba<float>(r, g, b, a);
 }
 
 // QRgba
