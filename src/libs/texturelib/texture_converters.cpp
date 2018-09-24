@@ -19,6 +19,15 @@ struct TextureFormatConverter
 
 using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 
+template<typename T>
+RgbaGeneric<T> colorFunc(const AnyColor &color)
+{
+//    static_assert(false, "Not implemented");
+};
+
+template<> RgbaGeneric<HalfFloat> colorFunc<HalfFloat>(const AnyColor &color) { return color.toRgbaFloat16(); }
+template<> RgbaGeneric<float> colorFunc<float>(const AnyColor &color) { return color.toRgbaFloat32(); }
+
 AnyColor readA8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 1);
@@ -152,11 +161,11 @@ AnyColor readRFloat(Texture::ConstData data)
     return {Color(d[0], 0.0f, 0.0f)};
 }
 
-template<typename Color, Color(*ColorFunc)(const AnyColor &color), typename Float>
+template<typename Color, typename Float>
 void writeRFloat(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 1 * sizeof(Float));
-    const auto rgba = ColorFunc(color);
+    const auto rgba = colorFunc<Float>(color);
     const auto d = reinterpret_cast<Float *>(data.data());
     d[0] = qRed(rgba);
 }
@@ -369,7 +378,7 @@ constexpr TextureFormatConverter converters[] = {
     // 32bit
     { TextureFormat::R32_Sint },
     { TextureFormat::R32_Uint },
-    { TextureFormat::R32_Float, readRFloat<Rgba128Float, float>, writeRFloat<Rgba128Float, rgba128Float, float> },
+    { TextureFormat::R32_Float, readRFloat<Rgba128Float, float>, writeRFloat<Rgba128Float, float> },
 
     { TextureFormat::RG16_Snorm },
     { TextureFormat::RG16_Unorm, readRG16_Unorm, writeRG16_Unorm },
