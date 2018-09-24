@@ -13,7 +13,8 @@ private slots:
     void api();
     void copy();
     void assign();
-    void constructors();
+    void fromRgba32();
+    void toRgba32();
 };
 
 void TestRgba64Float::defaultConstruction()
@@ -100,18 +101,21 @@ void TestRgba64Float::assign()
     QCOMPARE(c2.alpha(), c1.alpha());
 }
 
-void TestRgba64Float::constructors()
+void TestRgba64Float::fromRgba32()
 {
     const auto rgba1 = rgba64Float(qRgba(127, 100, 50, 255));
     QCOMPARE(qRed(rgba1), HalfFloat(127.0f / 255.0f));
     QCOMPARE(qGreen(rgba1), HalfFloat(100.0f / 255.0f));
     QCOMPARE(qBlue(rgba1), HalfFloat(50.0f / 255.0f));
     QCOMPARE(qAlpha(rgba1), 1.0f);
+}
 
-    const auto rgba32 = qRgba(rgba1);
-    QCOMPARE(qRed(rgba32), 127);
-    QCOMPARE(qGreen(rgba32), 100);
-    QCOMPARE(qBlue(rgba32), 50);
+void TestRgba64Float::toRgba32()
+{
+    const auto rgba32 = qRgba(rgba64Float(HalfFloat(0.5f), HalfFloat(0.3f), HalfFloat(0.1f), HalfFloat(1.0f)));
+    QCOMPARE(qRed(rgba32), 128);
+    QCOMPARE(qGreen(rgba32), 76);
+    QCOMPARE(qBlue(rgba32), 25);
     QCOMPARE(qAlpha(rgba32), 255);
 }
 
