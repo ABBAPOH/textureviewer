@@ -67,12 +67,22 @@ private:
     DataType m_alpha {0};
 };
 
-// qHelpers
+// getHelpers
 
-template<typename T> constexpr T qRed  (RgbaGeneric<T> color) noexcept { return color.red();   }
-template<typename T> constexpr T qGreen(RgbaGeneric<T> color) noexcept { return color.green(); }
-template<typename T> constexpr T qBlue (RgbaGeneric<T> color) noexcept { return color.blue();  }
-template<typename T> constexpr T qAlpha(RgbaGeneric<T> color) noexcept { return color.alpha(); }
+template<typename T> constexpr T getRed  (RgbaGeneric<T> color) noexcept { return color.red();   }
+template<typename T> constexpr T getGreen(RgbaGeneric<T> color) noexcept { return color.green(); }
+template<typename T> constexpr T getBlue (RgbaGeneric<T> color) noexcept { return color.blue();  }
+template<typename T> constexpr T getAlpha(RgbaGeneric<T> color) noexcept { return color.alpha(); }
+
+inline constexpr quint8 getRed  (QRgb color) noexcept { return quint8(qRed(color));   }
+inline constexpr quint8 getGreen(QRgb color) noexcept { return quint8(qGreen(color)); }
+inline constexpr quint8 getBlue (QRgb color) noexcept { return quint8(qBlue(color));  }
+inline constexpr quint8 getAlpha(QRgb color) noexcept { return quint8(qAlpha(color)); }
+
+inline constexpr quint16 getRed  (QRgba64 color) noexcept { return color.red();   }
+inline constexpr quint16 getGreen(QRgba64 color) noexcept { return color.green(); }
+inline constexpr quint16 getBlue (QRgba64 color) noexcept { return color.blue();  }
+inline constexpr quint16 getAlpha(QRgba64 color) noexcept { return color.alpha(); }
 
 // helpers
 
@@ -146,10 +156,10 @@ template<typename Dst, typename Src>
 constexpr typename RgbaCreateHelper<Dst>::Dst convertRgba(typename RgbaCreateHelper<Src>::Dst src) noexcept
 {
     return createRgba<Dst>(
-            normalize<Dst, Src>(qRed(src)),
-            normalize<Dst, Src>(qGreen(src)),
-            normalize<Dst, Src>(qBlue(src)),
-            normalize<Dst, Src>(qAlpha(src))
+            normalize<Dst, Src>(getRed(src)),
+            normalize<Dst, Src>(getGreen(src)),
+            normalize<Dst, Src>(getBlue(src)),
+            normalize<Dst, Src>(getAlpha(src))
     );
 }
 

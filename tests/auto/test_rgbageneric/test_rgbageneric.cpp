@@ -38,6 +38,16 @@ void TestRgbaGeneric::testNormalize()
     QCOMPARE((Private::normalize<quint16, float>(1.0f * 0x7fff / 0xffff)), 0x7fff);
     QCOMPARE((Private::normalize<quint16, float>(1.0f)), 0xffff);
 
+    // quint8 -> HalfFloat
+    QCOMPARE((Private::normalize<HalfFloat, quint8>(0)), HalfFloat(0.0f));
+    QCOMPARE((Private::normalize<HalfFloat, quint8>(127)), HalfFloat(127.0f / 255.0f));
+    QCOMPARE((Private::normalize<HalfFloat, quint8>(0xff)), HalfFloat(1.0f));
+
+    // float -> quint8
+    QCOMPARE((Private::normalize<quint8, HalfFloat>(HalfFloat(0.0f))), 0);
+    QCOMPARE((Private::normalize<quint8, HalfFloat>(HalfFloat(0.497f))), 127);
+    QCOMPARE((Private::normalize<quint8, HalfFloat>(HalfFloat(1.0f))), 0xff);
+
     // float -> HalfFloat
     QCOMPARE((Private::normalize<HalfFloat, float>(0.0f)), HalfFloat(0));
     QCOMPARE((Private::normalize<HalfFloat, float>(0.5f)), HalfFloat(0.5f));
@@ -96,10 +106,10 @@ void TestRgbaGeneric::api()
 
     // qHelpers
 
-    QCOMPARE(qRed(c), red);
-    QCOMPARE(qGreen(c), green);
-    QCOMPARE(qBlue(c), blue);
-    QCOMPARE(qAlpha(c), alpha);
+    QCOMPARE(getRed(c), red);
+    QCOMPARE(getGreen(c), green);
+    QCOMPARE(getBlue(c), blue);
+    QCOMPARE(getAlpha(c), alpha);
 
     // setters
     RgbaGeneric<float> c2;

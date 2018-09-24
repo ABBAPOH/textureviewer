@@ -57,13 +57,13 @@ void writeRGBA(Texture::Data data, const AnyColor &color)
     const auto rgba = colorFunc<Type>(color);
     const auto d = reinterpret_cast<Type *>(data.data());
     if (components >= 1)
-        d[0] = Type(qRed(rgba));
+        d[0] = Type(getRed(rgba));
     if (components >= 2)
-        d[1] = Type(qGreen(rgba));
+        d[1] = Type(getGreen(rgba));
     if (components >= 3)
-        d[2] = Type(qGreen(rgba));
+        d[2] = Type(getBlue(rgba));
     if (components >= 4)
-        d[2] = Type(qAlpha(rgba));
+        d[3] = Type(getAlpha(rgba));
 }
 
 // specialized functions

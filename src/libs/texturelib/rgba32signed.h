@@ -79,6 +79,13 @@ inline constexpr qint8 qGreen(Rgba32Signed color) noexcept { return color.green(
 inline constexpr qint8 qBlue (Rgba32Signed color) noexcept { return color.blue();  }
 inline constexpr qint8 qAlpha(Rgba32Signed color) noexcept { return color.alpha(); }
 
+// getHelpers
+
+inline constexpr qint8 getRed  (Rgba32Signed color) noexcept { return color.red();   }
+inline constexpr qint8 getGreen(Rgba32Signed color) noexcept { return color.green(); }
+inline constexpr qint8 getBlue (Rgba32Signed color) noexcept { return color.blue();  }
+inline constexpr qint8 getAlpha(Rgba32Signed color) noexcept { return color.alpha(); }
+
 namespace Private {
 
 template<>
