@@ -278,22 +278,6 @@ void writeRGBA16_Unorm(Texture::Data data, const AnyColor &color)
     d[3] = qAlpha(rgba);
 }
 
-AnyColor readRG32_Float(Texture::ConstData data)
-{
-    Q_ASSERT(data.size() == 8);
-    const auto d = reinterpret_cast<const float *>(data.data());
-    return {Rgba128Float(d[0], d[1], 0.0f, 1.0f)};
-}
-
-void writeRG32_Float(Texture::Data data, const AnyColor &color)
-{
-    Q_ASSERT(data.size() == 8);
-    const auto rgba = color.toRgbaFloat32();
-    const auto d = reinterpret_cast<float *>(data.data());
-    d[0] = rgba.red();
-    d[1] = rgba.green();
-}
-
 AnyColor readRGB32_Float(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 12);
@@ -346,6 +330,24 @@ void writeRFloat(Texture::Data data, const AnyColor &color)
     d[0] = qRed(rgba);
 }
 
+template<typename Float>
+AnyColor readRGFloat(Texture::ConstData data)
+{
+    Q_ASSERT(data.size() == 2 * sizeof(Float));
+    const auto d = reinterpret_cast<const Float *>(data.data());
+    return {RgbaGeneric<Float>(d[0], d[1], Float(0.0f))};
+}
+
+template<typename Float>
+void writeRGFloat(Texture::Data data, const AnyColor &color)
+{
+    Q_ASSERT(data.size() == 2 * sizeof(Float));
+    const auto rgba = colorFunc<Float>(color);
+    const auto d = reinterpret_cast<Float *>(data.data());
+    d[0] = qRed(rgba);
+    d[1] = qGreen(rgba);
+}
+
 constexpr TextureFormatConverter converters[] = {
     { TextureFormat::Invalid },
 
@@ -385,7 +387,7 @@ constexpr TextureFormatConverter converters[] = {
     { TextureFormat::RG16_Unorm, readRG16_Unorm, writeRG16_Unorm },
     { TextureFormat::RG16_Sint },
     { TextureFormat::RG16_Uint },
-    { TextureFormat::RG16_Float },
+    { TextureFormat::RG16_Float, readRGFloat<HalfFloat>, writeRGFloat<HalfFloat> },
 
     { TextureFormat::RGBA8_Snorm },
     { TextureFormat::RGBA8_Unorm, readRGBA8_Unorm, writeRGBA8_Unorm },
@@ -409,7 +411,7 @@ constexpr TextureFormatConverter converters[] = {
 
     { TextureFormat::RG32_Sint },
     { TextureFormat::RG32_Uint },
-    { TextureFormat::RG32_Float, readRG32_Float, writeRG32_Float },
+    { TextureFormat::RG32_Float, readRGFloat<float>, writeRGFloat<float> },
 
     // 96bit
     { TextureFormat::RGB32_Sint },
