@@ -9,17 +9,15 @@ class TestRgbaGeneric : public QObject
     Q_OBJECT
 private slots:
     void testNormalize();
-//    void defaultConstruction();
-//    void api_data();
-//    void api();
-//    void copy();
-//    void assign();
-//    void constructors();
+    void defaultConstruction();
+    void api_data();
+    void api();
+    void copy();
+    void assign();
 };
 
 void TestRgbaGeneric::testNormalize()
 {
-//    qDebug() << std::numeric_limits<HalfFloat>::is_integer;
     // quint8 -> float
     QCOMPARE((Private::normalize<float, quint8>(0)), 0.0f);
     QCOMPARE((Private::normalize<float, quint8>(127)), 127.0f / 255.0f);
@@ -57,104 +55,89 @@ void TestRgbaGeneric::testNormalize()
     QCOMPARE((Private::normalize<quint16, quint8>(0xff)), 0xffff);
 }
 
-//void TestRgbaGeneric::defaultConstruction()
-//{
-//    Rgba64Float c;
-//    QCOMPARE(c.red(), 0);
-//    QCOMPARE(c.green(), 0);
-//    QCOMPARE(c.blue(), 0);
-//    QCOMPARE(c.alpha(), 0);
-//}
+void TestRgbaGeneric::defaultConstruction()
+{
+    RgbaGeneric<float> c;
+    QCOMPARE(c.red(), 0.0f);
+    QCOMPARE(c.green(), 0.0f);
+    QCOMPARE(c.blue(), 0.0f);
+    QCOMPARE(c.alpha(), 0.0f);
+}
 
-//void TestRgbaGeneric::api_data()
-//{
-//    QTest::addColumn<HalfFloat>("red");
-//    QTest::addColumn<HalfFloat>("green");
-//    QTest::addColumn<HalfFloat>("blue");
-//    QTest::addColumn<HalfFloat>("alpha");
+void TestRgbaGeneric::api_data()
+{
+    QTest::addColumn<float>("red");
+    QTest::addColumn<float>("green");
+    QTest::addColumn<float>("blue");
+    QTest::addColumn<float>("alpha");
 
-//    QTest::newRow("black") << HalfFloat(0) << HalfFloat(0) << HalfFloat(0) << HalfFloat(0);
-//    QTest::newRow("red") << HalfFloat(1.0f) << HalfFloat(0) << HalfFloat(0) << HalfFloat(1.0f);
-//    QTest::newRow("red green") << HalfFloat(1.0f) << HalfFloat(1.0f) << HalfFloat(0) << HalfFloat(1.0f);
-//    QTest::newRow("white") << HalfFloat(1.0f) << HalfFloat(1.0f) << HalfFloat(1.0f) << HalfFloat(1.0f);
-//    QTest::newRow("negative red") << HalfFloat(-1.0f) << HalfFloat(0) << HalfFloat(0) << HalfFloat(-1.0f);
-//    QTest::newRow("negative white") << HalfFloat(-1.0f) << HalfFloat(-1.0f) << HalfFloat(-1.0f) << HalfFloat(-1.0f);
-//}
+    QTest::newRow("black") << 0.0f << 0.0f << 0.0f << 0.0f;
+    QTest::newRow("red") << float(0) << 0.0f << 0.0f << float(0);
+    QTest::newRow("red green") << 1.0f << 1.0f << 0.0f << 1.0f;
+    QTest::newRow("white") << 1.0f << 1.0f << 1.0f << float(0);
+    QTest::newRow("negative red") << -1.0f << 0.0f << 0.0f << -1.0f;
+    QTest::newRow("negative white") << -1.0f << -1.0f << -1.0f << -1.0f;
+}
 
-//void TestRgbaGeneric::api()
-//{
-//    QFETCH(HalfFloat, red);
-//    QFETCH(HalfFloat, green);
-//    QFETCH(HalfFloat, blue);
-//    QFETCH(HalfFloat, alpha);
+void TestRgbaGeneric::api()
+{
+    QFETCH(float, red);
+    QFETCH(float, green);
+    QFETCH(float, blue);
+    QFETCH(float, alpha);
 
-//    // construction
-//    Rgba64Float c(red, green, blue, alpha);
+    // construction
+    RgbaGeneric<float> c(red, green, blue, alpha);
 
-//    QCOMPARE(c.red(), red);
-//    QCOMPARE(c.green(), green);
-//    QCOMPARE(c.blue(), blue);
-//    QCOMPARE(c.alpha(), alpha);
+    QCOMPARE(c.red(), red);
+    QCOMPARE(c.green(), green);
+    QCOMPARE(c.blue(), blue);
+    QCOMPARE(c.alpha(), alpha);
 
-//    // qHelpers
+    // qHelpers
 
-//    QCOMPARE(qRed(c), red);
-//    QCOMPARE(qGreen(c), green);
-//    QCOMPARE(qBlue(c), blue);
-//    QCOMPARE(qAlpha(c), alpha);
+    QCOMPARE(qRed(c), red);
+    QCOMPARE(qGreen(c), green);
+    QCOMPARE(qBlue(c), blue);
+    QCOMPARE(qAlpha(c), alpha);
 
-//    // setters
-//    Rgba64Float c2;
+    // setters
+    RgbaGeneric<float> c2;
 
-//    c2.setRed(red);
-//    c2.setGreen(green);
-//    c2.setBlue(blue);
-//    c2.setAlpha(alpha);
+    c2.setRed(red);
+    c2.setGreen(green);
+    c2.setBlue(blue);
+    c2.setAlpha(alpha);
 
-//    QCOMPARE(c2.red(), red);
-//    QCOMPARE(c2.green(), green);
-//    QCOMPARE(c2.blue(), blue);
-//    QCOMPARE(c2.alpha(), alpha);
-//}
+    QCOMPARE(c2.red(), red);
+    QCOMPARE(c2.green(), green);
+    QCOMPARE(c2.blue(), blue);
+    QCOMPARE(c2.alpha(), alpha);
+}
 
-//void TestRgbaGeneric::copy()
-//{
-//    Rgba64Float c1(HalfFloat(1.0f), HalfFloat(1.0f), HalfFloat(1.0f), HalfFloat(1.0f));
-//    Rgba64Float c2(c1);
+void TestRgbaGeneric::copy()
+{
+    RgbaGeneric<float> c1(1.0f, 0.75f, 0.5f, 0.25f);
+    RgbaGeneric<float> c2(c1);
 
-//    QCOMPARE(c2.red(), c1.red());
-//    QCOMPARE(c2.green(), c1.green());
-//    QCOMPARE(c2.blue(), c1.blue());
-//    QCOMPARE(c2.alpha(), c1.alpha());
-//}
+    QCOMPARE(c2.red(), c1.red());
+    QCOMPARE(c2.green(), c1.green());
+    QCOMPARE(c2.blue(), c1.blue());
+    QCOMPARE(c2.alpha(), c1.alpha());
+}
 
-//void TestRgbaGeneric::assign()
-//{
-//    Rgba64Float c1(HalfFloat(1.0f), HalfFloat(1.0f), HalfFloat(1.0f), HalfFloat(1.0f));
-//    Rgba64Float c2;
+void TestRgbaGeneric::assign()
+{
+    RgbaGeneric<float> c1(HalfFloat(1.0f), 1.0f, 1.0f, 1.0f);
+    RgbaGeneric<float> c2;
 
-//    c2 = c1;
+    c2 = c1;
 
-//    QCOMPARE(c2.red(), c1.red());
-//    QCOMPARE(c2.green(), c1.green());
-//    QCOMPARE(c2.blue(), c1.blue());
-//    QCOMPARE(c2.alpha(), c1.alpha());
-//}
-
-//void TestRgbaGeneric::constructors()
-//{
-//    const auto rgba1 = rgba64Float(qRgba(127, 100, 50, 255));
-//    QCOMPARE(qRed(rgba1), HalfFloat(127.0f / 255.0f));
-//    QCOMPARE(qGreen(rgba1), HalfFloat(100.0f / 255.0f));
-//    QCOMPARE(qBlue(rgba1), HalfFloat(50.0f / 255.0f));
-//    QCOMPARE(qAlpha(rgba1), 1.0f);
-
-//    const auto rgba32 = qRgba(rgba1);
-//    QCOMPARE(qRed(rgba32), 127);
-//    QCOMPARE(qGreen(rgba32), 100);
-//    QCOMPARE(qBlue(rgba32), 50);
-//    QCOMPARE(qAlpha(rgba32), 255);
-//}
+    QCOMPARE(c2.red(), c1.red());
+    QCOMPARE(c2.green(), c1.green());
+    QCOMPARE(c2.blue(), c1.blue());
+    QCOMPARE(c2.alpha(), c1.alpha());
+}
 
 QTEST_APPLESS_MAIN(TestRgbaGeneric)
 
