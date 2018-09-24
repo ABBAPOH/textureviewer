@@ -24,20 +24,18 @@ inline float constexpr boundedSigned(float value) noexcept { return qBound(-1.0f
 
 inline constexpr Rgba128Float rgba128Float(float r, float g, float b, float a = 1.0f) noexcept
 {
-    return createRgba<float>(r, g, b, a);
+    return Private::createRgba<float>(r, g, b, a);
+}
+
+// Generic
+
+template<typename T>
+inline constexpr Rgba128Float rgba128Float(T rgba) noexcept
+{
+    return Private::convertRgba<float, typename Private::RgbaChannelTypeHelper<T>::Type>(rgba);
 }
 
 // QRgba
-
-inline constexpr Rgba128Float rgba128Float(QRgb rgba) noexcept
-{
-    return rgba128Float(
-            Private::normalizeF32(quint8(qRed(rgba))),
-            Private::normalizeF32(quint8(qGreen(rgba))),
-            Private::normalizeF32(quint8(qBlue(rgba))),
-            Private::normalizeF32(quint8(qAlpha(rgba)))
-    );
-}
 
 inline constexpr QRgb qRgba(Rgba128Float rgba) noexcept
 {
@@ -73,16 +71,6 @@ inline constexpr Rgba32Signed rgba32Signed(Rgba128Float rgba) noexcept
 
 // QRgba64
 
-inline constexpr Rgba128Float rgba128Float(QRgba64 rgba) noexcept
-{
-    return {
-            Private::normalizeF32(quint16(qRed(rgba))),
-            Private::normalizeF32(quint16(qGreen(rgba))),
-            Private::normalizeF32(quint16(qBlue(rgba))),
-            Private::normalizeF32(quint16(qAlpha(rgba)))
-    };
-}
-
 inline constexpr QRgba64 qRgba64(Rgba128Float rgba) noexcept
 {
     return qRgba64(
@@ -90,19 +78,6 @@ inline constexpr QRgba64 qRgba64(Rgba128Float rgba) noexcept
             0xffffu * rgba.green(),
             0xffffu * rgba.blue(),
             0xffffu * rgba.alpha());
-}
-
-// RgbaFloat16
-
-inline constexpr Rgba128Float rgba128Float(Rgba64Float rgba) noexcept
-{
-    return { qRed(rgba), qGreen(rgba), qBlue(rgba), qAlpha(rgba) };
-}
-
-inline constexpr Rgba64Float rgba64Float(Rgba128Float rgba) noexcept
-{
-    using Float = HalfFloat;
-    return { Float(qRed(rgba)), Float(qGreen(rgba)), Float(qBlue(rgba)), Float(qAlpha(rgba)) };
 }
 
 #endif // RGBA128FLOAT_H

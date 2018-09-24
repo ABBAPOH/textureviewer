@@ -1,6 +1,8 @@
 #ifndef RGBA32SIGNED_H
 #define RGBA32SIGNED_H
 
+#include <TextureLib/RgbaGeneric>
+
 #include <QtGui/QRgb>
 #include <QtGui/QRgba64>
 
@@ -25,6 +27,8 @@ class Rgba32Signed
     };
 
 public:
+    using DataType = qint8;
+
     constexpr Rgba32Signed() noexcept = default;
     explicit constexpr Rgba32Signed(quint32 c) noexcept : m_rgba(c) {}
     constexpr Rgba32Signed(qint8 red, qint8 green, qint8 blue, qint8 alpha = 127) noexcept
@@ -75,27 +79,32 @@ inline constexpr qint8 qGreen(Rgba32Signed color) noexcept { return color.green(
 inline constexpr qint8 qBlue (Rgba32Signed color) noexcept { return color.blue();  }
 inline constexpr qint8 qAlpha(Rgba32Signed color) noexcept { return color.alpha(); }
 
-// TODO (abbapoh) : we can't enable this overload because QRgb is quint32 too (=
-// I hope this will be fixed in Qt6
-//inline constexpr Rgba32Signed rgba32Signed(quint32 value) noexcept
-//{
-//    return Rgba32Signed(value);
-//}
+namespace Private {
+
+template<>
+struct RgbaCreateHelper<qint8>
+{
+    using Src = qint8;
+    using Dst = Rgba32Signed;
+    static constexpr Dst create(Src r, Src g, Src b, Src a) noexcept { return Dst(r, g, b, a); }
+};
+
+} // namespace Private
 
 inline constexpr Rgba32Signed rgba32Signed(qint8 r, qint8 g, qint8 b, qint8 a = 127) noexcept
 {
     return {r, g, b, a};
 }
 
-// QRgb convertions
+// Generic
 
-inline constexpr Rgba32Signed rgba32Signed(QRgb rgba) noexcept
+template<typename T>
+inline constexpr Rgba32Signed rgba32Signed(T rgba) noexcept
 {
-    return {qint8(qRed(rgba)   >> 1u),
-            qint8(qGreen(rgba) >> 1u),
-            qint8(qBlue(rgba)  >> 1u),
-            qint8(qAlpha(rgba) >> 1u)};
+    return Private::convertRgba<qint8, typename Private::RgbaChannelTypeHelper<T>::Type>(rgba);
 }
+
+// QRgb convertions
 
 inline constexpr QRgb qRgba(Rgba32Signed rgba)
 {
@@ -107,14 +116,6 @@ inline constexpr QRgb qRgba(Rgba32Signed rgba)
 }
 
 // QRgba64 convertions
-
-inline constexpr Rgba32Signed rgba32Signed(QRgba64 rgba) noexcept
-{
-    return {qint8(qRed(rgba)   >> 9u),
-            qint8(qGreen(rgba) >> 9u),
-            qint8(qBlue(rgba)  >> 9u),
-            qint8(qAlpha(rgba) >> 9u)};
-}
 
 inline constexpr QRgba64 qRgba64(Rgba32Signed rgba)
 {

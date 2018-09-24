@@ -23,33 +23,28 @@ inline HalfFloat constexpr boundedSigned(HalfFloat value) noexcept { return qBou
 
 inline constexpr Rgba64Float rgba64Float(HalfFloat r, HalfFloat g, HalfFloat b, HalfFloat a = HalfFloat(1.0)) noexcept
 {
-    return createRgba<HalfFloat>(r, g, b, a);
+    return Private::createRgba<HalfFloat>(r, g, b, a);
+}
+
+// Generic
+
+template<typename T>
+inline constexpr Rgba64Float rgba64Float(T rgba) noexcept
+{
+    return Private::convertRgba<HalfFloat, typename Private::RgbaChannelTypeHelper<T>::Type>(rgba);
 }
 
 // QRgba
 
-inline constexpr Rgba64Float rgba64Float(QRgb rgba) noexcept
-{
-    return {
-            Private::normalizeF16(quint8(qRed(rgba))),
-            Private::normalizeF16(quint8(qGreen(rgba))),
-            Private::normalizeF16(quint8(qBlue(rgba))),
-            Private::normalizeF16(quint8(qAlpha(rgba)))
-    };
-}
-
 inline constexpr QRgb qRgba(Rgba64Float rgba) noexcept
 {
-    return qRgba(
-            quint8(0xffu * Private::bounded(rgba.red()) + 0.5f),
-            quint8(0xffu * Private::bounded(rgba.green()) + 0.5f),
-            quint8(0xffu * Private::bounded(rgba.blue()) + 0.5f),
-            quint8(0xffu * Private::bounded(rgba.alpha()) + 0.5f));
+    return Private::convertRgba<quint8, HalfFloat>(rgba);
 }
 
 // Rgba32Signed
 
-inline constexpr Rgba64Float rgba64Float(Rgba32Signed rgba) noexcept
+template<>
+inline constexpr Rgba64Float rgba64Float<Rgba32Signed>(Rgba32Signed rgba) noexcept
 {
     return {
             Private::normalizeF16(rgba.red()),
@@ -72,24 +67,9 @@ inline constexpr Rgba32Signed rgba32Signed(Rgba64Float rgba) noexcept
 
 // QRgba64
 
-inline constexpr Rgba64Float rgba64Float(QRgba64 rgba) noexcept
-{
-    return {
-            Private::normalizeF16(quint16(qRed(rgba))),
-            Private::normalizeF16(quint16(qGreen(rgba))),
-            Private::normalizeF16(quint16(qBlue(rgba))),
-            Private::normalizeF16(quint16(qAlpha(rgba)))
-    };
-}
-
 inline constexpr QRgba64 qRgba64(Rgba64Float rgba) noexcept
 {
-    return qRgba64(
-            0xffffu * rgba.red(),
-            0xffffu * rgba.green(),
-            0xffffu * rgba.blue(),
-            0xffffu * rgba.alpha()
-    );
+    return Private::convertRgba<quint16, HalfFloat>(rgba);
 }
 
 #endif // RGBA64FLOAT_H
