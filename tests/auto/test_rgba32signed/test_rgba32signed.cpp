@@ -52,12 +52,12 @@ void TestRgba32Signed::api()
     QCOMPARE(c.blue(), blue);
     QCOMPARE(c.alpha(), alpha);
 
-    // qHelpers
+    // getHelpers
 
-    QCOMPARE(qRed(c), red);
-    QCOMPARE(qGreen(c), green);
-    QCOMPARE(qBlue(c), blue);
-    QCOMPARE(qAlpha(c), alpha);
+    QCOMPARE(getRed(c), red);
+    QCOMPARE(getGreen(c), green);
+    QCOMPARE(getBlue(c), blue);
+    QCOMPARE(getAlpha(c), alpha);
 
     // setters
     Rgba32Signed c2;

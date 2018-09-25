@@ -72,13 +72,6 @@ public:
     }
 };
 
-// qHelpers
-
-inline constexpr qint8 qRed  (Rgba32Signed color) noexcept { return color.red();   }
-inline constexpr qint8 qGreen(Rgba32Signed color) noexcept { return color.green(); }
-inline constexpr qint8 qBlue (Rgba32Signed color) noexcept { return color.blue();  }
-inline constexpr qint8 qAlpha(Rgba32Signed color) noexcept { return color.alpha(); }
-
 // getHelpers
 
 inline constexpr qint8 getRed  (Rgba32Signed color) noexcept { return color.red();   }
