@@ -22,7 +22,7 @@ using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 // generic functions
 
 template<typename T>
-typename Private::RgbaCreateHelper<T>::Dst colorFunc(const AnyColor &color)
+typename Private::ColorChannelTraits<T>::RgbaType colorFunc(const AnyColor &color)
 {
     Q_UNUSED(color);
     Q_UNIMPLEMENTED();

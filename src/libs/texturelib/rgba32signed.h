@@ -89,11 +89,9 @@ inline constexpr qint8 getAlpha(Rgba32Signed color) noexcept { return color.alph
 namespace Private {
 
 template<>
-struct RgbaCreateHelper<qint8>
+struct ColorChannelTraits<qint8> : public ColorChannelTraitsBase<qint8>
 {
-    using Src = qint8;
-    using Dst = Rgba32Signed;
-    static constexpr Dst create(Src r, Src g, Src b, Src a) noexcept { return Dst(r, g, b, a); }
+    using RgbaType = Rgba32Signed;
 };
 
 } // namespace Private
@@ -108,7 +106,7 @@ inline constexpr Rgba32Signed rgba32Signed(qint8 r, qint8 g, qint8 b, qint8 a = 
 template<typename T>
 inline constexpr Rgba32Signed rgba32Signed(T rgba) noexcept
 {
-    return Private::convertRgba<qint8, typename Private::RgbaChannelTypeHelper<T>::Type>(rgba);
+    return Private::convertRgba<qint8, typename Private::RgbaTraits<T>::DataType>(rgba);
 }
 
 // QRgb convertions

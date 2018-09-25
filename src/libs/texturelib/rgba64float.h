@@ -31,7 +31,7 @@ inline constexpr Rgba64Float rgba64Float(HalfFloat r, HalfFloat g, HalfFloat b, 
 template<typename T>
 inline constexpr Rgba64Float rgba64Float(T rgba) noexcept
 {
-    return Private::convertRgba<HalfFloat, typename Private::RgbaChannelTypeHelper<T>::Type>(rgba);
+    return Private::convertRgba<HalfFloat, typename Private::RgbaTraits<T>::DataType>(rgba);
 }
 
 // QRgba

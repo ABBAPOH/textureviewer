@@ -8,29 +8,73 @@
 
 #include <HalfFloat>
 
+template<typename T> class RgbaGeneric;
+
+namespace Private {
+
 template<typename T>
-struct RgbaLimits
+struct ColorChannelTraitsBase
 {
     using DataType = T;
+    using RgbaType = RgbaGeneric<T>;
+
     static DataType max() { return std::numeric_limits<DataType>::max(); }
     static DataType min() { return std::numeric_limits<DataType>::min(); }
 };
 
-template<>
-struct RgbaLimits<float>
+template<typename T>
+struct ColorChannelTraits : public ColorChannelTraitsBase<T>
 {
-    using DataType = float;
+};
+
+template<>
+struct ColorChannelTraits<quint8> : public ColorChannelTraitsBase<quint8>
+{
+    using RgbaType = QRgb;
+};
+
+template<>
+struct ColorChannelTraits<quint16> : public ColorChannelTraitsBase<quint16>
+{
+    using RgbaType = QRgba64;
+};
+
+template<>
+struct ColorChannelTraits<float> : public ColorChannelTraitsBase<float>
+{
     static DataType max() { return +1.0f; }
     static DataType min() { return -1.0f; }
 };
 
 template<>
-struct RgbaLimits<HalfFloat>
+struct ColorChannelTraits<HalfFloat> : public ColorChannelTraitsBase<HalfFloat>
 {
-    using DataType = HalfFloat;
     static DataType max() { return HalfFloat(+1.0f); }
     static DataType min() { return HalfFloat(-1.0f); }
 };
+
+template<typename T>
+struct RgbaTraits
+{
+    using DataType = typename T::DataType;
+    using RgbaType = T;
+};
+
+template<>
+struct RgbaTraits<QRgb>
+{
+    using DataType = quint8;
+    using RgbaType = QRgb;
+};
+
+template<>
+struct RgbaTraits<QRgba64>
+{
+    using DataType = quint16;
+    using RgbaType = QRgba64;
+};
+
+} // namespace Private
 
 template<typename T>
 class RgbaGeneric
@@ -43,7 +87,7 @@ public:
             DataType red,
             DataType green,
             DataType blue,
-            DataType alpha = RgbaLimits<DataType>::max()) noexcept
+            DataType alpha = Private::ColorChannelTraits<DataType>::max()) noexcept
         : m_red(red)
         , m_green(green)
         , m_blue(blue)
@@ -89,71 +133,50 @@ inline constexpr quint16 getAlpha(QRgba64 color) noexcept { return color.alpha()
 namespace Private {
 
 template<typename T>
-struct RgbaCreateHelper
+constexpr typename ColorChannelTraits<T>::RgbaType createRgbaHelper(
+        T r, T g, T b, T a) noexcept
 {
-    using Src = T;
-    using Dst = RgbaGeneric<T>;
-    static constexpr Dst create(Src r, Src g, Src b, Src a) noexcept { return {r, g, b, a}; }
-};
+    return {r, g, b, a};
+}
 
 template<>
-struct RgbaCreateHelper<quint8>
+constexpr typename ColorChannelTraits<quint8>::RgbaType createRgbaHelper<quint8>(
+        quint8 r, quint8 g, quint8 b, quint8 a) noexcept
 {
-    using Src = quint8;
-    using Dst = QRgb;
-    static constexpr Dst create(Src r, Src g, Src b, Src a) noexcept { return qRgba(r, g, b, a); }
-};
+    return qRgba(r, g, b, a);
+}
 
 template<>
-struct RgbaCreateHelper<quint16>
+constexpr typename ColorChannelTraits<quint16>::RgbaType createRgbaHelper<quint16>(
+        quint16 r, quint16 g, quint16 b, quint16 a) noexcept
 {
-    using Src = quint16;
-    using Dst = QRgba64;
-    static constexpr Dst create(Src r, Src g, Src b, Src a) noexcept { return qRgba64(r, g, b, a); }
-};
+    return qRgba64(r, g, b, a);
+}
 
 template<typename T>
-struct RgbaChannelTypeHelper
+constexpr typename ColorChannelTraits<T>::RgbaType createRgba(
+        T r, T g, T b, T a = ColorChannelTraits<T>::max()) noexcept
 {
-    using Type = typename T::DataType;
-};
-
-template<>
-struct RgbaChannelTypeHelper<QRgb>
-{
-    using Type = quint8;
-};
-
-template<>
-struct RgbaChannelTypeHelper<QRgba64>
-{
-    using Type = quint16;
-};
-
-template<typename T>
-constexpr typename RgbaCreateHelper<T>::Dst createRgba(
-        T r, T g, T b, T a = RgbaLimits<T>::max()) noexcept
-{
-    return RgbaCreateHelper<T>::create(r, g, b, a);
+    return createRgbaHelper<T>(r, g, b, a);
 }
 
 template<typename Dst, typename Src>
 inline constexpr Dst normalize(Src src)
 {
-    src = qBound(Src(0), src, RgbaLimits<Src>::max());
+    src = qBound(Src(0), src, ColorChannelTraits<Src>::max());
 
     if (!std::numeric_limits<Dst>::is_integer && std::numeric_limits<Src>::is_integer)
-        return Dst(RgbaLimits<Dst>::max() * src / RgbaLimits<Src>::max());
+        return Dst(ColorChannelTraits<Dst>::max() * src / ColorChannelTraits<Src>::max());
     else if (std::numeric_limits<Dst>::is_integer && !std::numeric_limits<Src>::is_integer)
-        return Dst(RgbaLimits<Dst>::max() * src / RgbaLimits<Src>::max() + 0.5);
+        return Dst(ColorChannelTraits<Dst>::max() * src / ColorChannelTraits<Src>::max() + 0.5);
     else if (std::numeric_limits<Dst>::is_integer && std::numeric_limits<Src>::is_integer)
-        return Dst(RgbaLimits<Dst>::max() * (1.0 * src / RgbaLimits<Src>::max()));
+        return Dst(ColorChannelTraits<Dst>::max() * (1.0 * src / ColorChannelTraits<Src>::max()));
     else if (!std::numeric_limits<Dst>::is_integer && !std::numeric_limits<Src>::is_integer)
-        return Dst(RgbaLimits<Dst>::max() * src / RgbaLimits<Src>::max());
+        return Dst(ColorChannelTraits<Dst>::max() * src / ColorChannelTraits<Src>::max());
 }
 
 template<typename Dst, typename Src>
-constexpr typename RgbaCreateHelper<Dst>::Dst convertRgba(typename RgbaCreateHelper<Src>::Dst src) noexcept
+constexpr typename ColorChannelTraits<Dst>::RgbaType convertRgba(typename ColorChannelTraits<Src>::RgbaType src) noexcept
 {
     return createRgba<Dst>(
             normalize<Dst, Src>(getRed(src)),

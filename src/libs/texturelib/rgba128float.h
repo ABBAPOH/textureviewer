@@ -32,7 +32,7 @@ inline constexpr Rgba128Float rgba128Float(float r, float g, float b, float a = 
 template<typename T>
 inline constexpr Rgba128Float rgba128Float(T rgba) noexcept
 {
-    return Private::convertRgba<float, typename Private::RgbaChannelTypeHelper<T>::Type>(rgba);
+    return Private::convertRgba<float, typename Private::RgbaTraits<T>::DataType>(rgba);
 }
 
 // QRgba
