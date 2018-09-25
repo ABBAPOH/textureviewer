@@ -34,18 +34,4 @@ inline constexpr Rgba64Float rgba64Float(T rgba) noexcept
     return Private::convertRgba<HalfFloat, typename Private::RgbaTraits<T>::DataType>(rgba);
 }
 
-// QRgba
-
-inline constexpr QRgb qRgba(Rgba64Float rgba) noexcept
-{
-    return Private::convertRgba<quint8, HalfFloat>(rgba);
-}
-
-// QRgba64
-
-inline constexpr QRgba64 qRgba64(Rgba64Float rgba) noexcept
-{
-    return Private::convertRgba<quint16, HalfFloat>(rgba);
-}
-
 #endif // RGBA64FLOAT_H

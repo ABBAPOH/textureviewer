@@ -109,26 +109,4 @@ inline constexpr Rgba32Signed rgba32Signed(T rgba) noexcept
     return Private::convertRgba<qint8, typename Private::RgbaTraits<T>::DataType>(rgba);
 }
 
-// QRgb convertions
-
-inline constexpr QRgb qRgba(Rgba32Signed rgba)
-{
-    return qRgba(
-            quint8(std::max<qint8>(0, rgba.red()))   << 1u,
-            quint8(std::max<qint8>(0, rgba.green())) << 1u,
-            quint8(std::max<qint8>(0, rgba.blue()))  << 1u,
-            quint8(std::max<qint8>(0, rgba.alpha())) << 1u);
-}
-
-// QRgba64 convertions
-
-inline constexpr QRgba64 qRgba64(Rgba32Signed rgba)
-{
-    return qRgba64(
-            quint16(std::max<qint8>(0, rgba.red()))   << 9u,
-            quint16(std::max<qint8>(0, rgba.green())) << 9u,
-            quint16(std::max<qint8>(0, rgba.blue()))  << 9u,
-            quint16(std::max<qint8>(0, rgba.alpha())) << 9u);
-}
-
 #endif // RGBA32SIGNED_H

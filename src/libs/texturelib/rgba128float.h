@@ -35,26 +35,4 @@ inline constexpr Rgba128Float rgba128Float(T rgba) noexcept
     return Private::convertRgba<float, typename Private::RgbaTraits<T>::DataType>(rgba);
 }
 
-// QRgba
-
-inline constexpr QRgb qRgba(Rgba128Float rgba) noexcept
-{
-    return qRgba(
-            0xffu * Private::bounded(rgba.red()),
-            0xffu * Private::bounded(rgba.green()),
-            0xffu * Private::bounded(rgba.blue()),
-            0xffu * Private::bounded(rgba.alpha()));
-}
-
-// QRgba64
-
-inline constexpr QRgba64 qRgba64(Rgba128Float rgba) noexcept
-{
-    return qRgba64(
-            0xffffu * rgba.red(),
-            0xffffu * rgba.green(),
-            0xffffu * rgba.blue(),
-            0xffffu * rgba.alpha());
-}
-
 #endif // RGBA128FLOAT_H

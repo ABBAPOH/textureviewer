@@ -191,4 +191,18 @@ static_assert(std::is_same<QRgba64, decltype(createRgba(quint16(), quint16(), qu
 
 } // namespace Private
 
+// Qt color types
+
+template<typename T>
+inline constexpr QRgb qRgba(T rgba) noexcept
+{
+    return Private::convertRgba<quint8, typename Private::RgbaTraits<T>::DataType>(rgba);
+}
+
+template<typename T>
+inline constexpr QRgba64 qRgba64(T rgba) noexcept
+{
+    return Private::convertRgba<quint16, typename Private::RgbaTraits<T>::DataType>(rgba);
+}
+
 #endif // RGBAGENERIC_H
