@@ -457,7 +457,7 @@ bool DDSHandler::read(Texture &texture)
     if (isDX10(header) && !verifyHeaderDX10(header10))
         return false;
 
-    const auto udepth = std::max(1u, header.depth);
+    const auto udepth = isVolumeMap(header) ? std::max(1u, header.depth) : 1u;
     const auto ulayers = std::max(1u, header10.arraySize);
     const auto ulevels = std::max(1u, header.mipMapCount);
     const auto cubeMap = isCubeMap(header);

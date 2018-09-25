@@ -122,6 +122,7 @@ TextureControlPrivate::ItemPointer TextureControlPrivate::currentItem() const
 
 void TextureControlPrivate::onTextureChanged(const Texture &texture)
 {
+    Q_UNUSED(texture);
     Q_Q(TextureControl);
 
     layer = 0;
@@ -161,7 +162,6 @@ TextureControl::TextureControl(QObject* parent)
     : QObject(parent)
     , d_ptr(new TextureControlPrivate(ObserverPointer<TextureControl>(this)))
 {
-    Q_D(TextureControl);
     setDocument(TextureDocumentPointer(new TextureDocument(this)));
 }
 
