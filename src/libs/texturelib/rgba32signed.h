@@ -50,23 +50,23 @@ public:
     constexpr qint8 blue()  const noexcept { return qint8(m_rgba >> BlueShift);  }
     constexpr qint8 alpha() const noexcept { return qint8(m_rgba >> AlphaShift); }
 
-    constexpr void setRed(qint8 red)
+    constexpr void setRed(qint8 red) noexcept
     {
         m_rgba = (m_rgba & ~(0xffu << RedShift))   | (quint32(quint8(red))   << RedShift);
     }
 
-    constexpr void setGreen(qint8 green)
+    constexpr void setGreen(qint8 green) noexcept
     {
         m_rgba = (m_rgba & ~(0xffu << GreenShift)) | (quint32(quint8(green)) << GreenShift);
 
     }
 
-    constexpr void setBlue(qint8 blue)
+    constexpr void setBlue(qint8 blue) noexcept
     {
         m_rgba = (m_rgba & ~(0xffu << BlueShift))  | (quint32(quint8(blue))  << BlueShift);
     }
 
-    constexpr void setAlpha(qint8 alpha)
+    constexpr void setAlpha(qint8 alpha) noexcept
     {
         m_rgba = (m_rgba & ~(0xffu << AlphaShift)) | (quint32(quint8(alpha)) << AlphaShift);
     }
