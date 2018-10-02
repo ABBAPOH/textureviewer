@@ -113,20 +113,19 @@ private:
 
 // getHelpers
 
-template<typename T> constexpr T getRed  (RgbaGeneric<T> color) noexcept { return color.red();   }
-template<typename T> constexpr T getGreen(RgbaGeneric<T> color) noexcept { return color.green(); }
-template<typename T> constexpr T getBlue (RgbaGeneric<T> color) noexcept { return color.blue();  }
-template<typename T> constexpr T getAlpha(RgbaGeneric<T> color) noexcept { return color.alpha(); }
+template<typename T>
+constexpr typename Private::RgbaTraits<T>::DataType getRed  (T color) noexcept { return color.red();   }
+template<typename T>
+constexpr typename Private::RgbaTraits<T>::DataType getGreen(T color) noexcept { return color.green(); }
+template<typename T>
+constexpr typename Private::RgbaTraits<T>::DataType getBlue (T color) noexcept { return color.blue();  }
+template<typename T>
+constexpr typename Private::RgbaTraits<T>::DataType getAlpha(T color) noexcept { return color.alpha(); }
 
 inline constexpr quint8 getRed  (QRgb color) noexcept { return quint8(qRed(color));   }
 inline constexpr quint8 getGreen(QRgb color) noexcept { return quint8(qGreen(color)); }
 inline constexpr quint8 getBlue (QRgb color) noexcept { return quint8(qBlue(color));  }
 inline constexpr quint8 getAlpha(QRgb color) noexcept { return quint8(qAlpha(color)); }
-
-inline constexpr quint16 getRed  (QRgba64 color) noexcept { return color.red();   }
-inline constexpr quint16 getGreen(QRgba64 color) noexcept { return color.green(); }
-inline constexpr quint16 getBlue (QRgba64 color) noexcept { return color.blue();  }
-inline constexpr quint16 getAlpha(QRgba64 color) noexcept { return color.alpha(); }
 
 // helpers
 

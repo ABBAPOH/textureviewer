@@ -72,13 +72,6 @@ public:
     }
 };
 
-// getHelpers
-
-inline constexpr qint8 getRed  (Rgba32Signed color) noexcept { return color.red();   }
-inline constexpr qint8 getGreen(Rgba32Signed color) noexcept { return color.green(); }
-inline constexpr qint8 getBlue (Rgba32Signed color) noexcept { return color.blue();  }
-inline constexpr qint8 getAlpha(Rgba32Signed color) noexcept { return color.alpha(); }
-
 namespace Private {
 
 template<>
