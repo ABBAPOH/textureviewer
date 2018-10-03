@@ -156,10 +156,11 @@ constexpr Rgba128Float AnyColor::toRgbaFloat32() const noexcept
 
 // qHelpers
 
-constexpr inline QRgb qRgba(const AnyColor &color) noexcept { return color.toRgba8_Unorm(); }
-constexpr inline QRgba64 qRgba64(const AnyColor &color) noexcept { return color.toRgba16_Unorm(); }
 constexpr inline Rgba32Signed rgba32Signed(const AnyColor &color) noexcept { return color.toRgba8_Snorm(); }
+constexpr inline QRgb qRgba(const AnyColor &color) noexcept { return color.toRgba8_Unorm(); }
 constexpr inline Rgba64Float rgba64Float(const AnyColor &color) noexcept { return color.toRgbaFloat16(); }
+constexpr inline Rgba64Signed rgba64Signed(const AnyColor &color) noexcept { return color.toRgba16Snorm(); }
+constexpr inline QRgba64 qRgba64(const AnyColor &color) noexcept { return color.toRgba16_Unorm(); }
 constexpr inline Rgba128Float rgba128Float(const AnyColor &color) noexcept { return color.toRgbaFloat32(); }
 
 #endif // ANYCOLOR_H
