@@ -14,11 +14,14 @@ class AnyColor
 public:
     enum class Type {
         Invalid = 0,
+        // 32-bit
         RGBA8_Snorm,
         RGBA8_Unorm,
+        // 64-bit
         RGBA16_Float,
         RGBA16_Snorm,
         RGBA16_Unorm,
+        // 128-bit
         RGBA32_Float,
     };
 
