@@ -11,6 +11,7 @@ private slots:
     void api();
     void copy();
     void assign();
+    void compare();
 };
 
 void TestRgba32Signed::defaultConstruction()
@@ -95,6 +96,22 @@ void TestRgba32Signed::assign()
     QCOMPARE(c2.green(), c1.green());
     QCOMPARE(c2.blue(), c1.blue());
     QCOMPARE(c2.alpha(), c1.alpha());
+}
+
+void TestRgba32Signed::compare()
+{
+    Rgba32Signed c1(127, 127, 127, 127);
+    Rgba32Signed c2(127, 127, 127, 127);
+    Rgba32Signed c3;
+
+    QVERIFY(c1 == c2);
+    QVERIFY(c1 != c3);
+
+    QVERIFY(c3 < c1);
+    QVERIFY(c1 > c3);
+
+    QVERIFY(c3 <= c1);
+    QVERIFY(c1 >= c3);
 }
 
 QTEST_APPLESS_MAIN(TestRgba32Signed)
