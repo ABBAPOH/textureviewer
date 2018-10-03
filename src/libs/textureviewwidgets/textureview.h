@@ -14,7 +14,7 @@ namespace TextureViewer {
 class TextureDocument;
 
 class TextureViewPrivate;
-class TextureView : public QAbstractScrollArea
+class TEXTUREVIEWWIDGETS_EXPORT TextureView : public QAbstractScrollArea
 {
     Q_OBJECT
     Q_DECLARE_PRIVATE(TextureView)

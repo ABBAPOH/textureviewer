@@ -1,13 +1,15 @@
 #ifndef TEXTURELAYERSMODEL_H
 #define TEXTURELAYERSMODEL_H
 
+#include "textureviewcore_global.h"
+
 #include <QtCore/QAbstractListModel>
 
 #include <TextureViewCoreLib/TextureDocument>
 
 namespace TextureViewer {
 
-class TextureLayersModel : public QAbstractListModel
+class TEXTUREVIEWCORE_EXPORT TextureLayersModel : public QAbstractListModel
 {
     Q_OBJECT
     Q_DISABLE_COPY(TextureLayersModel)
