@@ -17,7 +17,7 @@ public:
         RGBA8_Snorm,
         RGBA8_Unorm,
         RGBA16_Float,
-//        RGBA16_Snorm,
+        RGBA16_Snorm,
         RGBA16_Unorm,
         RGBA32_Float,
     };
@@ -38,6 +38,10 @@ public:
         : m_type(Type::RGBA16_Float)
         , m_rgbaFloat16(rgba)
     {}
+    constexpr AnyColor(Rgba64Signed rgba) noexcept
+        : m_type(Type::RGBA16_Snorm)
+        , m_rgba16_Snorm(rgba)
+    {}
     constexpr AnyColor(QRgba64 rgba) noexcept
         : m_type(Type::RGBA16_Unorm)
         , m_rgba16_Unorm(rgba)
@@ -52,6 +56,7 @@ public:
     constexpr Rgba32Signed toRgba8_Snorm() const noexcept;
     constexpr QRgb toRgba8_Unorm() const noexcept;
     constexpr Rgba64Float toRgbaFloat16() const noexcept;
+    constexpr Rgba64Signed toRgba16Snorm() const noexcept;
     constexpr QRgba64 toRgba16_Unorm() const noexcept;
     constexpr Rgba128Float toRgbaFloat32() const noexcept;
 
@@ -63,7 +68,7 @@ private:
         Rgba32Signed m_rgba8_Snorm;
         QRgb m_rgba8_Unorm;
         Rgba64Float m_rgbaFloat16;
-//        quint64 rgba16_snorm;
+        Rgba64Signed m_rgba16_Snorm;
         QRgba64 m_rgba16_Unorm;
         Rgba128Float m_rgbaFloat32;
     };
@@ -120,6 +125,20 @@ constexpr Rgba64Float AnyColor::toRgbaFloat16() const noexcept
     default: return {};
     }
 }
+
+constexpr Rgba64Signed AnyColor::toRgba16Snorm() const noexcept
+{
+    switch (m_type) {
+    case Type::Invalid: return {};
+    case Type::RGBA8_Snorm: return rgba64Signed(m_rgba8_Snorm);
+    case Type::RGBA8_Unorm: return rgba64Signed(m_rgba8_Unorm);
+    case Type::RGBA16_Float: return rgba64Signed(m_rgbaFloat16);
+    case Type::RGBA16_Snorm: return m_rgba16_Snorm;
+    case Type::RGBA16_Unorm: return rgba64Signed(m_rgba16_Unorm);
+    case Type::RGBA32_Float: return rgba64Signed(m_rgbaFloat32);
+    }
+}
+
 constexpr Rgba128Float AnyColor::toRgbaFloat32() const noexcept
 {
     switch (m_type) {
