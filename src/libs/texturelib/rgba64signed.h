@@ -42,10 +42,7 @@ public:
         return *this;
     }
 
-    constexpr operator quint64() const noexcept
-    {
-        return m_rgba;
-    }
+    constexpr operator quint64() const noexcept { return m_rgba; }
 
     constexpr qint16 red()   const noexcept { return qint16(m_rgba >> RedShift);   }
     constexpr qint16 green() const noexcept { return qint16(m_rgba >> GreenShift); }
