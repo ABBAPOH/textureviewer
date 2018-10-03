@@ -343,10 +343,10 @@ static_assert(checkConvertersPositions(), "Incorrect format position in converte
 
 std::function<AnyColor(Texture::ConstData)> TextureData::getFormatReader(TextureFormat format)
 {
-    return gsl::at(converters, ssize_t(format)).reader;
+    return gsl::at(converters, qsizetype(format)).reader;
 }
 
 std::function<void(Texture::Data, const AnyColor &color)> TextureData::getFormatWriter(TextureFormat format)
 {
-    return gsl::at(converters, ssize_t(format)).writer;
+    return gsl::at(converters, qsizetype(format)).writer;
 }
