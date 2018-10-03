@@ -26,32 +26,32 @@ public:
     };
 
     constexpr AnyColor() noexcept
-        : m_type(Type::Invalid)
-        , m_zero(0)
+        : m_zero(0)
+        , m_type(Type::Invalid)
     {}
     constexpr AnyColor(Rgba32Signed rgba) noexcept
-        : m_type(Type::RGBA8_Snorm)
-        , m_rgba8_Snorm(rgba)
+        : m_rgba8_Snorm(rgba)
+        , m_type(Type::RGBA8_Snorm)
     {}
     constexpr AnyColor(QRgb rgba) noexcept
-        : m_type(Type::RGBA8_Unorm)
-        , m_rgba8_Unorm(rgba)
+        : m_rgba8_Unorm(rgba)
+        , m_type(Type::RGBA8_Unorm)
     {}
     constexpr AnyColor(Rgba64Float rgba) noexcept
-        : m_type(Type::RGBA16_Float)
-        , m_rgbaFloat16(rgba)
+        : m_rgbaFloat16(rgba)
+        , m_type(Type::RGBA16_Float)
     {}
     constexpr AnyColor(Rgba64Signed rgba) noexcept
-        : m_type(Type::RGBA16_Snorm)
-        , m_rgba16_Snorm(rgba)
+        : m_rgba16_Snorm(rgba)
+        , m_type(Type::RGBA16_Snorm)
     {}
     constexpr AnyColor(QRgba64 rgba) noexcept
-        : m_type(Type::RGBA16_Unorm)
-        , m_rgba16_Unorm(rgba)
+        : m_rgba16_Unorm(rgba)
+        , m_type(Type::RGBA16_Unorm)
     {}
     constexpr AnyColor(Rgba128Float rgba) noexcept
-        : m_type(Type::RGBA32_Float)
-        , m_rgbaFloat32(rgba)
+        : m_rgbaFloat32(rgba)
+        , m_type(Type::RGBA32_Float)
     {}
 
     constexpr Type type() const noexcept { return m_type; }
@@ -64,7 +64,6 @@ public:
     constexpr Rgba128Float toRgbaFloat32() const noexcept;
 
 private:
-    Type m_type {Type::Invalid};
     // TODO (abbapoh): use std::variant?
     union {
         quint64 m_zero {0};
@@ -75,6 +74,7 @@ private:
         QRgba64 m_rgba16_Unorm;
         Rgba128Float m_rgbaFloat32;
     };
+    Type m_type {Type::Invalid};
 };
 
 constexpr Rgba32Signed AnyColor::toRgba8_Snorm() const noexcept
