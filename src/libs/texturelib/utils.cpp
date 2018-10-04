@@ -66,6 +66,8 @@ std::unique_ptr<QOpenGLTexture> Utils::makeOpenGLTexture(const Texture &texture)
 
     auto result = std::make_unique<QOpenGLTexture>(target);
     result->setFormat(textureFormat);
+    result->setMinificationFilter(QOpenGLTexture::Filter::NearestMipMapNearest);
+    result->setMagnificationFilter(QOpenGLTexture::Filter::Nearest);
     result->setSize(texture.width(), texture.height(), texture.depth());
     result->setMipLevels(texture.levels());
     if (texture.layers() > 1)
