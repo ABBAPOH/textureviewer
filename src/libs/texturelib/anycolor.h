@@ -97,12 +97,14 @@ constexpr Rgba32Signed AnyColor::toRgba32Signed() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return m_rgba32Signed;
     case Type::Rgba32Unsigned: return rgba32Signed(m_rgba32Unsigned);
+
     case Type::Rgba64Float: return rgba32Signed(m_rgba64Float);
+    case Type::Rgba64Signed: return rgba32Signed(m_rgba64Signed);
     case Type::Rgba64Unsigned: return rgba32Signed(m_rgba64Unsigned);
+
     case Type::Rgba128Float: return rgba32Signed(m_rgba128Float);
     case Type::Rgba128Signed: return rgba32Signed(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba32Signed(m_rgba128Unsigned);
-    default: return {};
     }
 }
 
@@ -112,12 +114,14 @@ constexpr QRgb AnyColor::toRgba32Unsigned() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return qRgba(m_rgba32Signed);
     case Type::Rgba32Unsigned: return m_rgba32Unsigned;
+
     case Type::Rgba64Float: return qRgba(m_rgba64Float);
+    case Type::Rgba64Signed: return qRgba(m_rgba64Signed);
     case Type::Rgba64Unsigned: return m_rgba64Unsigned.toArgb32();
+
     case Type::Rgba128Float: return qRgba(m_rgba128Float);
     case Type::Rgba128Signed: return qRgba(m_rgba128Signed);
     case Type::Rgba128Unsigned: return qRgba(m_rgba128Unsigned);
-    default: return {};
     }
 }
 
@@ -127,12 +131,14 @@ constexpr QRgba64 AnyColor::toRgba64Unsigned() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return qRgba64(m_rgba32Signed);
     case Type::Rgba32Unsigned: return QRgba64::fromArgb32(m_rgba32Unsigned);
+
     case Type::Rgba64Float: return qRgba64(m_rgba64Float);
+    case Type::Rgba64Signed: return qRgba64(m_rgba64Signed);
     case Type::Rgba64Unsigned: return m_rgba64Unsigned;
+
     case Type::Rgba128Float: return qRgba64(m_rgba128Float);
     case Type::Rgba128Signed: return qRgba64(m_rgba128Signed);
     case Type::Rgba128Unsigned: return qRgba64(m_rgba128Unsigned);
-    default: return {};
     }
 }
 
@@ -142,12 +148,14 @@ constexpr Rgba64Float AnyColor::toRgba64Float() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return rgba64Float(m_rgba32Signed);
     case Type::Rgba32Unsigned: return rgba64Float(m_rgba32Unsigned);
+
     case Type::Rgba64Float: return m_rgba64Float;
+    case Type::Rgba64Signed: return rgba64Float(m_rgba64Signed);
     case Type::Rgba64Unsigned: return rgba64Float(m_rgba64Unsigned);
+
     case Type::Rgba128Float: return rgba64Float(m_rgba128Float);
     case Type::Rgba128Signed: return rgba64Float(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba64Float(m_rgba128Unsigned);
-    default: return {};
     }
 }
 
@@ -157,9 +165,11 @@ constexpr Rgba64Signed AnyColor::toRgba64Signed() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return rgba64Signed(m_rgba32Signed);
     case Type::Rgba32Unsigned: return rgba64Signed(m_rgba32Unsigned);
+
     case Type::Rgba64Float: return rgba64Signed(m_rgba64Float);
     case Type::Rgba64Signed: return m_rgba64Signed;
     case Type::Rgba64Unsigned: return rgba64Signed(m_rgba64Unsigned);
+
     case Type::Rgba128Float: return rgba64Signed(m_rgba128Float);
     case Type::Rgba128Signed: return rgba64Signed(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba64Signed(m_rgba128Unsigned);
@@ -172,11 +182,14 @@ constexpr Rgba128Float AnyColor::toRgba128Float() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return rgba128Float(m_rgba32Signed);
     case Type::Rgba32Unsigned: return rgba128Float(m_rgba32Unsigned);
+
+    case Type::Rgba64Float: return rgba128Float(m_rgba64Float);
+    case Type::Rgba64Signed: return rgba128Float(m_rgba64Signed);
     case Type::Rgba64Unsigned: return rgba128Float(m_rgba64Unsigned);
+
     case Type::Rgba128Float: return m_rgba128Float;
     case Type::Rgba128Signed: return rgba128Float(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba128Float(m_rgba128Unsigned);
-    default: return {};
     }
 }
 
@@ -186,11 +199,31 @@ constexpr Rgba128Signed AnyColor::toRgba128Signed() const noexcept
     case Type::Invalid: return {};
     case Type::Rgba32Signed: return rgba128Signed(m_rgba32Signed);
     case Type::Rgba32Unsigned: return rgba128Signed(m_rgba32Unsigned);
+
+    case Type::Rgba64Float: return rgba128Signed(m_rgba64Float);
+    case Type::Rgba64Signed: return rgba128Signed(m_rgba64Signed);
     case Type::Rgba64Unsigned: return rgba128Signed(m_rgba64Unsigned);
+
     case Type::Rgba128Float: return rgba128Signed(m_rgba128Float);
     case Type::Rgba128Signed: return m_rgba128Signed;
     case Type::Rgba128Unsigned: return rgba128Signed(m_rgba128Unsigned);
-    default: return {};
+    }
+}
+
+constexpr Rgba128 AnyColor::toRgba128Unsigned() const noexcept
+{
+    switch (m_type) {
+    case Type::Invalid: return {};
+    case Type::Rgba32Signed: return rgba128(m_rgba32Signed);
+    case Type::Rgba32Unsigned: return rgba128(m_rgba32Unsigned);
+
+    case Type::Rgba64Float: return rgba128(m_rgba64Float);
+    case Type::Rgba64Signed: return rgba128(m_rgba64Signed);
+    case Type::Rgba64Unsigned: return rgba128(m_rgba64Unsigned);
+
+    case Type::Rgba128Float: return rgba128(m_rgba128Float);
+    case Type::Rgba128Signed: return rgba128(m_rgba128Signed);
+    case Type::Rgba128Unsigned: return m_rgba128Unsigned;
     }
 }
 
