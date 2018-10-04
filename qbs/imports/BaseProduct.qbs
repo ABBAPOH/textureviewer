@@ -8,7 +8,7 @@ Product {
     cpp.linkerFlags: project.linkFlags
     cpp.includePaths: project.includePaths
     cpp.libraryPaths: project.libraryPaths
-    cpp.cxxLanguageVersion: "c++17"
+    cpp.cxxLanguageVersion: "c++14"
     cpp.cxxStandardLibrary: qbs.targetOS.contains("osx") ? "libc++" : base
     cpp.minimumOsxVersion: "10.7"
 
