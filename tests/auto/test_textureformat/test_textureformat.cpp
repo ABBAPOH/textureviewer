@@ -18,7 +18,7 @@ void TestTextureFormat::defaultConstructed()
     TextureFormatInfo format;
 
     QCOMPARE(format.format(), TextureFormat::Invalid);
-    QCOMPARE(format.bitsPerTexel(), 0);
+    QCOMPARE(format.bytesPerTexel(), 0);
     QCOMPARE(format.blockSize(), 0);
     QCOMPARE(format.isCompressed(), false);
     QCOMPARE(format.oglTextureFormat(), QOpenGLTexture::NoFormat);
@@ -29,7 +29,7 @@ void TestTextureFormat::defaultConstructed()
 void TestTextureFormat::constructed_data()
 {
     QTest::addColumn<TextureFormat>("format");
-    QTest::addColumn<int>("bitsPerTexel");
+    QTest::addColumn<int>("bytesPerTexel");
     QTest::addColumn<int>("blockSize");
     QTest::addColumn<QOpenGLTexture::TextureFormat>("textureFormat");
     QTest::addColumn<QOpenGLTexture::PixelFormat>("pixelFormat");
@@ -43,7 +43,7 @@ void TestTextureFormat::constructed_data()
 void TestTextureFormat::constructed()
 {
     QFETCH(TextureFormat, format);
-    QFETCH(int, bitsPerTexel);
+    QFETCH(int, bytesPerTexel);
     QFETCH(int, blockSize);
     QFETCH(QOpenGLTexture::TextureFormat, textureFormat);
     QFETCH(QOpenGLTexture::PixelFormat, pixelFormat);
@@ -51,7 +51,7 @@ void TestTextureFormat::constructed()
 
     const TextureFormatInfo texelFormat = {
         format,
-        bitsPerTexel,
+        bytesPerTexel,
         blockSize,
         textureFormat,
         pixelFormat,
@@ -59,7 +59,7 @@ void TestTextureFormat::constructed()
     };
 
     QCOMPARE(texelFormat.format(), format);
-    QCOMPARE(texelFormat.bitsPerTexel(), bitsPerTexel);
+    QCOMPARE(texelFormat.bytesPerTexel(), bytesPerTexel);
     QCOMPARE(texelFormat.blockSize(), blockSize);
     QCOMPARE(texelFormat.oglTextureFormat(), textureFormat);
     QCOMPARE(texelFormat.oglPixelFormat(), pixelFormat);
@@ -69,7 +69,7 @@ void TestTextureFormat::constructed()
 void TestTextureFormat::compare_data()
 {
     QTest::addColumn<TextureFormat>("format");
-    QTest::addColumn<int>("bitsPerTexel");
+    QTest::addColumn<int>("bytesPerTexel");
     QTest::addColumn<int>("blockSize");
     QTest::addColumn<QOpenGLTexture::TextureFormat>("textureFormat");
     QTest::addColumn<QOpenGLTexture::PixelFormat>("pixelFormat");
@@ -84,7 +84,7 @@ void TestTextureFormat::compare_data()
 void TestTextureFormat::compare()
 {
     QFETCH(TextureFormat, format);
-    QFETCH(int, bitsPerTexel);
+    QFETCH(int, bytesPerTexel);
     QFETCH(int, blockSize);
     QFETCH(QOpenGLTexture::TextureFormat, textureFormat);
     QFETCH(QOpenGLTexture::PixelFormat, pixelFormat);
@@ -93,7 +93,7 @@ void TestTextureFormat::compare()
     const TextureFormatInfo texelFormat0;
     const TextureFormatInfo texelFormat1 = {
         format,
-        bitsPerTexel,
+        bytesPerTexel,
         blockSize,
         textureFormat,
         pixelFormat,
@@ -102,7 +102,7 @@ void TestTextureFormat::compare()
 
     TextureFormatInfo texelFormat2 = {
         format,
-        bitsPerTexel,
+        bytesPerTexel,
         blockSize,
         textureFormat,
         pixelFormat,

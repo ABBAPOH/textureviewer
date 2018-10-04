@@ -26,7 +26,7 @@ void TestTexture::defaultConstructed()
     QCOMPARE(tex.levels(), 0);
     QCOMPARE(tex.layers(), 0);
 
-    QCOMPARE(tex.bitsPerTexel(), 0);
+    QCOMPARE(tex.bytesPerTexel(), 0);
     QCOMPARE(tex.bytesPerLine(), 0);
     QCOMPARE(tex.bytesPerImage(), 0);
     QCOMPARE(tex.bytes(), 0);

@@ -179,18 +179,18 @@ TextureData *TextureData::create(
 qsizetype TextureData::calculateBytesPerLine(
         const TextureFormatInfo &format, quint32 width, Texture::Alignment align)
 {
-    const auto bitsPerTexel = size_t(format.bitsPerTexel());
+    const auto bytesPerTexel = size_t(format.bytesPerTexel());
     const auto blockSize = size_t(format.blockSize());
 
-    if (bitsPerTexel) {
-        if (bitsPerTexel && std::numeric_limits<qsizetype>::max() / bitsPerTexel / width < 1) {
+    if (bytesPerTexel) {
+        if (bytesPerTexel && std::numeric_limits<qsizetype>::max() / bytesPerTexel / width < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
         if (align == Texture::Alignment::Byte)
-            return (width * bitsPerTexel + 7u) >> 3u;
+            return qsizetype(width * bytesPerTexel);
         if (align == Texture::Alignment::Word)
-            return ((width * bitsPerTexel + 31u) >> 5u) << 2u;
+            return qsizetype(((width * bytesPerTexel + 3u) >> 2u) << 2u);
     } else if (blockSize) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
@@ -208,7 +208,7 @@ qsizetype TextureData::calculateBytesPerSlice(
 {
     const auto bytesPerLine = calculateBytesPerLine(format, width, align);
 
-    if (format.bitsPerTexel()) {
+    if (format.bytesPerTexel()) {
         if (std::numeric_limits<qsizetype>::max() / bytesPerLine / height < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
@@ -939,11 +939,11 @@ qsizetype Texture::bytes() const
 }
 
 /*!
-  \brief Returns the amount of bits per one texel (texture pixel).
+  \brief Returns the amount of bytes per one texel (texture pixel).
 */
-qsizetype Texture::bitsPerTexel() const
+qsizetype Texture::bytesPerTexel() const
 {
-    return d ? TextureFormatInfo::formatInfo(d->format).bitsPerTexel() : 0;
+    return d ? TextureFormatInfo::formatInfo(d->format).bytesPerTexel() : 0;
 }
 
 /*!
@@ -1080,8 +1080,8 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
             return *this;
     }
 
-    const auto srcBytesPerTexel = this->bitsPerTexel() >> 3u;
-    const auto dstBytesPerTexel = result.bitsPerTexel() >> 3u;
+    const auto srcBytesPerTexel = this->bytesPerTexel() >> 3u;
+    const auto dstBytesPerTexel = result.bytesPerTexel() >> 3u;
 
     const auto convertLine = [&](int width, ConstData srcLine, Data dstLine)
     {

@@ -16,13 +16,13 @@ public:
     constexpr inline TextureFormatInfo() noexcept = default;
     constexpr inline TextureFormatInfo(
             TextureFormat format,
-            int bitsPerTexel,
+            int bytesPerTexel,
             int blockSize,
             QOpenGLTexture::TextureFormat oglTextureFormat,
             QOpenGLTexture::PixelFormat oglPixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
             QOpenGLTexture::PixelType oglPixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
         : m_format(format)
-        , m_bitsPerTexel(bitsPerTexel)
+        , m_bytesPerTexel(bytesPerTexel)
         , m_blockSize(blockSize)
         , m_oglTextureFormat(oglTextureFormat)
         , m_oglPixelFormat(oglPixelFormat)
@@ -30,7 +30,7 @@ public:
     {}
 
     constexpr inline TextureFormat format() const noexcept { return m_format; }
-    constexpr inline int bitsPerTexel() const noexcept { return m_bitsPerTexel; }
+    constexpr inline int bytesPerTexel() const noexcept { return m_bytesPerTexel; }
     constexpr inline int blockSize() const noexcept { return m_blockSize; }
 
     constexpr inline QOpenGLTexture::TextureFormat oglTextureFormat() const noexcept {
@@ -59,7 +59,7 @@ public:
 
 private:
     TextureFormat m_format {TextureFormat::Invalid};
-    int m_bitsPerTexel {0};
+    int m_bytesPerTexel {0};
     int m_blockSize {0};
     QOpenGLTexture::TextureFormat m_oglTextureFormat {QOpenGLTexture::TextureFormat::NoFormat};
     QOpenGLTexture::PixelFormat m_oglPixelFormat {QOpenGLTexture::PixelFormat::NoSourceFormat};
@@ -69,7 +69,7 @@ private:
 constexpr inline bool operator==(const TextureFormatInfo &lhs, const TextureFormatInfo &rhs)
 {
     return lhs.format() == rhs.format()
-            && lhs.bitsPerTexel() == rhs.bitsPerTexel()
+            && lhs.bytesPerTexel() == rhs.bytesPerTexel()
             && lhs.blockSize() == rhs.blockSize()
             && lhs.oglTextureFormat() == rhs.oglTextureFormat()
             && lhs.oglPixelFormat() == rhs.oglPixelFormat()

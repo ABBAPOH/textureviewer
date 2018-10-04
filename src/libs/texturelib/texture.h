@@ -208,7 +208,7 @@ public:
     ArraySize arraySize() const;
 
     qsizetype bytes() const;
-    qsizetype bitsPerTexel() const;
+    qsizetype bytesPerTexel() const;
     qsizetype bytesPerLine(int level = 0) const;
     qsizetype bytesPerSlice(int level = 0) const;
     qsizetype bytesPerImage(int level = 0) const;
