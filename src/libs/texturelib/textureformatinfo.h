@@ -29,15 +29,13 @@ public:
     constexpr inline TextureFormatInfo(
             TextureFormat format,
             Type type,
-            int bytesPerTexel,
-            int blockSize,
+            int size,
             QOpenGLTexture::TextureFormat oglTextureFormat,
             QOpenGLTexture::PixelFormat oglPixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
             QOpenGLTexture::PixelType oglPixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
         : m_format(format)
         , m_type(type)
-        , m_bytesPerTexel(bytesPerTexel)
-        , m_blockSize(blockSize)
+        , m_size(size)
         , m_oglTextureFormat(oglTextureFormat)
         , m_oglPixelFormat(oglPixelFormat)
         , m_oglPixelType(oglPixelType)
@@ -45,8 +43,17 @@ public:
 
     constexpr inline TextureFormat format() const noexcept { return m_format; }
     constexpr inline Type type() const noexcept { return m_type; }
-    constexpr inline int bytesPerTexel() const noexcept { return m_bytesPerTexel; }
-    constexpr inline int blockSize() const noexcept { return m_blockSize; }
+    constexpr inline int size() const noexcept { return m_size; }
+
+    constexpr inline int bytesPerTexel() const noexcept
+    {
+        return m_type != Type::Compressed ? m_size : 0;
+    }
+
+    constexpr inline int blockSize() const noexcept
+    {
+        return m_type == Type::Compressed ? m_size : 0;
+    }
 
     constexpr inline QOpenGLTexture::TextureFormat oglTextureFormat() const noexcept {
         return m_oglTextureFormat;
@@ -75,8 +82,7 @@ public:
 private:
     TextureFormat m_format {TextureFormat::Invalid};
     Type m_type {Type::None};
-    int m_bytesPerTexel {0};
-    int m_blockSize {0};
+    int m_size {0};
     QOpenGLTexture::TextureFormat m_oglTextureFormat {QOpenGLTexture::TextureFormat::NoFormat};
     QOpenGLTexture::PixelFormat m_oglPixelFormat {QOpenGLTexture::PixelFormat::NoSourceFormat};
     QOpenGLTexture::PixelType m_oglPixelType {QOpenGLTexture::PixelType::NoPixelType};
@@ -85,8 +91,8 @@ private:
 constexpr inline bool operator==(const TextureFormatInfo &lhs, const TextureFormatInfo &rhs)
 {
     return lhs.format() == rhs.format()
-            && lhs.bytesPerTexel() == rhs.bytesPerTexel()
-            && lhs.blockSize() == rhs.blockSize()
+            && lhs.type() == rhs.type()
+            && lhs.size() == rhs.size()
             && lhs.oglTextureFormat() == rhs.oglTextureFormat()
             && lhs.oglPixelFormat() == rhs.oglPixelFormat()
             && lhs.oglPixelType() == rhs.oglPixelType();
