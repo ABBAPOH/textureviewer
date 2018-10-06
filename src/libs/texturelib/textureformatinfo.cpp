@@ -173,8 +173,18 @@ static_assert (checkFormatPositions(), "Incorrect format position in formats arr
 */
 
 /*!
+  \property TextureFormatInfo::Type TextureFormatInfo::type
+  \brief This property holds the texture format type.
+*/
+
+/*!
+  \property int TextureFormatInfo::size
+  \brief This property holds a number of bytes per texel or block, depending on type.
+*/
+
+/*!
   \property int TextureFormatInfo::bytesPerTexel
-  \brief This property holds a nubmer of bits per texel.
+  \brief This property holds a nubmer of bytes per texel.
 
   For compressed textures, this property is always 0.
 */
