@@ -18,6 +18,7 @@ void TestTextureFormat::defaultConstructed()
     TextureFormatInfo format;
 
     QCOMPARE(format.format(), TextureFormat::Invalid);
+    QCOMPARE(format.type(), TextureFormatInfo::Type::None);
     QCOMPARE(format.bytesPerTexel(), 0);
     QCOMPARE(format.blockSize(), 0);
     QCOMPARE(format.isCompressed(), false);
@@ -29,6 +30,7 @@ void TestTextureFormat::defaultConstructed()
 void TestTextureFormat::constructed_data()
 {
     QTest::addColumn<TextureFormat>("format");
+    QTest::addColumn<TextureFormatInfo::Type>("type");
     QTest::addColumn<int>("bytesPerTexel");
     QTest::addColumn<int>("blockSize");
     QTest::addColumn<QOpenGLTexture::TextureFormat>("textureFormat");
@@ -36,13 +38,14 @@ void TestTextureFormat::constructed_data()
     QTest::addColumn<QOpenGLTexture::PixelType>("pixelType");
 
     QTest::newRow("RGBA_8888")
-            << TextureFormat::RGBA8_Unorm << 32 << 0
+            << TextureFormat::RGBA8_Unorm << TextureFormatInfo::Type::UnsignedNormalized << 32 << 0
             << QOpenGLTexture::RGBA8_UNorm << QOpenGLTexture::RGBA << QOpenGLTexture::UInt8;
 }
 
 void TestTextureFormat::constructed()
 {
     QFETCH(TextureFormat, format);
+    QFETCH(TextureFormatInfo::Type, type);
     QFETCH(int, bytesPerTexel);
     QFETCH(int, blockSize);
     QFETCH(QOpenGLTexture::TextureFormat, textureFormat);
@@ -51,6 +54,7 @@ void TestTextureFormat::constructed()
 
     const TextureFormatInfo texelFormat = {
         format,
+        type,
         bytesPerTexel,
         blockSize,
         textureFormat,
@@ -59,6 +63,7 @@ void TestTextureFormat::constructed()
     };
 
     QCOMPARE(texelFormat.format(), format);
+    QCOMPARE(texelFormat.type(), type);
     QCOMPARE(texelFormat.bytesPerTexel(), bytesPerTexel);
     QCOMPARE(texelFormat.blockSize(), blockSize);
     QCOMPARE(texelFormat.oglTextureFormat(), textureFormat);
@@ -69,6 +74,7 @@ void TestTextureFormat::constructed()
 void TestTextureFormat::compare_data()
 {
     QTest::addColumn<TextureFormat>("format");
+    QTest::addColumn<TextureFormatInfo::Type>("type");
     QTest::addColumn<int>("bytesPerTexel");
     QTest::addColumn<int>("blockSize");
     QTest::addColumn<QOpenGLTexture::TextureFormat>("textureFormat");
@@ -76,7 +82,7 @@ void TestTextureFormat::compare_data()
     QTest::addColumn<QOpenGLTexture::PixelType>("pixelType");
 
     QTest::newRow("RGBA_8888")
-            << TextureFormat::RGBA8_Unorm << 32 << 0
+            << TextureFormat::RGBA8_Unorm << TextureFormatInfo::Type::UnsignedNormalized << 32 << 0
             << QOpenGLTexture::RGBA8_UNorm << QOpenGLTexture::RGBA << QOpenGLTexture::UInt8;
 
 }
@@ -84,6 +90,7 @@ void TestTextureFormat::compare_data()
 void TestTextureFormat::compare()
 {
     QFETCH(TextureFormat, format);
+    QFETCH(TextureFormatInfo::Type, type);
     QFETCH(int, bytesPerTexel);
     QFETCH(int, blockSize);
     QFETCH(QOpenGLTexture::TextureFormat, textureFormat);
@@ -93,6 +100,7 @@ void TestTextureFormat::compare()
     const TextureFormatInfo texelFormat0;
     const TextureFormatInfo texelFormat1 = {
         format,
+        type,
         bytesPerTexel,
         blockSize,
         textureFormat,
@@ -102,6 +110,7 @@ void TestTextureFormat::compare()
 
     TextureFormatInfo texelFormat2 = {
         format,
+        type,
         bytesPerTexel,
         blockSize,
         textureFormat,

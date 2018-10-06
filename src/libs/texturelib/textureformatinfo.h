@@ -13,15 +13,29 @@ class TEXTURELIB_EXPORT TextureFormatInfo
 {
     Q_GADGET
 public:
+    enum class Type {
+        None,
+        Float,
+        SignedNormalized,
+        UnsignedNormalized,
+        SignedInteger,
+        UnsignedInteger,
+        Srgb,
+        Compressed
+    };
+    Q_ENUMS(Type);
+
     constexpr inline TextureFormatInfo() noexcept = default;
     constexpr inline TextureFormatInfo(
             TextureFormat format,
+            Type type,
             int bytesPerTexel,
             int blockSize,
             QOpenGLTexture::TextureFormat oglTextureFormat,
             QOpenGLTexture::PixelFormat oglPixelFormat = QOpenGLTexture::PixelFormat::NoSourceFormat,
             QOpenGLTexture::PixelType oglPixelType = QOpenGLTexture::PixelType::NoPixelType) noexcept
         : m_format(format)
+        , m_type(type)
         , m_bytesPerTexel(bytesPerTexel)
         , m_blockSize(blockSize)
         , m_oglTextureFormat(oglTextureFormat)
@@ -30,6 +44,7 @@ public:
     {}
 
     constexpr inline TextureFormat format() const noexcept { return m_format; }
+    constexpr inline Type type() const noexcept { return m_type; }
     constexpr inline int bytesPerTexel() const noexcept { return m_bytesPerTexel; }
     constexpr inline int blockSize() const noexcept { return m_blockSize; }
 
@@ -59,6 +74,7 @@ public:
 
 private:
     TextureFormat m_format {TextureFormat::Invalid};
+    Type m_type {Type::None};
     int m_bytesPerTexel {0};
     int m_blockSize {0};
     QOpenGLTexture::TextureFormat m_oglTextureFormat {QOpenGLTexture::TextureFormat::NoFormat};
@@ -80,5 +96,7 @@ constexpr inline bool operator!=(const TextureFormatInfo &lhs, const TextureForm
 {
     return !(lhs == rhs);
 }
+
+Q_DECLARE_METATYPE(TextureFormatInfo::Type)
 
 #endif // TEXELFORMAT_H
