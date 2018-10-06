@@ -60,7 +60,7 @@ public:
         return m_oglPixelType;
     }
 
-    constexpr inline bool isCompressed() const noexcept { return m_blockSize != 0; }
+    constexpr inline bool isCompressed() const noexcept { return m_type == Type::Compressed; }
 
     using TextureFormatInfos = gsl::span<const TextureFormatInfo>;
 
