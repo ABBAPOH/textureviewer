@@ -216,7 +216,7 @@ static_assert (checkFormatPositions(), "Incorrect format position in formats arr
 */
 const TextureFormatInfo &TextureFormatInfo::formatInfo(TextureFormat format) noexcept
 {
-    return TextureFormatInfos(formats).at(size_t(format));
+    return TextureFormatInfos(formats).at(qsizetype(format));
 }
 
 /*!
