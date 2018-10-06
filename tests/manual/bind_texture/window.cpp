@@ -145,10 +145,18 @@ bool Window::initializeShaders()
         return false;
     }
 
-    if (!m_program->addShaderFromSourceFile(QOpenGLShader::Fragment,
-                                            m_coreProfile
-                                            ? QStringLiteral(":/shaders/gl33/fragment.glsl")
-                                            : QStringLiteral(":/shaders/gles/fragment.glsl"))) {
+    QString path;
+    if (m_coreProfile) {
+        if (m_image.formatInfo().type() == TextureFormatInfo::Type::SignedInteger)
+            path = QStringLiteral(":/shaders/gl33/fragment.sint.glsl");
+        else if (m_image.formatInfo().type() == TextureFormatInfo::Type::UnsignedInteger)
+            path = QStringLiteral(":/shaders/gl33/fragment.uint.glsl");
+        else
+            path = QStringLiteral(":/shaders/gl33/fragment.glsl");
+    } else {
+        path = QStringLiteral(":/shaders/gles/fragment.glsl");
+    }
+    if (!m_program->addShaderFromSourceFile(QOpenGLShader::Fragment, path)) {
         return false;
     }
 

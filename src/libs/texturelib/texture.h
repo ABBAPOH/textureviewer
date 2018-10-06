@@ -4,6 +4,7 @@
 #include "texturelib_global.h"
 
 #include <TextureLib/TextureFormat>
+#include <TextureLib/TextureFormatInfo>
 #include <TextureLib/TextureIOResult>
 
 #include <QtCore/QDataStream>
@@ -187,6 +188,7 @@ public:
 
     bool isNull() const;
     TextureFormat format() const;
+    const TextureFormatInfo &formatInfo() const;
 
     Alignment alignment() const;
 

@@ -793,6 +793,11 @@ TextureFormat Texture::format() const
     return d ? d->format : TextureFormat::Invalid;
 }
 
+const TextureFormatInfo &Texture::formatInfo() const
+{
+    return TextureFormatInfo::allFormatInfos().at(qsizetype(format()));
+}
+
 /*!
   \brief Returns the alignment of the texture data.
 
