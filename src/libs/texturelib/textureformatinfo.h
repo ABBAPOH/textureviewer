@@ -23,7 +23,7 @@ public:
         Srgb,
         Compressed
     };
-    Q_ENUMS(Type);
+    Q_ENUMS(Type)
 
     constexpr inline TextureFormatInfo() noexcept = default;
     constexpr inline TextureFormatInfo(
