@@ -1085,8 +1085,8 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
             return *this;
     }
 
-    const auto srcBytesPerTexel = this->bytesPerTexel() >> 3u;
-    const auto dstBytesPerTexel = result.bytesPerTexel() >> 3u;
+    const auto srcBytesPerTexel = this->bytesPerTexel();
+    const auto dstBytesPerTexel = result.bytesPerTexel();
 
     const auto convertLine = [&](int width, ConstData srcLine, Data dstLine)
     {
