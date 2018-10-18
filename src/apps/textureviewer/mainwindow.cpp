@@ -4,8 +4,7 @@
 #include <TextureLib/TextureIO>
 
 #include <TextureViewCoreLib/TextureDocument>
-#include <TextureViewCoreLib/TextureLayersModel>
-#include <TextureViewCoreLib/TextureLevelsModel>
+#include <TextureViewCoreLib/TextureItemModel>
 #include <TextureViewWidgetsLib/TextureView>
 
 #include <QtWidgets/QAbstractItemView>
@@ -17,8 +16,8 @@ namespace TextureViewer {
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_layersModel(new TextureLayersModel),
-    m_levelsModel(new TextureLevelsModel)
+    m_layersModel(new TextureItemModel(TextureItemModel::Dimension::Layer)),
+    m_levelsModel(new TextureItemModel(TextureItemModel::Dimension::Level))
 {
     ui->setupUi(this);
     setCentralWidget(m_view = new TextureView);
@@ -89,7 +88,9 @@ void MainWindow::initConnections()
 
     const auto onLevelChanged = [this](QModelIndex current, QModelIndex)
     {
-        m_view->control()->setLevel(current.row());
+        const auto level = current.row();
+        m_view->control()->setLevel(level);
+        m_layersModel->setLevel(level);
     };
     connect(ui->levelsView->selectionModel(), &QItemSelectionModel::currentChanged,
             this, onLevelChanged);

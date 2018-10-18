@@ -24,6 +24,12 @@ TextureItemModel::TextureItemModel(QObject *parent)
 {
 }
 
+TextureItemModel::TextureItemModel(Dimension dimension, QObject *parent)
+    : QAbstractListModel(parent)
+    , m_dimension(dimension)
+{
+}
+
 void TextureItemModel::setDocument(TextureItemModel::TextureDocumentPointer document)
 {
     if (m_document == document)

@@ -25,6 +25,7 @@ public:
     enum class Dimension { Face, Level, Layer };
 
     explicit TextureItemModel(QObject *parent = nullptr);
+    explicit TextureItemModel(Dimension dimension, QObject *parent = nullptr);
 
     TextureDocumentPointer document() const noexcept { return m_document; }
     void setDocument(TextureDocumentPointer document);
