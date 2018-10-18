@@ -56,7 +56,8 @@ AnyColor readRGBA(Texture::ConstData data)
 template<typename Type, size_t components>
 void writeRGBA(Texture::Data data, const AnyColor &color)
 {
-    Q_ASSERT(data.size() == 3 * sizeof(Type));
+    static_assert (components >= 1 && components <= 4, "Invalid components count");
+    Q_ASSERT(data.size() == components * sizeof(Type));
 //    const auto rgba = color.value<typename Private::ColorChannelTraits<Type>::RgbaType>();
     const auto rgba = colorFunc<Type>(color);
     const auto d = reinterpret_cast<Type *>(data.data());
