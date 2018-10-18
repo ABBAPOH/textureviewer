@@ -24,9 +24,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_layersModel->setDocument(m_view->document());
     ui->layersView->setModel(m_layersModel.get());
+    ui->layersDockWidget->setTitleBarWidget(new QWidget);
 
     m_levelsModel->setDocument(m_view->document());
     ui->levelsView->setModel(m_levelsModel.get());
+    ui->levelsDockWidget->setTitleBarWidget(new QWidget);
 
     initConnections();
 }
