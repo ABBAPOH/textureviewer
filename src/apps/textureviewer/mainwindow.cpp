@@ -25,10 +25,12 @@ MainWindow::MainWindow(QWidget *parent) :
     m_layersModel->setDocument(m_view->document());
     ui->layersView->setModel(m_layersModel.get());
     ui->layersDockWidget->setTitleBarWidget(new QWidget);
+    ui->layersDockWidget->hide();
 
     m_levelsModel->setDocument(m_view->document());
     ui->levelsView->setModel(m_levelsModel.get());
     ui->levelsDockWidget->setTitleBarWidget(new QWidget);
+    ui->levelsDockWidget->hide();
 
     initConnections();
 }
@@ -78,6 +80,11 @@ void MainWindow::initConnections()
 {
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
+
+    connect(m_layersModel.get(), &QAbstractItemModel::modelReset,
+            this, [this](){ ui->layersDockWidget->setVisible(m_layersModel->rowCount() > 1); });
+    connect(m_levelsModel.get(), &QAbstractItemModel::modelReset,
+            this, [this](){ ui->levelsDockWidget->setVisible(m_levelsModel->rowCount() > 1); });
 
     const auto onLayerChanged = [this](QModelIndex current, QModelIndex)
     {
