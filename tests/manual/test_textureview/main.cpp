@@ -6,8 +6,8 @@
 
 #include <QtWidgets/QApplication>
 
-#include <QtCore/QTimer>
 #include <QtCore/QCommandLineParser>
+#include <QtCore/QTimer>
 
 struct Options
 {
