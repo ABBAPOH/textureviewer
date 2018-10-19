@@ -86,23 +86,36 @@ void MainWindow::initConnections()
     connect(m_levelsModel.get(), &QAbstractItemModel::modelReset,
             this, [this](){ ui->levelsDockWidget->setVisible(m_levelsModel->rowCount() > 1); });
 
-    const auto onLayerChanged = [this](QModelIndex current, QModelIndex)
+    const auto onDimensionChanged = [this](QModelIndex current, QModelIndex)
     {
-        const auto layer = current.row();
-        m_view->control()->setLayer(layer);
-        m_levelsModel->setLayer(layer);
+        const auto selection = qobject_cast<QItemSelectionModel *>(sender());
+        Q_ASSERT(selection);
+        const auto model = qobject_cast<TextureItemModel *>(selection->model());
+        Q_ASSERT(model);
+        const auto row = current.row();
+        switch (model->dimension()) {
+        case TextureItemModel::Dimension::Face:
+            m_view->control()->setFace(row);
+            m_levelsModel->setFace(row);
+            m_layersModel->setFace(row);
+            break;
+        case TextureItemModel::Dimension::Level:
+            m_view->control()->setLevel(row);
+            m_levelsModel->setLevel(row);
+            m_layersModel->setLevel(row);
+            break;
+        case TextureItemModel::Dimension::Layer:
+            m_view->control()->setLayer(row);
+            m_levelsModel->setLayer(row);
+            m_layersModel->setLayer(row);
+            break;
+        }
     };
-    connect(ui->layersView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, onLayerChanged);
 
-    const auto onLevelChanged = [this](QModelIndex current, QModelIndex)
-    {
-        const auto level = current.row();
-        m_view->control()->setLevel(level);
-        m_layersModel->setLevel(level);
-    };
     connect(ui->levelsView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, onLevelChanged);
+            this, onDimensionChanged);
+    connect(ui->layersView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, onDimensionChanged);
 }
 
 } // namespace TextureViewer
