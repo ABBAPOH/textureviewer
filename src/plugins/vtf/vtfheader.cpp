@@ -1,5 +1,7 @@
 #include "vtfheader.h"
 
+#include <gsl/span>
+
 QDataStream &operator>>(QDataStream &s, VTFHeader &header)
 {
     quint32 flags {0};
@@ -16,12 +18,12 @@ QDataStream &operator>>(QDataStream &s, VTFHeader &header)
     header.flags = VTFFlag(flags);
     s >> header.frames;
     s >> header.firstFrame;
-    for (int i = 0; i < 4; ++i)
-        s >> header.padding0[i]; // skip padding
-    for (int i = 0; i < 3; ++i)
-        s >> header.reflectivity[i];
-    for (int i = 0; i < 4; ++i)
-        s >> header.padding1[i];
+    for (auto &c: gsl::span<uchar>(header.padding0))
+        s >> c; // skip padding
+    for (auto &f: gsl::span<float>(header.reflectivity))
+        s >> f;
+    for (auto &c: gsl::span<uchar>(header.padding1))
+        s >> c; // skip padding
     s >> header.bumpmapScale;
     s >> header.highResImageFormat;
     s >> header.mipmapCount;
@@ -35,8 +37,8 @@ QDataStream &operator>>(QDataStream &s, VTFHeader &header)
         else
             header.depth = 0;
         if (header.version[1] >= 3) {
-            for (int i = 0; i < 3; ++i)
-                s >> header.padding2[i];
+            for (auto &c: gsl::span<uchar>(header.padding2))
+                s >> c; // skip padding
             s >> header.numResources;
         } else {
             header.numResources = 0;
@@ -63,8 +65,8 @@ QDataStream &operator<<(QDataStream &s, const VTFHeader &header)
     s << header.firstFrame;
     for (int i = 0; i < 4; ++i)
         s << padding; // write padding
-    for (int i = 0; i < 3; ++i)
-        s << header.reflectivity[i];
+    for (auto &f: gsl::span<const float>(header.reflectivity))
+        s << f;
     for (int i = 0; i < 4; ++i)
         s << padding;
     s << header.bumpmapScale;
