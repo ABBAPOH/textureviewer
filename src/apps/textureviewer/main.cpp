@@ -19,5 +19,5 @@ int main(int argc, char *argv[])
         w.openDocument(QUrl::fromLocalFile(arguments.at(1)));
     w.show();
 
-    return app.exec();
+    return QCoreApplication::exec();
 }
