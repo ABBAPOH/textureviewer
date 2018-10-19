@@ -81,9 +81,7 @@ TextureView::TextureView(QWidget *parent)
 /*!
   \brief Destroys the TextureView object.
 */
-TextureView::~TextureView()
-{
-}
+TextureView::~TextureView() = default;
 
 /*!
   \property TextureView::TextureDocumentPointer TextureView::document

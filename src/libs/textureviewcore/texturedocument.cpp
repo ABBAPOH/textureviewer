@@ -28,9 +28,7 @@ TextureDocument::TextureDocument(QObject *parent)
 /*!
   Destroys the TextureDocument object.
 */
-TextureDocument::~TextureDocument()
-{
-}
+TextureDocument::~TextureDocument() = default;
 
 /*!
   \property Texture TextureDocument::texture

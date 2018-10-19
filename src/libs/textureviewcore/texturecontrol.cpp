@@ -168,9 +168,7 @@ TextureControl::TextureControl(QObject* parent)
 /*!
   \brief Destroys the TextureControl object.
 */
-TextureControl::~TextureControl()
-{
-}
+TextureControl::~TextureControl() = default;
 
 /*!
   \property TextureDocumentPointer TextureControl::document

@@ -3,9 +3,7 @@
 
 #include <memory>
 
-AbstractDocumentPrivate::~AbstractDocumentPrivate()
-{
-}
+AbstractDocumentPrivate::~AbstractDocumentPrivate() = default;
 
 void AbstractDocumentPrivate::init()
 {
@@ -37,9 +35,7 @@ AbstractDocument::AbstractDocument(QObject *parent) :
 /*!
     Destroys the AbstractDocument object.
 */
-AbstractDocument::~AbstractDocument()
-{
-}
+AbstractDocument::~AbstractDocument() = default;
 
 /*!
     \property Document::isModified
