@@ -13,7 +13,13 @@
 #include <map>
 #include <memory>
 
-using namespace TextureTool;
+using ExitException = TextureTool::ExitException;
+using RuntimeError = TextureTool::RuntimeError;
+using AbstractTool = TextureTool::AbstractTool;
+using ConvertTool = TextureTool::ConvertTool;
+using ShowTool = TextureTool::ShowTool;
+using MainParser = TextureTool::MainParser;
+
 using ToolsMap = std::map<QByteArray, std::unique_ptr<AbstractTool>>;
 using DescriptionMap = MainParser::DescriptionMap;
 
