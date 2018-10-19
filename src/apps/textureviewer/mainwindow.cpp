@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent) :
     initConnections();
 }
 
+MainWindow::~MainWindow() = default;
+
 void MainWindow::open()
 {
     const auto path = QFileDialog::getOpenFileName(this, tr("Open"), QString());
