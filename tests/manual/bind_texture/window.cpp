@@ -8,8 +8,8 @@
 #include <TextureLib/TextureIO>
 #include <TextureLib/Utils>
 
-Window::Window(const Texture& texture, bool coreProfile)
-    : m_image(texture)
+Window::Window(Texture texture, bool coreProfile)
+    : m_image(std::move(texture))
     , m_coreProfile(coreProfile)
 {
     resize(640, 480);

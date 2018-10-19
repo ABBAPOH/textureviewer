@@ -17,7 +17,7 @@
 class Window : public QOpenGLWindow
 {
 public:
-    explicit Window(const Texture &texture, bool coreProfile = false);
+    explicit Window(Texture texture, bool coreProfile = false);
     ~Window();
 
 protected:
