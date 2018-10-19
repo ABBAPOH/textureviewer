@@ -7,7 +7,7 @@ namespace TextureTool {
 class ToolParser : public QCommandLineParser
 {
 public:
-    explicit ToolParser(const QByteArray &toolName);
+    explicit ToolParser(QByteArray toolName);
 
     void process(const QStringList &arguments);
     Q_NORETURN void showHelp(int code);

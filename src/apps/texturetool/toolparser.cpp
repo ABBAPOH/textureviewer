@@ -14,8 +14,8 @@ namespace TextureTool {
 /*!
     Constructs a ToolParser instance with the given \a toolName.
 */
-ToolParser::ToolParser(const QByteArray &toolName) :
-    _toolId(toolName),
+ToolParser::ToolParser(QByteArray toolName) :
+    _toolId(std::move(toolName)),
     helpOption(addHelpOption())
 {
     if (_toolId.isEmpty())
