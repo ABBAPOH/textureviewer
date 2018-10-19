@@ -11,7 +11,7 @@ namespace TextureTool {
 
 namespace {
 
-const char toolId[] = "show";
+constexpr gsl::span<const char> toolId = "show";
 
 struct Options
 {
@@ -21,7 +21,7 @@ struct Options
 
 Options parseOptions(const QStringList &arguments)
 {
-    ToolParser parser(toolId);
+    ToolParser parser({toolId.data(), toolId.size()});
     parser.addPositionalArgument(QStringLiteral("file"),
                                  ShowTool::tr("Input filename"),
                                  QStringLiteral("[file]"));
@@ -89,7 +89,7 @@ ShowTool::ShowTool() = default;
 */
 QByteArray ShowTool::id() const
 {
-    return toolId;
+    return {toolId.data(), toolId.size()};
 }
 
 /*!

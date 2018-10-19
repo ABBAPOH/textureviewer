@@ -15,7 +15,7 @@ namespace TextureTool {
 
 namespace {
 
-const char toolId[] = "convert";
+constexpr gsl::span<const char> toolId = "convert";
 
 struct Options
 {
@@ -28,7 +28,7 @@ struct Options
 
 Options parseOptions(const QStringList &arguments)
 {
-    ToolParser parser(toolId);
+    ToolParser parser({toolId.data(), toolId.size()});
     QCommandLineOption inputTypeOption(QStringLiteral("input-type"),
                                        ConvertTool::tr("Input mime type (i.e. image/png)"),
                                        QStringLiteral("mime type"));
@@ -151,7 +151,7 @@ ConvertTool::ConvertTool() = default;
 */
 QByteArray ConvertTool::id() const
 {
-    return toolId;
+    return {toolId.data(), toolId.size()};
 }
 
 /*!
