@@ -10,6 +10,10 @@ class KtxHandlerPlugin : public TextureIOHandlerPlugin
 
 public:
     KtxHandlerPlugin() = default;
+    KtxHandlerPlugin(KtxHandlerPlugin &&) = delete;
+    ~KtxHandlerPlugin() override = default;
+
+    KtxHandlerPlugin &operator =(KtxHandlerPlugin &&) = delete;
 
     std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override
     {

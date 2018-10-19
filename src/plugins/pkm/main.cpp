@@ -10,6 +10,10 @@ class PkmHandlerPlugin : public TextureIOHandlerPlugin
 
 public:
     PkmHandlerPlugin() = default;
+    PkmHandlerPlugin(PkmHandlerPlugin &&) = delete;
+    ~PkmHandlerPlugin() override = default;
+
+    PkmHandlerPlugin &operator =(PkmHandlerPlugin &&) = delete;
 
     std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override
     {

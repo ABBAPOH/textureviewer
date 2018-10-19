@@ -10,6 +10,10 @@ class DdsHandlerPlugin : public TextureIOHandlerPlugin
 
 public:
     DdsHandlerPlugin() = default;
+    DdsHandlerPlugin(DdsHandlerPlugin &&) = delete;
+    ~DdsHandlerPlugin() override = default;
+
+    DdsHandlerPlugin &operator =(DdsHandlerPlugin &&) = delete;
 
     std::unique_ptr<TextureIOHandler> create(QStringView mimeType) override
     {
