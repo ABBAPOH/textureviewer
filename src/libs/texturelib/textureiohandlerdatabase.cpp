@@ -57,7 +57,7 @@ TextureIOHandlerDatabase::TextureIOHandlerDatabase()
 
 TextureIOHandlerDatabase::~TextureIOHandlerDatabase()
 {
-    // TODO: should we unload plugins?..
+    // TODO (abbapoh): should we unload plugins?..
     // What is the current Qt policy with those awful QStringLiteral crashes?..
     for (const auto &loader: loaders)
         loader->unload();

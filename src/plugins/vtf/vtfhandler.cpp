@@ -99,7 +99,7 @@ static TextureFormat convertFormat(VTFImageFormat format)
     case VTFImageFormat::BGR_565: return TextureFormat::BGR565_Unorm;
     case VTFImageFormat::RGB_888: return TextureFormat::RGB8_Unorm;
     case VTFImageFormat::BGR_888: return TextureFormat::BGR8_Unorm;
-        // TODO: find out if those formats differs from RGB_888 and BGR_888
+        // TODO (abbapoh): find out if those formats differs from RGB_888 and BGR_888
     case VTFImageFormat::RGB_888_BlueScreen: return TextureFormat::RGB8_Unorm;
     case VTFImageFormat::BGR_888_BlueScreen: return TextureFormat::BGR8_Unorm;
     case VTFImageFormat::I8: return TextureFormat::L8_Unorm;

@@ -550,7 +550,7 @@ bool DDSHandler::write(const Texture &texture)
             return false;
         }
         dds.pixelFormat.fourCC = quint32(DDSFourCC::DX10);
-        // TODO: do we need flag RGB and aplha?
+        // TODO (abbapoh): do we need flag RGB and aplha?
         dds.pixelFormat.flags = DDSPixelFormatFlag::FourCC;
 
         dds10.dxgiFormat = quint32(format);
