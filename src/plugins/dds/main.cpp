@@ -22,7 +22,7 @@ public:
     {
         if (mimeType == u"image/x-dds")
             return Capability::CanRead | Capability::CanWrite;
-        return Capabilities();
+        return {};
     }
 };
 

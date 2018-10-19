@@ -108,7 +108,7 @@ auto TextureDocument::item(int face, int level, int layer) const -> ItemPointer
     Q_D(const TextureDocument);
 
     if (d->texture.isNull())
-        return ItemPointer();
+        return {};
 
     const auto index = d->texture.faces() * (d->texture.layers() * level + layer) + face;
     return ItemPointer(d->items.at(index).get());

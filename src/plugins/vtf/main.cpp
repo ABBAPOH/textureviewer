@@ -21,7 +21,7 @@ public:
     {
         if (mimeType == u"image/x-vtf")
             return Capability::CanRead;
-        return Capabilities();
+        return {};
     }
 };
 

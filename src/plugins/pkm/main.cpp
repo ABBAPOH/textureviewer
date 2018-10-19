@@ -22,7 +22,7 @@ public:
     {
         if (mimeType == u"image/x-pkm")
             return Capability::CanRead | Capability::CanWrite;
-        return Capabilities();
+        return {};
     }
 };
 

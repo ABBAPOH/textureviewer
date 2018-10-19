@@ -40,7 +40,7 @@ std::unique_ptr<TextureIOHandler> TestHandlerPlugin::create(QStringView mimeType
 TestHandlerPlugin::Capabilities TestHandlerPlugin::capabilities(QStringView mimeType) const
 {
     Q_UNUSED(mimeType);
-    return Capabilities(Capability::CanRead | Capability::CanWrite);
+    return {Capability::CanRead | Capability::CanWrite};
 }
 
 Q_IMPORT_PLUGIN(TestHandlerPlugin)

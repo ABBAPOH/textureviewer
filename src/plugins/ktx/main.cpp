@@ -22,7 +22,7 @@ public:
     {
         if (mimeType == u"image/x-ktx")
             return Capability::CanRead;
-        return Capabilities();
+        return {};
     }
 };
 
