@@ -105,8 +105,7 @@ void convert(const Options &options)
 
     if (!texture) {
         throw RuntimeError(ConvertTool::tr("Can't read \"%1\": %2").
-                           arg(options.inputFile).
-                           arg(toUserString(result.error())));
+                           arg(options.inputFile, toUserString(result.error())));
     }
 
     Texture copy;

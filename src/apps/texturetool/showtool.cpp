@@ -64,7 +64,7 @@ void showImageInfo(const QString &filePath)
     const auto result = io.read();
     if (!result) {
         throw RuntimeError(ShowTool::tr("Can't read image %1: %2").
-                           arg(filePath).arg(toUserString(result.error())));
+                           arg(filePath, toUserString(result.error())));
     }
 
     TextureModel model;

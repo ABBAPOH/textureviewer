@@ -45,8 +45,7 @@ void ToolParser::showHelp(int code)
     const auto filePath = qApp->applicationFilePath();
     const auto text = helpText().replace(QDir::toNativeSeparators(filePath),
                                          QString("%1 %2").
-                                         arg(QFileInfo(filePath).fileName()).
-                                         arg(QString::fromLatin1(_toolId)));
+                                         arg(QFileInfo(filePath).fileName(), QString::fromLatin1(_toolId)));
     showMessage(text);
     exit(code);
 }
