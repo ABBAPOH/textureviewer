@@ -44,7 +44,8 @@ int main(int argc, char *argv[])
 
     const auto options = parseOptions(QCoreApplication::arguments());
 
-    a.addLibraryPath(a.applicationDirPath() + TextureIO::pluginsDirPath());
+    QCoreApplication::addLibraryPath(
+                QCoreApplication::applicationDirPath() + TextureIO::pluginsDirPath());
 
     TextureIO io(options.inputFile);
     auto ok = io.read();
@@ -57,5 +58,5 @@ int main(int argc, char *argv[])
     w.document()->setTexture(*ok);
     w.show();
 
-    return a.exec();
+    return QCoreApplication::exec();
 }

@@ -10,8 +10,10 @@ void AbstractDocumentPrivate::init()
     Q_Q(AbstractDocument);
     undoStack.reset(new QUndoStack);
 
-    q->connect(undoStack.data(), &QUndoStack::canRedoChanged, q, &AbstractDocument::canRedoChanged);
-    q->connect(undoStack.data(), &QUndoStack::canUndoChanged, q, &AbstractDocument::canUndoChanged);
+    QObject::connect(undoStack.data(), &QUndoStack::canRedoChanged,
+            q, &AbstractDocument::canRedoChanged);
+    QObject::connect(undoStack.data(), &QUndoStack::canUndoChanged,
+            q, &AbstractDocument::canUndoChanged);
 }
 
 /*!

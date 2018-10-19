@@ -35,9 +35,10 @@ void TextureViewPrivate::init()
     control.reset(new TextureControl);
     q->setViewport(new OpenGLWidget(control, q));
 
-    q->connect(control.get(), &TextureControl::updateRequested,
-               q->viewport(), static_cast<void (QWidget::*)()>(&QWidget::update));
-    q->connect(control.get(), &TextureControl::documentChanged, q, &TextureView::documentChanged);
+    QObject::connect(control.get(), &TextureControl::updateRequested,
+            q->viewport(), static_cast<void (QWidget::*)()>(&QWidget::update));
+    QObject::connect(control.get(), &TextureControl::documentChanged,
+            q, &TextureView::documentChanged);
     initActions();
 }
 
@@ -51,14 +52,14 @@ void TextureViewPrivate::initActions()
     action->setShortcut(QKeySequence("Ctrl+Up"));
     action->setShortcutContext(Qt::WidgetShortcut);
     q->addAction(action.get());
-    q->connect(action.get(), &QAction::triggered, q, &TextureView::nextLevel);
+    QObject::connect(action.get(), &QAction::triggered, q, &TextureView::nextLevel);
     actions[size_t(TextureView::Actions::NextLevel)] = std::move(action);
 
     action = std::make_unique<QAction>();
     action->setShortcut(QKeySequence("Ctrl+Down"));
     action->setShortcutContext(Qt::WidgetShortcut);
     q->addAction(action.get());
-    q->connect(action.get(), &QAction::triggered, q, &TextureView::prevLevel);
+    QObject::connect(action.get(), &QAction::triggered, q, &TextureView::prevLevel);
     actions[size_t(TextureView::Actions::PrevLevel)] = std::move(action);
 }
 
