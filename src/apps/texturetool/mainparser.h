@@ -11,7 +11,7 @@ class MainParser
 public:
     using DescriptionMap = std::map<QByteArray, QString>;
 
-    explicit MainParser(const DescriptionMap &map);
+    explicit MainParser(DescriptionMap map);
 
     void process(const QStringList &arguments);
     Q_NORETURN void showHelp(int code);

@@ -15,8 +15,8 @@ namespace TextureTool {
 /*!
     Constructs MainParser object with the given DescriptionMap \a map.
 */
-MainParser::MainParser(const DescriptionMap &map) :
-    _map(map),
+MainParser::MainParser(DescriptionMap map) :
+    _map(std::move(map)),
     helpOption(parser.addHelpOption()),
     versionOption(parser.addVersionOption())
 {
