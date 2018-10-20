@@ -40,7 +40,8 @@
 **
 ****************************************************************************/
 
-#pragma once
+#ifndef DDSHANDLER_H
+#define DDSHANDLER_H
 
 #include "ddsheader.h"
 
@@ -65,3 +66,5 @@ public: // ImageIOHandler interface
 };
 
 Q_DECLARE_LOGGING_CATEGORY(ddshandler)
+
+#endif // DDSHANDLER_H
