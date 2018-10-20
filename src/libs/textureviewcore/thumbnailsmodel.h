@@ -20,6 +20,14 @@ public:
 
     enum Role { IndexRole = Qt::UserRole };
 
+    struct Position
+    {
+        int layer {0};
+        int level {0};
+        int face  {0};
+        int slice {0};
+    };
+
     explicit ThumbnailsModel(QObject *parent = nullptr);
     ThumbnailsModel(ThumbnailsModel &&) = delete;
     ~ThumbnailsModel() override;
@@ -34,6 +42,8 @@ public:
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
+    Position position(QModelIndex index) const;
+
     TextureDocumentPointer document() const noexcept { return m_document; }
     void setDocument(const TextureDocumentPointer &document);
 
@@ -42,11 +52,12 @@ private:
     using ItemPointer = ObserverPointer<Item>;
 
     QModelIndex index(Item *item) const;
-    ItemPointer item(const QModelIndex &index) const;
+    ItemPointer item(QModelIndex index) const;
     void rebuildModel();
     void rebuildModel(ItemPointer parent);
     void rebuildModel(ItemPointer parent, int level);
     void rebuildModel(ItemPointer parent, int layer, int level);
+    void rebuildModel(ItemPointer parent, int layer, int level, int face);
 
 private:
     std::unique_ptr<Item> m_rootItem;

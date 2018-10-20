@@ -10,6 +10,7 @@ class ThumbnailsModel::Item
 public:
     using ItemPointer = ObserverPointer<Item>;
     using ItemOwnedPointer = std::unique_ptr<Item>;
+    using Position = ThumbnailsModel::Position;
 
     Item() = default;
     Item(const Item &) = delete;
@@ -56,6 +57,7 @@ private:
 public:
     QString text;
     QPair<int, int> index;
+    Position position {-1, -1, -1, -1};
 };
 
 } // namespace TextureViewer

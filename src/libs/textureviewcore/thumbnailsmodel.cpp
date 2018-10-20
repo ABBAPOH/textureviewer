@@ -63,6 +63,11 @@ QVariant ThumbnailsModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
+ThumbnailsModel::Position ThumbnailsModel::position(QModelIndex index) const
+{
+    return item(index)->position;
+}
+
 void ThumbnailsModel::setDocument(const TextureDocumentPointer &document)
 {
     if (m_document == document)
@@ -86,7 +91,7 @@ QModelIndex ThumbnailsModel::index(ThumbnailsModel::Item *item) const
     return createIndex(item->row(), 0, item);
 }
 
-auto ThumbnailsModel::item(const QModelIndex &index) const -> ItemPointer
+auto ThumbnailsModel::item(QModelIndex index) const -> ItemPointer
 {
     if (index.isValid())
         return ObserverPointer<Item>(static_cast<Item *>(index.internalPointer()));
@@ -104,38 +109,51 @@ void ThumbnailsModel::rebuildModel()
 
 void ThumbnailsModel::rebuildModel(ItemPointer parent)
 {
-    if (m_document->levels() <= 1) {
+    if (m_document->layers() <= 1) {
         rebuildModel(parent, 0);
     } else {
-        for (int i = 0; i < m_document->levels(); ++i) {
+        for (int i = 0; i < m_document->layers(); i++) {
             auto item = parent->createItem();
-            item->text = tr("Mipmap %1").arg(i);
+            item->text = tr("Image %1").arg(i);
             rebuildModel(item, i);
         }
     }
 }
 
-void ThumbnailsModel::rebuildModel(ItemPointer parent, int level)
+void ThumbnailsModel::rebuildModel(ItemPointer parent, int layer)
 {
-    if (m_document->layers() == 1) {
-        rebuildModel(parent, 0, level);
+    if (m_document->levels() == 1) {
+        rebuildModel(parent, layer, 0);
     } else {
-        for (int i = 0; i < m_document->layers(); i++) {
+        for (int i = 0; i < m_document->levels(); ++i) {
             auto item = parent->createItem();
-            item->text = tr("Image %1").arg(i);
-            rebuildModel(item, i, level);
+            item->text = tr("Mipmap %1").arg(i);
+            rebuildModel(item, layer, i);
         }
     }
 }
 
 void ThumbnailsModel::rebuildModel(ItemPointer parent, int layer, int level)
 {
+    if (m_document->faces() == 1) {
+        rebuildModel(parent, layer, level, 0);
+    } else {
+        for (int i = 0; i < m_document->faces(); ++i) {
+            auto item = parent->createItem();
+            item->text = tr("Face %1").arg(i);
+            rebuildModel(item, layer, level, i);
+        }
+    }
+}
+
+void ThumbnailsModel::rebuildModel(ItemPointer parent, int layer, int level, int face)
+{
     auto item = parent;
     if (item.get() == m_rootItem.get()) {
         auto item = parent->createItem();
         item->text = tr("Image");
     }
-    item->index = qMakePair(layer, level);
+    item->position = {layer, level, face, 0};
 }
 
 } // namespace TextureViewer
