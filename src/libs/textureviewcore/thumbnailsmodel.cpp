@@ -53,7 +53,7 @@ QVariant ThumbnailsModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    auto item = static_cast<Item*>(index.internalPointer());
+    auto item = this->item(index);
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
         return item->text;
     } else if (role == IndexRole) {
