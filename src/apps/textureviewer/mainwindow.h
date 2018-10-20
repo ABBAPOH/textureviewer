@@ -13,7 +13,7 @@ class MainWindow;
 
 namespace TextureViewer {
 class TextureView;
-class TextureItemModel;
+class ThumbnailsModel;
 
 class MainWindow : public QMainWindow
 {
@@ -34,8 +34,7 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
 
     TextureView *m_view {nullptr};
-    std::unique_ptr<TextureItemModel> m_layersModel;
-    std::unique_ptr<TextureItemModel> m_levelsModel;
+    std::unique_ptr<ThumbnailsModel> m_thumbModel;
 
     QUrl m_url;
 };

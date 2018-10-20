@@ -5,6 +5,7 @@
 
 #include <TextureViewCoreLib/TextureDocument>
 #include <TextureViewCoreLib/TextureItemModel>
+#include <TextureViewCoreLib/ThumbnailsModel>
 #include <TextureViewWidgetsLib/TextureView>
 
 #include <QtWidgets/QAbstractItemView>
@@ -16,21 +17,14 @@ namespace TextureViewer {
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_layersModel(new TextureItemModel(TextureItemModel::Dimension::Layer)),
-    m_levelsModel(new TextureItemModel(TextureItemModel::Dimension::Level))
+    m_thumbModel(std::make_unique<ThumbnailsModel>())
 {
     ui->setupUi(this);
     setCentralWidget(m_view = new TextureView);
 
-    m_layersModel->setDocument(m_view->document());
-    ui->layersView->setModel(m_layersModel.get());
-    ui->layersDockWidget->setTitleBarWidget(new QWidget);
-    ui->layersDockWidget->hide();
-
-    m_levelsModel->setDocument(m_view->document());
-    ui->levelsView->setModel(m_levelsModel.get());
-    ui->levelsDockWidget->setTitleBarWidget(new QWidget);
-    ui->levelsDockWidget->hide();
+    m_thumbModel->setDocument(m_view->document());
+    ui->leftPaneView->setModel(m_thumbModel.get());
+    ui->leftPaneDockWidget->setTitleBarWidget(new QWidget);
 
     initConnections();
 }
@@ -79,41 +73,18 @@ void MainWindow::initConnections()
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
 
-    connect(m_layersModel.get(), &QAbstractItemModel::modelReset,
-            this, [this](){ ui->layersDockWidget->setVisible(m_layersModel->rowCount() > 1); });
-    connect(m_levelsModel.get(), &QAbstractItemModel::modelReset,
-            this, [this](){ ui->levelsDockWidget->setVisible(m_levelsModel->rowCount() > 1); });
-
-    const auto onDimensionChanged = [this](QModelIndex current, QModelIndex)
+    auto onCurrentChanged = [this](QModelIndex current, QModelIndex)
     {
-        const auto selection = qobject_cast<QItemSelectionModel *>(sender());
-        Q_ASSERT(selection);
-        const auto model = qobject_cast<TextureItemModel *>(selection->model());
-        Q_ASSERT(model);
-        const auto row = current.row();
-        switch (model->dimension()) {
-        case TextureItemModel::Dimension::Face:
-            m_view->control()->setFace(row);
-            m_levelsModel->setFace(row);
-            m_layersModel->setFace(row);
-            break;
-        case TextureItemModel::Dimension::Level:
-            m_view->control()->setLevel(row);
-            m_levelsModel->setLevel(row);
-            m_layersModel->setLevel(row);
-            break;
-        case TextureItemModel::Dimension::Layer:
-            m_view->control()->setLayer(row);
-            m_levelsModel->setLayer(row);
-            m_layersModel->setLayer(row);
-            break;
-        }
+        const auto pos = m_thumbModel->position(current);
+        if (pos.layer == -1 || pos.level == -1) // not valid
+            return;
+        m_view->control()->setLevel(pos.level);
+        m_view->control()->setLayer(pos.layer);
+        m_view->control()->setFace(pos.face);
     };
 
-    connect(ui->levelsView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, onDimensionChanged);
-    connect(ui->layersView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, onDimensionChanged);
+    connect(ui->leftPaneView->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, onCurrentChanged);
 }
 
 } // namespace TextureViewer

@@ -35,62 +35,7 @@
    <addaction name="menuFile"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QDockWidget" name="layersDockWidget">
-   <property name="features">
-    <set>QDockWidget::NoDockWidgetFeatures</set>
-   </property>
-   <property name="allowedAreas">
-    <set>Qt::BottomDockWidgetArea</set>
-   </property>
-   <property name="windowTitle">
-    <string>Layers</string>
-   </property>
-   <attribute name="dockWidgetArea">
-    <number>8</number>
-   </attribute>
-   <widget class="QWidget" name="layersdockWidgetContents">
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <property name="leftMargin">
-      <number>0</number>
-     </property>
-     <property name="topMargin">
-      <number>0</number>
-     </property>
-     <property name="rightMargin">
-      <number>0</number>
-     </property>
-     <property name="bottomMargin">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QListView" name="layersView">
-       <property name="movement">
-        <enum>QListView::Static</enum>
-       </property>
-       <property name="flow">
-        <enum>QListView::LeftToRight</enum>
-       </property>
-       <property name="gridSize">
-        <size>
-         <width>96</width>
-         <height>96</height>
-        </size>
-       </property>
-       <property name="viewMode">
-        <enum>QListView::IconMode</enum>
-       </property>
-       <property name="uniformItemSizes">
-        <bool>true</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-  </widget>
-  <widget class="QDockWidget" name="levelsDockWidget">
+  <widget class="QDockWidget" name="leftPaneDockWidget">
    <property name="features">
     <set>QDockWidget::NoDockWidgetFeatures</set>
    </property>
@@ -98,12 +43,12 @@
     <set>Qt::LeftDockWidgetArea</set>
    </property>
    <property name="windowTitle">
-    <string>Levels</string>
+    <string>Left Pane</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>
    </attribute>
-   <widget class="QWidget" name="levelsDockWidgetContents">
+   <widget class="QWidget" name="leftPaneContents">
     <layout class="QVBoxLayout" name="verticalLayout">
      <property name="spacing">
       <number>0</number>
@@ -121,7 +66,11 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QListView" name="levelsView"/>
+      <widget class="QTreeView" name="leftPaneView">
+       <attribute name="headerVisible">
+        <bool>false</bool>
+       </attribute>
+      </widget>
      </item>
     </layout>
    </widget>
