@@ -12,6 +12,8 @@
 #include <QtWidgets/QFileDialog>
 #include <QtWidgets/QMessageBox>
 
+#include <QtCore/QSettings>
+
 namespace TextureViewer {
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -33,7 +35,9 @@ MainWindow::~MainWindow() = default;
 
 void MainWindow::open()
 {
-    const auto path = QFileDialog::getOpenFileName(this, tr("Open"), QString());
+    QSettings settings;
+    const auto lastOpenedFile = settings.value(QStringLiteral("lastOpenedFile")).toString();
+    const auto path = QFileDialog::getOpenFileName(this, tr("Open"), lastOpenedFile);
     if (path.isEmpty())
         return;
 
@@ -66,6 +70,9 @@ void MainWindow::openDocument(const QUrl &url)
 
     m_url = url;
     m_view->document()->setTexture(*result);
+
+    QSettings settings;
+    settings.setValue(QStringLiteral("lastOpenedFile"), url.toLocalFile());
 }
 
 void MainWindow::initConnections()

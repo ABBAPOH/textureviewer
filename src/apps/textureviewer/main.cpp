@@ -12,6 +12,8 @@ int main(int argc, char *argv[])
 
     QCoreApplication::addLibraryPath(
             QCoreApplication::applicationDirPath() + TextureIO::pluginsDirPath());
+    QCoreApplication::setApplicationName(QStringLiteral("textureviewer"));
+    QCoreApplication::setOrganizationName(QStringLiteral("arch"));
 
     TextureViewer::MainWindow w;
     const auto arguments = QCoreApplication::arguments();
