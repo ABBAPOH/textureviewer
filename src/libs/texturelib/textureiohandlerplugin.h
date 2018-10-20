@@ -1,4 +1,5 @@
-#pragma once
+#ifndef TEXTUREIOHANDLERPLUGIN_H
+#define TEXTUREIOHANDLERPLUGIN_H
 
 #include "texturelib_global.h"
 
@@ -34,3 +35,5 @@ public:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TextureIOHandlerPlugin::Capabilities)
+
+#endif // TEXTUREIOHANDLERPLUGIN_H
