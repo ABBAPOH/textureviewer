@@ -46,6 +46,7 @@
 #include "ddsheader.h"
 
 #include <TextureLib/TextureIOHandler>
+#include <TextureLib/TextureIOHandlerPlugin>
 
 #include <QtCore/QLoggingCategory>
 
@@ -63,6 +64,9 @@ public:
 public: // ImageIOHandler interface
     bool read(Texture &texture) override;
     bool write(const Texture &texture) override;
+
+public:
+    static gsl::span<const TextureIOHandlerPlugin::FormatCapabilites> formatCapabilites();
 };
 
 Q_DECLARE_LOGGING_CATEGORY(ddshandler)

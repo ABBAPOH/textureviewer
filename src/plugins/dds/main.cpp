@@ -2,6 +2,10 @@
 
 #include <TextureLib/TextureIOHandlerPlugin>
 
+namespace {
+
+} // namespace
+
 class DdsHandlerPlugin : public TextureIOHandlerPlugin
 {
     Q_OBJECT
@@ -26,6 +30,15 @@ public:
     {
         if (mimeType == u"image/x-dds")
             return Capability::CanRead | Capability::CanWrite;
+        return {};
+    }
+
+    // TextureIOHandlerPlugin interface
+public:
+    gsl::span<const FormatCapabilites> formatCapabilites(QStringView mimeType) const override
+    {
+        if (mimeType == u"image/x-dds")
+            return DDSHandler::formatCapabilites();
         return {};
     }
 };

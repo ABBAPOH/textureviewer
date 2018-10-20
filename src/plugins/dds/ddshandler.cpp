@@ -1,4 +1,4 @@
-/****************************************************************************
+﻿/****************************************************************************
 **
 ** Copyright (C) 2013 Digia Plc and/or its subsidiary(-ies).
 ** Copyright (C) 2013 Ivan Komissarov.
@@ -45,6 +45,7 @@
 #include "ddsheader.h"
 
 #include <TextureLib/Texture>
+#include <TextureLib/TextureIOHandlerPlugin>
 
 #include <QtCore/QDebug>
 #include <QtCore/QtMath>
@@ -288,6 +289,39 @@ constexpr bool checkFormatPositions()
 }
 static_assert (checkFormatPositions(), "Incorrect format position in dxgiFormatInfos array");
 
+constexpr size_t getFormatsCount()
+{
+    size_t baseSize = gsl::span<const FormatInfo>(formatInfos).size() - 1;
+    for (const auto &info: gsl::span<const DXGIFormatInfo>(dxgiFormatInfos)) {
+        if (info.textureFormat != TextureFormat::Invalid)
+            baseSize++;
+    }
+    return baseSize;
+}
+
+class FormatCapabilitiesHolder
+{
+public:
+    constexpr static auto formatsCount = getFormatsCount();
+    TextureIOHandlerPlugin::FormatCapabilites formatCapabilites[formatsCount] = {};
+
+    constexpr FormatCapabilitiesHolder()
+    {
+        qsizetype pos = 0;
+        for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
+            if (info.format != TextureFormat::Invalid)
+                gsl::at(formatCapabilites, pos++) =
+                        {info.format, TextureIOHandlerPlugin::Capability::ReadWrite};
+        }
+        for (const auto &info: gsl::span<const DXGIFormatInfo>(dxgiFormatInfos)) {
+            if (info.textureFormat != TextureFormat::Invalid)
+                gsl::at(formatCapabilites, pos++) =
+                        {info.textureFormat, TextureIOHandlerPlugin::Capability::ReadWrite};
+        }
+    }
+};
+constexpr FormatCapabilitiesHolder formatCapabilitiesHolder;
+
 bool isDX10(const DDSHeader &header)
 {
     return DDSFourCC(header.pixelFormat.fourCC) == DDSFourCC::DX10;
@@ -312,7 +346,7 @@ constexpr DXGIFormat convertFormat(TextureFormat format)
 {
     // silence msvc
     const auto infos = gsl::span<const DXGIFormatInfo>(dxgiFormatInfos);
-    for (const auto info: infos) {
+    for (const auto &info: infos) {
         if (info.textureFormat == format)
             return info.dxgiFormat;
     }
@@ -339,7 +373,7 @@ TextureFormat getFormat(const DDSHeader &dds, const DDSHeaderDX10 &dds10)
             return result;
         }
 
-        for (const auto info: gsl::span<const FourCCInfo>(fourCCInfos)) {
+        for (const auto &info: gsl::span<const FourCCInfo>(fourCCInfos)) {
             if (DDSFourCC(dds.pixelFormat.fourCC) == info.fourCC)
                 return info.format;
         }
@@ -588,6 +622,11 @@ bool DDSHandler::write(const Texture &texture)
     }
 
     return true;
+}
+
+gsl::span<const TextureIOHandlerPlugin::FormatCapabilites> DDSHandler::formatCapabilites()
+{
+    return formatCapabilitiesHolder.formatCapabilites;
 }
 
 Q_LOGGING_CATEGORY(ddshandler, "plugins.textureformats.ddshandler")

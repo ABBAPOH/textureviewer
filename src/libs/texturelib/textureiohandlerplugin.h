@@ -3,8 +3,12 @@
 
 #include "texturelib_global.h"
 
+#include <TextureLib/TextureFormat>
+
 #include <QtCore/QObject>
 #include <QtCore/QStringView>
+
+#include <gsl/span>
 
 #include <memory>
 
@@ -23,6 +27,12 @@ public:
     using Capabilities = QFlags<Capability>;
     Q_FLAG(Capabilities)
 
+    struct FormatCapabilites
+    {
+        TextureFormat format {TextureFormat::Invalid};
+        Capabilities capabilities;
+    };
+
     TextureIOHandlerPlugin() = default;
     TextureIOHandlerPlugin(TextureIOHandlerPlugin &&) = delete;
     ~TextureIOHandlerPlugin() override = default;
@@ -32,6 +42,9 @@ public:
     virtual Capabilities capabilities(QStringView mimeType) const = 0;
 
     virtual std::unique_ptr<TextureIOHandler> create(QStringView mimeType) = 0;
+
+    virtual gsl::span<const FormatCapabilites> formatCapabilites(QStringView mimeType) const
+    { Q_UNUSED(mimeType); return {}; }
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(TextureIOHandlerPlugin::Capabilities)
