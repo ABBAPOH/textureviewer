@@ -89,6 +89,7 @@ void MainWindow::initConnections()
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
 
     // help menu
+    connect(ui->actionAboutQt, &QAction::triggered, &QApplication::aboutQt);
     connect(ui->actionTextureFormats, &QAction::triggered,
             this, &MainWindow::showTextureFormatsDialog);
 

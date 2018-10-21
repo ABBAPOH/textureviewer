@@ -36,6 +36,7 @@
     <property name="title">
      <string>Help</string>
     </property>
+    <addaction name="actionAboutQt"/>
     <addaction name="actionTextureFormats"/>
    </widget>
    <addaction name="menuFile"/>
@@ -104,6 +105,14 @@
   <action name="actionTextureFormats">
    <property name="text">
     <string>Texture Formats...</string>
+   </property>
+  </action>
+  <action name="actionAboutQt">
+   <property name="text">
+    <string>About Qt...</string>
+   </property>
+   <property name="menuRole">
+    <enum>QAction::AboutQtRole</enum>
    </property>
   </action>
  </widget>
