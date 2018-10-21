@@ -20,6 +20,10 @@ class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
     Q_DECLARE_PRIVATE(TextureDocument)
     Q_PROPERTY(Texture texture READ texture WRITE setTexture NOTIFY textureChanged)
 
+    Q_PROPERTY(int width READ width NOTIFY widthChanged)
+    Q_PROPERTY(int heigth READ heigth NOTIFY heigthChanged)
+    Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
+
     Q_PROPERTY(int levels READ levels NOTIFY levelsChanged)
     Q_PROPERTY(int layers READ layers NOTIFY layersChanged)
     Q_PROPERTY(int faces READ faces NOTIFY facesChanged)
@@ -33,6 +37,15 @@ public:
 
     Texture texture() const;
     void setTexture(const Texture &texture);
+
+    int width() const;
+    Q_SIGNAL void widthChanged(int width);
+
+    int heigth() const;
+    Q_SIGNAL void heigthChanged(int heigth);
+
+    int depth() const;
+    Q_SIGNAL void depthChanged(int depth);
 
     int levels() const;
     int layers() const;

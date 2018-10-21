@@ -80,9 +80,30 @@ void TextureDocument::setTexture(const Texture &texture)
     }
 
     emit textureChanged(texture);
+    emit widthChanged(width());
+    emit heigthChanged(heigth());
+    emit depthChanged(depth());
     emit levelsChanged(levels());
     emit layersChanged(layers());
     emit facesChanged(faces());
+}
+
+int TextureDocument::width() const
+{
+    Q_D(const TextureDocument);
+    return !d->texture.isNull() ? d->texture.width() : 0;
+}
+
+int TextureDocument::heigth() const
+{
+    Q_D(const TextureDocument);
+    return !d->texture.isNull() ? d->texture.height() : 0;
+}
+
+int TextureDocument::depth() const
+{
+    Q_D(const TextureDocument);
+    return !d->texture.isNull() ? d->texture.depth() : 0;
 }
 
 int TextureDocument::levels() const
