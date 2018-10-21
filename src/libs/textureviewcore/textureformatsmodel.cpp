@@ -7,22 +7,27 @@
 TextureFormatsModel::TextureFormatsModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    const std::set<TextureFormat> readableFormats = {
-        TextureIO::readableFormats().begin(), TextureIO::readableFormats().end()
+    const auto readableFormats = TextureIO::readableFormats();
+    const auto writableFormats = TextureIO::writableFormats();
+
+    const auto readableFormatsSet = std::set<TextureFormat>{
+        readableFormats.begin(), readableFormats.end()
     };
-    const std::set<TextureFormat> writableFormats = {
-        TextureIO::writableFormats().begin(), TextureIO::writableFormats().end()
+    const auto writableFormatsSet = std::set<TextureFormat>{
+        writableFormats.begin(), writableFormats.end()
     };
 
+    m_data.reserve(size_t(TextureFormat::FormatsCount));
     for (auto format = TextureFormat(qsizetype(TextureFormat::Invalid) + 1);
          format != TextureFormat::FormatsCount;
          format = TextureFormat(qsizetype(format) + 1)) {
         FormatInfo data;
         data.format = format;
-        if (readableFormats.count(format))
+        if (readableFormatsSet.count(format))
             data.readable = true;
-        if (writableFormats.count(format))
-            data.readable = true;
+        if (writableFormatsSet.count(format))
+            data.writable = true;
+        m_data.push_back(data);
     }
 }
 
