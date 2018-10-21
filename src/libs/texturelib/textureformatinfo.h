@@ -23,7 +23,7 @@ public:
         Srgb,
         Compressed
     };
-    Q_ENUMS(Type)
+    Q_ENUM(Type)
 
     constexpr inline TextureFormatInfo() noexcept = default;
     constexpr inline TextureFormatInfo(
@@ -102,6 +102,8 @@ constexpr inline bool operator!=(const TextureFormatInfo &lhs, const TextureForm
 {
     return !(lhs == rhs);
 }
+
+QString toQString(TextureFormatInfo::Type type);
 
 Q_DECLARE_METATYPE(TextureFormatInfo::Type)
 
