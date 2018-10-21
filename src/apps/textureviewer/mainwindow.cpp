@@ -1,6 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "textureformatsdialog.h"
+
 #include <TextureLib/TextureIO>
 
 #include <TextureViewCoreLib/TextureDocument>
@@ -75,10 +77,20 @@ void MainWindow::openDocument(const QUrl &url)
     settings.setValue(QStringLiteral("lastOpenedFile"), url.toLocalFile());
 }
 
+void MainWindow::showTextureFormatsDialog()
+{
+    TextureViewer::TextureFormatsDialog dialog;
+    dialog.exec();
+}
+
 void MainWindow::initConnections()
 {
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
+
+    // help menu
+    connect(ui->actionTextureFormats, &QAction::triggered,
+            this, &MainWindow::showTextureFormatsDialog);
 
     auto onCurrentChanged = [this](QModelIndex current, QModelIndex)
     {
