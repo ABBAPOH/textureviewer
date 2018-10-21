@@ -5,6 +5,8 @@
 
 #include <QtCore/QAbstractTableModel>
 
+class TextureFormatInfo;
+
 class TextureFormatsModel : public QAbstractTableModel
 {
     Q_OBJECT
@@ -15,6 +17,8 @@ public:
         Format,
         Readable,
         Writable,
+        Type,
+        Size,
         ColumnCount
     };
 
@@ -33,7 +37,7 @@ public:
 private:
     struct FormatInfo
     {
-        TextureFormat format {TextureFormat::Invalid};
+        const TextureFormatInfo &info;
         bool readable {false};
         bool writable {false};
     };
