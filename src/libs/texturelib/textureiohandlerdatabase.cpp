@@ -117,6 +117,18 @@ void TextureIOHandlerDatabase::registerPlugin(const QString &mimeType, TextureIO
         return;
     }
 
+    const auto caps = plugin->formatCapabilites(mimeType);
+    m_readableFormats.reserve(m_readableFormats.size() + size_t(caps.size()));
+    m_writableFormats.reserve(m_writableFormats.size() + size_t(caps.size()));
+    for (const auto &cap: caps) {
+        if (cap.capabilities & TextureIOHandlerPlugin::Capability::CanRead)
+            m_readableFormats.push_back(cap.format);
+        if (cap.capabilities & TextureIOHandlerPlugin::Capability::CanWrite)
+            m_writableFormats.push_back(cap.format);
+    }
+    std::sort(m_readableFormats.begin(), m_readableFormats.end());
+    std::sort(m_writableFormats.begin(), m_writableFormats.end());
+
     map.insert(mimeType, plugin);
 }
 

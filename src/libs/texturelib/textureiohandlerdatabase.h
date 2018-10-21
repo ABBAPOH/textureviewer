@@ -29,9 +29,14 @@ public:
     TextureIOHandlerPlugin *plugin(const QString &mimeType) const;
     void registerPlugin(const QString &mimeType, TextureIOHandlerPlugin *plugin);
 
+    gsl::span<const TextureFormat> readableFormats() { return m_readableFormats; }
+    gsl::span<const TextureFormat> writableFormats() { return m_writableFormats; }
+
     static TextureIOHandlerDatabase *instance();
 
 private:
     QHash<QString, TextureIOHandlerPlugin *> map;
+    std::vector<TextureFormat> m_readableFormats;
+    std::vector<TextureFormat> m_writableFormats;
     std::vector<std::unique_ptr<QPluginLoader>> loaders;
 };

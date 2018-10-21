@@ -303,6 +303,16 @@ TextureIO::WriteResult TextureIO::write(const Texture &contents)
     return WriteResult();
 }
 
+gsl::span<const TextureFormat> TextureIO::readableFormats()
+{
+    return TextureIOHandlerDatabase::instance()->readableFormats();
+}
+
+gsl::span<const TextureFormat> TextureIO::writableFormats()
+{
+    return TextureIOHandlerDatabase::instance()->writableFormats();
+}
+
 QString TextureIO::pluginsDirPath()
 {
 #if defined(Q_OS_LINUX)

@@ -57,6 +57,9 @@ public:
 
     WriteResult write(const Texture &contents);
 
+    static gsl::span<const TextureFormat> readableFormats();
+    static gsl::span<const TextureFormat> writableFormats();
+
     static QString pluginsDirPath();
 
 private:
