@@ -147,4 +147,24 @@ auto TextureDocument::item(int face, int level, int layer) const -> ItemPointer
     return ItemPointer(d->items.at(index).get());
 }
 
+bool TextureDocument::convert(TextureFormat format, Texture::Alignment alignment)
+{
+    Q_D(TextureDocument);
+    if (d->texture.isNull()) {
+        qCWarning(texturedocument) << "Can't convert null texture";
+        return false;
+    }
+    if (format == d->texture.format() && alignment == d->texture.alignment())
+        return true; // nothing to do
+    const auto converted = d->texture.convert(format, alignment);
+    if (converted.isNull()) {
+        qCWarning(texturedocument) << "Can't convert texture";
+        return false;
+    }
+    setTexture(converted);
+    return true;
+}
+
 } // namespace TextureViewer
+
+Q_LOGGING_CATEGORY(texturedocument, "textureviewcore.texturedocument");

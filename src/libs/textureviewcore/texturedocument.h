@@ -65,6 +65,8 @@ public:
 
     ItemPointer item(int face, int level, int layer) const;
 
+    bool convert(TextureFormat format, Texture::Alignment alignment);
+
 signals:
     void textureChanged(const Texture &texture);
 
@@ -87,5 +89,7 @@ public:
 };
 
 } // namespace TextureViewer
+
+Q_DECLARE_LOGGING_CATEGORY(texturedocument)
 
 #endif // TEXTUREDOCUMENT_H
