@@ -69,3 +69,19 @@ QVariant TextureFormatsModel::data(const QModelIndex &index, int role) const
 
     return {};
 }
+
+QVariant TextureFormatsModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    if (orientation == Qt::Horizontal) {
+        if (role == Qt::DisplayRole || role == Qt::EditRole) {
+            if (section == int(Column::Format))
+                return tr("Texture Format");
+            else if (section == int(Column::Readable))
+                return tr("Readable");
+            else if (section == int(Column::Writable))
+                return tr("Writable");
+        }
+    }
+
+    return {};
+}
