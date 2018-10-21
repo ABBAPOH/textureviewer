@@ -17,6 +17,7 @@ class TextureDocumentPrivate;
 class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
 {
     Q_OBJECT
+    Q_DISABLE_COPY(TextureDocument)
     Q_DECLARE_PRIVATE(TextureDocument)
     Q_PROPERTY(Texture texture READ texture WRITE setTexture NOTIFY textureChanged)
 
@@ -28,15 +29,26 @@ class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
     Q_PROPERTY(int layers READ layers NOTIFY layersChanged)
     Q_PROPERTY(int faces READ faces NOTIFY facesChanged)
 
+    Q_PROPERTY(TextureFormat format READ format NOTIFY formatChanged)
+    Q_PROPERTY(Texture::Alignment alignment READ alignment NOTIFY alignmentChanged)
+
 public:
     class Item;
     using ItemPointer = ObserverPointer<Item>;
 
     explicit TextureDocument(QObject *parent = nullptr);
+    TextureDocument(TextureDocument &&) = delete;
     ~TextureDocument() override;
+    TextureDocument &operator=(TextureDocument &&) = delete;
 
     Texture texture() const;
     void setTexture(const Texture &texture);
+
+    TextureFormat format() const;
+    Q_SIGNAL void formatChanged(TextureFormat format);
+
+    Texture::Alignment alignment() const;
+    Q_SIGNAL void alignmentChanged(Texture::Alignment);
 
     int width() const;
     Q_SIGNAL void widthChanged(int width);

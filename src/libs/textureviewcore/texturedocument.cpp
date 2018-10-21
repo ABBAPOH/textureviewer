@@ -88,6 +88,18 @@ void TextureDocument::setTexture(const Texture &texture)
     emit facesChanged(faces());
 }
 
+TextureFormat TextureDocument::format() const
+{
+    Q_D(const TextureDocument);
+    return d->texture.format();
+}
+
+Texture::Alignment TextureDocument::alignment() const
+{
+    Q_D(const TextureDocument);
+    return d->texture.alignment();
+}
+
 int TextureDocument::width() const
 {
     Q_D(const TextureDocument);
