@@ -14,7 +14,7 @@ App {
     files: [
         "*.cpp",
         "*.h",
-        "mainwindow.ui",
+        "*.ui",
     ]
 
     Group {
