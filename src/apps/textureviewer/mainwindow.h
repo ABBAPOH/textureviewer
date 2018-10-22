@@ -26,6 +26,7 @@ public:
 public slots:
     void open();
     void openDocument(const QUrl &url);
+    void convert();
     void showTextureFormatsDialog();
 
 private:

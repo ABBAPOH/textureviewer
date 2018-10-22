@@ -13,7 +13,7 @@ TEXTURELIB_EXPORT Q_NAMESPACE
 #ifdef DOXY
 enum class TextureFormat {
 #else
-enum class TEXTURELIB_EXPORT TextureFormat {
+enum class TEXTURELIB_EXPORT TextureFormat: quint32 {
 #endif
     Invalid = 0,
 

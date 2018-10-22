@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "convertdialog.h"
 #include "textureformatsdialog.h"
 
 #include <TextureLib/TextureIO>
@@ -73,8 +74,21 @@ void MainWindow::openDocument(const QUrl &url)
     m_url = url;
     m_view->document()->setTexture(*result);
 
+    ui->actionConvert->setEnabled(true);
+
     QSettings settings;
     settings.setValue(QStringLiteral("lastOpenedFile"), url.toLocalFile());
+}
+
+void MainWindow::convert()
+{
+    ConvertDialog dialog;
+    if (dialog.exec() == QDialog::DialogCode::Rejected)
+        return;
+    bool ok = m_view->document()->convert(dialog.format(), dialog.alignment());
+    if (!ok) {
+        QMessageBox::warning(this, tr("Convert"), tr("Can't convert texture"));
+    }
 }
 
 void MainWindow::showTextureFormatsDialog()
@@ -87,6 +101,9 @@ void MainWindow::initConnections()
 {
     connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
+
+    // edit menu
+    connect(ui->actionConvert, &QAction::triggered, this, &MainWindow::convert);
 
     // help menu
     connect(ui->actionAboutQt, &QAction::triggered, &QApplication::aboutQt);
