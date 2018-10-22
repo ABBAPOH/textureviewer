@@ -247,6 +247,8 @@ public:
     Texture convert(Alignment align) const;
     Texture convert(TextureFormat format) const;
     Texture convert(TextureFormat format, Alignment align) const;
+    static gsl::span<const TextureFormat> supportedConvertions();
+
     Texture copy() const;
 
     QImage toImage() const;

@@ -344,6 +344,31 @@ constexpr bool checkConvertersPositions()
 
 static_assert(checkConvertersPositions(), "Incorrect format position in converters array");
 
+constexpr qsizetype convertionsCount()
+{
+    qsizetype result = 0;
+    for (const auto &info: converters) {
+        if (info.reader && info.writer)
+            result++;
+    }
+    return result;
+}
+
+class SupportedConvertionsHolder
+{
+public:
+    TextureFormat formats[convertionsCount()] = {};
+
+    constexpr SupportedConvertionsHolder()
+    {
+        qsizetype pos = 0;
+        for (const auto &info: converters) {
+            if (info.reader && info.writer)
+                gsl::at(formats, pos++) = info.format;
+        }
+    }
+} supportedConvertionsHolder;
+
 } // namespace
 
 std::function<AnyColor(Texture::ConstData)> TextureData::getFormatReader(TextureFormat format)
@@ -355,3 +380,13 @@ std::function<void(Texture::Data, const AnyColor &color)> TextureData::getFormat
 {
     return gsl::at(converters, qsizetype(format)).writer;
 }
+
+/*!
+    \internal
+    Returns the list of formats Texture can convert.
+*/
+gsl::span<const TextureFormat> Texture::supportedConvertions()
+{
+    return supportedConvertionsHolder.formats;
+}
+
