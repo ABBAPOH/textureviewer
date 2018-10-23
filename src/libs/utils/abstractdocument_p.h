@@ -17,6 +17,7 @@ public:
     void init();
 
 public:
+    QUrl url;
     bool modified {false};
     QScopedPointer<QUndoStack> undoStack;
 };

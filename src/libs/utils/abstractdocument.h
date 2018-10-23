@@ -17,6 +17,8 @@ class UTILS_EXPORT AbstractDocument : public QObject
     Q_DECLARE_PRIVATE(AbstractDocument)
     Q_DISABLE_COPY(AbstractDocument)
 
+    Q_PROPERTY(QUrl url READ url NOTIFY urlChanged)
+
     Q_PROPERTY(bool modified READ isModified WRITE setModified NOTIFY modificationChanged)
     Q_PROPERTY(bool canRedo READ canRedo NOTIFY canRedoChanged)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY canUndoChanged)
@@ -26,6 +28,9 @@ public:
     explicit AbstractDocument(QObject *parent = nullptr);
     ~AbstractDocument();
 
+    QUrl url() const;
+    Q_SIGNAL void urlChanged(const QUrl &url);
+
     bool isModified() const;
     bool canRedo() const;
     bool canUndo() const;
@@ -33,6 +38,10 @@ public:
     void clearUndoStack();
 
 public slots:
+    void open(const QUrl &url);
+    void save(const QUrl &url = QUrl());
+    void clear();
+
     void setModified(bool modified);
 
     void undo();
@@ -47,6 +56,9 @@ protected:
     explicit AbstractDocument(AbstractDocumentPrivate &dd, QObject *parent = Q_NULLPTR);
 
     QUndoStack *undoStack() const;
+
+    virtual void doOpen(const QUrl &url) { Q_UNUSED(url); }
+    virtual void doSave(const QUrl &url) { Q_UNUSED(url); }
 
 protected:
     QScopedPointer<AbstractDocumentPrivate> d_ptr;

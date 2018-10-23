@@ -34,6 +34,12 @@ AbstractDocument::AbstractDocument(QObject *parent) :
     d->init();
 }
 
+QUrl AbstractDocument::url() const
+{
+    Q_D(const AbstractDocument);
+    return d->url;
+}
+
 /*!
     Destroys the AbstractDocument object.
 */
@@ -81,6 +87,35 @@ void AbstractDocument::clearUndoStack()
 {
     Q_D(const AbstractDocument);
     return d->undoStack->clear();
+}
+
+void AbstractDocument::open(const QUrl &url)
+{
+    Q_D(AbstractDocument);
+
+    if (d->url == url)
+        return;
+    d->url = url;
+    emit urlChanged(d->url);
+    doOpen(d->url);
+}
+
+void AbstractDocument::save(const QUrl &url)
+{
+    Q_D(AbstractDocument);
+    auto realUrl = url.isEmpty() ? d->url : url;
+    if (realUrl != d->url) {
+        d->url = realUrl;
+        emit urlChanged(d->url);
+    }
+    doSave(d->url);
+}
+
+void AbstractDocument::clear()
+{
+    Q_D(AbstractDocument);
+    d->url = QUrl();
+    emit urlChanged(d->url);
 }
 
 void AbstractDocument::setModified(bool modified)
