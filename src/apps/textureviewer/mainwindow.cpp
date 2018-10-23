@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "application.h"
 #include "convertdialog.h"
 #include "textureformatsdialog.h"
 
@@ -34,49 +35,12 @@ MainWindow::MainWindow(QWidget *parent) :
     initConnections();
 }
 
+ObserverPointer<TextureView> MainWindow::view() const
+{
+    return ObserverPointer<TextureView>(m_view);
+}
+
 MainWindow::~MainWindow() = default;
-
-bool MainWindow::open()
-{
-    QSettings settings;
-    const auto lastOpenedFile = settings.value(QStringLiteral("lastOpenedFile")).toString();
-    const auto path = QFileDialog::getOpenFileName(nullptr, tr("Open"), lastOpenedFile);
-    if (path.isEmpty())
-        return false;
-
-    openPath(path);
-    return true;
-}
-
-bool MainWindow::openPath(const QString &path)
-{
-    if (path.isEmpty())
-        return false;
-
-    const auto window = new MainWindow;
-    window->show();
-
-    TextureIO io(path);
-    const auto result = io.read();
-    if (!result) {
-        QMessageBox::warning(
-                window,
-                tr("Open"),
-                tr("Can't open %1: %2").arg(path, toUserString(result.error())));
-        window->close();
-        window->deleteLater();
-        return false;
-    }
-
-    window->m_path = path;
-    window->m_view->document()->setTexture(*result);
-
-    window->ui->actionConvert->setEnabled(true);
-
-    QSettings settings;
-    settings.setValue(QStringLiteral("lastOpenedFile"), path);
-    return true;
-}
 
 void MainWindow::convert()
 {
@@ -97,7 +61,7 @@ void MainWindow::showTextureFormatsDialog()
 
 void MainWindow::initConnections()
 {
-    connect(ui->actionOpen, &QAction::triggered, &MainWindow::open);
+    connect(ui->actionOpen, &QAction::triggered, &Application::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
 
     // edit menu

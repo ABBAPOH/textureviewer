@@ -5,6 +5,8 @@
 
 #include <QtCore/QUrl>
 
+#include <ObserverPointer>
+
 #include <memory>
 
 namespace Ui {
@@ -23,9 +25,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    ObserverPointer<TextureView> view() const;
+
 public slots:
-    static bool open();
-    static bool openPath(const QString &path);
     void convert();
     void showTextureFormatsDialog();
 
@@ -37,8 +39,6 @@ private:
 
     TextureView *m_view {nullptr};
     std::unique_ptr<ThumbnailsModel> m_thumbModel;
-
-    QString m_path;
 };
 
 } // namespace TextureViewer

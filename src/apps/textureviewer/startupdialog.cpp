@@ -1,7 +1,7 @@
 #include "startupdialog.h"
 #include "ui_startupdialog.h"
 
-#include "mainwindow.h"
+#include "application.h"
 
 namespace TextureViewer {
 
@@ -18,7 +18,7 @@ StartupDialog::~StartupDialog() = default;
 
 void StartupDialog::openTexture()
 {
-    if (MainWindow::open())
+    if (Application::open())
         accept();
 }
 

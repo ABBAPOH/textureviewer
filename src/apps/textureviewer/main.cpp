@@ -1,3 +1,4 @@
+#include "application.h"
 #include "mainwindow.h"
 #include "startupdialog.h"
 
@@ -9,7 +10,7 @@ int main(int argc, char *argv[])
 {
     Q_INIT_RESOURCE(extramimetypes);
 
-    QApplication app(argc, argv);
+    TextureViewer::Application app(argc, argv);
 
     QCoreApplication::addLibraryPath(
             QCoreApplication::applicationDirPath() + TextureIO::pluginsDirPath());
@@ -18,7 +19,7 @@ int main(int argc, char *argv[])
 
     const auto arguments = QCoreApplication::arguments();
     if (arguments.size() == 2) {
-        if (!TextureViewer::MainWindow::openPath(arguments.at(1)))
+        if (!TextureViewer::Application::openPath(arguments.at(1)))
             return 1;
     } else {
         TextureViewer::StartupDialog dialog;
