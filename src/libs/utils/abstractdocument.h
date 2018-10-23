@@ -11,6 +11,8 @@
 
 #include <QtWidgets/QUndoStack>
 
+#include <qfuturewatcher.h>
+
 class AbstractDocumentPrivate;
 class UTILS_EXPORT AbstractDocument : public QObject
 {
@@ -49,6 +51,9 @@ public slots:
     void redo();
 
 signals:
+    void openStarted();
+    void openFinished(bool ok);
+
     void modificationChanged(bool modified);
     void canRedoChanged(bool available);
     void canUndoChanged(bool available);
