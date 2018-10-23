@@ -2,12 +2,13 @@
 
 #include "utils_global.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
-#include <QtCore/QUrl>
 #include <QtCore/QIODevice>
 #include <QtCore/QMimeType>
+#include <QtCore/QObject>
+#include <QtCore/QVariant>
 #include <QtCore/QVector>
+#include <QtCore/QUrl>
+
 #include <QtWidgets/QUndoStack>
 
 class AbstractDocumentPrivate;
@@ -26,7 +27,7 @@ class UTILS_EXPORT AbstractDocument : public QObject
 
 public:
     explicit AbstractDocument(QObject *parent = nullptr);
-    ~AbstractDocument();
+    ~AbstractDocument() override;
 
     QUrl url() const;
     Q_SIGNAL void urlChanged(const QUrl &url);
