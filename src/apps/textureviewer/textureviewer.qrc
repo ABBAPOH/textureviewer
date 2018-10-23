@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/textureviewer.png</file>
+    </qresource>
+</RCC>

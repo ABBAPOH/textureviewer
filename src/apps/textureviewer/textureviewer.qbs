@@ -12,8 +12,9 @@ App {
     Depends { name: "TextureViewWidgetsLib" }
 
     files: [
-        "*.cpp",
         "*.h",
+        "*.cpp",
+        "*.qrc",
         "*.ui",
     ]
 
