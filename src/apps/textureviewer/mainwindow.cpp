@@ -36,48 +36,46 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow() = default;
 
-void MainWindow::open()
+bool MainWindow::open()
 {
     QSettings settings;
     const auto lastOpenedFile = settings.value(QStringLiteral("lastOpenedFile")).toString();
-    const auto path = QFileDialog::getOpenFileName(this, tr("Open"), lastOpenedFile);
+    const auto path = QFileDialog::getOpenFileName(nullptr, tr("Open"), lastOpenedFile);
     if (path.isEmpty())
-        return;
+        return false;
 
-    openDocument(QUrl::fromLocalFile(path));
+    openPath(path);
+    return true;
 }
 
-void MainWindow::openDocument(const QUrl &url)
+bool MainWindow::openPath(const QString &path)
 {
-    if (!m_url.isEmpty()) {
-        const auto window = new MainWindow;
-        window->openDocument(url);
-        window->show();
-        return;
-    }
+    if (path.isEmpty())
+        return false;
 
-    if (url.isEmpty()) {
-        m_url = url;
-        return;
-    }
+    const auto window = new MainWindow;
+    window->show();
 
-    TextureIO io(url.toLocalFile());
+    TextureIO io(path);
     const auto result = io.read();
     if (!result) {
         QMessageBox::warning(
-                this,
+                window,
                 tr("Open"),
-                tr("Can't open %1: %2").arg(url.toLocalFile(), toUserString(result.error())));
-        return;
+                tr("Can't open %1: %2").arg(path, toUserString(result.error())));
+        window->close();
+        window->deleteLater();
+        return false;
     }
 
-    m_url = url;
-    m_view->document()->setTexture(*result);
+    window->m_path = path;
+    window->m_view->document()->setTexture(*result);
 
-    ui->actionConvert->setEnabled(true);
+    window->ui->actionConvert->setEnabled(true);
 
     QSettings settings;
-    settings.setValue(QStringLiteral("lastOpenedFile"), url.toLocalFile());
+    settings.setValue(QStringLiteral("lastOpenedFile"), path);
+    return true;
 }
 
 void MainWindow::convert()
@@ -99,7 +97,7 @@ void MainWindow::showTextureFormatsDialog()
 
 void MainWindow::initConnections()
 {
-    connect(ui->actionOpen, &QAction::triggered, this, &MainWindow::open);
+    connect(ui->actionOpen, &QAction::triggered, &MainWindow::open);
     connect(ui->actionQuit, &QAction::triggered, &QCoreApplication::quit);
 
     // edit menu

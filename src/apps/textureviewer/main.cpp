@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "startupdialog.h"
 
 #include <TextureLib/TextureIO>
 
@@ -15,11 +16,15 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QStringLiteral("textureviewer"));
     QCoreApplication::setOrganizationName(QStringLiteral("arch"));
 
-    TextureViewer::MainWindow w;
     const auto arguments = QCoreApplication::arguments();
-    if (arguments.size() == 2)
-        w.openDocument(QUrl::fromLocalFile(arguments.at(1)));
-    w.show();
+    if (arguments.size() == 2) {
+        if (!TextureViewer::MainWindow::openPath(arguments.at(1)))
+            return 1;
+    } else {
+        TextureViewer::StartupDialog dialog;
+        if (dialog.exec() == QDialog::DialogCode::Rejected)
+            return 0;
+    }
 
     return QCoreApplication::exec();
 }

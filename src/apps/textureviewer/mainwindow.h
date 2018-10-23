@@ -24,8 +24,8 @@ public:
     ~MainWindow() override;
 
 public slots:
-    void open();
-    void openDocument(const QUrl &url);
+    static bool open();
+    static bool openPath(const QString &path);
     void convert();
     void showTextureFormatsDialog();
 
@@ -38,7 +38,7 @@ private:
     TextureView *m_view {nullptr};
     std::unique_ptr<ThumbnailsModel> m_thumbModel;
 
-    QUrl m_url;
+    QString m_path;
 };
 
 } // namespace TextureViewer
