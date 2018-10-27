@@ -591,7 +591,7 @@ bool DDSHandler::write(const Texture &texture)
         dds.pixelFormat.flags = DDSPixelFormatFlag::FourCC;
 
         dds10.dxgiFormat = quint32(format);
-        dds10.arraySize = texture.layers();
+        dds10.arraySize = quint32(texture.layers());
     } else {
         dds.pixelFormat.fourCC = 0;
         dds.pixelFormat.flags = info.flags;

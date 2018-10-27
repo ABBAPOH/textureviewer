@@ -106,6 +106,7 @@ constexpr Rgba32Signed AnyColor::toRgba32Signed() const noexcept
     case Type::Rgba128Signed: return rgba32Signed(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba32Signed(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr QRgb AnyColor::toRgba32Unsigned() const noexcept
@@ -123,6 +124,7 @@ constexpr QRgb AnyColor::toRgba32Unsigned() const noexcept
     case Type::Rgba128Signed: return qRgba(m_rgba128Signed);
     case Type::Rgba128Unsigned: return qRgba(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr QRgba64 AnyColor::toRgba64Unsigned() const noexcept
@@ -140,6 +142,7 @@ constexpr QRgba64 AnyColor::toRgba64Unsigned() const noexcept
     case Type::Rgba128Signed: return qRgba64(m_rgba128Signed);
     case Type::Rgba128Unsigned: return qRgba64(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr Rgba64Float AnyColor::toRgba64Float() const noexcept
@@ -157,6 +160,7 @@ constexpr Rgba64Float AnyColor::toRgba64Float() const noexcept
     case Type::Rgba128Signed: return rgba64Float(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba64Float(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr Rgba64Signed AnyColor::toRgba64Signed() const noexcept
@@ -174,6 +178,7 @@ constexpr Rgba64Signed AnyColor::toRgba64Signed() const noexcept
     case Type::Rgba128Signed: return rgba64Signed(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba64Signed(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr Rgba128Float AnyColor::toRgba128Float() const noexcept
@@ -191,6 +196,7 @@ constexpr Rgba128Float AnyColor::toRgba128Float() const noexcept
     case Type::Rgba128Signed: return rgba128Float(m_rgba128Signed);
     case Type::Rgba128Unsigned: return rgba128Float(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr Rgba128Signed AnyColor::toRgba128Signed() const noexcept
@@ -208,6 +214,7 @@ constexpr Rgba128Signed AnyColor::toRgba128Signed() const noexcept
     case Type::Rgba128Signed: return m_rgba128Signed;
     case Type::Rgba128Unsigned: return rgba128Signed(m_rgba128Unsigned);
     }
+    return {};
 }
 
 constexpr Rgba128 AnyColor::toRgba128Unsigned() const noexcept
@@ -225,6 +232,7 @@ constexpr Rgba128 AnyColor::toRgba128Unsigned() const noexcept
     case Type::Rgba128Signed: return rgba128(m_rgba128Signed);
     case Type::Rgba128Unsigned: return m_rgba128Unsigned;
     }
+    return {};
 }
 
 // helpers
