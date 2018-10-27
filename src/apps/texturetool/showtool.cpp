@@ -21,7 +21,7 @@ struct Options
 
 Options parseOptions(const QStringList &arguments)
 {
-    ToolParser parser({toolId.data(), toolId.size()});
+    ToolParser parser({toolId.data(), int(toolId.size())});
     parser.addPositionalArgument(QStringLiteral("file"),
                                  ShowTool::tr("Input filename"),
                                  QStringLiteral("[file]"));
@@ -89,7 +89,7 @@ ShowTool::ShowTool() = default;
 */
 QByteArray ShowTool::id() const
 {
-    return {toolId.data(), toolId.size()};
+    return {toolId.data(), int(toolId.size())};
 }
 
 /*!

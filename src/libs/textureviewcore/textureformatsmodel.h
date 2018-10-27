@@ -1,13 +1,15 @@
 #ifndef TEXTUREFORMATSMODEL_H
 #define TEXTUREFORMATSMODEL_H
 
+#include "textureviewcore_global.h"
+
 #include <TextureLib/TextureFormat>
 
 #include <QtCore/QAbstractTableModel>
 
 class TextureFormatInfo;
 
-class TextureFormatsModel : public QAbstractTableModel
+class TEXTUREVIEWCORE_EXPORT TextureFormatsModel : public QAbstractTableModel
 {
     Q_OBJECT
     Q_DISABLE_COPY(TextureFormatsModel)

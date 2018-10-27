@@ -103,7 +103,7 @@ constexpr inline bool operator!=(const TextureFormatInfo &lhs, const TextureForm
     return !(lhs == rhs);
 }
 
-QString toQString(TextureFormatInfo::Type type);
+QString TEXTURELIB_EXPORT toQString(TextureFormatInfo::Type type);
 
 Q_DECLARE_METATYPE(TextureFormatInfo::Type)
 

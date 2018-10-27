@@ -28,7 +28,7 @@ struct Options
 
 Options parseOptions(const QStringList &arguments)
 {
-    ToolParser parser({toolId.data(), toolId.size()});
+    ToolParser parser({toolId.data(), int(toolId.size())});
     QCommandLineOption inputTypeOption(QStringLiteral("input-type"),
                                        ConvertTool::tr("Input mime type (i.e. image/png)"),
                                        QStringLiteral("mime type"));
@@ -150,7 +150,7 @@ ConvertTool::ConvertTool() = default;
 */
 QByteArray ConvertTool::id() const
 {
-    return {toolId.data(), toolId.size()};
+    return {toolId.data(), int(toolId.size())};
 }
 
 /*!

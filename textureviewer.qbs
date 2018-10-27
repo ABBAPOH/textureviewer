@@ -50,7 +50,7 @@ Project {
         if (qbs.targetOS.contains("macos"))
             return ["-Wno-unknown-pragmas"];
         if (qbs.targetOS.contains("windows"))
-            return ["/std:c++17", "/Zc:__cplusplus"]
+            return ["/Zc:__cplusplus"]
         return []
     }
     property stringList linkFlags: []

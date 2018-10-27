@@ -292,7 +292,8 @@ static_assert (checkFormatPositions(), "Incorrect format position in dxgiFormatI
 constexpr size_t getFormatsCount()
 {
     size_t baseSize = gsl::span<const FormatInfo>(formatInfos).size() - 1;
-    for (const auto &info: gsl::span<const DXGIFormatInfo>(dxgiFormatInfos)) {
+    const auto array = gsl::span<const DXGIFormatInfo>(dxgiFormatInfos);
+    for (const auto &info: array) {
         if (info.textureFormat != TextureFormat::Invalid)
             baseSize++;
     }
@@ -308,12 +309,14 @@ public:
     constexpr FormatCapabilitiesHolder()
     {
         qsizetype pos = 0;
-        for (const auto &info: gsl::span<const FormatInfo>(formatInfos)) {
+        const auto formatInfos = gsl::span<const FormatInfo>(::formatInfos);
+        for (const auto &info: formatInfos) {
             if (info.format != TextureFormat::Invalid)
                 gsl::at(formatCapabilites, pos++) =
                         {info.format, TextureIOHandlerPlugin::Capability::ReadWrite};
         }
-        for (const auto &info: gsl::span<const DXGIFormatInfo>(dxgiFormatInfos)) {
+        const auto dxgiFormatInfos = gsl::span<const DXGIFormatInfo>(::dxgiFormatInfos);
+        for (const auto &info: dxgiFormatInfos) {
             if (info.textureFormat != TextureFormat::Invalid)
                 gsl::at(formatCapabilites, pos++) =
                         {info.textureFormat, TextureIOHandlerPlugin::Capability::ReadWrite};
