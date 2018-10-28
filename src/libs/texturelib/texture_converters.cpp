@@ -22,11 +22,7 @@ using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 // generic functions
 
 template<typename T>
-typename Private::ColorChannelTraits<T>::RgbaType colorFunc(const AnyColor &color)
-{
-    Q_UNUSED(color);
-    Q_UNIMPLEMENTED();
-}
+typename Private::ColorChannelTraits<T>::RgbaType colorFunc(const AnyColor &color);
 
 template<> QRgb colorFunc<quint8>(const AnyColor &color) { return color.toRgba32Unsigned(); }
 template<> Rgba32Signed colorFunc<qint8>(const AnyColor &color) { return color.toRgba32Signed(); }
