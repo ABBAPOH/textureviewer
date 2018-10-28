@@ -15,9 +15,11 @@ public:
     virtual ~AbstractDocumentPrivate();
 
     void init();
+    void setState(AbstractDocument::State state);
 
 public:
     QUrl url;
+    AbstractDocument::State state {AbstractDocument::State::Idle};
     bool modified {false};
     QScopedPointer<QUndoStack> undoStack;
 };

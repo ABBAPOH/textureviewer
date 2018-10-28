@@ -28,6 +28,13 @@ class UTILS_EXPORT AbstractDocument : public QObject
     // TODO (abbapoh): add undoRedoEnabled property
 
 public:
+    enum class State {
+        Idle,
+        Opening,
+        Saving,
+    };
+    Q_ENUM(State)
+
     explicit AbstractDocument(QObject *parent = nullptr);
     AbstractDocument(AbstractDocument &&) = delete;
     ~AbstractDocument() override;
@@ -35,6 +42,9 @@ public:
 
     QUrl url() const;
     Q_SIGNAL void urlChanged(const QUrl &url);
+
+    State state() const;
+    Q_SIGNAL void stateChanged(State state);
 
     bool isModified() const;
     bool canRedo() const;
@@ -54,7 +64,9 @@ public slots:
 
 signals:
     void openStarted();
-    void openFinished(bool ok);
+    void openFinished(bool ok, const QString &error);
+    void saveStarted();
+    void saveFinished(bool ok, const QString &error);
 
     void modificationChanged(bool modified);
     void canRedoChanged(bool available);
@@ -66,7 +78,11 @@ protected:
     QUndoStack *undoStack() const;
 
     virtual void doOpen(const QUrl &url) { Q_UNUSED(url); }
+    void beginOpen();
+    void endOpen(bool ok, const QString &error = QString());
     virtual void doSave(const QUrl &url) { Q_UNUSED(url); }
+    void beginSave();
+    void endSave(bool ok, const QString &error = QString());
 
 protected:
     QScopedPointer<AbstractDocumentPrivate> d_ptr;

@@ -13,7 +13,16 @@ void AbstractDocumentPrivate::init()
     QObject::connect(undoStack.data(), &QUndoStack::canRedoChanged,
             q, &AbstractDocument::canRedoChanged);
     QObject::connect(undoStack.data(), &QUndoStack::canUndoChanged,
-            q, &AbstractDocument::canUndoChanged);
+                     q, &AbstractDocument::canUndoChanged);
+}
+
+void AbstractDocumentPrivate::setState(AbstractDocument::State state)
+{
+    Q_Q(AbstractDocument);
+    if (this->state == state)
+        return;
+    this->state = state;
+    emit q->stateChanged(this->state);
 }
 
 /*!
@@ -38,6 +47,12 @@ QUrl AbstractDocument::url() const
 {
     Q_D(const AbstractDocument);
     return d->url;
+}
+
+AbstractDocument::State AbstractDocument::state() const
+{
+    Q_D(const AbstractDocument);
+    return d->state;
 }
 
 /*!
@@ -95,6 +110,11 @@ void AbstractDocument::open(const QUrl &url)
 
     if (d->url == url)
         return;
+    if (d->state != State::Idle) {
+        // TODO (abbapoh): call cancel()
+        qWarning() << "Can't open in" << d->state << "state";
+        return;
+    }
     d->url = url;
     emit urlChanged(d->url);
     doOpen(d->url);
@@ -103,6 +123,11 @@ void AbstractDocument::open(const QUrl &url)
 void AbstractDocument::save(const QUrl &url)
 {
     Q_D(AbstractDocument);
+    if (d->state != State::Idle) {
+        // TODO (abbapoh): call cancel()
+        qWarning() << "Can't save in" << d->state << "state";
+        return;
+    }
     auto realUrl = url.isEmpty() ? d->url : url;
     if (realUrl != d->url) {
         d->url = realUrl;
@@ -179,3 +204,30 @@ QUndoStack *AbstractDocument::undoStack() const
     return d->undoStack.data();
 }
 
+void AbstractDocument::beginOpen()
+{
+    Q_D(AbstractDocument);
+    d->setState(State::Opening);
+    emit openStarted();
+}
+
+void AbstractDocument::endOpen(bool ok, const QString &error)
+{
+    Q_D(AbstractDocument);
+    d->setState(State::Idle);
+    emit openFinished(ok, error);
+}
+
+void AbstractDocument::beginSave()
+{
+    Q_D(AbstractDocument);
+    d->setState(State::Saving);
+    emit saveStarted();
+}
+
+void AbstractDocument::endSave(bool ok, const QString &error)
+{
+    Q_D(AbstractDocument);
+    d->setState(State::Idle);
+    emit saveFinished(ok, error);
+}
