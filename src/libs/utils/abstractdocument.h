@@ -25,7 +25,7 @@ class UTILS_EXPORT AbstractDocument : public QObject
     Q_PROPERTY(bool modified READ isModified WRITE setModified NOTIFY modificationChanged)
     Q_PROPERTY(bool canRedo READ canRedo NOTIFY canRedoChanged)
     Q_PROPERTY(bool canUndo READ canUndo NOTIFY canUndoChanged)
-    // TODO: add undoRedoEnabled property
+    // TODO (abbapoh): add undoRedoEnabled property
 
 public:
     explicit AbstractDocument(QObject *parent = nullptr);
