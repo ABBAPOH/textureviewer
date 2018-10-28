@@ -113,6 +113,8 @@ TextureData *TextureData::create(
 
         // calculateBytesPerSlice already checks overflow
         const auto bytesPerSlice = TextureData::calculateBytesPerSlice(texelFormat, w, h, align);
+        if (!bytesPerSlice)
+            return nullptr;
 
         // check that single mipmap doesn't overflow
         if (std::numeric_limits<qsizetype>::max() / bytesPerSlice / d / ufaces / ulayers < 1
@@ -158,7 +160,7 @@ TextureData *TextureData::create(
     result->nbytes = totalBytes;
     if (data.empty()) {
         result->data = DataPointer(
-                new (std::nothrow) uchar[size_t(result->nbytes)], [](uchar p[]){ delete [] p;});
+                new (std::nothrow) uchar[size_t(result->nbytes)], [](const uchar p[]){ delete [] p;});
         if (!result->data)
             return nullptr;
     } else {
@@ -168,7 +170,7 @@ TextureData *TextureData::create(
             return nullptr;
         }
         if (deleter)
-            result->data = DataPointer(data.data(), deleter);
+            result->data = DataPointer(data.data(), std::move(deleter));
         else
             result->data = DataPointer(data.data());
     }
@@ -179,8 +181,8 @@ TextureData *TextureData::create(
 qsizetype TextureData::calculateBytesPerLine(
         const TextureFormatInfo &format, quint32 width, Texture::Alignment align)
 {
-    const auto bytesPerTexel = size_t(format.bytesPerTexel());
-    const auto blockSize = size_t(format.blockSize());
+    const auto bytesPerTexel = qsizetype(format.bytesPerTexel());
+    const auto blockSize = qsizetype(format.blockSize());
 
     if (bytesPerTexel) {
         if (bytesPerTexel && std::numeric_limits<qsizetype>::max() / bytesPerTexel / width < 1) {
@@ -188,9 +190,9 @@ qsizetype TextureData::calculateBytesPerLine(
             return 0;
         }
         if (align == Texture::Alignment::Byte)
-            return qsizetype(width * bytesPerTexel);
+            return width * bytesPerTexel;
         if (align == Texture::Alignment::Word)
-            return qsizetype(((width * bytesPerTexel + 3u) >> 2u) << 2u);
+            return ((width * bytesPerTexel + 3u) >> 2u) << 2u;
     } else if (blockSize) { // compressed format
         if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
@@ -207,6 +209,8 @@ qsizetype TextureData::calculateBytesPerSlice(
         const TextureFormatInfo &format, quint32 width, quint32 height, Texture::Alignment align)
 {
     const auto bytesPerLine = calculateBytesPerLine(format, width, align);
+    if (!bytesPerLine) // overflow happened
+        return 0;
 
     if (format.bytesPerTexel()) {
         if (std::numeric_limits<qsizetype>::max() / bytesPerLine / height < 1) {
@@ -725,7 +729,7 @@ Texture::Texture(
             dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
             align,
             data,
-            deleter);
+            std::move(deleter));
 }
 
 /*!
@@ -896,11 +900,11 @@ Texture::Size Texture::size() const
 Texture::Size Texture::size(int level) const
 {
     if (!d)
-        return Size();
+        return {};
 
     CHECK_LEVEL(level, Size());
 
-    return Size(d->levelWidth(level), d->levelHeight(level), d->levelDepth(level));
+    return {d->levelWidth(level), d->levelHeight(level), d->levelDepth(level)};
 }
 
 /*!
