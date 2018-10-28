@@ -5,9 +5,9 @@
 #include <QtCore/QIODevice>
 #include <QtCore/QMimeType>
 #include <QtCore/QObject>
+#include <QtCore/QUrl>
 #include <QtCore/QVariant>
 #include <QtCore/QVector>
-#include <QtCore/QUrl>
 
 #include <QtWidgets/QUndoStack>
 
@@ -29,7 +29,9 @@ class UTILS_EXPORT AbstractDocument : public QObject
 
 public:
     explicit AbstractDocument(QObject *parent = nullptr);
+    AbstractDocument(AbstractDocument &&) = delete;
     ~AbstractDocument() override;
+    AbstractDocument &operator=(AbstractDocument &&) = delete;
 
     QUrl url() const;
     Q_SIGNAL void urlChanged(const QUrl &url);
