@@ -80,6 +80,8 @@ protected:
     void doSave(const QUrl &url) override;
     void doClear() override;
     void doCancel() override;
+    bool doWaitForOpened() override;
+    bool doWaitForSaved() override;
 
 private:
     QScopedPointer<TextureDocumentPrivate> d_ptr;

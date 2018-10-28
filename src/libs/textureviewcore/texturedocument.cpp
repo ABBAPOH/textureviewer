@@ -267,6 +267,27 @@ void TextureDocument::doCancel()
     }
 }
 
+bool TextureDocument::doWaitForOpened()
+{
+    if (state() != State::Opening)
+        return false;
+    Q_D(TextureDocument);
+    auto future = d->readWatcher->future();
+    future.waitForFinished();
+    return bool(future.result());
+}
+
+bool TextureDocument::doWaitForSaved()
+{
+    if (state() != State::Saving)
+        return false;
+    Q_D(TextureDocument);
+    auto future = d->writeWatcher->future();
+    future.waitForFinished();
+    return bool(future.result());
+}
+
 } // namespace TextureViewer
 
 Q_LOGGING_CATEGORY(texturedocument, "textureviewcore.texturedocument");
+

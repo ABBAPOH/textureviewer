@@ -52,6 +52,10 @@ public:
 
     void clearUndoStack();
 
+    // NVI pattern
+    bool waitForOpened() { return doWaitForOpened(); }
+    bool waitForSaved() { return doWaitForSaved(); }
+
 public slots:
     void open(const QUrl &url);
     void save(const QUrl &url = QUrl());
@@ -86,6 +90,9 @@ protected:
     void endSave(bool ok, const QString &error = QString());
     virtual void doClear() {}
     virtual void doCancel() {}
+
+    virtual bool doWaitForOpened() { return false; }
+    virtual bool doWaitForSaved() { return false; }
 
 protected:
     QScopedPointer<AbstractDocumentPrivate> d_ptr;
