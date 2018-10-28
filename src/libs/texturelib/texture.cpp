@@ -201,7 +201,7 @@ qsizetype TextureData::calculateBytesPerLine(
         return std::max(1u, (width + 3) / 4) * blockSize;
     }
 
-    Q_UNREACHABLE();
+    // Invalid format
     return 0;
 }
 
@@ -228,7 +228,7 @@ qsizetype TextureData::calculateBytesPerSlice(
         return bytesPerLine * std::max(1u, (height + 3) / 4);
     }
 
-    Q_UNREACHABLE();
+    // Invalid format
     return 0;
 }
 
