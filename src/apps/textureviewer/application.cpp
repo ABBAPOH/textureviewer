@@ -39,19 +39,30 @@ bool Application::openPath(const QString &path)
     if (path.isEmpty())
         return false;
 
-    TextureIO io(path);
-    const auto result = io.read();
-    if (!result) {
-        QMessageBox::warning(
-                nullptr,
-                tr("Open"),
-                tr("Can't open %1: %2").arg(path, toUserString(result.error())));
-        return false;
-    }
-
     const auto window = new MainWindow;
 
-    window->view()->document()->setTexture(*result);
+    std::pair<bool, QString> result = {true, QString()};
+    QEventLoop loop;
+    auto onOpenFinished = [&loop, path, &result](bool ok, const QString &error)
+    {
+        loop.quit();
+        result.first = ok;
+        result.second = error;
+    };
+    auto document = window->view()->document();
+    auto connection = connect(document.get(), &AbstractDocument::openFinished, onOpenFinished);
+    window->view()->document()->open(QUrl::fromLocalFile(path));
+    loop.exec();
+    disconnect(connection);
+
+    if (!result.first) {
+        QMessageBox::warning(
+                    nullptr,
+                    tr("Open"),
+                    tr("Can't open %1: %2").arg(path, result.second));
+        delete window;
+        return false;
+    }
 
     window->show();
 
