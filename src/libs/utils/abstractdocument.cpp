@@ -146,6 +146,7 @@ void AbstractDocument::cancel()
     } else if (d->state == State::Saving) {
         doCancel();
     }
+    d->setState(State::Idle);
 }
 
 void AbstractDocument::clear()

@@ -1,14 +1,23 @@
 #include "texturedocument.h"
 
+#include <TextureLib/TextureIO>
+
+#include <QtConcurrent/QtConcurrentRun>
+
 namespace TextureViewer {
 
 class TextureDocumentPrivate
 {
 public:
     using Item = TextureDocument::Item;
+    using ReadWatcher = QFutureWatcher<TextureIO::ReadResult>;
+    using WriteWatcher = QFutureWatcher<TextureIO::WriteResult>;
 
     Texture texture;
     std::vector<std::unique_ptr<Item>> items;
+
+    std::unique_ptr<QFutureWatcher<TextureIO::ReadResult>> readWatcher;
+    std::unique_ptr<QFutureWatcher<TextureIO::WriteResult>> writeWatcher;
 };
 
 /*!
@@ -23,6 +32,40 @@ TextureDocument::TextureDocument(QObject *parent)
     : AbstractDocument(parent)
     , d_ptr(new TextureDocumentPrivate())
 {
+    Q_D(TextureDocument);
+    d->readWatcher = std::make_unique<TextureDocumentPrivate::ReadWatcher>();
+
+    const auto onOpenFinished = [this]()
+    {
+        Q_D(TextureDocument);
+        const auto future = d->readWatcher->future();
+        if (future.isCanceled())
+            return;
+        const auto result = future.result();
+        if (result) {
+            setTexture(*result);
+            endOpen(true);
+        } else {
+            endOpen(false, toUserString(result.error()));
+        }
+    };
+    connect(d->readWatcher.get(), &QFutureWatcherBase::finished, this, onOpenFinished);
+
+    d->writeWatcher = std::make_unique<TextureDocumentPrivate::WriteWatcher>();
+
+    const auto onSaveFinished = [this]()
+    {
+        Q_D(TextureDocument);
+        const auto future = d->writeWatcher->future();
+        if (future.isCanceled())
+            return;
+        const auto result = future.result();
+        if (result)
+            endSave(true);
+        else
+            endSave(false, toUserString(result.error()));
+    };
+    connect(d->writeWatcher.get(), &QFutureWatcherBase::finished, this, onSaveFinished);
 }
 
 /*!
@@ -163,6 +206,65 @@ bool TextureDocument::convert(TextureFormat format, Texture::Alignment alignment
     }
     setTexture(converted);
     return true;
+}
+
+void TextureDocument::doOpen(const QUrl &url)
+{
+    Q_D(TextureDocument);
+    beginOpen();
+    if (!url.isLocalFile()) {
+        endOpen(false, tr("Can't open non-local files"));
+        return;
+    }
+
+    const auto openFunc = [](QUrl url) -> TextureIO::ReadResult
+    {
+        const auto path = url.toLocalFile();
+        TextureIO io(path);
+        return io.read();
+    };
+
+    d->readWatcher->setFuture(QtConcurrent::run(openFunc, url));
+}
+
+void TextureDocument::doSave(const QUrl &url)
+{
+    Q_D(TextureDocument);
+    beginSave();
+    if (!url.isLocalFile()) {
+        endSave(false, tr("Can't save to non-local files"));
+        return;
+    }
+
+    const auto texture = d->texture;
+    const auto saveFunc = [texture](QUrl url) -> TextureIO::WriteResult
+    {
+        const auto path = url.toLocalFile();
+        TextureIO io(path);
+        return io.write(texture);
+    };
+
+    d->writeWatcher->setFuture(QtConcurrent::run(saveFunc, url));
+}
+
+void TextureDocument::doClear()
+{
+    setTexture(Texture());
+}
+
+void TextureDocument::doCancel()
+{
+    Q_D(TextureDocument);
+    if (state() == State::Opening) {
+        d->readWatcher->future().cancel();
+        d->readWatcher->setFuture(QFuture<TextureIO::ReadResult>());
+        openFinished(false, tr("Canceled"));
+    }
+    if (state() == State::Saving) {
+        d->writeWatcher->future().cancel();
+        d->writeWatcher->setFuture(QFuture<TextureIO::WriteResult>());
+        saveFinished(false, tr("Canceled"));
+    }
 }
 
 } // namespace TextureViewer

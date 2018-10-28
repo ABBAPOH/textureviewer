@@ -1,6 +1,7 @@
 import qbs.base 1.0
 
 Lib {
+    Depends { name: "Qt.concurrent" }
     Depends { name: "Qt.gui" }
     Depends { name: "Qt.widgets" }
     Depends { name: "TextureLib" }

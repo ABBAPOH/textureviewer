@@ -74,6 +74,13 @@ signals:
     void layersChanged(int layers);
     void facesChanged(int faces);
 
+    // AbstractDocument interface
+protected:
+    void doOpen(const QUrl &url) override;
+    void doSave(const QUrl &url) override;
+    void doClear() override;
+    void doCancel() override;
+
 private:
     QScopedPointer<TextureDocumentPrivate> d_ptr;
 };
