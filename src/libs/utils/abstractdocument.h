@@ -55,6 +55,7 @@ public:
 public slots:
     void open(const QUrl &url);
     void save(const QUrl &url = QUrl());
+    void cancel();
     void clear();
 
     void setModified(bool modified);
@@ -83,6 +84,8 @@ protected:
     virtual void doSave(const QUrl &url) { Q_UNUSED(url); }
     void beginSave();
     void endSave(bool ok, const QString &error = QString());
+    virtual void doClear() {}
+    virtual void doCancel() {}
 
 protected:
     QScopedPointer<AbstractDocumentPrivate> d_ptr;

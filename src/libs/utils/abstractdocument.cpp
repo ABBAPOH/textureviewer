@@ -111,8 +111,7 @@ void AbstractDocument::open(const QUrl &url)
     if (d->url == url)
         return;
     if (d->state != State::Idle) {
-        // TODO (abbapoh): call cancel()
-        qWarning() << "Can't open in" << d->state << "state";
+        cancel();
         return;
     }
     d->url = url;
@@ -124,8 +123,7 @@ void AbstractDocument::save(const QUrl &url)
 {
     Q_D(AbstractDocument);
     if (d->state != State::Idle) {
-        // TODO (abbapoh): call cancel()
-        qWarning() << "Can't save in" << d->state << "state";
+        cancel();
         return;
     }
     auto realUrl = url.isEmpty() ? d->url : url;
@@ -136,10 +134,25 @@ void AbstractDocument::save(const QUrl &url)
     doSave(d->url);
 }
 
+void AbstractDocument::cancel()
+{
+    Q_D(AbstractDocument);
+    if (d->state == State::Idle)
+        return; // nothing to cancel
+
+    if (d->state == State::Opening) {
+        doCancel();
+        clear();
+    } else if (d->state == State::Saving) {
+        doCancel();
+    }
+}
+
 void AbstractDocument::clear()
 {
     Q_D(AbstractDocument);
     d->url = QUrl();
+    doClear();
     emit urlChanged(d->url);
 }
 
