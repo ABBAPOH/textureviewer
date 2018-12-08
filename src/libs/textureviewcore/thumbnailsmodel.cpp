@@ -113,7 +113,7 @@ void ThumbnailsModel::rebuildModel(ItemPointer parent)
         rebuildModel(parent, 0);
     } else {
         for (int i = 0; i < m_document->layers(); i++) {
-            auto item = parent->createItem();
+            auto item = parent->createChild();
             item->text = tr("Image %1").arg(i);
             rebuildModel(item, i);
         }
@@ -126,7 +126,7 @@ void ThumbnailsModel::rebuildModel(ItemPointer parent, int layer)
         rebuildModel(parent, layer, 0);
     } else {
         for (int i = 0; i < m_document->levels(); ++i) {
-            auto item = parent->createItem();
+            auto item = parent->createChild();
             item->text = tr("Mipmap %1").arg(i);
             rebuildModel(item, layer, i);
         }
@@ -139,7 +139,7 @@ void ThumbnailsModel::rebuildModel(ItemPointer parent, int layer, int level)
         rebuildModel(parent, layer, level, 0);
     } else {
         for (int i = 0; i < m_document->faces(); ++i) {
-            auto item = parent->createItem();
+            auto item = parent->createChild();
             item->text = tr("Face %1").arg(i);
             rebuildModel(item, layer, level, i);
         }
@@ -150,7 +150,7 @@ void ThumbnailsModel::rebuildModel(ItemPointer parent, int layer, int level, int
 {
     auto item = parent;
     if (item.get() == m_rootItem.get()) {
-        auto item = parent->createItem();
+        auto item = parent->createChild();
         item->text = tr("Image");
     }
     item->position = {layer, level, face, 0};
