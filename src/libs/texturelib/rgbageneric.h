@@ -175,13 +175,15 @@ inline constexpr Dst normalize(Src src)
 }
 
 template<typename Dst, typename Src>
-constexpr typename ColorChannelTraits<Dst>::RgbaType convertRgba(typename ColorChannelTraits<Src>::RgbaType src) noexcept
+constexpr Dst convertRgba(Src src) noexcept
 {
-    return createRgba<Dst>(
-            normalize<Dst, Src>(getRed(src)),
-            normalize<Dst, Src>(getGreen(src)),
-            normalize<Dst, Src>(getBlue(src)),
-            normalize<Dst, Src>(getAlpha(src))
+    using SrcChannel = typename Private::RgbaTraits<Src>::DataType;
+    using DstChannel = typename Private::RgbaTraits<Dst>::DataType;
+    return createRgba<DstChannel>(
+            normalize<DstChannel, SrcChannel>(getRed(src)),
+            normalize<DstChannel, SrcChannel>(getGreen(src)),
+            normalize<DstChannel, SrcChannel>(getBlue(src)),
+            normalize<DstChannel, SrcChannel>(getAlpha(src))
     );
 }
 
@@ -195,13 +197,13 @@ static_assert(std::is_same<QRgba64, decltype(createRgba(quint16(), quint16(), qu
 template<typename T>
 inline constexpr QRgb qRgba(T rgba) noexcept
 {
-    return Private::convertRgba<quint8, typename Private::RgbaTraits<T>::DataType>(rgba);
+    return Private::convertRgba<QRgb, T>(rgba);
 }
 
 template<typename T>
 inline constexpr QRgba64 qRgba64(T rgba) noexcept
 {
-    return Private::convertRgba<quint16, typename Private::RgbaTraits<T>::DataType>(rgba);
+    return Private::convertRgba<QRgba64, T>(rgba);
 }
 
 #endif // RGBAGENERIC_H

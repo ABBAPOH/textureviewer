@@ -88,7 +88,7 @@ inline constexpr Rgba64Signed rgba64Signed(qint16 r, qint16 g, qint16 b, qint16 
 template<typename T>
 inline constexpr Rgba64Signed rgba64Signed(T rgba) noexcept
 {
-    return Private::convertRgba<qint16, typename Private::RgbaTraits<T>::DataType>(rgba);
+    return Private::convertRgba<Rgba64Signed, T>(rgba);
 }
 
 #endif // RGBA64SIGNED_H

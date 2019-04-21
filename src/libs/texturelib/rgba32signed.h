@@ -94,7 +94,7 @@ inline constexpr Rgba32Signed rgba32Signed(qint8 r, qint8 g, qint8 b, qint8 a = 
 template<typename T>
 inline constexpr Rgba32Signed rgba32Signed(T rgba) noexcept
 {
-    return Private::convertRgba<qint8, typename Private::RgbaTraits<T>::DataType>(rgba);
+    return Private::convertRgba<Rgba32Signed, T>(rgba);
 }
 
 #endif // RGBA32SIGNED_H
