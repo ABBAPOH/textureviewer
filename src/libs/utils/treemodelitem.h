@@ -2,7 +2,9 @@
 #define TREEMODELITEM_H
 
 #include <ObserverPointer>
+
 #include <memory>
+#include <vector>
 
 template <typename T>
 class TreeModelItem
