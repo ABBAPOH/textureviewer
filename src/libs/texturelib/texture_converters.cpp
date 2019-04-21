@@ -22,16 +22,8 @@ using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 // generic functions
 
 template<typename T>
-typename Private::ColorChannelTraits<T>::RgbaType colorFunc(const AnyColor &color);
-
-template<> QRgb colorFunc<quint8>(const AnyColor &color) { return color.toRgba32Unsigned(); }
-template<> Rgba32Signed colorFunc<qint8>(const AnyColor &color) { return color.toRgba32Signed(); }
-template<> RgbaGeneric<HalfFloat> colorFunc<HalfFloat>(const AnyColor &color) { return color.toRgba64Float(); }
-template<> Rgba64Signed colorFunc<qint16>(const AnyColor &color) { return color.toRgba64Signed(); }
-template<> QRgba64 colorFunc<quint16>(const AnyColor &color) { return color.toRgba64Unsigned(); }
-template<> RgbaGeneric<float> colorFunc<float>(const AnyColor &color) { return color.toRgba128Float(); }
-template<> Rgba128Signed colorFunc<qint32>(const AnyColor &color) { return color.toRgba128Signed(); }
-template<> Rgba128 colorFunc<quint32>(const AnyColor &color) { return color.toRgba128Unsigned(); }
+typename Private::ColorChannelTraits<T>::RgbaType colorFunc(const AnyColor &color)
+{ return color.convert<typename Private::ColorChannelTraits<T>::RgbaType>(); }
 
 template<typename Type, size_t components>
 AnyColor readRGBA(Texture::ConstData data)
@@ -78,7 +70,7 @@ AnyColor readA8_Unorm(Texture::ConstData data)
 void writeA8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 1);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = quint8(qAlpha(rgba));
 }
@@ -93,7 +85,7 @@ AnyColor readL8_Unorm(Texture::ConstData data)
 void writeL8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 1);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = quint8((qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3);
 }
@@ -108,7 +100,7 @@ AnyColor readLA8_Unorm(Texture::ConstData data)
 void writeLA8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 2);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = quint8((qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3);
     d[1] = quint8(qAlpha(rgba));
@@ -124,7 +116,7 @@ AnyColor readBGR8_Unorm(Texture::ConstData data)
 void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 3);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[2] = quint8(qRed(rgba));
     d[1] = quint8(qGreen(rgba));
@@ -141,7 +133,7 @@ AnyColor readBGRA8_Unorm(Texture::ConstData data)
 void writeBGRA8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 4);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[2] = quint8(qRed(rgba));
     d[1] = quint8(qGreen(rgba));
@@ -159,7 +151,7 @@ AnyColor readABGR8_Unorm(Texture::ConstData data)
 void writeABGR8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 4);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[3] = quint8(qRed(rgba));
     d[2] = quint8(qGreen(rgba));
@@ -177,7 +169,7 @@ AnyColor readRGBX8_Unorm(Texture::ConstData data)
 void writeRGBX8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 4);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[0] = quint8(qRed(rgba));
     d[1] = quint8(qGreen(rgba));
@@ -195,7 +187,7 @@ AnyColor readBGRX8_Unorm(Texture::ConstData data)
 void writeBGRX8_Unorm(Texture::Data data, const AnyColor &color)
 {
     Q_ASSERT(data.size() == 4);
-    const auto rgba = color.toRgba32Unsigned();
+    const auto rgba = color.convert<QRgb>();
     const auto d = reinterpret_cast<quint8 *>(data.data());
     d[2] = quint8(qRed(rgba));
     d[1] = quint8(qGreen(rgba));
