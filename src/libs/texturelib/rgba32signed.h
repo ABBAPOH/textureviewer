@@ -97,4 +97,14 @@ inline constexpr Rgba32Signed rgba32Signed(T rgba) noexcept
     return Private::convertRgba<Rgba32Signed, T>(rgba);
 }
 
+constexpr bool operator ==(Rgba32Signed lhs, Rgba32Signed rhs)
+{
+    return quint32(lhs) == quint32(rhs);
+}
+
+constexpr bool operator !=(Rgba32Signed lhs, Rgba32Signed rhs)
+{
+    return !(lhs == rhs);
+}
+
 #endif // RGBA32SIGNED_H
