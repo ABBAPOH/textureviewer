@@ -65,6 +65,7 @@ public:
     {}
 
     constexpr Type type() const noexcept { return m_type; }
+    constexpr bool isEmpty() const noexcept { return m_type == Type::Invalid; }
 
     template<typename T>
     constexpr T convert() const noexcept;
@@ -83,6 +84,8 @@ private:
         Rgba128       m_rgba128Unsigned;
     };
     Type m_type {Type::Invalid};
+
+    friend constexpr bool operator==(const AnyColor &lhs, const AnyColor &rhs);
 };
 
 template<typename T>
@@ -102,6 +105,31 @@ constexpr T AnyColor::convert() const noexcept
     case Type::Rgba128Unsigned: return Private::convertRgba<T>(m_rgba128Unsigned);
     }
     return {};
+}
+
+constexpr bool operator==(const AnyColor &lhs, const AnyColor &rhs)
+{
+    if (lhs.type() != rhs.type())
+        return false;
+    switch (lhs.type()) {
+    case AnyColor::Type::Invalid: return true;
+    case AnyColor::Type::Rgba32Signed: return lhs.m_rgba32Signed == rhs.m_rgba32Signed;
+    case AnyColor::Type::Rgba32Unsigned: return lhs.m_rgba32Unsigned == rhs.m_rgba32Unsigned;
+
+    case AnyColor::Type::Rgba64Float: return lhs.m_rgba64Float == rhs.m_rgba64Float;
+    case AnyColor::Type::Rgba64Signed: return lhs.m_rgba64Signed == rhs.m_rgba64Signed;
+    case AnyColor::Type::Rgba64Unsigned:
+        return quint64(lhs.m_rgba64Unsigned) == quint64(rhs.m_rgba64Unsigned);
+
+    case AnyColor::Type::Rgba128Float: return lhs.m_rgba128Float == rhs.m_rgba128Float;
+    case AnyColor::Type::Rgba128Signed: return lhs.m_rgba128Signed == rhs.m_rgba128Signed;
+    case AnyColor::Type::Rgba128Unsigned: return lhs.m_rgba128Unsigned == rhs.m_rgba128Unsigned;
+    }
+}
+
+constexpr bool operator!=(const AnyColor &lhs, const AnyColor &rhs)
+{
+    return !(lhs == rhs);
 }
 
 // helpers
