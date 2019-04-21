@@ -192,6 +192,19 @@ static_assert(std::is_same<QRgba64, decltype(createRgba(quint16(), quint16(), qu
 
 } // namespace Private
 
+template<typename T>
+constexpr bool operator==(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs)
+{
+    return lhs.red() == rhs.red()
+            && lhs.green() == rhs.green()
+            && lhs.blue() == rhs.blue()
+            && lhs.alpha() == rhs.alpha();
+}
+
+template<typename T>
+constexpr bool operator!=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs)
+{ return !(lhs == rhs); }
+
 // Qt color types
 
 template<typename T>
