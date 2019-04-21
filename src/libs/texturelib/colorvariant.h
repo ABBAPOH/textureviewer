@@ -65,41 +65,38 @@ public:
 
     constexpr bool isEmpty() const noexcept { return d.index() == 0; }
 
-    constexpr Rgba32Signed toRgba32Signed() const noexcept
-    { return Private::convertColorVariant<Rgba32Signed>(data()); }
+    template<typename T>
+    constexpr T value(T defaultValue = T()) const noexcept
+    {
+        const auto ptr = std::get_if<T>(d);
+        return ptr ? *ptr : defaultValue;
+    }
 
-    constexpr QRgb toRgba32Unsigned() const noexcept
-    { return Private::convertColorVariant<QRgb>(data()); }
-
-    constexpr Rgba64Float toRgba64Float() const noexcept
-    { return Private::convertColorVariant<Rgba64Float>(data()); }
-
-    constexpr Rgba64Signed toRgba64Signed() const noexcept
-    { return Private::convertColorVariant<Rgba64Signed>(data()); }
-
-    constexpr QRgba64 toRgba64Unsigned() const noexcept
-    { return Private::convertColorVariant<QRgba64>(data()); }
-
-    constexpr Rgba128Float toRgba128Float() const noexcept
-    { return Private::convertColorVariant<Rgba128Float>(data()); }
-
-    constexpr Rgba128Signed toRgba128Signed() const noexcept
-    { return Private::convertColorVariant<Rgba128Signed>(data()); }
-
-    constexpr Rgba128 toRgba128Unsigned() const noexcept
-    { return Private::convertColorVariant<Rgba128>(data()); }
+    template<typename T>
+    constexpr T convert() const noexcept { return Private::convertColorVariant<T>(data()); }
 
 private:
     Data d;
 };
 
+//constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs)
+//{
+//    return lhs.data() == rhs.data();
+//}
+
 // helpers
 
-constexpr inline Rgba32Signed rgba32Signed(const ColorVariant &color) noexcept { return color.toRgba32Signed(); }
-constexpr inline QRgb qRgba(const ColorVariant &color) noexcept { return color.toRgba32Unsigned(); }
-constexpr inline Rgba64Float rgba64Float(const ColorVariant &color) noexcept { return color.toRgba64Float(); }
-constexpr inline Rgba64Signed rgba64Signed(const ColorVariant &color) noexcept { return color.toRgba64Signed(); }
-constexpr inline QRgba64 qRgba64(const ColorVariant &color) noexcept { return color.toRgba64Unsigned(); }
-constexpr inline Rgba128Float rgba128Float(const ColorVariant &color) noexcept { return color.toRgba128Float(); }
+constexpr inline Rgba32Signed rgba32Signed(const ColorVariant &color) noexcept
+{ return color.convert<Rgba32Signed>(); }
+constexpr inline QRgb qRgba(const ColorVariant &color) noexcept
+{ return color.convert<QRgb>(); }
+constexpr inline Rgba64Float rgba64Float(const ColorVariant &color) noexcept
+{ return color.convert<Rgba64Float>(); }
+constexpr inline Rgba64Signed rgba64Signed(const ColorVariant &color) noexcept
+{ return color.convert<Rgba64Signed>(); }
+constexpr inline QRgba64 qRgba64(const ColorVariant &color) noexcept
+{ return color.convert<QRgba64>(); }
+constexpr inline Rgba128Float rgba128Float(const ColorVariant &color) noexcept
+{ return color.convert<Rgba128Float>(); }
 
 #endif // COLORVARIANT_H
