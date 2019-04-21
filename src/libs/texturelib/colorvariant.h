@@ -95,10 +95,11 @@ private:
     Data d;
 };
 
-//constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs)
-//{
-//    return lhs.data() == rhs.data();
-//}
+constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs)
+{ return lhs.data() == rhs.data(); }
+
+constexpr bool operator!=(const ColorVariant &lhs, const ColorVariant &rhs)
+{ return lhs.data() != rhs.data(); }
 
 // helpers
 
