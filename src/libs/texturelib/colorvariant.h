@@ -51,6 +51,21 @@ class ColorVariant
 public:
     using Data = Private::ColorVariantData;
 
+    enum class Type {
+        Invalid = 0,
+        Rgba32Signed,
+        Rgba32Unsigned,
+        Rgba32 = Rgba32Unsigned,
+        Rgba64Float,
+        Rgba64Signed,
+        Rgba64Unsigned,
+        Rgba64 = Rgba64Unsigned,
+        Rgba128Float,
+        Rgba128Signed,
+        Rgba128Unsigned,
+        Rgba128 = Rgba128Unsigned,
+    };
+
     constexpr ColorVariant() noexcept = default;
     template<typename T, std::enable_if_t<!std::is_same_v<T, ColorVariant>, int> = 0>
     explicit constexpr ColorVariant(T &&value) noexcept : d(std::forward(value)) {}
@@ -63,6 +78,7 @@ public:
 
     constexpr const Data& data() const noexcept { return d; }
 
+    constexpr Type type() const noexcept { return Type(d.index()); }
     constexpr bool isEmpty() const noexcept { return d.index() == 0; }
 
     template<typename T>
