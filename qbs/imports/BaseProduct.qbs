@@ -8,9 +8,10 @@ Product {
     cpp.linkerFlags: project.linkFlags
     cpp.includePaths: project.includePaths
     cpp.libraryPaths: project.libraryPaths
-    cpp.cxxLanguageVersion: qbs.targetOS.contains("windows") ? "c++17" : "c++14"
+    cpp.cxxLanguageVersion: "c++17"
     cpp.cxxStandardLibrary: qbs.targetOS.contains("osx") ? "libc++" : base
-    cpp.minimumOsxVersion: "10.7"
+//    cpp.minimumOsxVersion: "10.14"
+    cpp.minimumMacosVersion: "10.14"
 
     Depends { name: "bundle" }
     Depends { name: "Qt.core" }
