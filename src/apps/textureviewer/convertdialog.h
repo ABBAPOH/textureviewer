@@ -5,6 +5,8 @@
 
 #include <TextureLib/Texture>
 
+#include <memory>
+
 namespace Ui {
 class ConvertDialog;
 }
