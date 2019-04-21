@@ -1,13 +1,7 @@
 #ifndef COLORVARIANT_H
 #define COLORVARIANT_H
 
-#include <TextureLib/Rgba128>
-#include <TextureLib/Rgba32Signed>
-#include <TextureLib/Rgba64Float>
-#include <TextureLib/Rgba64Signed>
-
-#include <QtGui/QRgb>
-#include <QtGui/QRgba64>
+#include <TextureLib/RgbaTypes>
 
 #include <variant>
 

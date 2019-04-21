@@ -1,13 +1,7 @@
 #ifndef ANYCOLOR_H
 #define ANYCOLOR_H
 
-#include <TextureLib/Rgba32Signed>
-#include <TextureLib/Rgba64Float>
-#include <TextureLib/Rgba64Signed>
-#include <TextureLib/Rgba128>
-
-#include <QtGui/QRgb>
-#include <QtGui/QRgba64>
+#include <TextureLib/RgbaTypes>
 
 class AnyColor
 {

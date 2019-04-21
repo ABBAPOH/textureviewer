@@ -1,1 +1,1 @@
-#include "../../src/libs/texturelib/rgba64float.h"
+#include "../../src/libs/texturelib/rgbatypes.h"
