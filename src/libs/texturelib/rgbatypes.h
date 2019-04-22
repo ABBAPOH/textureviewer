@@ -23,15 +23,15 @@ using Rgba128 = RgbaGeneric<quint32>;
 
 namespace Private {
 
-template<typename T> struct IsColor { constexpr static bool value = false; };
-template<> struct IsColor<Rgba32Signed> { constexpr static bool value = true; };
-template<> struct IsColor<QRgb> { constexpr static bool value = true; };
-template<> struct IsColor<Rgba64Float> { constexpr static bool value = true; };
-template<> struct IsColor<Rgba64Signed> { constexpr static bool value = true; };
-template<> struct IsColor<QRgba64> { constexpr static bool value = true; };
-template<> struct IsColor<Rgba128Float> { constexpr static bool value = true; };
-template<> struct IsColor<Rgba128Signed> { constexpr static bool value = true; };
-template<> struct IsColor<Rgba128> { constexpr static bool value = true; };
+template<typename T> struct IsColor : public std::false_type {};
+template<> struct IsColor<Rgba32Signed> : public std::true_type {};
+template<> struct IsColor<QRgb> : public std::true_type {};
+template<> struct IsColor<Rgba64Float> : public std::true_type {};
+template<> struct IsColor<Rgba64Signed> : public std::true_type {};
+template<> struct IsColor<QRgba64> : public std::true_type {};
+template<> struct IsColor<Rgba128Float> : public std::true_type {};
+template<> struct IsColor<Rgba128Signed> : public std::true_type {};
+template<> struct IsColor<Rgba128> : public std::true_type {};
 
 template<typename T> constexpr bool isColor_v = IsColor<T>::value;
 
