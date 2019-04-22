@@ -35,6 +35,19 @@ template<> struct IsColor<Rgba128> : public std::true_type {};
 
 template<typename T> constexpr bool isColor_v = IsColor<T>::value;
 
+template<typename T> struct IsColorChannel : public std::false_type {};
+template<> struct IsColorChannel<qint8> : public std::true_type {};
+template<> struct IsColorChannel<quint8> : public std::true_type {};
+template<> struct IsColorChannel<qint16> : public std::true_type {};
+template<> struct IsColorChannel<quint16> : public std::true_type {};
+template<> struct IsColorChannel<qint32> : public std::true_type {};
+template<> struct IsColorChannel<quint32> : public std::true_type {};
+template<> struct IsColorChannel<HalfFloat> : public std::true_type {};
+template<> struct IsColorChannel<float> : public std::true_type {};
+template<> struct IsColorChannel<double> : public std::true_type {};
+
+template<typename T> constexpr bool isColorChannel_v = IsColorChannel<T>::value;
+
 template<typename T>
 struct ColorChannelTraitsBase
 {
@@ -45,9 +58,7 @@ struct ColorChannelTraitsBase
     static DataType min() { return std::numeric_limits<DataType>::min(); }
 };
 
-template<
-        typename T,
-        std::enable_if_t<std::is_arithmetic_v<T> && !std::is_same_v<T, bool>, int> = 0>
+template<typename T, std::enable_if_t<isColorChannel_v<T>, int> = 0>
 struct ColorChannelTraits : public ColorChannelTraitsBase<T> {};
 
 template<> struct ColorChannelTraits<qint8> : public ColorChannelTraitsBase<qint8>

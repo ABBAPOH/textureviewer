@@ -3036,9 +3036,6 @@ namespace std
 		static HALF_CONSTEXPR half_float::half denorm_min() HALF_NOTHROW { return half_float::half(half_float::detail::binary, 0x0001); }
 	};
 
-        template<>struct is_integral<half_float::half> : public true_type {};
-        template<>struct is_floating_point<half_float::half> : public true_type {};
-
 #if HALF_ENABLE_CPP11_HASH
 	/// Hash function for half-precision floats.
 	/// This is only defined if C++11 `std::hash` is supported and enabled.
