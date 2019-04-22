@@ -35,7 +35,8 @@ template<> struct IsColor<Rgba128> { constexpr static bool value = true; };
 
 template<typename T> constexpr bool isColor_v = IsColor<T>::value;
 
-template<typename T> struct ColorChannelTraitsBase
+template<typename T>
+struct ColorChannelTraitsBase
 {
     using DataType = T;
     using RgbaType = RgbaGeneric<T>;
@@ -44,7 +45,10 @@ template<typename T> struct ColorChannelTraitsBase
     static DataType min() { return std::numeric_limits<DataType>::min(); }
 };
 
-template<typename T> struct ColorChannelTraits : public ColorChannelTraitsBase<T> {};
+template<
+        typename T,
+        std::enable_if_t<std::is_arithmetic_v<T> && !std::is_same_v<T, bool>, int> = 0>
+struct ColorChannelTraits : public ColorChannelTraitsBase<T> {};
 
 template<> struct ColorChannelTraits<qint8> : public ColorChannelTraitsBase<qint8>
 { using RgbaType = Rgba32Signed; };
