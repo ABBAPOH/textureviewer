@@ -75,6 +75,8 @@ template<> struct RgbaFromColorChannel<quint8> { using Type = QRgb; };
 template<> struct RgbaFromColorChannel<qint16> { using Type = Rgba64Signed; };
 template<> struct RgbaFromColorChannel<quint16> { using Type = QRgba64; };
 
+template<typename T> using RgbaFromColorChannel_t = typename RgbaFromColorChannel<T>::Type;
+
 template<typename T, std::enable_if_t<isColor_v<T>, int> = 0>
 struct RgbaTraits
 {
@@ -330,7 +332,7 @@ inline constexpr quint8 getAlpha(QRgb color) noexcept { return quint8(qAlpha(col
 namespace Private {
 
 template<typename T>
-constexpr typename RgbaFromColorChannel<T>::Type createRgbaHelper(
+constexpr RgbaFromColorChannel_t<T> createRgbaHelper(
         T r, T g, T b, T a) noexcept
 {
     return {r, g, b, a};
@@ -351,7 +353,7 @@ constexpr typename RgbaFromColorChannel<quint16>::Type createRgbaHelper<quint16>
 }
 
 template<typename T>
-constexpr typename RgbaFromColorChannel<T>::Type createRgba(
+constexpr RgbaFromColorChannel_t<T> createRgba(
         T r, T g, T b, T a = ColorChannelLimits<T>::max()) noexcept
 {
     return createRgbaHelper<T>(r, g, b, a);

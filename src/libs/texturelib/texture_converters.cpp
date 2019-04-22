@@ -22,8 +22,8 @@ using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 // generic functions
 
 template<typename T>
-typename Private::RgbaFromColorChannel<T>::Type colorFunc(const AnyColor &color)
-{ return color.convert<typename Private::RgbaFromColorChannel<T>::Type>(); }
+typename Private::RgbaFromColorChannel_t<T> colorFunc(const AnyColor &color)
+{ return color.convert<typename Private::RgbaFromColorChannel_t<T>>(); }
 
 template<typename Type, size_t components>
 AnyColor readRGBA(Texture::ConstData data)
