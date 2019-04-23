@@ -276,10 +276,13 @@ private:
     DataType m_green {0};
     DataType m_blue {0};
     DataType m_alpha {0};
+
+    template<typename U>
+    friend constexpr bool operator<(const RgbaGeneric<U> &lhs, const RgbaGeneric<U> &rhs) noexcept;
 };
 
 template<typename T>
-constexpr bool operator==(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs)
+constexpr bool operator==(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) noexcept
 {
     return lhs.red() == rhs.red()
             && lhs.green() == rhs.green()
@@ -288,8 +291,33 @@ constexpr bool operator==(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs)
 }
 
 template<typename T>
-constexpr bool operator!=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs)
+constexpr bool operator!=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) noexcept
 { return !(lhs == rhs); }
+
+template<typename T>
+constexpr bool operator<(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) noexcept
+{
+    return std::tie(lhs.m_red, lhs.m_green, lhs.m_blue, lhs.m_alpha)
+            < std::tie(rhs.m_red, rhs.m_green, rhs.m_blue, rhs.m_alpha);
+}
+
+template<typename T>
+constexpr bool operator>(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) noexcept
+{
+    return rhs < lhs;
+}
+
+template<typename T>
+constexpr bool operator<=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) noexcept
+{
+    return !(lhs > rhs);
+}
+
+template<typename T>
+constexpr bool operator>=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) noexcept
+{
+    return !(lhs < rhs);
+}
 
 // Helpers
 
