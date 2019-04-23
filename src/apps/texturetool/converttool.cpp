@@ -109,12 +109,12 @@ void convert(const Options &options)
 
     Texture copy;
     if (!options.outputFormat.isEmpty()) {
-        const auto format = fromQString(options.outputFormat);
-        if (format == TextureFormat::Invalid) {
+        const auto format = fromQString<TextureFormat>(options.outputFormat);
+        if (!format || *format == TextureFormat::Invalid) {
             throw RuntimeError(ConvertTool::tr("Invalid output format: %1")
                                .arg(options.outputFormat));
         }
-        copy = result->convert(format);
+        copy = result->convert(*format);
 
         if (copy.isNull()) {
             throw RuntimeError(ConvertTool::tr("Convertion failed"));

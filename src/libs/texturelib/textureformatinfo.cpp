@@ -253,26 +253,3 @@ const TextureFormatInfo &TextureFormatInfo::findOGLFormat(
 {
     return findOGLFormatLinear(textureFormat, pixelFormat, pixelType);
 }
-
-QString toQString(TextureFormat format)
-{
-    const auto en = QMetaEnum::fromType<Details::TextureFormat>();
-    Q_ASSERT(en.isValid());
-    return en.valueToKey(int(format));
-}
-
-TextureFormat fromQString(QStringView input)
-{
-    const auto me = QMetaEnum::fromType<Details::TextureFormat>();
-    Q_ASSERT(me.isValid());
-    bool ok = false;
-    const auto result = me.keyToValue(input.toLatin1().data(), &ok);
-    return ok ? TextureFormat(result) : TextureFormat::Invalid;
-}
-
-QString toQString(TextureFormatInfo::Type type)
-{
-    const auto en = QMetaEnum::fromType<TextureFormatInfo::Type>();
-    Q_ASSERT(en.isValid());
-    return en.valueToKey(int(type));
-}
