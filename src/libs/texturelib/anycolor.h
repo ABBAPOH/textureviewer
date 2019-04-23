@@ -1,9 +1,11 @@
 #ifndef ANYCOLOR_H
 #define ANYCOLOR_H
 
+#include "texturelib_global.h"
+
 #include <TextureLib/RgbaTypes>
 
-class AnyColor
+class TEXTURELIB_EXPORT AnyColor
 {
 public:
     enum class Type {

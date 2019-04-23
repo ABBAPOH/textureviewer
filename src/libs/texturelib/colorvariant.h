@@ -1,6 +1,8 @@
 #ifndef COLORVARIANT_H
 #define COLORVARIANT_H
 
+#include "texturelib_global.h"
+
 #include <TextureLib/RgbaTypes>
 
 #include <QtCore/QObject>
@@ -42,7 +44,7 @@ constexpr Color convertColorVariant(const ColorVariantData &d) noexcept
 
 } // namespace Private
 
-class ColorVariant
+class TEXTURELIB_EXPORT ColorVariant
 {
     Q_GADGET
 public:
