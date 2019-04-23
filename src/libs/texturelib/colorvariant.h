@@ -89,10 +89,10 @@ private:
     Data d;
 };
 
-constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs)
+constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
 { return lhs.data() == rhs.data(); }
 
-constexpr bool operator!=(const ColorVariant &lhs, const ColorVariant &rhs)
+constexpr bool operator!=(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
 { return lhs.data() != rhs.data(); }
 
 // helpers
