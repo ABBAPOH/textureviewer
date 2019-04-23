@@ -3,7 +3,7 @@
 
 #include "texturelib_global.h"
 
-#include <UtilsLib/ToStringHelpers>
+#include <UtilsLib/StringHelpers>
 
 #include <QtCore/QMetaType>
 #include <QtCore/QStringView>
