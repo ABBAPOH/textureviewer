@@ -95,6 +95,7 @@ constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs) noex
 constexpr bool operator!=(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
 { return lhs.data() != rhs.data(); }
 
+// TODO (abbapoh) : compare colors correctly
 constexpr bool operator<(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
 { return lhs.data() < rhs.data(); }
 
