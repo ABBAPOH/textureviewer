@@ -200,4 +200,14 @@ Optional<F> fromQString(QStringView string)
     return flagsFromLatin1<F>(QLatin1String(string.toLatin1()));
 }
 
+// generic type
+
+template<
+        typename T,
+        typename = std::enable_if_t<std::is_same_v<decltype(std::declval<T>().toString()), QString>>>
+QString toQString(const T &value)
+{
+    return value.toString();
+}
+
 #endif // TOSTRINGHELPERS_H

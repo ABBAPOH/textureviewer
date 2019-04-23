@@ -30,6 +30,7 @@ private slots:
     void enumeration();
     void flags_data();
     void flags();
+    void datetime();
 };
 
 Q_DECLARE_METATYPE(TestStringHelpers::MaybeEnum)
@@ -114,6 +115,12 @@ void TestStringHelpers::flags()
 
     const auto opt = ::fromQString<Flags>(string);
     QCOMPARE(opt, value);
+}
+
+void TestStringHelpers::datetime()
+{
+    const auto dt = QDateTime::currentDateTime();
+    QCOMPARE(::toQString(dt), dt.toString());
 }
 
 QTEST_APPLESS_MAIN(TestStringHelpers)
