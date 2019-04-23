@@ -14,6 +14,7 @@ private slots:
     void api();
     void copy();
     void assign();
+    void equals();
 };
 
 void TestRgbaGeneric::testNormalize()
@@ -147,6 +148,17 @@ void TestRgbaGeneric::assign()
     QCOMPARE(c2.green(), c1.green());
     QCOMPARE(c2.blue(), c1.blue());
     QCOMPARE(c2.alpha(), c1.alpha());
+}
+
+void TestRgbaGeneric::equals()
+{
+    RgbaGeneric<float> c1(HalfFloat(1.0f), 1.0f, 1.0f, 1.0f);
+    RgbaGeneric<float> c2(HalfFloat(1.0f), 1.0f, 1.0f, 1.0f);
+    RgbaGeneric<float> c3(HalfFloat(0.5f), 0.5f, 0.5f, 0.5f);
+
+    QVERIFY(c1 == c2);
+    QVERIFY(c1 != c3);
+    QVERIFY(c2 != c3);
 }
 
 QTEST_APPLESS_MAIN(TestRgbaGeneric)
