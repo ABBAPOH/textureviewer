@@ -95,6 +95,18 @@ constexpr bool operator==(const ColorVariant &lhs, const ColorVariant &rhs) noex
 constexpr bool operator!=(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
 { return lhs.data() != rhs.data(); }
 
+constexpr bool operator<(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
+{ return lhs.data() < rhs.data(); }
+
+constexpr bool operator>(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
+{ return lhs.data() > rhs.data(); }
+
+constexpr bool operator<=(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
+{ return lhs.data() <= rhs.data(); }
+
+constexpr bool operator>=(const ColorVariant &lhs, const ColorVariant &rhs) noexcept
+{ return lhs.data() >= rhs.data(); }
+
 // helpers
 
 constexpr inline Rgba32Signed rgba32Signed(const ColorVariant &color) noexcept
