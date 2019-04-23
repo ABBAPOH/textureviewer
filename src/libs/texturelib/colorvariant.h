@@ -61,7 +61,7 @@ public:
     };
 
     constexpr ColorVariant() noexcept = default;
-    template<typename T, std::enable_if_t<!std::is_same_v<T, ColorVariant>, int> = 0>
+    template<typename T, typename = std::enable_if_t<!std::is_same_v<T, ColorVariant>>>
     explicit constexpr ColorVariant(T &&value) noexcept : d(std::forward(value)) {}
     constexpr ColorVariant(const ColorVariant &) = default;
     constexpr ColorVariant(ColorVariant &&) = default;

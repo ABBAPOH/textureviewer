@@ -68,7 +68,7 @@ struct ColorChannelLimits<float>
     static float min() { return -1.0f; }
 };
 
-template<typename T, std::enable_if_t<isColorChannel_v<T>, int> = 0>
+template<typename T, typename = std::enable_if_t<isColorChannel_v<T>>>
 struct RgbaFromColorChannel { using Type = RgbaGeneric<T>; };
 template<> struct RgbaFromColorChannel<qint8> { using Type = Rgba32Signed; };
 template<> struct RgbaFromColorChannel<quint8> { using Type = QRgb; };
@@ -77,7 +77,7 @@ template<> struct RgbaFromColorChannel<quint16> { using Type = QRgba64; };
 
 template<typename T> using RgbaFromColorChannel_t = typename RgbaFromColorChannel<T>::Type;
 
-template<typename T, std::enable_if_t<isColor_v<T>, int> = 0>
+template<typename T, typename = std::enable_if_t<isColor_v<T>>>
 struct RgbaTraits
 {
     using DataType = typename T::DataType;
