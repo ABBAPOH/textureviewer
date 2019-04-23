@@ -7,15 +7,15 @@ class TestStringHelpers : public QObject
     Q_OBJECT
 public:
     enum class Enum {
-        Zero = 0,
+        ZerO = 0, // can't use Zero because it conflicts with Zero in QFlags
         One = 1,
         Two = 2
     };
     Q_ENUM(Enum)
     using MaybeEnum = Optional<Enum>;
 
-    enum class Flag {
-        Zero = 0,
+    enum Flag {
+        ZerO = 0,
         One = 1,
         Two = 2
     };
@@ -76,7 +76,7 @@ void TestStringHelpers::enumeration_data()
     QTest::addColumn<QString>("string");
 
     QTest::newRow("invalid") << MaybeEnum(std::nullopt) << QStringLiteral("Invalid");
-    QTest::newRow("zero") << MaybeEnum(Enum::Zero) << QStringLiteral("Zero");
+    QTest::newRow("zero") << MaybeEnum(Enum::ZerO) << QStringLiteral("ZerO");
     QTest::newRow("one") << MaybeEnum(Enum::One) << QStringLiteral("One");
     QTest::newRow("two") << MaybeEnum(Enum::Two) << QStringLiteral("Two");
 }
@@ -99,7 +99,7 @@ void TestStringHelpers::flags_data()
     QTest::addColumn<QString>("string");
 
     QTest::newRow("invalid") << MaybeFlags(std::nullopt) << QStringLiteral("Invalid");
-    QTest::newRow("zero") << MaybeFlags(Flag::Zero) << QStringLiteral("Zero");
+    QTest::newRow("zero") << MaybeFlags(Flag::ZerO) << QStringLiteral("ZerO");
     QTest::newRow("one") << MaybeFlags(Flag::One) << QStringLiteral("One");
     QTest::newRow("two") << MaybeFlags(Flag::Two) << QStringLiteral("Two");
     QTest::newRow("three") << MaybeFlags(Flag::One | Flag::Two) << QStringLiteral("One|Two");
