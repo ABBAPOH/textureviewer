@@ -172,16 +172,6 @@ public:
     }
 };
 
-constexpr bool operator ==(Rgba32Signed lhs, Rgba32Signed rhs)
-{
-    return quint32(lhs) == quint32(rhs);
-}
-
-constexpr bool operator !=(Rgba32Signed lhs, Rgba32Signed rhs)
-{
-    return !(lhs == rhs);
-}
-
 // Rgba64Signed
 
 class Rgba64Signed
@@ -250,16 +240,6 @@ public:
         m_rgba = (m_rgba & ~(0xffffull << AlphaShift)) | (quint64(quint16(alpha)) << AlphaShift);
     }
 };
-
-constexpr bool operator ==(Rgba64Signed lhs, Rgba64Signed rhs)
-{
-    return quint32(lhs) == quint32(rhs);
-}
-
-constexpr bool operator !=(Rgba64Signed lhs, Rgba64Signed rhs)
-{
-    return !(lhs == rhs);
-}
 
 // RgbaGeneric
 

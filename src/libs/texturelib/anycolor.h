@@ -106,18 +106,26 @@ constexpr bool operator==(const AnyColor &lhs, const AnyColor &rhs)
     if (lhs.type() != rhs.type())
         return false;
     switch (lhs.type()) {
-    case AnyColor::Type::Invalid: return true;
-    case AnyColor::Type::Rgba32Signed: return lhs.m_rgba32Signed == rhs.m_rgba32Signed;
-    case AnyColor::Type::Rgba32Unsigned: return lhs.m_rgba32Unsigned == rhs.m_rgba32Unsigned;
+    case AnyColor::Type::Invalid:
+        return true;
+    case AnyColor::Type::Rgba32Signed:
+        return quint32(lhs.m_rgba32Signed) == quint32(rhs.m_rgba32Signed);
+    case AnyColor::Type::Rgba32Unsigned:
+        return lhs.m_rgba32Unsigned == rhs.m_rgba32Unsigned;
 
-    case AnyColor::Type::Rgba64Float: return lhs.m_rgba64Float == rhs.m_rgba64Float;
-    case AnyColor::Type::Rgba64Signed: return lhs.m_rgba64Signed == rhs.m_rgba64Signed;
+    case AnyColor::Type::Rgba64Float:
+        return lhs.m_rgba64Float == rhs.m_rgba64Float;
+    case AnyColor::Type::Rgba64Signed:
+        return quint64(lhs.m_rgba64Signed) == quint64(rhs.m_rgba64Signed);
     case AnyColor::Type::Rgba64Unsigned:
         return quint64(lhs.m_rgba64Unsigned) == quint64(rhs.m_rgba64Unsigned);
 
-    case AnyColor::Type::Rgba128Float: return lhs.m_rgba128Float == rhs.m_rgba128Float;
-    case AnyColor::Type::Rgba128Signed: return lhs.m_rgba128Signed == rhs.m_rgba128Signed;
-    case AnyColor::Type::Rgba128Unsigned: return lhs.m_rgba128Unsigned == rhs.m_rgba128Unsigned;
+    case AnyColor::Type::Rgba128Float:
+        return lhs.m_rgba128Float == rhs.m_rgba128Float;
+    case AnyColor::Type::Rgba128Signed:
+        return lhs.m_rgba128Signed == rhs.m_rgba128Signed;
+    case AnyColor::Type::Rgba128Unsigned:
+        return lhs.m_rgba128Unsigned == rhs.m_rgba128Unsigned;
     }
 }
 
