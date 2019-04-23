@@ -47,7 +47,7 @@ template<> struct IsColorChannel<float> : public std::true_type {};
 
 template<typename T> constexpr bool isColorChannel_v = IsColorChannel<T>::value;
 
-template<typename T, std::enable_if_t<isColorChannel_v<T>, int> = 0>
+template<typename T, typename = std::enable_if_t<isColorChannel_v<T>>>
 struct ColorChannelLimits
 {
     static T max() { return std::numeric_limits<T>::max(); }
