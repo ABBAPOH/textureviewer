@@ -3,6 +3,8 @@
 
 #include <TextureLib/RgbaTypes>
 
+#include <QtCore/QObject>
+
 #include <variant>
 
 namespace Private {
@@ -42,6 +44,7 @@ constexpr Color convertColorVariant(const ColorVariantData &d) noexcept
 
 class ColorVariant
 {
+    Q_GADGET
 public:
     using Data = Private::ColorVariantData;
 
@@ -59,10 +62,11 @@ public:
         Rgba128Unsigned,
         Rgba128 = Rgba128Unsigned,
     };
+    Q_ENUM(Type)
 
     constexpr ColorVariant() noexcept = default;
     template<typename T, typename = std::enable_if_t<!std::is_same_v<T, ColorVariant>>>
-    explicit constexpr ColorVariant(T &&value) noexcept : d(std::forward(value)) {}
+    explicit constexpr ColorVariant(T &&value) noexcept : d(std::forward<T>(value)) {}
     constexpr ColorVariant(const ColorVariant &) = default;
     constexpr ColorVariant(ColorVariant &&) = default;
     ~ColorVariant() = default;
@@ -78,7 +82,7 @@ public:
     template<typename T>
     constexpr T value(T defaultValue = T()) const noexcept
     {
-        const auto ptr = std::get_if<T>(d);
+        const auto ptr = std::get_if<T>(&d);
         return ptr ? *ptr : defaultValue;
     }
 

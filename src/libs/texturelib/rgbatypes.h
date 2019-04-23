@@ -424,6 +424,11 @@ inline constexpr Rgba64Float rgba64Float(HalfFloat r, HalfFloat g, HalfFloat b, 
     return Private::createRgba<HalfFloat>(r, g, b, a);
 }
 
+inline constexpr Rgba64Float rgba64Float(float r, float g, float b, float a = 1.0f) noexcept
+{
+    return rgba64Float(HalfFloat(r), HalfFloat(g), HalfFloat(b), HalfFloat(a));
+}
+
 template<typename T>
 inline constexpr Rgba64Float rgba64Float(T rgba) noexcept
 {

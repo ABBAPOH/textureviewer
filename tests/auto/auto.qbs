@@ -3,6 +3,7 @@ import qbs.base 1.0
 Project {
     references: [
         "test_abstractdocument/test_abstractdocument.qbs",
+        "test_colorvariant/test_colorvariant.qbs",
         "test_dds/test_dds.qbs",
         "test_ktx/test_ktx.qbs",
         "test_rgba32signed/test_rgba32signed.qbs",
