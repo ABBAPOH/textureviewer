@@ -1037,11 +1037,15 @@ AnyColor Texture::texelColor(Position p, ArrayIndex index) const
     const auto bytesPerTexel = this->bytesPerTexel();
 
     const auto data = imageData(index);
+    if (data.empty())
+        return {};
     const auto line = data.subspan(
             bytesPerSlice * p.z + bytesPerLine * p.y, bytesPerLine);
     const auto texel = line.subspan(bytesPerTexel * p.x, bytesPerTexel);
 
     const auto reader = TextureData::getFormatReader(d->format);
+    if (!reader)
+        return {};
     return reader(texel);
 }
 
