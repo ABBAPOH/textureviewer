@@ -3,6 +3,7 @@
 
 #include "texturelib_global.h"
 
+#include <TextureLib/AnyColor>
 #include <TextureLib/TextureFormat>
 #include <TextureLib/TextureFormatInfo>
 #include <TextureLib/TextureIOResult>
@@ -69,6 +70,13 @@ public:
         int m_width {0};
         int m_height {0};
         int m_depth {0};
+    };
+
+    struct Position
+    {
+        int x {0};
+        int y {0};
+        int z {0};
     };
 
     class ArraySize
@@ -229,9 +237,7 @@ public:
     // So, we should return a Color object
     // But QColor is too limited, we need a ColorVariant (AnyColor as proposed by Marc Mutz)
 
-    // AnyColor texelColor(const Position &p, const Index &index);
-    // AnyColor texelColor(const Position &p, const Index &index) const;
-    // AnyColor constTexelColor(const Position &p, const Index &index) const;
+    AnyColor texelColor(Position p, ArrayIndex index) const;
     // void setTexelColor(const Position &p, const AnyColor &color);
     // void setTexelColor(const Position &p, const Index &index, const AnyColor &color);
 

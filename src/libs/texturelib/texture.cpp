@@ -1027,6 +1027,24 @@ auto Texture::constImageData(ArrayIndex index) const -> ConstData
     return {data, bytesPerImage(index.level())};
 }
 
+AnyColor Texture::texelColor(Position p, ArrayIndex index) const
+{
+    if (!d)
+        return {};
+
+    const auto bytesPerSlice = d->bytesPerSlice(index.level());
+    const auto bytesPerLine = d->bytesPerLine(index.level());
+    const auto bytesPerTexel = this->bytesPerTexel();
+
+    const auto data = imageData(index);
+    const auto line = data.subspan(
+            bytesPerSlice * p.z + bytesPerLine * p.y, bytesPerLine);
+    const auto texel = line.subspan(bytesPerTexel * p.x, bytesPerTexel);
+
+    const auto reader = TextureData::getFormatReader(d->format);
+    return reader(texel);
+}
+
 /*!
   \brief Converts this texture to a texture with the given \a alignment.
 
