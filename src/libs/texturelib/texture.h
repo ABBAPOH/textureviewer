@@ -43,27 +43,27 @@ public:
     class Size
     {
     public:
-        inline constexpr Size() noexcept = default;
-        inline constexpr Size(int width) noexcept
+        constexpr Size() noexcept = default;
+        constexpr Size(int width) noexcept
             : m_width(width), m_height(1), m_depth(1) {}
-        inline constexpr Size(int width, int height) noexcept
+        constexpr Size(int width, int height) noexcept
             : m_width(width), m_height(height), m_depth(1) {}
-        inline constexpr Size(QSize size) noexcept
+        constexpr Size(QSize size) noexcept
             : m_width(size.width()), m_height(size.height()), m_depth(1) {}
-        inline constexpr Size(int width, int height, int depth) noexcept
+        constexpr Size(int width, int height, int depth) noexcept
             : m_width(width), m_height(height), m_depth(depth) {}
 
         constexpr bool isNull() const noexcept { return !m_width && !m_height && !m_depth; }
         constexpr bool isValid() const noexcept { return m_width > 0 && m_height > 0 && m_depth > 0; }
 
-        inline constexpr int width() const noexcept { return m_width; }
-        inline constexpr void setWidth(int w) noexcept { m_width = w; }
+        constexpr int width() const noexcept { return m_width; }
+        constexpr void setWidth(int w) noexcept { m_width = w; }
 
-        inline constexpr int height() const { return m_height; }
-        inline constexpr void setHeight(int h) noexcept { m_height = h; }
+        constexpr int height() const { return m_height; }
+        constexpr void setHeight(int h) noexcept { m_height = h; }
 
-        inline constexpr int depth() const { return m_depth; }
-        inline constexpr void setDepth(int d) noexcept { m_depth = d; }
+        constexpr int depth() const { return m_depth; }
+        constexpr void setDepth(int d) noexcept { m_depth = d; }
 
     private:
         int m_width {0};
@@ -74,13 +74,13 @@ public:
     class ArraySize
     {
     public:
-        inline constexpr ArraySize() noexcept {}
-        inline constexpr ArraySize(int levels, int layers = 1) noexcept
+        constexpr ArraySize() noexcept {}
+        constexpr ArraySize(int levels, int layers = 1) noexcept
             : m_faces(1)
             , m_levels(levels)
             , m_layers(layers)
         {}
-        inline constexpr ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+        constexpr ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
             : m_faces(isCumemap == IsCubemap::Yes ? 6 : 1)
             , m_levels(levels)
             , m_layers(layers)
@@ -89,20 +89,20 @@ public:
         constexpr bool isNull() const noexcept { return !m_faces && !m_levels && !m_layers; }
         constexpr bool isValid() const noexcept { return m_faces > 0 && m_levels > 0 && m_layers > 0; }
 
-        inline constexpr int faces() const noexcept { return m_faces; }
+        constexpr int faces() const noexcept { return m_faces; }
 
-        inline constexpr bool isCubemap() const noexcept { return m_faces == 6; }
-        inline constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
-        inline constexpr void setIsCubemap(IsCubemap isCumemap) noexcept
+        constexpr bool isCubemap() const noexcept { return m_faces == 6; }
+        constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
+        constexpr void setIsCubemap(IsCubemap isCumemap) noexcept
         {
             m_faces = isCumemap == IsCubemap::Yes ? 6 : 1;
         }
 
-        inline constexpr int levels() const noexcept { return m_levels; }
-        inline constexpr void setLevels(int levels) noexcept { m_levels = levels; }
+        constexpr int levels() const noexcept { return m_levels; }
+        constexpr void setLevels(int levels) noexcept { m_levels = levels; }
 
-        inline constexpr int layers() const noexcept { return m_layers; }
-        inline constexpr void setLayers(int layers) noexcept { m_layers = layers; }
+        constexpr int layers() const noexcept { return m_layers; }
+        constexpr void setLayers(int layers) noexcept { m_layers = layers; }
 
     private:
         int m_faces {0};
@@ -115,11 +115,11 @@ public:
     public:
         using Side = Texture::Side;
 
-        inline constexpr ArrayIndex(int level = 0, int layer = 0) noexcept
+        constexpr ArrayIndex(int level = 0, int layer = 0) noexcept
             : m_level(level)
             , m_layer(layer)
         {}
-        inline constexpr ArrayIndex(Side side, int level = 0, int layer = 0) noexcept
+        constexpr ArrayIndex(Side side, int level = 0, int layer = 0) noexcept
             : m_face(int(side))
             , m_level(level)
             , m_layer(layer)
@@ -128,16 +128,16 @@ public:
         constexpr bool isNull() const noexcept { return !m_face && !m_level && !m_layer; }
         constexpr bool isValid() const noexcept { return m_face >= 0 && m_level >= 0 && m_layer >= 0; }
 
-        inline constexpr Side side() const noexcept { return Side(m_face); }
-        inline constexpr void setSide(Side side) noexcept { m_face = int(side); }
+        constexpr Side side() const noexcept { return Side(m_face); }
+        constexpr void setSide(Side side) noexcept { m_face = int(side); }
 
-        inline constexpr int face() const { return m_face; }
+        constexpr int face() const { return m_face; }
 
-        inline constexpr int level() const noexcept { return m_level; }
-        inline constexpr void setLevel(int level) noexcept { m_level = level; }
+        constexpr int level() const noexcept { return m_level; }
+        constexpr void setLevel(int level) noexcept { m_level = level; }
 
-        inline constexpr int layer() const noexcept { return m_layer; }
-        inline constexpr void setLayer(int layer) noexcept { m_layer = layer; }
+        constexpr int layer() const noexcept { return m_layer; }
+        constexpr void setLayer(int layer) noexcept { m_layer = layer; }
 
     private:
         int m_face {0};
@@ -150,9 +150,9 @@ public:
 
     using DataDeleter = std::function<void(uchar[])>;
 
-    inline Texture() noexcept {}
+    Texture() noexcept {}
     Texture(const Texture &other);
-    inline Texture(Texture &&other) noexcept
+    Texture(Texture &&other) noexcept
     { qSwap(d, other.d); }
 
     explicit Texture(const QString &file);
@@ -180,7 +180,7 @@ public:
     ~Texture();
 
     Texture &operator=(const Texture &other);
-    inline Texture &operator=(Texture &&other) noexcept
+    Texture &operator=(Texture &&other) noexcept
     { qSwap(d, other.d); return *this; }
 
     static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
@@ -219,9 +219,9 @@ public:
     ConstData imageData(ArrayIndex index) const;
     ConstData constImageData(ArrayIndex index) const;
 
-    inline Data data() { return {dataImpl(0, 0, 0), bytes()}; }
-    inline ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
-    inline ConstData constData() const { return {dataImpl(0, 0, 0), bytes()}; }
+    Data data() { return {dataImpl(0, 0, 0), bytes()}; }
+    ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
+    ConstData constData() const { return {dataImpl(0, 0, 0), bytes()}; }
 
     // TODO: do we need a texel API?
     // we can't return a pointer to the texels as they may not be aligned even to char size
@@ -254,9 +254,9 @@ public:
     QImage toImage() const;
 
     TextureIOResult save(const QString &file);
-    inline TextureIOResult save(QStringView file) { return save(file.toString()); }
+    TextureIOResult save(QStringView file) { return save(file.toString()); }
     TextureIOResult load(const QString &file);
-    inline TextureIOResult load(QStringView file) { return load(file.toString()); }
+    TextureIOResult load(QStringView file) { return load(file.toString()); }
 
 private:
     explicit Texture(TextureData *dd);
