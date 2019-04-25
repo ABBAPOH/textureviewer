@@ -368,13 +368,16 @@ constexpr bool operator>=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) 
 
 // get* helpers
 
-template<typename T>
+template<typename T, typename = std::enable_if_t<Private::isColor_v<T>>>
 constexpr Private::rgbaToColorChannel_t<T> getRed  (T color) noexcept { return color.red();   }
-template<typename T>
+
+template<typename T, typename = std::enable_if_t<Private::isColor_v<T>>>
 constexpr Private::rgbaToColorChannel_t<T> getGreen(T color) noexcept { return color.green(); }
-template<typename T>
+
+template<typename T, typename = std::enable_if_t<Private::isColor_v<T>>>
 constexpr Private::rgbaToColorChannel_t<T> getBlue (T color) noexcept { return color.blue();  }
-template<typename T>
+
+template<typename T, typename = std::enable_if_t<Private::isColor_v<T>>>
 constexpr Private::rgbaToColorChannel_t<T> getAlpha(T color) noexcept { return color.alpha(); }
 
 inline constexpr quint8 getRed  (QRgb color) noexcept { return quint8(qRed(color));   }
