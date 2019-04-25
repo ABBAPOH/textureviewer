@@ -387,33 +387,24 @@ inline constexpr quint8 getAlpha(QRgb color) noexcept { return quint8(qAlpha(col
 
 namespace Private {
 
-template<typename T>
-constexpr RgbaFromColorChannel_t<T> createRgbaHelper(
-        T r, T g, T b, T a) noexcept
-{
-    return {r, g, b, a};
-}
+template<typename T, typename = std::enable_if_t<isColorChannel_v<T>>>
+constexpr RgbaFromColorChannel_t<T> createRgbaHelper(T r, T g, T b, T a) noexcept
+{ return {r, g, b, a}; }
 
 template<>
-constexpr typename RgbaFromColorChannel<quint8>::Type createRgbaHelper<quint8>(
+constexpr RgbaFromColorChannel_t<quint8> createRgbaHelper<quint8>(
         quint8 r, quint8 g, quint8 b, quint8 a) noexcept
-{
-    return qRgba(r, g, b, a);
-}
+{ return qRgba(r, g, b, a); }
 
 template<>
-constexpr typename RgbaFromColorChannel<quint16>::Type createRgbaHelper<quint16>(
+constexpr RgbaFromColorChannel_t<quint16> createRgbaHelper<quint16>(
         quint16 r, quint16 g, quint16 b, quint16 a) noexcept
-{
-    return qRgba64(r, g, b, a);
-}
+{ return qRgba64(r, g, b, a); }
 
 template<typename T>
 constexpr RgbaFromColorChannel_t<T> createRgba(
         T r, T g, T b, T a = ColorChannelLimits<T>::max()) noexcept
-{
-    return createRgbaHelper<T>(r, g, b, a);
-}
+{ return createRgbaHelper<T>(r, g, b, a); }
 
 template<typename Dst, typename Src>
 inline constexpr Dst normalize(Src src)
