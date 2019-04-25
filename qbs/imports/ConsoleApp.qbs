@@ -6,7 +6,7 @@ BaseProduct {
     destinationDirectory: project.install_binary_path
     consoleApplication: true
 
-    cpp.rpaths: qbs.targetOS.contains("osx")
+    cpp.rpaths: qbs.targetOS.contains("macos")
                 ? [ "@executable_path/.." ]
                 : [ "$ORIGIN/../lib/" + project.app_target ]
 }

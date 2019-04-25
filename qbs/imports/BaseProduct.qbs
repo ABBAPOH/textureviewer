@@ -9,7 +9,7 @@ Product {
     cpp.includePaths: project.includePaths
     cpp.libraryPaths: project.libraryPaths
     cpp.cxxLanguageVersion: "c++17"
-    cpp.cxxStandardLibrary: qbs.targetOS.contains("osx") ? "libc++" : base
+    cpp.cxxStandardLibrary: qbs.targetOS.contains("macos") ? "libc++" : base
 //    cpp.minimumOsxVersion: "10.14"
     cpp.minimumMacosVersion: "10.14"
 

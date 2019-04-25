@@ -8,7 +8,7 @@ BaseProduct {
     bundle.isBundle: false
 
     cpp.sonamePrefix: "@rpath/Frameworks"
-    cpp.rpaths: qbs.targetOS.contains("osx")
+    cpp.rpaths: qbs.targetOS.contains("macos")
                 ? [ "@loader_path/..", "@executable_path/.." ]
                 : [ "$ORIGIN" ]
 
