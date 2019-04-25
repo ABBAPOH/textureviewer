@@ -23,28 +23,30 @@ using Rgba128 = RgbaGeneric<quint32>;
 
 namespace Private {
 
-template<typename T> struct IsColor : public std::false_type {};
-template<> struct IsColor<Rgba32Signed> : public std::true_type {};
-template<> struct IsColor<QRgb> : public std::true_type {};
-template<> struct IsColor<Rgba64Float> : public std::true_type {};
-template<> struct IsColor<Rgba64Signed> : public std::true_type {};
-template<> struct IsColor<QRgba64> : public std::true_type {};
-template<> struct IsColor<Rgba128Float> : public std::true_type {};
-template<> struct IsColor<Rgba128Signed> : public std::true_type {};
-template<> struct IsColor<Rgba128> : public std::true_type {};
+template<typename T> struct IsColorBase : public std::false_type {};
+template<> struct IsColorBase<Rgba32Signed> : public std::true_type {};
+template<> struct IsColorBase<QRgb> : public std::true_type {};
+template<> struct IsColorBase<Rgba64Float> : public std::true_type {};
+template<> struct IsColorBase<Rgba64Signed> : public std::true_type {};
+template<> struct IsColorBase<QRgba64> : public std::true_type {};
+template<> struct IsColorBase<Rgba128Float> : public std::true_type {};
+template<> struct IsColorBase<Rgba128Signed> : public std::true_type {};
+template<> struct IsColorBase<Rgba128> : public std::true_type {};
 
+template<typename T> struct IsColor : public IsColorBase<std::decay_t<T>> {};
 template<typename T> constexpr bool isColor_v = IsColor<T>::value;
 
-template<typename T> struct IsColorChannel : public std::false_type {};
-template<> struct IsColorChannel<qint8> : public std::true_type {};
-template<> struct IsColorChannel<quint8> : public std::true_type {};
-template<> struct IsColorChannel<qint16> : public std::true_type {};
-template<> struct IsColorChannel<quint16> : public std::true_type {};
-template<> struct IsColorChannel<qint32> : public std::true_type {};
-template<> struct IsColorChannel<quint32> : public std::true_type {};
-template<> struct IsColorChannel<HalfFloat> : public std::true_type {};
-template<> struct IsColorChannel<float> : public std::true_type {};
+template<typename T> struct IsColorChannelBase : public std::false_type {};
+template<> struct IsColorChannelBase<qint8> : public std::true_type {};
+template<> struct IsColorChannelBase<quint8> : public std::true_type {};
+template<> struct IsColorChannelBase<qint16> : public std::true_type {};
+template<> struct IsColorChannelBase<quint16> : public std::true_type {};
+template<> struct IsColorChannelBase<qint32> : public std::true_type {};
+template<> struct IsColorChannelBase<quint32> : public std::true_type {};
+template<> struct IsColorChannelBase<HalfFloat> : public std::true_type {};
+template<> struct IsColorChannelBase<float> : public std::true_type {};
 
+template<typename T> struct IsColorChannel : public IsColorChannelBase<std::remove_cv_t<T>> {};
 template<typename T> constexpr bool isColorChannel_v = IsColorChannel<T>::value;
 
 template<typename T, typename = std::enable_if_t<isColorChannel_v<T>>>
@@ -143,7 +145,7 @@ public:
         return *this;
     }
 
-    constexpr operator quint32() const noexcept { return m_rgba; }
+    explicit constexpr operator quint32() const noexcept { return m_rgba; }
 
     constexpr qint8 red()   const noexcept { return qint8(m_rgba >> RedShift);   }
     constexpr qint8 green() const noexcept { return qint8(m_rgba >> GreenShift); }
@@ -171,6 +173,24 @@ public:
         m_rgba = (m_rgba & ~(0xffu << AlphaShift)) | (quint32(quint8(alpha)) << AlphaShift);
     }
 };
+
+constexpr bool operator==(Rgba32Signed lhs, Rgba32Signed rhs)
+{ return quint32(lhs) == quint32(rhs); }
+
+constexpr bool operator!=(Rgba32Signed lhs, Rgba32Signed rhs)
+{ return quint32(lhs) != quint32(rhs); }
+
+constexpr bool operator<(Rgba32Signed lhs, Rgba32Signed rhs)
+{ return quint32(lhs) < quint32(rhs); }
+
+constexpr bool operator>(Rgba32Signed lhs, Rgba32Signed rhs)
+{ return quint32(lhs) > quint32(rhs); }
+
+constexpr bool operator<=(Rgba32Signed lhs, Rgba32Signed rhs)
+{ return quint32(lhs) <= quint32(rhs); }
+
+constexpr bool operator>=(Rgba32Signed lhs, Rgba32Signed rhs)
+{ return quint32(lhs) >= quint32(rhs); }
 
 // Rgba64Signed
 
@@ -213,7 +233,7 @@ public:
         return *this;
     }
 
-    constexpr operator quint64() const noexcept { return m_rgba; }
+    explicit constexpr operator quint64() const noexcept { return m_rgba; }
 
     constexpr qint16 red()   const noexcept { return qint16(m_rgba >> RedShift);   }
     constexpr qint16 green() const noexcept { return qint16(m_rgba >> GreenShift); }
@@ -240,6 +260,44 @@ public:
         m_rgba = (m_rgba & ~(0xffffull << AlphaShift)) | (quint64(quint16(alpha)) << AlphaShift);
     }
 };
+
+constexpr bool operator==(Rgba64Signed lhs, Rgba64Signed rhs)
+{ return quint64(lhs) == quint64(rhs); }
+
+constexpr bool operator!=(Rgba64Signed lhs, Rgba64Signed rhs)
+{ return quint64(lhs) != quint64(rhs); }
+
+constexpr bool operator<(Rgba64Signed lhs, Rgba64Signed rhs)
+{ return quint64(lhs) < quint64(rhs); }
+
+constexpr bool operator>(Rgba64Signed lhs, Rgba64Signed rhs)
+{ return quint64(lhs) > quint64(rhs); }
+
+constexpr bool operator<=(Rgba64Signed lhs, Rgba64Signed rhs)
+{ return quint64(lhs) <= quint64(rhs); }
+
+constexpr bool operator>=(Rgba64Signed lhs, Rgba64Signed rhs)
+{ return quint64(lhs) >= quint64(rhs); }
+
+// Rgba64UnSigned
+
+constexpr bool operator==(QRgba64 lhs, QRgba64 rhs)
+{ return quint64(lhs) == quint64(rhs); }
+
+constexpr bool operator!=(QRgba64 lhs, QRgba64 rhs)
+{ return quint64(lhs) != quint64(rhs); }
+
+constexpr bool operator<(QRgba64 lhs, QRgba64 rhs)
+{ return quint64(lhs) < quint64(rhs); }
+
+constexpr bool operator>(QRgba64 lhs, QRgba64 rhs)
+{ return quint64(lhs) > quint64(rhs); }
+
+constexpr bool operator<=(QRgba64 lhs, QRgba64 rhs)
+{ return quint64(lhs) <= quint64(rhs); }
+
+constexpr bool operator>=(QRgba64 lhs, QRgba64 rhs)
+{ return quint64(lhs) >= quint64(rhs); }
 
 // RgbaGeneric
 

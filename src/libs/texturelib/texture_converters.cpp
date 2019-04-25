@@ -7,8 +7,8 @@
 
 namespace {
 
-using ReaderFunc = AnyColor(*)(Texture::ConstData);
-using WriterFunc = void(*)(Texture::Data, const AnyColor &);
+using ReaderFunc = ColorVariant(*)(Texture::ConstData);
+using WriterFunc = void(*)(Texture::Data, const ColorVariant &);
 
 struct TextureFormatConverter
 {
@@ -22,11 +22,11 @@ using TextureFormatConverters = gsl::span<const TextureFormatConverter>;
 // generic functions
 
 template<typename T>
-typename Private::RgbaFromColorChannel_t<T> colorFunc(const AnyColor &color)
+typename Private::RgbaFromColorChannel_t<T> colorFunc(const ColorVariant &color)
 { return color.convert<typename Private::RgbaFromColorChannel_t<T>>(); }
 
 template<typename Type, size_t components>
-AnyColor readRGBA(Texture::ConstData data)
+ColorVariant readRGBA(Texture::ConstData data)
 {
     static_assert (components >= 1 && components <= 4, "Invalid components count");
     Q_ASSERT(data.size() == components * sizeof(Type));
@@ -42,7 +42,7 @@ AnyColor readRGBA(Texture::ConstData data)
 }
 
 template<typename Type, size_t components>
-void writeRGBA(Texture::Data data, const AnyColor &color)
+void writeRGBA(Texture::Data data, const ColorVariant &color)
 {
     static_assert (components >= 1 && components <= 4, "Invalid components count");
     Q_ASSERT(data.size() == components * sizeof(Type));
@@ -61,13 +61,13 @@ void writeRGBA(Texture::Data data, const AnyColor &color)
 
 // specialized functions
 
-AnyColor readA8_Unorm(Texture::ConstData data)
+ColorVariant readA8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 1);
     return {qRgba(0, 0, 0, *reinterpret_cast<const quint8 *>(data.data()))};
 }
 
-void writeA8_Unorm(Texture::Data data, const AnyColor &color)
+void writeA8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 1);
     const auto rgba = color.convert<QRgb>();
@@ -75,14 +75,14 @@ void writeA8_Unorm(Texture::Data data, const AnyColor &color)
     d[0] = quint8(qAlpha(rgba));
 }
 
-AnyColor readL8_Unorm(Texture::ConstData data)
+ColorVariant readL8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 1);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgb(d[0], d[0], d[0])};
 }
 
-void writeL8_Unorm(Texture::Data data, const AnyColor &color)
+void writeL8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 1);
     const auto rgba = color.convert<QRgb>();
@@ -90,14 +90,14 @@ void writeL8_Unorm(Texture::Data data, const AnyColor &color)
     d[0] = quint8((qRed(rgba) + qGreen(rgba) + qBlue(rgba)) / 3);
 }
 
-AnyColor readLA8_Unorm(Texture::ConstData data)
+ColorVariant readLA8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 2);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgba(d[0], d[0], d[0], d[1])};
 }
 
-void writeLA8_Unorm(Texture::Data data, const AnyColor &color)
+void writeLA8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 2);
     const auto rgba = color.convert<QRgb>();
@@ -106,14 +106,14 @@ void writeLA8_Unorm(Texture::Data data, const AnyColor &color)
     d[1] = quint8(qAlpha(rgba));
 }
 
-AnyColor readBGR8_Unorm(Texture::ConstData data)
+ColorVariant readBGR8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 3);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgba(d[2], d[1], d[0], 0xff)};
 }
 
-void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
+void writeBGR8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 3);
     const auto rgba = color.convert<QRgb>();
@@ -123,14 +123,14 @@ void writeBGR8_Unorm(Texture::Data data, const AnyColor &color)
     d[0] = quint8(qBlue(rgba));
 }
 
-AnyColor readBGRA8_Unorm(Texture::ConstData data)
+ColorVariant readBGRA8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 4);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgba(d[2], d[1], d[0], d[3])};
 }
 
-void writeBGRA8_Unorm(Texture::Data data, const AnyColor &color)
+void writeBGRA8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 4);
     const auto rgba = color.convert<QRgb>();
@@ -141,14 +141,14 @@ void writeBGRA8_Unorm(Texture::Data data, const AnyColor &color)
     d[3] = quint8(qAlpha(rgba));
 }
 
-AnyColor readABGR8_Unorm(Texture::ConstData data)
+ColorVariant readABGR8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 4);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgba(d[3], d[2], d[1], d[0])};
 }
 
-void writeABGR8_Unorm(Texture::Data data, const AnyColor &color)
+void writeABGR8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 4);
     const auto rgba = color.convert<QRgb>();
@@ -159,14 +159,14 @@ void writeABGR8_Unorm(Texture::Data data, const AnyColor &color)
     d[0] = quint8(qAlpha(rgba));
 }
 
-AnyColor readRGBX8_Unorm(Texture::ConstData data)
+ColorVariant readRGBX8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 4);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgba(d[0], d[1], d[2], 0xff)};
 }
 
-void writeRGBX8_Unorm(Texture::Data data, const AnyColor &color)
+void writeRGBX8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 4);
     const auto rgba = color.convert<QRgb>();
@@ -177,14 +177,14 @@ void writeRGBX8_Unorm(Texture::Data data, const AnyColor &color)
     d[3] = 0xff;
 }
 
-AnyColor readBGRX8_Unorm(Texture::ConstData data)
+ColorVariant readBGRX8_Unorm(Texture::ConstData data)
 {
     Q_ASSERT(data.size() == 4);
     const auto d = reinterpret_cast<const quint8 *>(data.data());
     return {qRgba(d[2], d[1], d[0], 0xff)};
 }
 
-void writeBGRX8_Unorm(Texture::Data data, const AnyColor &color)
+void writeBGRX8_Unorm(Texture::Data data, const ColorVariant &color)
 {
     Q_ASSERT(data.size() == 4);
     const auto rgba = color.convert<QRgb>();
@@ -359,12 +359,12 @@ public:
 
 } // namespace
 
-std::function<AnyColor(Texture::ConstData)> TextureData::getFormatReader(TextureFormat format)
+std::function<ColorVariant(Texture::ConstData)> TextureData::getFormatReader(TextureFormat format)
 {
     return gsl::at(converters, qsizetype(format)).reader;
 }
 
-std::function<void(Texture::Data, const AnyColor &color)> TextureData::getFormatWriter(TextureFormat format)
+std::function<void(Texture::Data, const ColorVariant &color)> TextureData::getFormatWriter(TextureFormat format)
 {
     return gsl::at(converters, qsizetype(format)).writer;
 }

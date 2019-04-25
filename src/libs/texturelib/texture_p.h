@@ -1,7 +1,6 @@
 #ifndef TEXTURE_P_H
 #define TEXTURE_P_H
 
-#include "anycolor.h"
 #include "texture.h"
 #include "textureformatinfo.h"
 
@@ -52,8 +51,8 @@ public:
     qsizetype levelOffset(int level) const { return levelInfos[uint(level)].offset; }
     qsizetype offset(int side, int level, int layer) const;
 
-    static std::function<AnyColor(Texture::ConstData)> getFormatReader(TextureFormat format);
-    static std::function<void(Texture::Data, const AnyColor &color)> getFormatWriter(TextureFormat format);
+    static std::function<ColorVariant(Texture::ConstData)> getFormatReader(TextureFormat format);
+    static std::function<void(Texture::Data, const ColorVariant &)> getFormatWriter(TextureFormat format);
 
     QAtomicInt ref {0};
     TextureFormat format {TextureFormat::Invalid};

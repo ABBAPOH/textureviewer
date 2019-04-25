@@ -67,8 +67,8 @@ public:
     Q_ENUM(Type)
 
     constexpr ColorVariant() noexcept = default;
-    template<typename T, typename = std::enable_if_t<!std::is_same_v<T, ColorVariant>>>
-    explicit constexpr ColorVariant(T &&value) noexcept : d(std::forward<T>(value)) {}
+    template<typename T, typename = std::enable_if_t<Private::isColor_v<T>>>
+    constexpr ColorVariant(T &&value) noexcept : d(std::forward<T>(value)) {}
     constexpr ColorVariant(const ColorVariant &) = default;
     constexpr ColorVariant(ColorVariant &&) = default;
     ~ColorVariant() = default;

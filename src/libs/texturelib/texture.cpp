@@ -1033,7 +1033,7 @@ auto Texture::constImageData(ArrayIndex index) const -> ConstData
     \note This function returns empty color for compressed formats
     \note This function is very slow and provided only for convenience purposes.
 */
-AnyColor Texture::texelColor(Position p, ArrayIndex index) const
+ColorVariant Texture::texelColor(Position p, ArrayIndex index) const
 {
     if (!d)
         return {};
@@ -1067,7 +1067,7 @@ AnyColor Texture::texelColor(Position p, ArrayIndex index) const
     \note This function does nothig for compressed formats
     \note This function is very slow and provided only for convenience purposes.
 */
-void Texture::setTexelColor(Texture::Position p, Texture::ArrayIndex index, const AnyColor &color)
+void Texture::setTexelColor(Texture::Position p, Texture::ArrayIndex index, const ColorVariant &color)
 {
     if (!d)
         return;

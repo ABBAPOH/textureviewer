@@ -3,7 +3,7 @@
 
 #include "texturelib_global.h"
 
-#include <TextureLib/AnyColor>
+#include <TextureLib/ColorVariant>
 #include <TextureLib/TextureFormat>
 #include <TextureLib/TextureFormatInfo>
 #include <TextureLib/TextureIOResult>
@@ -231,10 +231,10 @@ public:
     ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
     ConstData constData() const { return {dataImpl(0, 0, 0), bytes()}; }
 
-    AnyColor texelColor(Position p, ArrayIndex index) const;
-    void setTexelColor(const Position &p, const AnyColor &color)
+    ColorVariant texelColor(Position p, ArrayIndex index) const;
+    void setTexelColor(const Position &p, const ColorVariant &color)
     { setTexelColor(p, {}, color); }
-    void setTexelColor(Position p, ArrayIndex index, const AnyColor &color);
+    void setTexelColor(Position p, ArrayIndex index, const ColorVariant &color);
 
     // Ok, KTX really have different alignment (4) rather than other (dds, vtf) formats (1).
     // So, we can have a usage of a scanline API.
