@@ -80,25 +80,12 @@ template<> struct RgbaFromColorChannel<quint16> { using Type = QRgba64; };
 template<typename T> using RgbaFromColorChannel_t = typename RgbaFromColorChannel<T>::Type;
 
 template<typename T, typename = std::enable_if_t<isColor_v<T>>>
-struct RgbaTraits
-{
-    using DataType = typename T::DataType;
-    using RgbaType = T;
-};
+struct RgbaToColorChannel { using Type = typename T::DataType; };
 
-template<>
-struct RgbaTraits<QRgb>
-{
-    using DataType = quint8;
-    using RgbaType = QRgb;
-};
+template<> struct RgbaToColorChannel<QRgb> { using Type = quint8; };
+template<> struct RgbaToColorChannel<QRgba64> { using Type = quint16; };
 
-template<>
-struct RgbaTraits<QRgba64>
-{
-    using DataType = quint16;
-    using RgbaType = QRgba64;
-};
+template<typename T> using rgbaToColorChannel_t = typename RgbaToColorChannel<T>::Type;
 
 } // namespace Private
 
@@ -382,13 +369,13 @@ constexpr bool operator>=(const RgbaGeneric<T> &lhs, const RgbaGeneric<T> &rhs) 
 // get* helpers
 
 template<typename T>
-constexpr typename Private::RgbaTraits<T>::DataType getRed  (T color) noexcept { return color.red();   }
+constexpr Private::rgbaToColorChannel_t<T> getRed  (T color) noexcept { return color.red();   }
 template<typename T>
-constexpr typename Private::RgbaTraits<T>::DataType getGreen(T color) noexcept { return color.green(); }
+constexpr Private::rgbaToColorChannel_t<T> getGreen(T color) noexcept { return color.green(); }
 template<typename T>
-constexpr typename Private::RgbaTraits<T>::DataType getBlue (T color) noexcept { return color.blue();  }
+constexpr Private::rgbaToColorChannel_t<T> getBlue (T color) noexcept { return color.blue();  }
 template<typename T>
-constexpr typename Private::RgbaTraits<T>::DataType getAlpha(T color) noexcept { return color.alpha(); }
+constexpr Private::rgbaToColorChannel_t<T> getAlpha(T color) noexcept { return color.alpha(); }
 
 inline constexpr quint8 getRed  (QRgb color) noexcept { return quint8(qRed(color));   }
 inline constexpr quint8 getGreen(QRgb color) noexcept { return quint8(qGreen(color)); }
@@ -443,8 +430,8 @@ inline constexpr Dst normalize(Src src)
 template<typename Dst, typename Src>
 constexpr Dst convertRgba(Src src) noexcept
 {
-    using SrcChannel = typename Private::RgbaTraits<Src>::DataType;
-    using DstChannel = typename Private::RgbaTraits<Dst>::DataType;
+    using SrcChannel = Private::rgbaToColorChannel_t<Src>;
+    using DstChannel = Private::rgbaToColorChannel_t<Dst>;
     return createRgba<DstChannel>(
             normalize<DstChannel, SrcChannel>(getRed(src)),
             normalize<DstChannel, SrcChannel>(getGreen(src)),
