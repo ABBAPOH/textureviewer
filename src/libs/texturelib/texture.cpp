@@ -1027,10 +1027,22 @@ auto Texture::constImageData(ArrayIndex index) const -> ConstData
     return {data, bytesPerImage(index.level())};
 }
 
+/*!
+    \brief Returns the color of the texel located at position \p and array index \a index.
+
+    \note This function returns empty color for compressed formats
+    \note This function is very slow and provided only for convenience purposes.
+*/
 AnyColor Texture::texelColor(Position p, ArrayIndex index) const
 {
     if (!d)
         return {};
+
+    const auto reader = TextureData::getFormatReader(d->format);
+    if (!reader) {
+        qCWarning(texture) << "texelColor() is not supported for format" << d->format;
+        return {};
+    }
 
     const auto bytesPerSlice = d->bytesPerSlice(index.level());
     const auto bytesPerLine = d->bytesPerLine(index.level());
@@ -1043,10 +1055,41 @@ AnyColor Texture::texelColor(Position p, ArrayIndex index) const
             bytesPerSlice * p.z + bytesPerLine * p.y, bytesPerLine);
     const auto texel = line.subspan(bytesPerTexel * p.x, bytesPerTexel);
 
-    const auto reader = TextureData::getFormatReader(d->format);
-    if (!reader)
-        return {};
     return reader(texel);
+}
+
+/*!
+    \brief Sets the \a color of the texel located at position \p and array index \a index.
+
+    If the color type differs from the underlying format(), this function does an impilict
+    conversion which may lead to loss of precision.
+
+    \note This function does nothig for compressed formats
+    \note This function is very slow and provided only for convenience purposes.
+*/
+void Texture::setTexelColor(Texture::Position p, Texture::ArrayIndex index, const AnyColor &color)
+{
+    if (!d)
+        return;
+
+    const auto writer = TextureData::getFormatWriter(d->format);
+    if (!writer) {
+        qCWarning(texture) << "setTexelColor() is not supported for format" << d->format;
+        return;
+    }
+
+    const auto bytesPerSlice = d->bytesPerSlice(index.level());
+    const auto bytesPerLine = d->bytesPerLine(index.level());
+    const auto bytesPerTexel = this->bytesPerTexel();
+
+    const auto data = imageData(index);
+    if (data.empty())
+        return;
+    const auto line = data.subspan(
+            bytesPerSlice * p.z + bytesPerLine * p.y, bytesPerLine);
+    const auto texel = line.subspan(bytesPerTexel * p.x, bytesPerTexel);
+
+    writer(texel, color);
 }
 
 /*!

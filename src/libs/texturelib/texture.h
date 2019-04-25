@@ -231,15 +231,10 @@ public:
     ConstData data() const { return {dataImpl(0, 0, 0), bytes()}; }
     ConstData constData() const { return {dataImpl(0, 0, 0), bytes()}; }
 
-    // TODO: do we need a texel API?
-    // we can't return a pointer to the texels as they may not be aligned even to char size
-    // (i.e. packed bitmap - an array of bits, 1 bit for each texel)
-    // So, we should return a Color object
-    // But QColor is too limited, we need a ColorVariant (AnyColor as proposed by Marc Mutz)
-
     AnyColor texelColor(Position p, ArrayIndex index) const;
-    // void setTexelColor(const Position &p, const AnyColor &color);
-    // void setTexelColor(const Position &p, const Index &index, const AnyColor &color);
+    void setTexelColor(const Position &p, const AnyColor &color)
+    { setTexelColor(p, {}, color); }
+    void setTexelColor(Position p, ArrayIndex index, const AnyColor &color);
 
     // Ok, KTX really have different alignment (4) rather than other (dds, vtf) formats (1).
     // So, we can have a usage of a scanline API.
