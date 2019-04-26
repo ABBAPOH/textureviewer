@@ -659,7 +659,7 @@ Texture::Texture(
 {
     d = TextureData::create(
             format,
-            size.width(), size.height(), size.depth(),
+            size.width, size.height, size.depth,
             dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
             align);
 }
@@ -690,7 +690,7 @@ Texture::Texture(
 
     d = TextureData::create(
             format,
-            size.width(), size.height(), size.depth(),
+            size.width, size.height, size.depth,
             dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
             align,
             data);
@@ -725,7 +725,7 @@ Texture::Texture(
 
     d = TextureData::create(
             format,
-            size.width(), size.height(), size.depth(),
+            size.width, size.height, size.depth,
             dimensions.isCubemap(), dimensions.levels(), dimensions.layers(),
             align,
             data,

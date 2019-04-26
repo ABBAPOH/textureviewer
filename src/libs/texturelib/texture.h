@@ -41,35 +41,25 @@ public:
         Yes
     };
 
-    class Size
+    struct Size
     {
     public:
         constexpr Size() noexcept = default;
         constexpr Size(int width) noexcept
-            : m_width(width), m_height(1), m_depth(1) {}
+            : width(width), height(1), depth(1) {}
         constexpr Size(int width, int height) noexcept
-            : m_width(width), m_height(height), m_depth(1) {}
+            : width(width), height(height), depth(1) {}
         constexpr Size(QSize size) noexcept
-            : m_width(size.width()), m_height(size.height()), m_depth(1) {}
+            : width(size.width()), height(size.height()), depth(1) {}
         constexpr Size(int width, int height, int depth) noexcept
-            : m_width(width), m_height(height), m_depth(depth) {}
+            : width(width), height(height), depth(depth) {}
 
-        constexpr bool isNull() const noexcept { return !m_width && !m_height && !m_depth; }
-        constexpr bool isValid() const noexcept { return m_width > 0 && m_height > 0 && m_depth > 0; }
+        constexpr bool isNull() const noexcept { return !width && !height && !depth; }
+        constexpr bool isValid() const noexcept { return width > 0 && height > 0 && depth > 0; }
 
-        constexpr int width() const noexcept { return m_width; }
-        constexpr void setWidth(int w) noexcept { m_width = w; }
-
-        constexpr int height() const { return m_height; }
-        constexpr void setHeight(int h) noexcept { m_height = h; }
-
-        constexpr int depth() const { return m_depth; }
-        constexpr void setDepth(int d) noexcept { m_depth = d; }
-
-    private:
-        int m_width {0};
-        int m_height {0};
-        int m_depth {0};
+        int width {0};
+        int height {0};
+        int depth {0};
     };
 
     struct Position
