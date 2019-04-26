@@ -20,50 +20,50 @@ private slots:
 void TestRgbaGeneric::testNormalize()
 {
     // quint8 -> float
-    QCOMPARE((Private::normalize<float, quint8>(0)), 0.0f);
-    QCOMPARE((Private::normalize<float, quint8>(127)), 127.0f / 255.0f);
-    QCOMPARE((Private::normalize<float, quint8>(0xff)), 1.0f);
+    QCOMPARE((Private::convertChannel<float, quint8>(0)), 0.0f);
+    QCOMPARE((Private::convertChannel<float, quint8>(127)), 127.0f / 255.0f);
+    QCOMPARE((Private::convertChannel<float, quint8>(0xff)), 1.0f);
 
     // float -> quint8
-    QCOMPARE((Private::normalize<quint8, float>(0.0f)), 0);
-    QCOMPARE((Private::normalize<quint8, float>(0.497f)), 127);
-    QCOMPARE((Private::normalize<quint8, float>(1.0f)), 0xff);
+    QCOMPARE((Private::convertChannel<quint8, float>(0.0f)), 0);
+    QCOMPARE((Private::convertChannel<quint8, float>(0.497f)), 127);
+    QCOMPARE((Private::convertChannel<quint8, float>(1.0f)), 0xff);
 
     // quint16 -> float
-    QCOMPARE((Private::normalize<float, quint16>(0)), 0.0f);
-    QCOMPARE((Private::normalize<float, quint16>(0x7fff)), 1.0f * 0x7fff / 0xffff);
-    QCOMPARE((Private::normalize<float, quint16>(0xffff)), 1.0f);
+    QCOMPARE((Private::convertChannel<float, quint16>(0)), 0.0f);
+    QCOMPARE((Private::convertChannel<float, quint16>(0x7fff)), 1.0f * 0x7fff / 0xffff);
+    QCOMPARE((Private::convertChannel<float, quint16>(0xffff)), 1.0f);
 
     // float -> quint16
-    QCOMPARE((Private::normalize<quint16, float>(0.0f)), 0);
-    QCOMPARE((Private::normalize<quint16, float>(1.0f * 0x7fff / 0xffff)), 0x7fff);
-    QCOMPARE((Private::normalize<quint16, float>(1.0f)), 0xffff);
+    QCOMPARE((Private::convertChannel<quint16, float>(0.0f)), 0);
+    QCOMPARE((Private::convertChannel<quint16, float>(1.0f * 0x7fff / 0xffff)), 0x7fff);
+    QCOMPARE((Private::convertChannel<quint16, float>(1.0f)), 0xffff);
 
     // quint8 -> HalfFloat
-    QCOMPARE((Private::normalize<HalfFloat, quint8>(0)), HalfFloat(0.0f));
-    QCOMPARE((Private::normalize<HalfFloat, quint8>(127)), HalfFloat(127.0f / 255.0f));
-    QCOMPARE((Private::normalize<HalfFloat, quint8>(0xff)), HalfFloat(1.0f));
+    QCOMPARE((Private::convertChannel<HalfFloat, quint8>(0)), HalfFloat(0.0f));
+    QCOMPARE((Private::convertChannel<HalfFloat, quint8>(127)), HalfFloat(127.0f / 255.0f));
+    QCOMPARE((Private::convertChannel<HalfFloat, quint8>(0xff)), HalfFloat(1.0f));
 
     // float -> quint8
-    QCOMPARE((Private::normalize<quint8, HalfFloat>(HalfFloat(0.0f))), 0);
-    QCOMPARE((Private::normalize<quint8, HalfFloat>(HalfFloat(0.497f))), 127);
-    QCOMPARE((Private::normalize<quint8, HalfFloat>(HalfFloat(1.0f))), 0xff);
+    QCOMPARE((Private::convertChannel<quint8, HalfFloat>(HalfFloat(0.0f))), 0);
+    QCOMPARE((Private::convertChannel<quint8, HalfFloat>(HalfFloat(0.497f))), 127);
+    QCOMPARE((Private::convertChannel<quint8, HalfFloat>(HalfFloat(1.0f))), 0xff);
 
     // float -> HalfFloat
-    QCOMPARE((Private::normalize<HalfFloat, float>(0.0f)), HalfFloat(0));
-    QCOMPARE((Private::normalize<HalfFloat, float>(0.5f)), HalfFloat(0.5f));
-    QCOMPARE((Private::normalize<HalfFloat, float>(1.0f)), HalfFloat(1.0f));
+    QCOMPARE((Private::convertChannel<HalfFloat, float>(0.0f)), HalfFloat(0));
+    QCOMPARE((Private::convertChannel<HalfFloat, float>(0.5f)), HalfFloat(0.5f));
+    QCOMPARE((Private::convertChannel<HalfFloat, float>(1.0f)), HalfFloat(1.0f));
 
     // HalfFloat -> float
-    QCOMPARE((Private::normalize<float, HalfFloat>(HalfFloat(0.0f))), 0.0f);
-    QCOMPARE((Private::normalize<float, HalfFloat>(HalfFloat(0.5f))), 0.5f);
-    QCOMPARE((Private::normalize<float, HalfFloat>(HalfFloat(1.0f))), 1.0f);
+    QCOMPARE((Private::convertChannel<float, HalfFloat>(HalfFloat(0.0f))), 0.0f);
+    QCOMPARE((Private::convertChannel<float, HalfFloat>(HalfFloat(0.5f))), 0.5f);
+    QCOMPARE((Private::convertChannel<float, HalfFloat>(HalfFloat(1.0f))), 1.0f);
 
     // quint8 -> quint16
-    QCOMPARE((Private::normalize<quint16, quint8>(0)), 0);
+    QCOMPARE((Private::convertChannel<quint16, quint8>(0)), 0);
     // TODO (abbapoh): fix conversion
-    QCOMPARE((Private::normalize<quint16, quint8>(0x7f)), 0x7F7F);
-    QCOMPARE((Private::normalize<quint16, quint8>(0xff)), 0xffff);
+    QCOMPARE((Private::convertChannel<quint16, quint8>(0x7f)), 0x7F7F);
+    QCOMPARE((Private::convertChannel<quint16, quint8>(0xff)), 0xffff);
 }
 
 void TestRgbaGeneric::defaultConstruction()

@@ -406,19 +406,27 @@ constexpr RgbaFromColorChannel_t<T> createRgba(
         T r, T g, T b, T a = ColorChannelLimits<T>::max()) noexcept
 { return createRgbaHelper<T>(r, g, b, a); }
 
-template<typename Dst, typename Src>
-inline constexpr Dst normalize(Src src)
-{
-    src = qBound(Src(0), src, ColorChannelLimits<Src>::max());
+template<typename T, typename = std::enable_if_t<isColorChannel_v<T>>>
+constexpr bool is_float_v = !std::is_integral_v<T>;
 
-    if (!std::numeric_limits<Dst>::is_integer && std::numeric_limits<Src>::is_integer)
-        return Dst(ColorChannelLimits<Dst>::max() * src / ColorChannelLimits<Src>::max());
-    else if (std::numeric_limits<Dst>::is_integer && !std::numeric_limits<Src>::is_integer)
-        return Dst(ColorChannelLimits<Dst>::max() * src / ColorChannelLimits<Src>::max() + 0.5);
-    else if (std::numeric_limits<Dst>::is_integer && std::numeric_limits<Src>::is_integer)
-        return Dst(ColorChannelLimits<Dst>::max() * (1.0 * src / ColorChannelLimits<Src>::max()));
-    else if (!std::numeric_limits<Dst>::is_integer && !std::numeric_limits<Src>::is_integer)
-        return Dst(ColorChannelLimits<Dst>::max() * src / ColorChannelLimits<Src>::max());
+template<typename Dst, typename Src>
+inline constexpr Dst convertChannel(Src src)
+{
+    if constexpr (std::is_same_v<std::decay_t<Src>, std::decay_t<Dst>>)
+            return src;
+    const auto maxSrc = ColorChannelLimits<Src>::max();
+    const auto maxDst = ColorChannelLimits<Dst>::max();
+
+    // floats can be out of [-1, 1] range
+    src = qBound(ColorChannelLimits<Src>::min(), src, maxSrc);
+    if constexpr (is_float_v<Dst>) {
+        return Dst(maxDst * src / maxSrc);
+    } else {
+        if constexpr (is_float_v<Src>)
+            return Dst(maxDst * src / maxSrc + 0.5);
+        else
+            return Dst(maxDst * (1.0 * src / maxSrc));
+    }
 }
 
 template<typename Dst, typename Src>
