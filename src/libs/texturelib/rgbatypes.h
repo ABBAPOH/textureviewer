@@ -435,10 +435,10 @@ constexpr Dst convertRgba(Src src) noexcept
     using SrcChannel = Private::rgbaToColorChannel_t<Src>;
     using DstChannel = Private::rgbaToColorChannel_t<Dst>;
     return createRgba<DstChannel>(
-            normalize<DstChannel, SrcChannel>(getRed(src)),
-            normalize<DstChannel, SrcChannel>(getGreen(src)),
-            normalize<DstChannel, SrcChannel>(getBlue(src)),
-            normalize<DstChannel, SrcChannel>(getAlpha(src))
+            convertChannel<DstChannel, SrcChannel>(getRed(src)),
+            convertChannel<DstChannel, SrcChannel>(getGreen(src)),
+            convertChannel<DstChannel, SrcChannel>(getBlue(src)),
+            convertChannel<DstChannel, SrcChannel>(getAlpha(src))
     );
 }
 
