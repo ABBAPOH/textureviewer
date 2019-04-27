@@ -822,14 +822,6 @@ bool Texture::isCompressed() const
 }
 
 /*!
-  \brief Returns the width of the biggest mipmap.
-*/
-int Texture::width() const
-{
-    return d ? d->width : 0;
-}
-
-/*!
   \brief Returns the width of the mipmap at the given \a level.
 */
 int Texture::width(int level) const
@@ -837,17 +829,12 @@ int Texture::width(int level) const
     if (!d)
         return 0;
 
+    if (level == 0)
+        return d->width;
+
     CHECK_LEVEL(level, 0);
 
     return d->levelWidth(level);
-}
-
-/*!
-  \brief Returns the height of the biggest mipmap.
-*/
-int Texture::height() const
-{
-    return d ? d->height : 0;
 }
 
 /*!
@@ -858,17 +845,12 @@ int Texture::height(int level) const
     if (!d)
         return 0;
 
+    if (level == 0)
+        return d->height;
+
     CHECK_LEVEL(level, 0);
 
     return d->levelHeight(level);
-}
-
-/*!
-  \brief Returns the depth of the biggest mipmap.
-*/
-int Texture::depth() const
-{
-    return d ? d->depth : 0;
 }
 
 /*!
@@ -879,18 +861,12 @@ int Texture::depth(int level) const
     if (!d)
         return 0;
 
+    if (level == 0)
+        return d->depth;
+
     CHECK_LEVEL(level, 0);
 
     return d->levelDepth(level);
-}
-
-/*!
-  \brief Returns the width, height and depth of the biggest mipmap packed in a Texture::Size
-  object.
-*/
-Texture::Size Texture::size() const
-{
-    return d ? Size(d->width, d->height, d->depth) : Size();
 }
 
 /*!
@@ -901,6 +877,9 @@ Texture::Size Texture::size(int level) const
 {
     if (!d)
         return {};
+
+    if (level == 0)
+        return {d->width, d->height, d->depth};
 
     CHECK_LEVEL(level, Size());
 
