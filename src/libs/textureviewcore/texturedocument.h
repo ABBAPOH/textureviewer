@@ -64,16 +64,16 @@ public:
     size_type layers() const;
     size_type faces() const;
 
-    ItemPointer item(int face, int level, int layer) const;
+    ItemPointer item(size_type face, size_type level, size_type layer) const;
 
     bool convert(TextureFormat format, Texture::Alignment alignment);
 
 signals:
     void textureChanged(const Texture &texture);
 
-    void levelsChanged(int levels);
-    void layersChanged(int layers);
-    void facesChanged(int faces);
+    void levelsChanged(size_type levels);
+    void layersChanged(size_type layers);
+    void facesChanged(size_type faces);
 
     // AbstractDocument interface
 protected:
@@ -91,9 +91,10 @@ private:
 class TextureDocument::Item
 {
 public:
-    int level {0};
-    int layer {0};
-    int face {0};
+    using size_type = Texture::size_type;
+    size_type level {0};
+    size_type layer {0};
+    size_type face {0};
     Texture texture;
     QImage thumbnail;
 };

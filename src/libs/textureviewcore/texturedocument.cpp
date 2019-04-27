@@ -186,7 +186,7 @@ auto TextureDocument::faces() const -> size_type
     return !d->texture.isNull() ? d->texture.faces() : 0;
 }
 
-auto TextureDocument::item(int face, int level, int layer) const -> ItemPointer
+auto TextureDocument::item(size_type face, size_type level, size_type layer) const -> ItemPointer
 {
     Q_D(const TextureDocument);
 
