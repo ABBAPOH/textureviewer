@@ -205,7 +205,7 @@ public:
     size_type width(size_type level = 0) const;
     size_type height(size_type level = 0) const;
     size_type depth(size_type level = 0) const;
-    Size size(size_type level) const;
+    Size size(size_type level = 0) const;
     size_type faces() const;
     size_type levels() const;
     size_type layers() const;
