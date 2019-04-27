@@ -13,6 +13,8 @@ public:
     static QString showOpenDialog();
     static bool open();
     static bool openPath(const QString &path);
+
+    static QStringList recentFiles();
 };
 
 } // namespace TextureViewer

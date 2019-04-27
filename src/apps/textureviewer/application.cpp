@@ -68,7 +68,19 @@ bool Application::openPath(const QString &path)
 
     QSettings settings;
     settings.setValue(QStringLiteral("lastOpenedFile"), path);
+    auto recent = settings.value(QStringLiteral("recentFiles")).toStringList();
+    recent.removeAll(path);
+    recent.append(path);
+    while (recent.size() > 10)
+        recent.takeFirst();
+    settings.setValue( QStringLiteral("recentFiles"), recent);
     return true;
+}
+
+QStringList Application::recentFiles()
+{
+    QSettings settings;
+    return settings.value(QStringLiteral("recentFiles")).toStringList();
 }
 
 } // namespace TextureViewer

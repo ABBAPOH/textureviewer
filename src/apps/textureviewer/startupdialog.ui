@@ -36,14 +36,14 @@
       <item>
        <widget class="QPushButton" name="openButton">
         <property name="text">
-         <string>Open Texture...</string>
+         <string>Open texture...</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="quitButton">
+       <widget class="QPushButton" name="openRecentButton">
         <property name="text">
-         <string>Quit Texture Viewer</string>
+         <string>Open recent</string>
         </property>
        </widget>
       </item>
@@ -59,6 +59,13 @@
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <widget class="QPushButton" name="quitButton">
+        <property name="text">
+         <string>Quit Texture Viewer</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
