@@ -71,16 +71,17 @@ void MainWindow::initConnections()
 
     auto onTextureChanged = [this]()
     {
+        using size_type = Texture::size_type;
         ui->levelSpinBox->setValue(0);
-        ui->levelSpinBox->setMaximum(std::max(0, m_view->document()->levels() - 1));
+        ui->levelSpinBox->setMaximum(std::max<size_type>(0, m_view->document()->levels() - 1));
         ui->levelSpinBox->setEnabled(ui->levelSpinBox->maximum() != 0);
 
         ui->layerSpinBox->setValue(0);
-        ui->layerSpinBox->setMaximum(std::max(0, m_view->document()->layers() - 1));
+        ui->layerSpinBox->setMaximum(std::max<size_type>(0, m_view->document()->layers() - 1));
         ui->layerSpinBox->setEnabled(ui->layerSpinBox->maximum() != 0);
 
         ui->faceSpinBox->setValue(0);
-        ui->faceSpinBox->setMaximum(std::max(0, m_view->document()->faces() - 1));
+        ui->faceSpinBox->setMaximum(std::max<size_type>(0, m_view->document()->faces() - 1));
         ui->faceSpinBox->setEnabled(ui->faceSpinBox->maximum() != 0);
     };
     connect(m_view->document().get(), &TextureDocument::textureChanged, this, onTextureChanged);

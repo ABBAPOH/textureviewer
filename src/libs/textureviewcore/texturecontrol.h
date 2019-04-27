@@ -3,6 +3,8 @@
 
 #include "textureviewcore_global.h"
 
+#include <TextureLib/Texture>
+
 #include <QtCore/QObject>
 
 #include <ObserverPointer>
@@ -26,11 +28,12 @@ class TEXTUREVIEWCORE_EXPORT TextureControl : public QObject
     Q_PROPERTY(int width READ width NOTIFY widthChanged)
     Q_PROPERTY(int height READ height NOTIFY heightChanged)
 
-    Q_PROPERTY(int level READ level WRITE setLevel NOTIFY levelChanged)
-    Q_PROPERTY(int layer READ layer WRITE setLayer NOTIFY layerChanged)
-    Q_PROPERTY(int face READ face WRITE setFace NOTIFY faceChanged)
+    Q_PROPERTY(size_type level READ level WRITE setLevel NOTIFY levelChanged)
+    Q_PROPERTY(size_type layer READ layer WRITE setLayer NOTIFY layerChanged)
+    Q_PROPERTY(size_type face READ face WRITE setFace NOTIFY faceChanged)
 
 public:
+    using size_type = Texture::size_type;
     using TextureDocumentPointer = ObserverPointer<TextureDocument>;
 
     explicit TextureControl(QObject *parent = nullptr);
@@ -43,14 +46,14 @@ public:
     int height() const;
     QSize size() const;
 
-    int level() const;
-    void setLevel(int level);
+    size_type level() const;
+    void setLevel(size_type level);
 
-    int layer() const;
-    void setLayer(int layer);
+    size_type layer() const;
+    void setLayer(size_type layer);
 
-    int face() const;
-    void setFace(int face);
+    size_type face() const;
+    void setFace(size_type face);
 
     void resizeEvent(QResizeEvent *event);
     void mousePressEvent(QMouseEvent *event);
@@ -81,9 +84,9 @@ signals:
     void heightChanged(int height);
 
     void documentChanged(TextureDocumentPointer document);
-    void levelChanged(int level);
-    void layerChanged(int layer);
-    void faceChanged(int face);
+    void levelChanged(size_type level);
+    void layerChanged(size_type layer);
+    void faceChanged(size_type face);
 
 private:
     QScopedPointer<TextureControlPrivate> d_ptr;

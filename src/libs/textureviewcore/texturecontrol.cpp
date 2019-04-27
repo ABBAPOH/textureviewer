@@ -18,6 +18,7 @@ class TextureControlPrivate
     Q_DECLARE_PUBLIC(TextureControl)
 
 public:
+    using size_type = TextureControl::size_type;
     using TextureDocumentPointer = TextureControl::TextureDocumentPointer;
     using ItemPointer = TextureDocument::ItemPointer;
 
@@ -47,9 +48,9 @@ public:
 
     TextureDocumentPointer document;
     QSize size;
-    int face {0};
-    int layer {0};
-    int level {0};
+    size_type face {0};
+    size_type layer {0};
+    size_type level {0};
     bool textureDirty {false};
     OpenGLData glData;
 
@@ -220,13 +221,13 @@ QSize TextureControl::size() const
     return d->size;
 }
 
-int TextureControl::level() const
+auto TextureControl::level() const -> size_type
 {
     Q_D(const TextureControl);
     return d->level;
 }
 
-void TextureControl::setLevel(int level)
+void TextureControl::setLevel(size_type level)
 {
     Q_D(TextureControl);
     if (d->level == level)
@@ -237,13 +238,13 @@ void TextureControl::setLevel(int level)
     update();
 }
 
-int TextureControl::layer() const
+auto TextureControl::layer() const -> size_type
 {
     Q_D(const TextureControl);
     return d->layer;
 }
 
-void TextureControl::setLayer(int layer)
+void TextureControl::setLayer(size_type layer)
 {
     Q_D(TextureControl);
     if (d->layer == layer)
@@ -254,13 +255,13 @@ void TextureControl::setLayer(int layer)
     update();
 }
 
-int TextureControl::face() const
+auto TextureControl::face() const -> size_type
 {
     Q_D(const TextureControl);
     return d->face;
 }
 
-void TextureControl::setFace(int face)
+void TextureControl::setFace(size_type face)
 {
     Q_D(TextureControl);
     if (d->face == face)
@@ -399,13 +400,13 @@ void TextureControl::nextLevel()
     Q_D(TextureControl);
     if (!d->document->levels())
         return;
-    setLevel(std::min(d->level + 1, d->document->levels() - 1));
+    setLevel(std::min<size_type>(d->level + 1, d->document->levels() - 1));
 }
 
 void TextureControl::prevLevel()
 {
     Q_D(TextureControl);
-    setLevel(std::max(0, d->level - 1));
+    setLevel(std::max<size_type>(0, d->level - 1));
 }
 
 void TextureControl::nextLayer()
@@ -413,13 +414,13 @@ void TextureControl::nextLayer()
     Q_D(TextureControl);
     if (!d->document->layers())
         return;
-    setLayer(std::min(d->layer + 1, d->document->layers() - 1));
+    setLayer(std::min<size_type>(d->layer + 1, d->document->layers() - 1));
 }
 
 void TextureControl::prevLayer()
 {
     Q_D(TextureControl);
-    setLayer(std::max(0, d->layer - 1));
+    setLayer(std::max<size_type>(0, d->layer - 1));
 }
 
 void TextureControl::nextFace()
@@ -427,13 +428,13 @@ void TextureControl::nextFace()
     Q_D(TextureControl);
     if (!d->document->faces())
         return;
-    setFace(std::min(d->face + 1, d->document->faces() - 1));
+    setFace(std::min<size_type>(d->face + 1, d->document->faces() - 1));
 }
 
 void TextureControl::prevFace()
 {
     Q_D(TextureControl);
-    setFace(std::max(0, d->face - 1));
+    setFace(std::max<size_type>(0, d->face - 1));
 }
 
 } // namespace TextureViewer

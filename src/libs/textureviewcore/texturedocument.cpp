@@ -1,6 +1,8 @@
 #include "texturedocument.h"
 
 #include <TextureLib/TextureIO>
+#include <QLabel>
+#include <QPixmap>
 
 #include <QtConcurrent/QtConcurrentRun>
 
@@ -116,6 +118,11 @@ void TextureDocument::setTexture(const Texture &texture)
                 Q_ASSERT(imageData.size() == image.imageData({}).size());
                 memcpy(image.imageData({}).data(), imageData.data(), imageData.size());
                 item->texture = image;
+                if (level == 0 && face == 0 && layer == 0) {
+                    auto l = new QLabel();
+                    l->setPixmap(QPixmap::fromImage(image.toImage()));
+                    l->show();
+                }
 //                item->thumbnail = slice.toImage();
                 d->items.push_back(std::move(item));
             }
@@ -143,37 +150,37 @@ Texture::Alignment TextureDocument::alignment() const
     return d->texture.alignment();
 }
 
-int TextureDocument::width() const
+auto TextureDocument::width() const -> size_type
 {
     Q_D(const TextureDocument);
     return !d->texture.isNull() ? d->texture.width() : 0;
 }
 
-int TextureDocument::heigth() const
+auto TextureDocument::heigth() const -> size_type
 {
     Q_D(const TextureDocument);
     return !d->texture.isNull() ? d->texture.height() : 0;
 }
 
-int TextureDocument::depth() const
+auto TextureDocument::depth() const -> size_type
 {
     Q_D(const TextureDocument);
     return !d->texture.isNull() ? d->texture.depth() : 0;
 }
 
-int TextureDocument::levels() const
+auto TextureDocument::levels() const -> size_type
 {
     Q_D(const TextureDocument);
     return !d->texture.isNull() ? d->texture.levels() : 0;
 }
 
-int TextureDocument::layers() const
+auto TextureDocument::layers() const -> size_type
 {
     Q_D(const TextureDocument);
     return !d->texture.isNull() ? d->texture.layers() : 0;
 }
 
-int TextureDocument::faces() const
+auto TextureDocument::faces() const -> size_type
 {
     Q_D(const TextureDocument);
     return !d->texture.isNull() ? d->texture.faces() : 0;

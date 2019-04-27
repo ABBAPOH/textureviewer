@@ -21,18 +21,19 @@ class TEXTUREVIEWCORE_EXPORT TextureDocument : public AbstractDocument
     Q_DECLARE_PRIVATE(TextureDocument)
     Q_PROPERTY(Texture texture READ texture WRITE setTexture NOTIFY textureChanged)
 
-    Q_PROPERTY(int width READ width NOTIFY widthChanged)
-    Q_PROPERTY(int heigth READ heigth NOTIFY heigthChanged)
-    Q_PROPERTY(int depth READ depth NOTIFY depthChanged)
+    Q_PROPERTY(size_type width READ width NOTIFY widthChanged)
+    Q_PROPERTY(size_type heigth READ heigth NOTIFY heigthChanged)
+    Q_PROPERTY(size_type depth READ depth NOTIFY depthChanged)
 
-    Q_PROPERTY(int levels READ levels NOTIFY levelsChanged)
-    Q_PROPERTY(int layers READ layers NOTIFY layersChanged)
-    Q_PROPERTY(int faces READ faces NOTIFY facesChanged)
+    Q_PROPERTY(size_type levels READ levels NOTIFY levelsChanged)
+    Q_PROPERTY(size_type layers READ layers NOTIFY layersChanged)
+    Q_PROPERTY(size_type faces READ faces NOTIFY facesChanged)
 
     Q_PROPERTY(TextureFormat format READ format NOTIFY formatChanged)
     Q_PROPERTY(Texture::Alignment alignment READ alignment NOTIFY alignmentChanged)
 
 public:
+    using size_type = Texture::size_type;
     class Item;
     using ItemPointer = ObserverPointer<Item>;
 
@@ -50,18 +51,18 @@ public:
     Texture::Alignment alignment() const;
     Q_SIGNAL void alignmentChanged(Texture::Alignment);
 
-    int width() const;
-    Q_SIGNAL void widthChanged(int width);
+    size_type width() const;
+    Q_SIGNAL void widthChanged(size_type width);
 
-    int heigth() const;
-    Q_SIGNAL void heigthChanged(int heigth);
+    size_type heigth() const;
+    Q_SIGNAL void heigthChanged(size_type heigth);
 
-    int depth() const;
-    Q_SIGNAL void depthChanged(int depth);
+    size_type depth() const;
+    Q_SIGNAL void depthChanged(size_type depth);
 
-    int levels() const;
-    int layers() const;
-    int faces() const;
+    size_type levels() const;
+    size_type layers() const;
+    size_type faces() const;
 
     ItemPointer item(int face, int level, int layer) const;
 
