@@ -1181,16 +1181,16 @@ Texture Texture::copy() const
 QImage Texture::toImage() const
 {
     if (!d)
-        return QImage();
+        return {};
 
-    if (d->faces > 1|| d->depth > 1) {
-        qCWarning(texture) << "Cubemaps and volumemaps are not supported";
-        return QImage();
+    if (d->faces > 1 || d->depth > 1) {
+        qCWarning(texture) << "Can't convert to QImage: cubemaps and volumemaps are not supported";
+        return {};
     }
 
     if (isCompressed()) {
-        qCWarning(texture) << "Compressed images are not supported";
-        return QImage();
+        qCWarning(texture) << "Can't convert to QImage: compressed images are not supported";
+        return {};
     }
 
     Texture copy;
@@ -1234,22 +1234,34 @@ QImage Texture::toImage() const
     }
 
     if (imageFormat == QImage::Format_Invalid) {
-        qCWarning(texture) << "unsupported texture format" << int(d->format);
-        return QImage();
+        qCWarning(texture)
+                << "Can't convert to QImage: unsupported texture format" << int(d->format);
+        return {};
     }
 
-    QImage result(d->width, d->height, imageFormat);
+    if (d->width > std::numeric_limits<int>::max()) {
+        qCWarning(texture)
+                << "Can't convert to QImage: width is bigger than max_int: " << int(d->width);
+        return {};
+    }
+    if (d->height > std::numeric_limits<int>::max()) {
+        qCWarning(texture)
+                << "Can't convert to QImage: height is bigger than max_int: " << int(d->height);
+        return {};
+    }
+
+    QImage result(int(d->width), int(d->height), imageFormat);
     if (result.isNull()) {
-        qCWarning(texture) << "can't create image";
-        return QImage();
+        qCWarning(texture) << "Can't convert to QImage: can't create image";
+        return {};
     }
 
     const auto bytesPerLine = copy.bytesPerLine();
     if (result.bytesPerLine() < bytesPerLine) {
-        qCWarning(texture) << Q_FUNC_INFO
+        qCWarning(texture) << "Can't convert to QImage:"
                            << "image line size is less than texture line size"
                            << result.bytesPerLine() << "<" << bytesPerLine;
-        return QImage();
+        return {};
     }
 
     const auto data = copy.imageData({});
