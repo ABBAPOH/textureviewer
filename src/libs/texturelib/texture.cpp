@@ -318,13 +318,8 @@ qsizetype TextureData::offset(size_type side, size_type level, size_type layer) 
 */
 
 /*!
-  \fn Texture::Size::Size(int width) noexcept
-  \brief Constructs a Size instance with the given \a width.
-*/
-
-/*!
-  \fn Texture::Size::Size(int width, int height) noexcept
-  \brief Constructs a Size instance with the given \a width and \a height.
+  \fn Texture::Size::Size(QSize size) noexcept
+  \brief Constructs a Size instance with the given QSize \a size object.
 */
 
 /*!
@@ -344,48 +339,6 @@ qsizetype TextureData::offset(size_type side, size_type level, size_type layer) 
   \brief This property holds if the Size instance is valid.
 
   A valid instance has width, height and depth greater than zero.
-*/
-
-/*!
-  \fn bool Texture::Size::width() const noexcept
-  \brief Returns the width.
-
-  \sa Texture::Size::setWidth() Texture::Size::height, Texture::Size::depth
-*/
-
-/*!
-  \fn void Texture::Size::setWidth(size_type w) noexcept
-  \brief Sets the width.
-
-  \sa Texture::Size::width() Texture::Size::setHeight, Texture::Size::setDepth
-*/
-
-/*!
-  \fn bool Texture::Size::height() const noexcept
-  \brief Returns the height.
-
-  \sa Texture::Size::width, Texture::Size::depth
-*/
-
-/*!
-  \fn void Texture::Size::setHeight(size_type h) noexcept
-  \brief Sets the height.
-
-  \sa Texture::Size::height() Texture::Size::setWidth, Texture::Size::setDepth
-*/
-
-/*!
-  \fn bool Texture::Size::depth() const noexcept
-  \brief Returns the height.
-
-  \sa Texture::Size::width, Texture::Size::heigth
-*/
-
-/*!
-  \fn void Texture::Size::setDepth(size_type d) noexcept
-  \brief Sets the depth.
-
-  \sa Texture::Size::depth() Texture::Size::setWidth, Texture::Size::setHeight
 */
 
 /*!

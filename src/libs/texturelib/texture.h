@@ -50,13 +50,9 @@ public:
         using size_type = Texture::size_type;
 
         constexpr Size() noexcept = default;
-        constexpr Size(size_type width) noexcept
-            : width(width), height(1), depth(1) {}
-        constexpr Size(size_type width, size_type height) noexcept
-            : width(width), height(height), depth(1) {}
         constexpr Size(QSize size) noexcept
             : width(size_type(size.width())), height(size_type(size.height())), depth(1) {}
-        constexpr Size(size_type width, size_type height, size_type depth) noexcept
+        constexpr Size(size_type width, size_type height = 1, size_type depth = 1) noexcept
             : width(width), height(height), depth(depth) {}
 
         constexpr bool isNull() const noexcept { return !width && !height && !depth; }
