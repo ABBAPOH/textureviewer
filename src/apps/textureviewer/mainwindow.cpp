@@ -22,14 +22,11 @@ namespace TextureViewer {
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    m_thumbModel(std::make_unique<ThumbnailsModel>())
+    ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setCentralWidget(m_view = new TextureView);
 
-    m_thumbModel->setDocument(m_view->document());
-    ui->leftPaneView->setModel(m_thumbModel.get());
     ui->leftPaneDockWidget->setTitleBarWidget(new QWidget);
 
     initConnections();
@@ -72,18 +69,32 @@ void MainWindow::initConnections()
     connect(ui->actionTextureFormats, &QAction::triggered,
             this, &MainWindow::showTextureFormatsDialog);
 
-    auto onCurrentChanged = [this](QModelIndex current, QModelIndex)
+    auto onTextureChanged = [this]()
     {
-        const auto pos = m_thumbModel->position(current);
-        if (pos.layer == -1 || pos.level == -1) // not valid
-            return;
-        m_view->control()->setLevel(pos.level);
-        m_view->control()->setLayer(pos.layer);
-        m_view->control()->setFace(pos.face);
+        ui->levelSpinBox->setValue(0);
+        ui->levelSpinBox->setMaximum(std::max(0, m_view->document()->levels() - 1));
+        ui->levelSpinBox->setEnabled(ui->levelSpinBox->maximum() != 0);
+
+        ui->layerSpinBox->setValue(0);
+        ui->layerSpinBox->setMaximum(std::max(0, m_view->document()->layers() - 1));
+        ui->layerSpinBox->setEnabled(ui->layerSpinBox->maximum() != 0);
+
+        ui->faceSpinBox->setValue(0);
+        ui->faceSpinBox->setMaximum(std::max(0, m_view->document()->faces() - 1));
+        ui->faceSpinBox->setEnabled(ui->faceSpinBox->maximum() != 0);
+    };
+    connect(m_view->document().get(), &TextureDocument::textureChanged, this, onTextureChanged);
+
+    auto onCurrentChanged = [this]()
+    {
+        m_view->control()->setLevel(ui->levelSpinBox->value());
+        m_view->control()->setLayer(ui->layerSpinBox->value());
+        m_view->control()->setFace(ui->faceSpinBox->value());
     };
 
-    connect(ui->leftPaneView->selectionModel(), &QItemSelectionModel::currentChanged,
-            this, onCurrentChanged);
+    connect(ui->levelSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, onCurrentChanged);
+    connect(ui->layerSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, onCurrentChanged);
+    connect(ui->faceSpinBox, qOverload<int>(&QSpinBox::valueChanged), this, onCurrentChanged);
 }
 
 } // namespace TextureViewer

@@ -38,7 +38,6 @@ private:
     std::unique_ptr<Ui::MainWindow> ui;
 
     TextureView *m_view {nullptr};
-    std::unique_ptr<ThumbnailsModel> m_thumbModel;
 };
 
 } // namespace TextureViewer
