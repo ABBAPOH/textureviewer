@@ -118,11 +118,6 @@ void TextureDocument::setTexture(const Texture &texture)
                 Q_ASSERT(imageData.size() == image.imageData({}).size());
                 memcpy(image.imageData({}).data(), imageData.data(), imageData.size());
                 item->texture = image;
-                if (level == 0 && face == 0 && layer == 0) {
-                    auto l = new QLabel();
-                    l->setPixmap(QPixmap::fromImage(image.toImage()));
-                    l->show();
-                }
 //                item->thumbnail = slice.toImage();
                 d->items.push_back(std::move(item));
             }
