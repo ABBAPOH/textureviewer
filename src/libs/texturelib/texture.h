@@ -21,6 +21,9 @@ class TEXTURELIB_EXPORT Texture
 {
     Q_GADGET
 public:
+    using size_type = qsizetype;
+    using usize_type = QIntegerForSizeof<size_type>::Unsigned;
+
     enum class Side {
         PositiveX = 0,
         NegativeX = 1,
@@ -44,41 +47,47 @@ public:
     struct Size
     {
     public:
+        using size_type = Texture::size_type;
+
         constexpr Size() noexcept = default;
-        constexpr Size(int width) noexcept
+        constexpr Size(size_type width) noexcept
             : width(width), height(1), depth(1) {}
-        constexpr Size(int width, int height) noexcept
+        constexpr Size(size_type width, size_type height) noexcept
             : width(width), height(height), depth(1) {}
         constexpr Size(QSize size) noexcept
-            : width(size.width()), height(size.height()), depth(1) {}
-        constexpr Size(int width, int height, int depth) noexcept
+            : width(size_type(size.width())), height(size_type(size.height())), depth(1) {}
+        constexpr Size(size_type width, size_type height, size_type depth) noexcept
             : width(width), height(height), depth(depth) {}
 
         constexpr bool isNull() const noexcept { return !width && !height && !depth; }
         constexpr bool isValid() const noexcept { return width > 0 && height > 0 && depth > 0; }
 
-        int width {0};
-        int height {0};
-        int depth {0};
+        size_type width {0};
+        size_type height {0};
+        size_type depth {0};
     };
 
     struct Position
     {
-        int x {0};
-        int y {0};
-        int z {0};
+        using size_type = Texture::size_type;
+
+        size_type x {0};
+        size_type y {0};
+        size_type z {0};
     };
 
     class ArraySize
     {
     public:
+        using size_type = Texture::size_type;
+
         constexpr ArraySize() noexcept {}
-        constexpr ArraySize(int levels, int layers = 1) noexcept
+        constexpr ArraySize(size_type levels, size_type layers = 1) noexcept
             : m_faces(1)
             , m_levels(levels)
             , m_layers(layers)
         {}
-        constexpr ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+        constexpr ArraySize(IsCubemap isCumemap, size_type levels = 1, size_type layers = 1) noexcept
             : m_faces(isCumemap == IsCubemap::Yes ? 6 : 1)
             , m_levels(levels)
             , m_layers(layers)
@@ -87,7 +96,7 @@ public:
         constexpr bool isNull() const noexcept { return !m_faces && !m_levels && !m_layers; }
         constexpr bool isValid() const noexcept { return m_faces > 0 && m_levels > 0 && m_layers > 0; }
 
-        constexpr int faces() const noexcept { return m_faces; }
+        constexpr size_type faces() const noexcept { return m_faces; }
 
         constexpr bool isCubemap() const noexcept { return m_faces == 6; }
         constexpr void setIsCubemap(bool isCumemap) noexcept { m_faces = isCumemap ? 6 : 1; }
@@ -96,29 +105,30 @@ public:
             m_faces = isCumemap == IsCubemap::Yes ? 6 : 1;
         }
 
-        constexpr int levels() const noexcept { return m_levels; }
-        constexpr void setLevels(int levels) noexcept { m_levels = levels; }
+        constexpr size_type levels() const noexcept { return m_levels; }
+        constexpr void setLevels(size_type levels) noexcept { m_levels = levels; }
 
-        constexpr int layers() const noexcept { return m_layers; }
-        constexpr void setLayers(int layers) noexcept { m_layers = layers; }
+        constexpr size_type layers() const noexcept { return m_layers; }
+        constexpr void setLayers(size_type layers) noexcept { m_layers = layers; }
 
     private:
-        int m_faces {0};
-        int m_levels {0};
-        int m_layers {0};
+        size_type m_faces {0};
+        size_type m_levels {0};
+        size_type m_layers {0};
     };
 
     class ArrayIndex
     {
     public:
+        using size_type = Texture::size_type;
         using Side = Texture::Side;
 
-        constexpr ArrayIndex(int level = 0, int layer = 0) noexcept
+        constexpr ArrayIndex(size_type level = 0, size_type layer = 0) noexcept
             : m_level(level)
             , m_layer(layer)
         {}
-        constexpr ArrayIndex(Side side, int level = 0, int layer = 0) noexcept
-            : m_face(int(side))
+        constexpr ArrayIndex(Side side, size_type level = 0, size_type layer = 0) noexcept
+            : m_face(size_type(side))
             , m_level(level)
             , m_layer(layer)
         {}
@@ -127,20 +137,20 @@ public:
         constexpr bool isValid() const noexcept { return m_face >= 0 && m_level >= 0 && m_layer >= 0; }
 
         constexpr Side side() const noexcept { return Side(m_face); }
-        constexpr void setSide(Side side) noexcept { m_face = int(side); }
+        constexpr void setSide(Side side) noexcept { m_face = size_type(side); }
 
-        constexpr int face() const { return m_face; }
+        constexpr size_type face() const { return m_face; }
 
-        constexpr int level() const noexcept { return m_level; }
-        constexpr void setLevel(int level) noexcept { m_level = level; }
+        constexpr size_type level() const noexcept { return m_level; }
+        constexpr void setLevel(size_type level) noexcept { m_level = level; }
 
-        constexpr int layer() const noexcept { return m_layer; }
-        constexpr void setLayer(int layer) noexcept { m_layer = layer; }
+        constexpr size_type layer() const noexcept { return m_layer; }
+        constexpr void setLayer(size_type layer) noexcept { m_layer = layer; }
 
     private:
-        int m_face {0};
-        int m_level {0};
-        int m_layer {0};
+        size_type m_face {0};
+        size_type m_level {0};
+        size_type m_layer {0};
     };
 
     using Data = gsl::span<uchar>;
@@ -181,8 +191,8 @@ public:
     Texture &operator=(Texture &&other) noexcept
     { qSwap(d, other.d); return *this; }
 
-    static qsizetype calculateBytesPerLine(TextureFormat format, int width, Alignment align = Alignment::Byte);
-    static qsizetype calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align = Alignment::Byte);
+    static qsizetype calculateBytesPerLine(TextureFormat format, size_type width, Alignment align = Alignment::Byte);
+    static qsizetype calculateBytesPerSlice(TextureFormat format, size_type width, size_type height, Alignment align = Alignment::Byte);
 
     bool isNull() const;
     TextureFormat format() const;
@@ -192,22 +202,20 @@ public:
 
     bool isCompressed() const;
 
-    // ok, opengl does not support really huge textures, so int will be enough
-    // (although they use uint32 for sizes)
-    int width(int level = 0) const;
-    int height(int level = 0) const;
-    int depth(int level = 0) const;
-    Size size(int level = 0) const;
-    int faces() const;
-    int levels() const;
-    int layers() const;
+    size_type width(size_type level = 0) const;
+    size_type height(size_type level = 0) const;
+    size_type depth(size_type level = 0) const;
+    Size size(size_type level) const;
+    size_type faces() const;
+    size_type levels() const;
+    size_type layers() const;
     ArraySize arraySize() const;
 
     qsizetype bytes() const;
     qsizetype bytesPerTexel() const;
-    qsizetype bytesPerLine(int level = 0) const;
-    qsizetype bytesPerSlice(int level = 0) const;
-    qsizetype bytesPerImage(int level = 0) const;
+    qsizetype bytesPerLine(size_type level = 0) const;
+    qsizetype bytesPerSlice(size_type level = 0) const;
+    qsizetype bytesPerImage(size_type level = 0) const;
 
     Data imageData(ArrayIndex index);
     ConstData imageData(ArrayIndex index) const;
@@ -251,8 +259,8 @@ private:
     void detach();
     bool isDetached() const;
 
-    uchar *dataImpl(int side, int level, int layer);
-    const uchar *dataImpl(int side, int level, int layer) const;
+    uchar *dataImpl(size_type side, size_type level, size_type layer);
+    const uchar *dataImpl(size_type side, size_type level, size_type layer) const;
 
     TextureData *d {nullptr};
 

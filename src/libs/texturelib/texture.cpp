@@ -6,6 +6,18 @@
 
 #include <memory>
 
+#define CHECK_WIDTH(width, rv) \
+    if ((width) < 0) { \
+        qCWarning(texture) << "invalid width:" << (width); \
+        return (rv); \
+    } \
+
+#define CHECK_HEIGHT(height, rv) \
+    if ((height) < 0) { \
+        qCWarning(texture) << "invalid height:" << (height); \
+        return (rv); \
+    } \
+
 #define CHECK_SIDE(side, rv) \
     if ((side) < 0 || (side) >= d->faces) { \
         qCWarning(texture) << "was called with invalid side" << (side); \
@@ -42,7 +54,7 @@ namespace {
 
 void memoryCopy(Texture::Data dst, Texture::ConstData src)
 {
-    memcpy(dst.data(), src.data(), std::min(dst.size_bytes(), src.size_bytes()));
+    memcpy(dst.data(), src.data(), std::size_t(std::min(dst.size_bytes(), src.size_bytes())));
 }
 
 int memoryCompare(Texture::ConstData lhs, Texture::ConstData rhs)
@@ -51,19 +63,19 @@ int memoryCompare(Texture::ConstData lhs, Texture::ConstData rhs)
         return lhs.size_bytes() < rhs.size_bytes() ? -1 : 1;
     }
 
-    return memcmp(lhs.data(), rhs.data(), lhs.size_bytes());
+    return memcmp(lhs.data(), rhs.data(), std::size_t(lhs.size_bytes()));
 }
 
 } // namespace
 
 TextureData *TextureData::create(
         TextureFormat format,
-        int width,
-        int height,
-        int depth,
+        size_type width,
+        size_type height,
+        size_type depth,
         bool isCubemap,
-        int levels,
-        int layers,
+        size_type levels,
+        size_type layers,
         Texture::Alignment align,
         Texture::Data data,
         Texture::DataDeleter deleter)
@@ -78,7 +90,7 @@ TextureData *TextureData::create(
     if (isCubemap) {
         if (width != height || depth != 1) {
             qCWarning(texture)
-                    << "Width should be equal to height and depth should be 1 for a cuve texture";
+                    << "Width should be equal to height and depth should be 1 for a cube texture";
             return nullptr;
         }
     } else {
@@ -88,23 +100,24 @@ TextureData *TextureData::create(
         }
     }
 
-    const auto uwidth = uint(width);
-    const auto uheight = uint(height);
-    const auto udepth = uint(depth);
-    const auto ufaces = isCubemap ? uint(6) : uint(1);
-    const auto ulayers = uint(layers);
+    const auto uwidth = usize_type(width);
+    const auto uheight = usize_type(height);
+    const auto udepth = usize_type(depth);
+    const auto ufaces = isCubemap ? usize_type(6) : usize_type(1);
+    const auto ulayers = usize_type(layers);
+    const auto ulevels = usize_type(levels);
 
     qsizetype totalBytes = 0;
     std::vector<LevelInfo> levelInfos;
-    levelInfos.reserve(levels);
+    levelInfos.reserve(ulevels);
 
     const auto texelFormat = TextureFormatInfo::formatInfo(format);
 
-    for (int level = 0; level < levels; ++level) {
-        const auto ulevel = uint(level);
-        const auto w = std::max<uint>(uwidth >> ulevel, 1);
-        const auto h = std::max<uint>(uheight >> ulevel, 1);
-        const auto d = std::max<uint>(udepth >> ulevel, 1);
+    for (size_type level = 0; level < levels; ++level) {
+        const auto ulevel = usize_type(level);
+        const auto w = std::max<usize_type>(uwidth >> ulevel, 1);
+        const auto h = std::max<usize_type>(uheight >> ulevel, 1);
+        const auto d = std::max<usize_type>(udepth >> ulevel, 1);
 
         // calculateBytesPerLine already checks overflow
         const auto bytesPerLine = TextureData::calculateBytesPerLine(texelFormat, w, align); // bytes per scanline
@@ -132,7 +145,11 @@ TextureData *TextureData::create(
             return nullptr;
         }
 
-        levelInfos.push_back({totalBytes, bytesPerLine, bytesPerSlice, bytesPerLevel});
+        levelInfos.push_back({
+                totalBytes,
+                qsizetype(bytesPerLine),
+                qsizetype(bytesPerSlice),
+                qsizetype(bytesPerLevel)});
 
         totalBytes += bytesPerLevel;
 
@@ -148,7 +165,7 @@ TextureData *TextureData::create(
     result->width = width;
     result->height = height;
     result->depth = depth;
-    result->faces = int(ufaces);
+    result->faces = size_type(ufaces);
     result->levels = levels;
     result->layers = layers;
     result->format = format;
@@ -178,35 +195,37 @@ TextureData *TextureData::create(
     return result.release();
 }
 
-qsizetype TextureData::calculateBytesPerLine(
-        const TextureFormatInfo &format, quint32 width, Texture::Alignment align)
+// return unisgned here to avoid unnecessary casts
+std::size_t TextureData::calculateBytesPerLine(
+        const TextureFormatInfo &format, usize_type uwidth, Texture::Alignment align)
 {
-    const auto bytesPerTexel = qsizetype(format.bytesPerTexel());
-    const auto blockSize = qsizetype(format.blockSize());
+    const auto bytesPerTexel = std::size_t(format.bytesPerTexel());
+    const auto blockSize = std::size_t(format.blockSize());
 
     if (bytesPerTexel) {
-        if (bytesPerTexel && std::numeric_limits<qsizetype>::max() / bytesPerTexel / width < 1) {
+        if (bytesPerTexel && std::numeric_limits<qsizetype>::max() / bytesPerTexel / uwidth < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
         if (align == Texture::Alignment::Byte)
-            return width * bytesPerTexel;
+            return uwidth * bytesPerTexel;
         if (align == Texture::Alignment::Word)
-            return ((width * bytesPerTexel + 3u) >> 2u) << 2u;
+            return ((uwidth * bytesPerTexel + 3u) >> 2u) << 2u;
     } else if (blockSize) { // compressed format
-        if (std::numeric_limits<qsizetype>::max() / blockSize / ((width + 3) / 4) < 1) {
+        if (std::numeric_limits<qsizetype>::max() / blockSize / ((uwidth + 3) / 4) < 1) {
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
-        return std::max(1u, (width + 3) / 4) * blockSize;
+        return std::max(usize_type(1), (uwidth + 3) / 4) * blockSize;
     }
 
     // Invalid format
     return 0;
 }
 
-qsizetype TextureData::calculateBytesPerSlice(
-        const TextureFormatInfo &format, quint32 width, quint32 height, Texture::Alignment align)
+// return unisgned here to avoid unnecessary casts
+std::size_t TextureData::calculateBytesPerSlice(
+        const TextureFormatInfo &format, usize_type width, usize_type height, Texture::Alignment align)
 {
     const auto bytesPerLine = calculateBytesPerLine(format, width, align);
     if (!bytesPerLine) // overflow happened
@@ -225,16 +244,16 @@ qsizetype TextureData::calculateBytesPerSlice(
             qCWarning(texture) << "potential integer overflow";
             return 0;
         }
-        return bytesPerLine * std::max(1u, (height + 3) / 4);
+        return bytesPerLine * std::max(usize_type(1u), (height + 3) / 4);
     }
 
     // Invalid format
     return 0;
 }
 
-qsizetype TextureData::offset(int side, int level, int layer) const
+qsizetype TextureData::offset(size_type side, size_type level, size_type layer) const
 {
-    return levelInfos[level].offset + bytesPerImage(level) * (faces * layer + side);
+    return levelInfos[usize_type(level)].offset + bytesPerImage(level) * (faces * layer + side);
 }
 
 /*!
@@ -335,7 +354,7 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn void Texture::Size::setWidth(int w) noexcept
+  \fn void Texture::Size::setWidth(size_type w) noexcept
   \brief Sets the width.
 
   \sa Texture::Size::width() Texture::Size::setHeight, Texture::Size::setDepth
@@ -349,7 +368,7 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn void Texture::Size::setHeight(int h) noexcept
+  \fn void Texture::Size::setHeight(size_type h) noexcept
   \brief Sets the height.
 
   \sa Texture::Size::height() Texture::Size::setWidth, Texture::Size::setDepth
@@ -363,7 +382,7 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn void Texture::Size::setDepth(int d) noexcept
+  \fn void Texture::Size::setDepth(size_type d) noexcept
   \brief Sets the depth.
 
   \sa Texture::Size::depth() Texture::Size::setWidth, Texture::Size::setHeight
@@ -388,12 +407,12 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn Texture::ArraySize::ArraySize(int levels, int layers = 1) noexcept
+  \fn Texture::ArraySize::ArraySize(size_type levels, size_type layers = 1) noexcept
   \brief Constructs an ArraySize instance with the given \a levels and \a layers.
 */
 
 /*!
-  \fn Texture::ArraySize::ArraySize(IsCubemap isCumemap, int levels = 1, int layers = 1) noexcept
+  \fn Texture::ArraySize::ArraySize(IsCubemap isCumemap, size_type levels = 1, size_type layers = 1) noexcept
   \brief Constructs an ArraySize instance with the given \a isCumemap, \a levels and \a layers.
 */
 
@@ -422,7 +441,7 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn void Texture::ArraySize::setLevels(int levels) noexcept
+  \fn void Texture::ArraySize::setLevels(size_type levels) noexcept
   \brief Sets the levels count.
 */
 
@@ -432,7 +451,7 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn void Texture::ArraySize::setLayers(int layers) noexcept
+  \fn void Texture::ArraySize::setLayers(size_type layers) noexcept
   \brief Sets the layers count.
 */
 
@@ -446,12 +465,12 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn Texture::ArrayIndex::ArrayIndex(int level = 0, int layer = 0) noexcept
+  \fn Texture::ArrayIndex::ArrayIndex(size_type level = 0, size_type layer = 0) noexcept
   \brief Constructs an ArrayIndex instance with the given \a level and \a layer.
 */
 
 /*!
-  \fn Texture::ArrayIndex::ArrayIndex(Texture::Side side, int level = 0, int layer = 0) noexcept
+  \fn Texture::ArrayIndex::ArrayIndex(Texture::Side side, size_type level = 0, size_type layer = 0) noexcept
   \brief Constructs an ArrayIndex instance with the given \a side, \a level and \a layer.
 
   Passing \a side that is out of Texture::Side enum results to undefined behavior.
@@ -482,27 +501,27 @@ qsizetype TextureData::offset(int side, int level, int layer) const
 */
 
 /*!
-  \fn int Texture::ArrayIndex::face() const noexcept
+  \fn size_type Texture::ArrayIndex::face() const noexcept
   \brief Returns the face.
 */
 
 /*!
-  \fn int Texture::ArrayIndex::level() const noexcept
+  \fn size_type Texture::ArrayIndex::level() const noexcept
   \brief Returns the level.
 */
 
 /*!
-  \fn void Texture::ArrayIndex::setLevel(int level) noexcept
+  \fn void Texture::ArrayIndex::setLevel(size_type level) noexcept
   \brief Sets the level.
 */
 
 /*!
-  \fn int Texture::ArrayIndex::layer() const noexcept
+  \fn size_type Texture::ArrayIndex::layer() const noexcept
   \brief Returns the layer.
 */
 
 /*!
-  \fn void Texture::ArrayIndex::setLayer(int layer) noexcept
+  \fn void Texture::ArrayIndex::setLayer(size_type layer) noexcept
   \brief Sets the layer.
 */
 
@@ -634,7 +653,8 @@ Texture::Texture(const QImage& image)
     }
 
     const auto data = result.imageData({});
-    for (int y = 0; y < result.height(); ++y) {
+    // QImage uses int, so it's fine to use it here
+    for (int y = 0; y < copy.height(); ++y) {
         const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy(line, {copy.scanLine(y), copy.bytesPerLine()});
     }
@@ -764,19 +784,23 @@ Texture &Texture::operator=(const Texture &other)
 /*!
   \brief Calculates an amount of bytes required for the line of the \a given format, \a width and \a align.
 */
-qsizetype Texture::calculateBytesPerLine(TextureFormat format, int width, Alignment align)
+qsizetype Texture::calculateBytesPerLine(TextureFormat format, size_type width, Alignment align)
 {
-    return TextureData::calculateBytesPerLine(
-                TextureFormatInfo::formatInfo(format), quint32(width), align);
+    CHECK_WIDTH(width, 0);
+    return qsizetype(TextureData::calculateBytesPerLine(
+                TextureFormatInfo::formatInfo(format), usize_type(width), align));
 }
 
 /*!
   \brief Calculates an amount of bytes required for the slice of the given \a format, \a width and \a align.
 */
-qsizetype Texture::calculateBytesPerSlice(TextureFormat format, int width, int height, Alignment align)
+qsizetype Texture::calculateBytesPerSlice(
+        TextureFormat format, size_type width, size_type height, Alignment align)
 {
-    return TextureData::calculateBytesPerSlice(
-                TextureFormatInfo::formatInfo(format), quint32(width), quint32(height), align);
+    CHECK_WIDTH(width, 0);
+    CHECK_HEIGHT(height, 0);
+    return qsizetype(TextureData::calculateBytesPerSlice(
+                TextureFormatInfo::formatInfo(format), quint32(width), quint32(height), align));
 }
 
 /*!
@@ -824,7 +848,7 @@ bool Texture::isCompressed() const
 /*!
   \brief Returns the width of the mipmap at the given \a level.
 */
-int Texture::width(int level) const
+auto Texture::width(size_type level) const -> size_type
 {
     if (!d)
         return 0;
@@ -840,7 +864,7 @@ int Texture::width(int level) const
 /*!
   \brief Returns the height of the mipmap at the given \a level.
 */
-int Texture::height(int level) const
+auto Texture::height(size_type level) const -> size_type
 {
     if (!d)
         return 0;
@@ -856,7 +880,7 @@ int Texture::height(int level) const
 /*!
   \brief Returns the depth of the mipmap at the given \a level.
 */
-int Texture::depth(int level) const
+auto Texture::depth(size_type level) const -> size_type
 {
     if (!d)
         return 0;
@@ -873,7 +897,7 @@ int Texture::depth(int level) const
   \brief Returns the width, height and depth of the mipmap at the given \a level packed in a
   Texture::Size object.
 */
-Texture::Size Texture::size(int level) const
+Texture::Size Texture::size(size_type level) const
 {
     if (!d)
         return {};
@@ -889,7 +913,7 @@ Texture::Size Texture::size(int level) const
 /*!
   \brief Returns the faces count.
 */
-int Texture::faces() const
+auto Texture::faces() const -> size_type
 {
     return d ? d->faces : 0;
 }
@@ -897,7 +921,7 @@ int Texture::faces() const
 /*!
   \brief Returns the levels count.
 */
-int Texture::levels() const
+auto Texture::levels() const -> size_type
 {
     return d ? d->levels : 0;
 }
@@ -905,7 +929,7 @@ int Texture::levels() const
 /*!
   \brief Returns the layers count.
 */
-int Texture::layers() const
+auto Texture::layers() const -> size_type
 {
     return d ? d->layers : 0;
 }
@@ -937,7 +961,7 @@ qsizetype Texture::bytesPerTexel() const
 /*!
   \brief Returns the amount of bytes per line of the mipmap at the given \a level.
 */
-qsizetype Texture::bytesPerLine(int level) const
+qsizetype Texture::bytesPerLine(size_type level) const
 {
     if (!d)
         return 0;
@@ -950,7 +974,7 @@ qsizetype Texture::bytesPerLine(int level) const
 /*!
   \brief Returns the amount of bytes per slice of the mipmap at the given \a level.
 */
-qsizetype Texture::bytesPerSlice(int level) const
+qsizetype Texture::bytesPerSlice(size_type level) const
 {
     if (!d)
         return 0;
@@ -963,7 +987,7 @@ qsizetype Texture::bytesPerSlice(int level) const
 /*!
   \brief Returns the amount of bytes used by the whole mipmap at the given \a level.
 */
-qsizetype Texture::bytesPerImage(int level) const
+qsizetype Texture::bytesPerImage(size_type level) const
 {
     if (!d)
         return 0;
@@ -1136,11 +1160,11 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
     const auto srcBytesPerTexel = this->bytesPerTexel();
     const auto dstBytesPerTexel = result.bytesPerTexel();
 
-    const auto convertLine = [&](int width, ConstData srcLine, Data dstLine)
+    const auto convertLine = [&](size_type width, ConstData srcLine, Data dstLine)
     {
         if (format != d->format) {
             Q_ASSERT(srcBytesPerTexel && dstBytesPerTexel);
-            for (int x = 0; x < width; ++x) {
+            for (size_type x = 0; x < width; ++x) {
                 const auto src = srcLine.subspan(srcBytesPerTexel * x, srcBytesPerTexel);
                 const auto dst = dstLine.subspan(dstBytesPerTexel * x, dstBytesPerTexel);
                 writer(dst, reader(src));
@@ -1150,20 +1174,20 @@ Texture Texture::convert(TextureFormat format, Texture::Alignment align) const
         }
     };
 
-    for (int level = 0; level < d->levels; ++level) {
+    for (size_type level = 0; level < d->levels; ++level) {
         const auto srcBytesPerSlice = d->bytesPerSlice(level);
         const auto dstBytesPerSlice = result.d->bytesPerSlice(level);
         const auto srcBytesPerLine = d->bytesPerLine(level);
         const auto dstBytesPerLine = result.d->bytesPerLine(level);
-        for (int layer = 0; layer < d->layers; ++layer) {
-            for (int face = 0; face < d->faces; ++face) {
+        for (size_type layer = 0; layer < d->layers; ++layer) {
+            for (size_type face = 0; face < d->faces; ++face) {
                 const auto srcData = imageData({Side(face), level, layer});
                 const auto dstData = result.imageData({Side(face), level, layer});
                 const auto width = d->levelWidth(level);
                 const auto height = d->levelHeight(level);
                 const auto depth = d->levelDepth(level);
-                for (int z = 0; z < depth; ++z) {
-                    for (int y = 0; y < height; ++y) {
+                for (size_type z = 0; z < depth; ++z) {
+                    for (size_type y = 0; y < height; ++y) {
                         const auto srcLine = srcData.subspan(
                                     srcBytesPerSlice * z + srcBytesPerLine * y, srcBytesPerLine);
                         const auto dstLine = dstData.subspan(
@@ -1276,7 +1300,7 @@ QImage Texture::toImage() const
     }
 
     const auto data = copy.imageData({});
-    for (int y = 0; y < d->height; ++y) {
+    for (size_type y = 0; y < d->height; ++y) {
         const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy({result.scanLine(y), result.bytesPerLine()}, line);
     }
@@ -1325,7 +1349,7 @@ bool Texture::isDetached() const
     return d && d->ref.load() == 1;
 }
 
-uchar *Texture::dataImpl(int side, int level, int layer)
+uchar *Texture::dataImpl(size_type side, size_type level, size_type layer)
 {
     if (!d)
         return nullptr;
@@ -1343,7 +1367,7 @@ uchar *Texture::dataImpl(int side, int level, int layer)
     return d->data.get() + d->offset(side, level, layer);
 }
 
-const uchar* Texture::dataImpl(int side, int level, int layer) const
+const uchar* Texture::dataImpl(size_type side, size_type level, size_type layer) const
 {
     if (!d)
         return nullptr;

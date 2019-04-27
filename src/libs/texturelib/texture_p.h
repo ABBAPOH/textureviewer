@@ -9,6 +9,9 @@
 class TextureData
 {
 public:
+    using size_type = Texture::size_type;
+    using usize_type = Texture::usize_type;
+
     TextureData() = default;
     TextureData(const TextureData &other) = delete;
     TextureData(TextureData &&) = delete;
@@ -18,38 +21,39 @@ public:
     TextureData &operator=(TextureData &&) = delete;
 
     static TextureData *create(TextureFormat format,
-            int width,
-            int height,
-            int depth,
+            size_type width,
+            size_type height,
+            size_type depth,
             bool isCubemap,
-            int levels,
-            int layers,
+            size_type levels,
+            size_type layers,
             Texture::Alignment align,
             Texture::Data data = Texture::Data(),
             Texture::DataDeleter deleter = Texture::DataDeleter());
 
-    static qsizetype calculateBytesPerLine(
-            const TextureFormatInfo &format,
-            quint32 width,
+    static std::size_t calculateBytesPerLine(const TextureFormatInfo &format,
+            usize_type uwidth,
             Texture::Alignment align = Texture::Alignment::Byte);
-    static qsizetype calculateBytesPerSlice(
-            const TextureFormatInfo &format,
-            quint32 width,
-            quint32 height,
+    static std::size_t calculateBytesPerSlice(const TextureFormatInfo &format,
+            usize_type width,
+            usize_type height,
             Texture::Alignment align = Texture::Alignment::Byte);
 
-    int levelWidth(int level) const { return int(std::max(uint(width) >> uint(level), 1u)); }
-    int levelHeight(int level) const { return int(std::max(uint(height) >> uint(level), 1u)); }
-    int levelDepth(int level) const { return int(std::max(uint(depth) >> uint(level), 1u)); }
+    size_type levelWidth(size_type level) const
+    { return size_type(std::max(usize_type(width) >> usize_type(level), usize_type(1))); }
+    size_type levelHeight(size_type level) const
+    { return size_type(std::max(usize_type(height) >> usize_type(level), usize_type(1))); }
+    size_type levelDepth(size_type level) const
+    { return size_type(std::max(usize_type(depth) >> usize_type(level), usize_type(1))); }
 
-    qsizetype bytesPerLine(int level) const { return levelInfos[uint(level)].bytesPerLine; }
-    qsizetype bytesPerSlice(int level) const { return levelInfos[uint(level)].bytesPerSlice; }
-    qsizetype bytesPerImage(int level) const
+    qsizetype bytesPerLine(size_type level) const { return levelInfos[usize_type(level)].bytesPerLine; }
+    qsizetype bytesPerSlice(size_type level) const { return levelInfos[usize_type(level)].bytesPerSlice; }
+    qsizetype bytesPerImage(size_type level) const
     {
-        return levelInfos[uint(level)].bytesPerSlice * levelDepth(level);
+        return levelInfos[usize_type(level)].bytesPerSlice * levelDepth(level);
     }
-    qsizetype levelOffset(int level) const { return levelInfos[uint(level)].offset; }
-    qsizetype offset(int side, int level, int layer) const;
+    qsizetype levelOffset(size_type level) const { return levelInfos[uint(level)].offset; }
+    qsizetype offset(size_type side, size_type level, size_type layer) const;
 
     static std::function<ColorVariant(Texture::ConstData)> getFormatReader(TextureFormat format);
     static std::function<void(Texture::Data, const ColorVariant &)> getFormatWriter(TextureFormat format);
@@ -58,12 +62,12 @@ public:
     TextureFormat format {TextureFormat::Invalid};
     Texture::Alignment align {Texture::Alignment::Byte};
     bool compressed {false};
-    int width {0};
-    int height {0};
-    int depth {0};
-    int faces {0};
-    int levels {0};
-    int layers {0};
+    size_type width {0};
+    size_type height {0};
+    size_type depth {0};
+    size_type faces {0};
+    size_type levels {0};
+    size_type layers {0};
 
     struct LevelInfo
     {

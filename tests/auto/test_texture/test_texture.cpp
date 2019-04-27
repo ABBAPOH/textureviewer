@@ -250,6 +250,10 @@ void TestTexture::bytesPerLine_data()
     QTest::newRow("DXT5, w=1") << TextureFormat::Bc1Rgb_Unorm << 1 << qsizetype(8) << qsizetype(8);
     QTest::newRow("DXT5, w=5") << TextureFormat::Bc1Rgb_Unorm << 5 << qsizetype(16) << qsizetype(16);
     QTest::newRow("DXT5, w=8") << TextureFormat::Bc1Rgb_Unorm << 8 << qsizetype(16) << qsizetype(16);
+
+    QTest::newRow("RGBA_8888, w=-1") << TextureFormat::RGBA8_Unorm << -1 << qsizetype(0) << qsizetype(0);
+    QTest::newRow("RGBA_8888, w=-256") << TextureFormat::RGBA8_Unorm << -256 << qsizetype(0) << qsizetype(0);
+    QTest::newRow("L8, w=-1000") << TextureFormat::L8_Unorm << -1000 << qsizetype(0) << qsizetype(0);
 }
 
 void TestTexture::bytesPerLine()
@@ -259,9 +263,13 @@ void TestTexture::bytesPerLine()
     QFETCH(qsizetype, bpl1);
     QFETCH(qsizetype, bpl4);
 
+    if (width < 0)
+        QTest::ignoreMessage(QtWarningMsg, qPrintable(QStringLiteral("invalid width: %1").arg(width)));
     const auto result1 = Texture::calculateBytesPerLine(format, width, Texture::Alignment::Byte);
     QCOMPARE(result1, bpl1);
 
+    if (width < 0)
+        QTest::ignoreMessage(QtWarningMsg, qPrintable(QStringLiteral("invalid width: %1").arg(width)));
     const auto result4 = Texture::calculateBytesPerLine(format, width, Texture::Alignment::Word);
     QCOMPARE(result4, bpl4);
 }
