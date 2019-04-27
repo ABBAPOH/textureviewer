@@ -67,6 +67,13 @@ public:
     {
         using size_type = Texture::size_type;
 
+        constexpr Position(size_type x = 0, size_type y = 0, size_type z = 0) noexcept
+            : x(x), y(y), z(z) {}
+        constexpr Position(QPoint p, size_type z = 0) noexcept
+            : x(p.x()), y(p.y()), z(z) {}
+
+        constexpr bool isValid() const noexcept { return x >= 0 && y >= 0 && z >= 0; }
+
         size_type x {0};
         size_type y {0};
         size_type z {0};
