@@ -1235,7 +1235,7 @@ QImage Texture::toImage() const
 
     if (imageFormat == QImage::Format_Invalid) {
         qCWarning(texture)
-                << "Can't convert to QImage: unsupported texture format" << int(d->format);
+                << "Can't convert to QImage: unsupported texture format" << toQString(d->format);
         return {};
     }
 
