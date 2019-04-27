@@ -1265,7 +1265,7 @@ QImage Texture::toImage() const
     }
 
     const auto data = copy.imageData({});
-    for (size_type y = 0; y < d->height; ++y) {
+    for (int y = 0; y < d->height; ++y) {
         const auto line = data.subspan(bytesPerLine * y, bytesPerLine);
         memoryCopy({result.scanLine(y), result.bytesPerLine()}, line);
     }
