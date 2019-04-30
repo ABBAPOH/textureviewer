@@ -5,6 +5,7 @@
 #include <QPixmap>
 
 #include <QtConcurrent/QtConcurrentRun>
+#include <QtCore/QSysInfo>
 
 namespace TextureViewer {
 
@@ -16,6 +17,7 @@ public:
     using WriteWatcher = QFutureWatcher<TextureIO::WriteResult>;
 
     Texture texture;
+    Texture visibleTexture; // TODO (abbapoh): move to Control
     std::vector<std::unique_ptr<Item>> items;
 
     std::unique_ptr<QFutureWatcher<TextureIO::ReadResult>> readWatcher;
@@ -94,31 +96,44 @@ void TextureDocument::setTexture(const Texture &texture)
     if (d->texture == texture)
         return;
     d->items.clear();
+    d->texture = Texture();
+
+    Q_ASSERT_X(
+            QSysInfo::ByteOrder == QSysInfo::LittleEndian,
+            "setTexture",
+            "Big endian is not supported");
+    d->visibleTexture = texture.convert(TextureFormat::RGBA8_Unorm, Texture::Alignment::Word);
+    if (d->visibleTexture.isNull()) {
+        qWarning() << "Can't convert texture to RGBA8";
+        return;
+    }
+
     d->texture = texture;
-    const auto size = d->texture.faces() * d->texture.layers() * d->texture.levels();
+
+    const auto size = d->visibleTexture.faces() * d->visibleTexture.layers() * d->visibleTexture.levels();
     d->items.reserve(size);
-    for (int level = 0; level < d->texture.levels(); ++level) {
-        for (int layer = 0; layer < d->texture.layers(); ++layer) {
-            for (int face = 0; face < d->texture.faces(); ++face) {
+    for (int level = 0; level < d->visibleTexture.levels(); ++level) {
+        for (int layer = 0; layer < d->visibleTexture.layers(); ++layer) {
+            for (int face = 0; face < d->visibleTexture.faces(); ++face) {
                 auto item = std::make_unique<Item>();
                 item->level = level;
                 item->layer = layer;
                 item->face = face;
                 auto image = Texture(
-                        d->texture.format(),
-                        {d->texture.width(level), d->texture.height(level)},
+                        d->visibleTexture.format(),
+                        {d->visibleTexture.width(level), d->visibleTexture.height(level)},
                         {1, 1},
-                        d->texture.alignment());
+                        d->visibleTexture.alignment());
                 if (image.isNull()) {
                     qWarning() << "Can't create slice";
                     d->items.clear();
                     break;
                 }
-                const auto imageData = d->texture.imageData({Texture::Side(face), level, layer});
+                const auto imageData = d->visibleTexture.imageData({Texture::Side(face), level, layer});
                 Q_ASSERT(imageData.size() == image.imageData({}).size());
                 memcpy(image.imageData({}).data(), imageData.data(), imageData.size());
                 item->texture = image;
-//                item->thumbnail = slice.toImage();
+                item->thumbnail = image.toImage();
                 d->items.push_back(std::move(item));
             }
         }

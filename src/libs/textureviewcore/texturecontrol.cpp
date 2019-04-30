@@ -26,7 +26,7 @@ public:
 
     ItemPointer currentItem() const;
     void onTextureChanged(const Texture &texture);
-    void updateModel(const Texture &image);
+    void updateModel(const QImage &image);
 
     struct OpenGLData
     {
@@ -133,7 +133,7 @@ void TextureControlPrivate::onTextureChanged(const Texture &texture)
     q->update();
 }
 
-void TextureControlPrivate::updateModel(const Texture &image)
+void TextureControlPrivate::updateModel(const QImage &image)
 {
     const auto w = size.width();
     const auto h = size.height();
@@ -346,7 +346,7 @@ void TextureControl::resizeGL(int w, int h)
     d->glData.view.translate({0, 0, -3.0f});
 
     auto item = d->currentItem();
-    const auto &image = item ? item->texture : Texture();
+    const auto &image = item ? item->thumbnail : QImage();
     if (!image.isNull()) {
         d->updateModel(image);
     }
@@ -361,9 +361,9 @@ void TextureControl::paintGL()
     if (d->textureDirty) {
         d->glData.texture.reset(); // delete tex here as we have a context
         auto item = d->currentItem();
-        const auto &image = item ? item->texture : Texture();
+        const auto &image = item ? item->thumbnail : QImage();
         if (!image.isNull()) {
-            d->glData.texture = Utils::makeOpenGLTexture(image);
+            d->glData.texture.reset(new QOpenGLTexture(image));
             d->updateModel(image);
         }
 
