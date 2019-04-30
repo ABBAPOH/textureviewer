@@ -93,9 +93,14 @@ TextureData *TextureData::create(
     }
 
     if (isCubemap) {
-        if (width != height || depth != 1) {
+        if (width != height) {
             qCWarning(texture)
-                    << "Width should be equal to height and depth should be 1 for a cube texture";
+                    << "Width should be equal to height for a cube texture";
+            return nullptr;
+        }
+        if (depth != 1) {
+            qCWarning(texture)
+                    << "Depth should be equal to 1 for a cube texture";
             return nullptr;
         }
     } else {
