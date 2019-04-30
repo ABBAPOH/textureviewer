@@ -16,6 +16,7 @@ private slots:
     void bytesPerLine();
     void bytesPerSlice_data();
     void bytesPerSlice();
+    void invalid();
 };
 
 void TestTexture::defaultConstructed()
@@ -316,6 +317,52 @@ void TestTexture::bytesPerSlice()
 
     const auto result4 = Texture::calculateBytesPerSlice(format, width, height, Texture::Alignment::Word);
     QCOMPARE(result4, bpl4);
+}
+
+void TestTexture::invalid()
+{
+    constexpr auto message = "Invalid parameter(s) passed to Texture::create";
+    Texture ok(TextureFormat::A8_Unorm, {1, 1, 1}, {Texture::IsCubemap::No, 1, 1});
+    QVERIFY(!ok.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, message);
+    Texture t0(TextureFormat::Invalid, {1, 1, 1}, {Texture::IsCubemap::No, 1, 1});
+    QVERIFY(t0.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, message);
+    Texture t1(TextureFormat::A8_Unorm, {-1, 1, 1}, {Texture::IsCubemap::No, 1, 1});
+    QVERIFY(t1.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, message);
+    Texture t2(TextureFormat::A8_Unorm, {1, -1, 1}, {Texture::IsCubemap::No, 1, 1});
+    QVERIFY(t2.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, message);
+    Texture t3(TextureFormat::A8_Unorm, {1, 1, -1}, {Texture::IsCubemap::No, 1, 1});
+    QVERIFY(t3.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, message);
+    Texture t4(TextureFormat::A8_Unorm, {1, 1, 1}, {Texture::IsCubemap::No, -1, 1});
+    QVERIFY(t4.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, message);
+    Texture t5(TextureFormat::A8_Unorm, {1, 1, 1}, {Texture::IsCubemap::No, 1, -1});
+    QVERIFY(t5.isNull());
+
+    Texture ok2(TextureFormat::A8_Unorm, {10, 10, 1}, {Texture::IsCubemap::Yes, 1, 1});
+    QVERIFY(!ok2.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, "Width should be equal to height for a cube texture");
+    Texture t6(TextureFormat::A8_Unorm, {10, 20, 1}, {Texture::IsCubemap::Yes, 1, 1});
+    QVERIFY(t6.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, "Depth should be equal to 1 for a cube texture");
+    Texture t7(TextureFormat::A8_Unorm, {10, 10, 5}, {Texture::IsCubemap::Yes, 1, 1});
+    QVERIFY(t7.isNull());
+
+    QTest::ignoreMessage(QtWarningMsg, "Arrays of 3d textures are not supported");
+    Texture t8(TextureFormat::A8_Unorm, {10, 10, 10}, {Texture::IsCubemap::No, 1, 10});
+    QVERIFY(t8.isNull());
 }
 
 QTEST_MAIN(TestTexture)
