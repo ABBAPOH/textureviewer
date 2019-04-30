@@ -4,6 +4,7 @@
 class TestTexture : public QObject
 {
     Q_OBJECT
+
 private slots:
     void defaultConstructed();
 
@@ -13,6 +14,8 @@ private slots:
     void constructWithInvalidData();
     void bytesPerLine_data();
     void bytesPerLine();
+    void bytesPerSlice_data();
+    void bytesPerSlice();
 };
 
 void TestTexture::defaultConstructed()
@@ -271,6 +274,47 @@ void TestTexture::bytesPerLine()
     if (width < 0)
         QTest::ignoreMessage(QtWarningMsg, qPrintable(QStringLiteral("invalid width: %1").arg(width)));
     const auto result4 = Texture::calculateBytesPerLine(format, width, Texture::Alignment::Word);
+    QCOMPARE(result4, bpl4);
+}
+
+void TestTexture::bytesPerSlice_data()
+{
+    QTest::addColumn<TextureFormat>("format");
+    QTest::addColumn<int>("width");
+    QTest::addColumn<int>("height");
+    QTest::addColumn<qsizetype>("bpl1");
+    QTest::addColumn<qsizetype>("bpl4");
+
+    QTest::newRow("RGBA_8888, w=1, h=1") << TextureFormat::RGBA8_Unorm << 1 << 1 << qsizetype(4) << qsizetype(4);
+    QTest::newRow("RGBA_8888, w=1, h=5") << TextureFormat::RGBA8_Unorm << 1 << 5 << qsizetype(20) << qsizetype(20);
+    QTest::newRow("RGBA_8888, w=5, h=5") << TextureFormat::RGBA8_Unorm << 5 << 5 << qsizetype(100) << qsizetype(100);
+    QTest::newRow("RGBA_8888, w=8, h=8") << TextureFormat::RGBA8_Unorm << 8 << 8 << qsizetype(256) << qsizetype(256);
+
+    QTest::newRow("RGB_888, w=1, h=1") << TextureFormat::RGB8_Unorm << 1 << 1 << qsizetype(3) << qsizetype(4);
+    QTest::newRow("RGB_888, w=5, h=5") << TextureFormat::RGB8_Unorm << 5 << 5 << qsizetype(75) << qsizetype(80);
+    QTest::newRow("RGB_888, w=8, h=8") << TextureFormat::RGB8_Unorm << 8 << 8 << qsizetype(192) << qsizetype(192);
+
+    QTest::newRow("L8, w=1, h=1") << TextureFormat::L8_Unorm << 1 << 1 << qsizetype(1) << qsizetype(4);
+    QTest::newRow("L8, w=5, h=5") << TextureFormat::L8_Unorm << 5 << 5 << qsizetype(25) << qsizetype(40);
+    QTest::newRow("L8, w=8, h=8") << TextureFormat::L8_Unorm << 8 << 8 << qsizetype(64) << qsizetype(64);
+
+    QTest::newRow("DXT1, w=1, h=1") << TextureFormat::Bc1Rgb_Unorm << 1 << 1 << qsizetype(8) << qsizetype(8);
+    QTest::newRow("DXT1, w=5, h=5") << TextureFormat::Bc1Rgb_Unorm << 5 << 5 << qsizetype(32) << qsizetype(32);
+    QTest::newRow("DXT1, w=8, h=8") << TextureFormat::Bc1Rgb_Unorm << 8 << 8 << qsizetype(32) << qsizetype(32);
+}
+
+void TestTexture::bytesPerSlice()
+{
+    QFETCH(TextureFormat, format);
+    QFETCH(int, width);
+    QFETCH(int, height);
+    QFETCH(qsizetype, bpl1);
+    QFETCH(qsizetype, bpl4);
+
+    const auto result1 = Texture::calculateBytesPerSlice(format, width, height, Texture::Alignment::Byte);
+    QCOMPARE(result1, bpl1);
+
+    const auto result4 = Texture::calculateBytesPerSlice(format, width, height, Texture::Alignment::Word);
     QCOMPARE(result4, bpl4);
 }
 
