@@ -82,7 +82,12 @@ TextureData *TextureData::create(
 {
     std::unique_ptr<TextureData> result;
 
-    if (width <= 0 || height <= 0 || depth <= 0 || layers <= 0 || format == TextureFormat::Invalid) {
+    if (width <= 0
+            || height <= 0
+            || depth <= 0
+            || levels <= 0
+            || layers <= 0
+            || format == TextureFormat::Invalid) {
         qCWarning(texture) << "Invalid parameter(s) passed to Texture::create";
         return nullptr;
     }
