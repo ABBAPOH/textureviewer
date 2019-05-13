@@ -96,6 +96,7 @@ std::vector<QStringView> TextureIOHandlerDatabase::availableMimeTypes(Capabiliti
         if (it.value()->capabilities(mt) & caps)
             result.push_back(mt);
     }
+    std::sort(result.begin(), result.end());
     return result;
 }
 

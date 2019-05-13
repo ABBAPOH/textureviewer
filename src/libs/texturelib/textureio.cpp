@@ -303,6 +303,11 @@ TextureIO::WriteResult TextureIO::write(const Texture &contents)
     return WriteResult();
 }
 
+std::vector<QStringView> TextureIO::availableMimeTypes(Capabilities caps)
+{
+    return TextureIOHandlerDatabase::instance()->availableMimeTypes(caps);
+}
+
 gsl::span<const TextureFormat> TextureIO::readableFormats()
 {
     return TextureIOHandlerDatabase::instance()->readableFormats();

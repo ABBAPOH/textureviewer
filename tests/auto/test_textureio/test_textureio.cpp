@@ -17,6 +17,7 @@ private slots:
     void read();
     void write_data();
     void write();
+    void availableMimeTypes();
 };
 
 void TestTextureIO::initTestCase()
@@ -133,6 +134,16 @@ void TestTextureIO::write()
     stream >> texture;
 
     QCOMPARE(texture, expectedTexture);
+}
+
+void TestTextureIO::availableMimeTypes()
+{
+    std::vector<QStringView> expected {
+        u"application/octet-stream",
+        u"image/x-dds",
+    };
+    QCOMPARE(TextureIO::availableMimeTypes(), expected);
+
 }
 
 QTEST_APPLESS_MAIN(TestTextureIO)

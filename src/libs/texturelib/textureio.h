@@ -3,6 +3,7 @@
 #include "texturelib_global.h"
 
 #include <TextureLib/Texture>
+#include <TextureLib/TextureIOHandlerPlugin>
 #include <TextureLib/TextureIOResult>
 
 #include <QtCore/QMimeType>
@@ -56,6 +57,10 @@ public:
     ReadResult read();
 
     WriteResult write(const Texture &contents);
+
+    using Capability = TextureIOHandlerPlugin::Capability;
+    using Capabilities = TextureIOHandlerPlugin::Capabilities;
+    static std::vector<QStringView> availableMimeTypes(Capabilities caps = Capability::ReadWrite);
 
     static gsl::span<const TextureFormat> readableFormats();
     static gsl::span<const TextureFormat> writableFormats();
