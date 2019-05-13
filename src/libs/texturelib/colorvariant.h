@@ -23,7 +23,7 @@ using ColorVariantData = std::variant<
     Rgba128
 >;
 
-template<typename Color>
+template<typename Color, typename = std::enable_if_t<isColor_v<Color>>>
 constexpr Color convertColorVariant(const ColorVariantData &d) noexcept
 {
     auto result = Color();
@@ -88,7 +88,7 @@ public:
         return ptr ? *ptr : defaultValue;
     }
 
-    template<typename T>
+    template<typename T, typename = std::enable_if_t<Private::isColor_v<T>>>
     constexpr T convert() const noexcept { return Private::convertColorVariant<T>(data()); }
 
 private:

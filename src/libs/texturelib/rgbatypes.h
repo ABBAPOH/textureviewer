@@ -409,7 +409,8 @@ constexpr RgbaFromColorChannel_t<T> createRgba(
 template<typename T, typename = std::enable_if_t<isColorChannel_v<T>>>
 constexpr bool is_float_v = !std::is_integral_v<T>;
 
-template<typename Dst, typename Src>
+template<typename Dst, typename Src,
+         typename = std::enable_if_t<isColorChannel_v<Src> && isColorChannel_v<Dst>>>
 inline constexpr Dst convertChannel(Src src)
 {
     if constexpr (std::is_same_v<std::decay_t<Src>, std::decay_t<Dst>>)
@@ -429,7 +430,8 @@ inline constexpr Dst convertChannel(Src src)
     }
 }
 
-template<typename Dst, typename Src>
+template<typename Dst, typename Src,
+         typename = std::enable_if_t<isColor_v<Src> && isColor_v<Dst>>>
 constexpr Dst convertRgba(Src src) noexcept
 {
     using SrcChannel = Private::rgbaToColorChannel_t<Src>;
