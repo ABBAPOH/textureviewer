@@ -22,6 +22,7 @@ private slots:
 
 void TestTextureIO::initTestCase()
 {
+    Q_INIT_RESOURCE(extramimetypes);
 }
 
 void TestTextureIO::defaultValues()
@@ -141,6 +142,9 @@ void TestTextureIO::availableMimeTypes()
     std::vector<QStringView> expected {
         u"application/octet-stream",
         u"image/x-dds",
+        u"image/x-ktx",
+        u"image/x-pkm",
+        u"image/x-vtf",
     };
     QCOMPARE(TextureIO::availableMimeTypes(), expected);
 
