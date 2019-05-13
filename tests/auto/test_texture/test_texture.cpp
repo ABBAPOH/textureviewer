@@ -360,6 +360,9 @@ void TestTexture::invalid()
     Texture t7(TextureFormat::A8_Unorm, {10, 10, 5}, {Texture::IsCubemap::Yes, 1, 1});
     QVERIFY(t7.isNull());
 
+    Texture ok3(TextureFormat::A8_Unorm, {16, 16, 16}, {Texture::IsCubemap::No, 5, 1});
+    QVERIFY(!ok3.isNull());
+
     QTest::ignoreMessage(QtWarningMsg, "Arrays of 3d textures are not supported");
     Texture t8(TextureFormat::A8_Unorm, {10, 10, 10}, {Texture::IsCubemap::No, 1, 10});
     QVERIFY(t8.isNull());
