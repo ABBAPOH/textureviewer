@@ -555,9 +555,13 @@ Texture::Texture(const Texture &other)
 Texture::Texture(const QString &file)
     : d(nullptr)
 {
-    auto ok = load(file);
-    if (!ok)
-        qCWarning(texture) << "Can't load texture from file" << file << toUserString(ok);
+    auto result = load(file);
+    if (!result) {
+        qCWarning(texture)
+                << "Can't load texture from file" << file << toUserString(result.error());
+        return;
+    }
+    *this = *result;
 }
 
 /*!
@@ -1286,15 +1290,10 @@ QImage Texture::toImage() const
 /*!
   \brief Loads a texture from the given \a file.
 */
-TextureIOResult Texture::load(const QString &file)
+auto Texture::load(const QString &file) -> ReadResult
 {
     TextureIO io(file);
-    auto result = io.read();
-    if (result) {
-        *this = *result;
-        return TextureIOResult();
-    }
-    return result.error();
+    return io.read();
 }
 
 /*!

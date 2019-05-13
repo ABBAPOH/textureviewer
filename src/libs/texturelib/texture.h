@@ -15,6 +15,8 @@
 
 #include <gsl/span>
 
+#include <Expected>
+
 class TextureData;
 
 class TEXTURELIB_EXPORT Texture
@@ -253,8 +255,9 @@ public:
 
     TextureIOResult save(const QString &file);
     TextureIOResult save(QStringView file) { return save(file.toString()); }
-    TextureIOResult load(const QString &file);
-    TextureIOResult load(QStringView file) { return load(file.toString()); }
+    using ReadResult = Expected<Texture, TextureIOError>;
+    static ReadResult load(const QString &file);
+    static ReadResult load(QStringView file) { return load(file.toString()); }
 
 private:
     explicit Texture(TextureData *dd);
