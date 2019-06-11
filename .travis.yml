@@ -1,0 +1,24 @@
+language: cpp
+sudo: required
+osx_image: xcode10.2
+
+addons:
+  homebrew:
+    packages:
+    - qt
+    - qbs
+    update: true # use fresh qbs
+
+matrix:
+  include:
+  - os: osx
+    before_install:
+    - brew link qt5 --force # link qmake to /usr/local/bin
+    script:
+    - qbs --version
+    - qbs setup-toolchains --detect
+    - qbs setup-qt /usr/local/bin/qmake qt
+    - qbs config qt.baseProfile xcode-macosx-x86_64
+    - qbs config defaultProfile qt
+    - qbs build
+    - qbs build -p autotest-runner
