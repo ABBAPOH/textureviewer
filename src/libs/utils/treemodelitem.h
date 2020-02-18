@@ -76,7 +76,7 @@ public:
 
     [[nodiscard]] ItemHolder take(qsizetype row) noexcept
     {
-        Q_ASSERT(row >= 0 && row <= childCount());
+        Q_ASSERT(row >= 0 && row < childCount());
 
         ItemHolder result;
         std::swap(result, m_children[row]);
