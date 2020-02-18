@@ -13,8 +13,8 @@ public:
     using Derived = T;
     using Base = TreeModelItem<T>;
 
-    using ItemObserverPointer = ObserverPointer<Derived>;
-    using ItemUniquePointer = std::unique_ptr<Derived>;
+    using ItemPointer = ObserverPointer<Derived>;
+    using ItemHolder = std::unique_ptr<Derived>;
 
     TreeModelItem() noexcept = default;
 
@@ -25,59 +25,79 @@ public:
     TreeModelItem &operator=(const TreeModelItem &) = delete;
     TreeModelItem &operator=(TreeModelItem &&) noexcept = default;
 
-    ItemObserverPointer createChild(qsizetype row = -1)
+    ItemPointer createChild(qsizetype row = -1)
     {
         insert(row == - 1 ? childCount() : row, std::make_unique<Derived>());
-        return ItemObserverPointer(m_children.back().get());
+        return ItemPointer(m_children.back().get());
     }
 
-    ItemObserverPointer parent() const noexcept { return m_parent; }
+    ItemPointer parent() const noexcept { return m_parent; }
 
     qsizetype row() const noexcept
     {
         if (!m_parent)
             return 0;
-        const auto pred = [this](const ItemUniquePointer &p) { return this == p.get(); };
+        const auto pred = [this](const ItemHolder &p) { return this == p.get(); };
         const auto it = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), pred);
         return {it - m_parent->m_children.begin()};
     }
 
-    std::vector<ItemUniquePointer> &children() noexcept { return m_children; }
-    const std::vector<ItemUniquePointer> &children() const noexcept { return m_children; }
+    std::vector<ItemHolder> &children() noexcept { return m_children; }
+    const std::vector<ItemHolder> &children() const noexcept { return m_children; }
 
-    ItemObserverPointer child(qsizetype row) const noexcept
+    ItemPointer child(qsizetype row) const noexcept
     {
-        return ItemObserverPointer(m_children[size_t(row)].get());
+        return ItemPointer(m_children[size_t(row)].get());
     }
 
     qsizetype childCount() const noexcept { return qsizetype(m_children.size()); }
 
-    void append(ItemUniquePointer item) { insert(childCount(), std::move(item)); }
+    void append(ItemHolder item) { insert(childCount(), std::move(item)); }
 
-    void insert(qsizetype row, ItemUniquePointer item)
+    void insert(qsizetype row, ItemHolder item)
     {
         Q_ASSERT(row >= 0 && row <= childCount());
-        item->m_parent = ItemObserverPointer(static_cast<Derived *>(this));
+        item->m_parent = ItemPointer(static_cast<Derived *>(this));
         m_children.insert(m_children.begin() + row, std::move(item));
     }
 
-    void remove(ItemObserverPointer item)
+    [[nodiscard]] ItemHolder take(ItemPointer item)
     {
-        const auto pred = [item](const ItemUniquePointer &p) { return item.get() == p.get(); };
+        ItemHolder result;
+        const auto pred = [item](const ItemHolder &p) { return item.get() == p.get(); };
         const auto it = std::find_if(m_children.begin(), m_children.end(), pred);
-        if (it != m_children.end())
+        if (it != m_children.end()) {
+            std::swap(result, *it);
+            result->m_parent = nullptr;
             m_children.erase(it);
+        }
+        return result;
+    }
+
+    [[nodiscard]] ItemHolder take(qsizetype row)
+    {
+        Q_ASSERT(row >= 0 && row <= childCount());
+
+        ItemHolder result;
+        std::swap(result, m_children[row]);
+        result->m_parent = nullptr;
+        m_children.erase(m_children.begin() + row);
+        return result;
+    }
+
+    void remove(ItemPointer item)
+    {
+        (void)take(item);
     }
 
     void remove(qsizetype row)
     {
-        Q_ASSERT(row >= 0 && row <= childCount());
-        m_children.erase(m_children.begin() + row);
+        (void)take(row);
     }
 
 private:
-    ItemObserverPointer m_parent;
-    std::vector<ItemUniquePointer> m_children;
+    ItemPointer m_parent;
+    std::vector<ItemHolder> m_children;
 };
 
 #endif // TREEMODELITEM_H
