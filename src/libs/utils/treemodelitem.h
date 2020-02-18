@@ -61,7 +61,7 @@ public:
         m_children.insert(m_children.begin() + row, std::move(item));
     }
 
-    [[nodiscard]] ItemHolder take(ItemPointer item)
+    [[nodiscard]] ItemHolder take(ItemPointer item) noexcept
     {
         ItemHolder result;
         const auto pred = [item](const ItemHolder &p) { return item.get() == p.get(); };
@@ -74,7 +74,7 @@ public:
         return result;
     }
 
-    [[nodiscard]] ItemHolder take(qsizetype row)
+    [[nodiscard]] ItemHolder take(qsizetype row) noexcept
     {
         Q_ASSERT(row >= 0 && row <= childCount());
 
@@ -85,15 +85,8 @@ public:
         return result;
     }
 
-    void remove(ItemPointer item)
-    {
-        (void)take(item);
-    }
-
-    void remove(qsizetype row)
-    {
-        (void)take(row);
-    }
+    void remove(ItemPointer item) noexcept { (void)take(item); }
+    void remove(qsizetype row) noexcept { (void)take(row); }
 
 private:
     ItemPointer m_parent;
