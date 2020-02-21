@@ -27,8 +27,9 @@ public:
 
     ItemPointer createChild(qsizetype row = -1)
     {
-        insert(row == - 1 ? childCount() : row, std::make_unique<Derived>());
-        return ItemPointer(m_children.back().get());
+        row = row == - 1 ? childCount() : row;
+        insert(row, std::make_unique<Derived>());
+        return child(row);
     }
 
     ItemPointer parent() const noexcept { return m_parent; }
