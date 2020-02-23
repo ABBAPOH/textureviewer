@@ -37,7 +37,7 @@ public:
     qsizetype row() const noexcept
     {
         if (!m_parent)
-            return 0;
+            return -1;
         const auto pred = [this](const ItemHolder &p) { return this == p.get(); };
         const auto it = std::find_if(m_parent->m_children.begin(), m_parent->m_children.end(), pred);
         return {it - m_parent->m_children.begin()};
@@ -64,15 +64,9 @@ public:
 
     [[nodiscard]] ItemHolder take(ItemPointer item) noexcept
     {
-        ItemHolder result;
-        const auto pred = [item](const ItemHolder &p) { return item.get() == p.get(); };
-        const auto it = std::find_if(m_children.begin(), m_children.end(), pred);
-        if (it != m_children.end()) {
-            std::swap(result, *it);
-            result->m_parent = nullptr;
-            m_children.erase(it);
-        }
-        return result;
+        if (!item->m_parent)
+            return {};
+        return take(item->row());
     }
 
     [[nodiscard]] ItemHolder take(qsizetype row) noexcept
