@@ -62,13 +62,6 @@ public:
         m_children.insert(m_children.begin() + row, std::move(item));
     }
 
-    [[nodiscard]] ItemHolder take(ItemPointer item) noexcept
-    {
-        if (!item->m_parent)
-            return {};
-        return take(item->row());
-    }
-
     [[nodiscard]] ItemHolder take(qsizetype row) noexcept
     {
         Q_ASSERT(row >= 0 && row < childCount());
@@ -80,7 +73,6 @@ public:
         return result;
     }
 
-    void remove(ItemPointer item) noexcept { (void)take(item); }
     void remove(qsizetype row) noexcept { (void)take(row); }
 
 private:
